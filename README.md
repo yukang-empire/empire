@@ -1,2 +1,2 @@
-# empire
-yukang's way of learning.
+# 说明
+玉康的学习之路.
