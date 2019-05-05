@@ -1,2 +1,2 @@
 # empire
-Yukang's way of learning.
+yukang's way of learning.
