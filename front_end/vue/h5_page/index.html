@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Cache-control" content="no-cache" />
+    <meta http-equiv="Cache" content="no-cache" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="pragma" content="no-cache"  />
+    <meta http-equiv="content-type" content="no-cache, must-revalidate" />
+    <meta http-equiv="Expires" content="0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="author" content="yukang" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <title>index</title>
+    <!-- element-ui css -->
+    <link rel="stylesheet" href="css/element-ui_2.8.2.css">
+    <!-- element-ui fonts -->
+    <link rel="stylesheet" href="css/fonts/element-icons.woff">
+
+
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <div id="app" v-cloak>
+        <header>
+
+        </header>
+
+        <article>
+
+        </article>
+            
+        <footer>
+
+
+            <!-- 登录和注册页面 -->
+            <div class="form">
+                <el-input
+                    clearable
+                    placeholder="请输入手机号"
+                    type='number'
+                    @blur='blur_verify("phone")'
+                    @clear='clear_input("phone")'
+                    v-model="form_data.phone">
+                    <svg slot="prefix" class="icon password" aria-hidden="true">
+                        <use xlink:href="#icon-shouji"></use>
+                    </svg>
+                </el-input>
+                <transition name="fade"><p class='verify_tip' v-if='tip.phone.is_open'><span>{{ tip.phone.text }}</span></p></transition>
+                <el-input
+                    clearable
+                    show-password
+                    placeholder="请设置密码"
+                    @blur='blur_verify("password")'
+                    @clear='clear_input("password")'
+                    v-model="form_data.password">
+                    <svg slot="prefix" class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-mima"></use>
+                    </svg>
+                </el-input>
+                <transition name="fade"><p class='verify_tip' v-if='tip.password.is_open'><span>{{ tip.password.text }}</span></p></transition>
+                <el-input
+                    clearable
+                    show-password
+                    placeholder="请再次输入密码"
+                    @blur='blur_verify("re_password")'
+                    @clear='clear_input("re_password")'
+                    v-model="form_data.re_password">
+                    <svg slot="prefix" class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-zaicishurumima"></use>
+                    </svg>
+                </el-input>
+                <transition name="fade"><p class='verify_tip' v-if='tip.re_password.is_open'><span>{{ tip.re_password.text }}</span></p></transition>
+                <div class="verify">
+                    <el-input
+                        placeholder="请输入验证码"
+                        type='number'
+                        @blur='blur_verify("verify_code")'
+                        @clear='clear_input("verify_code")'
+                        v-model="form_data.verify_code">
+                        <svg slot="prefix" class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-yanzhengyanzhengma"></use>
+                        </svg>
+                    </el-input>
+                    <transition name="fade"><p class='verify_tip' v-if='tip.verify_code.is_open'><span>{{ tip.verify_code.text }}</span></p></transition>
+                    <span class="get_code" :class="{'disabled': !limit_get.is_disabled}" @click='get_code'>{{ limit_get.text }}</span>
+                </div>
+                <el-button type="success" :loading="form_data.login" @click='register'>注册</el-button>
+            </div>
+
+            <!-- 微信右上角提示 -->
+            <section class="tip">
+                <div>
+                    <img src="imgs/arrow.png" alt="arrow">
+                </div>
+                <div>
+                    <ol>
+                        <li>点击右上角按钮</li>
+                        <li>在弹出的菜单里，选择在浏览器里打开。</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- 展示提示信息的dialog弹框 -->
+            <section class="dialog" v-if='dialog.is_open' @click.self='dialog.is_open = false'>
+                <div class="main">
+                    <h3>提示</h3>
+                    <div class="content">
+                        <span>success！</span>
+                    </div>
+                    <!-- <div class="normal">
+                        <button class="cancel" @click='dialog.is_open = false'>取消</button>
+                        <button class="sure" @click='dialog.is_open = false'>确定</button>
+                    </div> -->
+                    <div class="no_cancel">
+                        <button class="sure" @click='dialog.is_open = false'>确定</button>
+                    </div>
+
+                    <!-- <div class="QR_code">
+                        <img src="imgs/QR_code.jpg" alt="QR_code">
+                        <p>长按识别二维码</p>
+                    </div> -->
+                    
+                    <svg class="icon" aria-hidden="true" @click='dialog.is_open = false'>
+                        <use xlink:href="#icon-chahao"></use>
+                    </svg>
+                </div>
+            </section>
+
+            <!-- 底部返回上一页 -->
+            <section class="back">
+                <button>返回上一页</button>
+            </section>
+
+            <!-- li左右justify对齐 -->
+            <ul class="justify_li">
+                <li>
+                    <span>官方网址</span>
+                    <!-- 混合开发的内嵌h5页面 在android和ios里 原生a标签href属性跳转链接可能会出问题 故建议使用事件跳转 -->
+                    <span @click='h5_jump("https://www.baidu.com")'>https://www.baidu.com</span>
+                </li>
+                <li>
+                    <span>客服电话</span>
+                    <!-- 混合开发的内嵌h5页面 在android和ios里 原生a标签tel属性跳转电话可能会出问题 故建议使用事件跳转 -->
+                    <span @click='h5_call(400-88888888)'>400-88888888</span>
+                </li>
+                <li>
+                    <span>官方微信</span>
+                    <div>
+                        <span id="copy_text">weixinhao123</span>
+                        <i class="copy" data-clipboard-target="#copy_text" @click='copy_text'>复制</i>
+                    </div>
+                </li>
+            </ul>
+
+            <!-- 复制成功的提示 -->
+            <transition name="fade"><div class="copy_tip" v-if='is_copy_suc'><span>复制成功!</span></div></transition>
+
+
+
+        </footer>
+    </div>
+
+
+    <!-- 阿里图标 symbol引入方式 -->
+    <script src="http://at.alicdn.com/t/font_1180618_6j56f8z6n8y.js"></script>
+    <!-- vue -->
+    <script src="js/vue_2.6.1.js"></script>
+    <!-- element-ui -->
+    <script src="js/element-ui_2.8.2.js"></script>
+    <!-- axios -->
+    <script src="js/axios_0.18.0.min.js"></script>
+    <!-- md5 -->
+    <script src="js/md5.js"></script>
+    <!-- 复制文字 -->
+    <script src="js/clipboard_2.0.4.js"></script>
+    
+    <script src="js/index.js"></script>
+
+
+</body>
+</html>

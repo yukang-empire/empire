@@ -1,0 +1,72 @@
+@charset 'utf-8';
+
+@import 'global.scss';
+
+[v-cloak] {
+  display: none;
+}
+
+//阿里图标
+.icon {
+	width: 1.5rem;
+	height: 1.5rem;
+	vertical-align: -0.15em;
+	fill: $text_white !important;
+	overflow: hidden;
+ }
+
+* {
+	margin: 0;
+	padding: 0;
+}
+body {
+	font: 16px/1.8 -apple-system-font,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Hiragino Sans GB,Microsoft YaHei UI,Microsoft YaHei,Arial,sans-serif;
+	text-align: justify;
+	color: $text_black;
+	background-color: $text_white;
+}
+h1,h2,h3 {
+	white-space: nowrap;
+	margin: 1rem 0;
+	color: #333;
+}
+h1 {
+	text-align: center;
+}
+ul {
+	list-style-type: none;
+	overflow: hidden;
+}
+li {
+	margin: 15px 20px;
+}
+button {
+	height: $btn_height;
+	border: none;
+	border-radius: 5px;
+	text-align: center;
+	color: #fff;
+	letter-spacing: 3px;
+	font-size: 1.1rem;
+	background-color: $btn_bg;
+}
+input::-webkit-input-placeholder{
+	color: $text_input !important;
+	font-size: 0.95rem;
+}
+input::-moz-input-placeholder{
+	color: $text_input !important;
+	font-size: 0.95rem;
+}
+input::-ms-input-placeholder{
+	color: $text_input !important;
+	font-size: 0.95rem;
+}
+
+
+.full_width {
+	width: 100%;
+}
+.block {
+	display: block;
+}

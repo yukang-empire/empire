@@ -1,0 +1,14 @@
+
+@charset 'utf-8';
+
+// 基础样式
+@import "./base.scss";
+
+//阿里图标
+// @import './ico.scss';
+
+//所有组件的样式
+@import './all.scss';
+
+// 全局变量、占位符、mixin
+@import "./global.scss";
