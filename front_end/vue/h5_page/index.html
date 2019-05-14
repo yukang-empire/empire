@@ -12,19 +12,21 @@
     <meta name="author" content="yukang" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
-    <title>index</title>
+    <title>标题</title>
     <!-- element-ui css -->
-    <link rel="stylesheet" href="css/element-ui_2.8.2.css">
-    <!-- element-ui fonts -->
-    <link rel="stylesheet" href="css/fonts/element-icons.woff">
-
-
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 自定义的css -->
     <link rel="stylesheet" href="css/index.css">
+    <style>
+        body {
+            background-color: #fff;
+        }
+    </style>
 </head>
 <body>
-    <div id="app" v-cloak>
+    <div id="app">
         <header>
-
+            
         </header>
 
         <article>
@@ -34,8 +36,116 @@
         <footer>
 
 
-            <!-- 登录和注册页面 -->
-            <div class="form">
+            <!-- 车票 -->
+            <div class="ticket flex_between" v-if='modules.is_ticket'>
+                <div class="left flex_center">
+                    <img src="./imgs/logo.png" alt="head_pic">
+                    <p>qingku_123</p>
+                    <div class="top"></div>
+                    <div class="bottom"></div>
+                </div>
+                <div class="right flex_center">
+                    <span>使用我的邀请码</span>
+                    <b id="copy_code">DBG6R2</b>
+                    <i class="copy" data-clipboard-target="#copy_code" @click='copy_text'>复制</i>
+                </div>
+            </div>
+
+            <!-- 底部分享 -->
+            <transition name='fade'>
+                <div class="bottom_share fixed_top" v-if='modules.is_bottom_share' @click.self='modules.is_bottom_share=false'>
+                    <div class="main fixed_bottom">
+                        <h3>分享至</h3>
+                        <div>
+                            <ul class="flex_between">
+                                <li>
+                                    <img src="imgs/card.png" alt="card">
+                                    <p>制作邀请卡</p>
+                                </li>
+                                <li>
+                                    <img src="imgs/wechat.png" alt="wechat">
+                                    <p>微信朋友</p>
+                                </li>
+                                <li>
+                                    <img src="imgs/circle_friends.png" alt="circle_friends">
+                                    <p>微信朋友圈</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </transition>
+           
+            <!-- 微信右上角提示 -->
+            <section class="tip fixed_top" v-if='modules.is_tip' @click.self='modules.is_tip=false'>
+                <div>
+                    <img src="imgs/arrow.png" alt="arrow">
+                </div>
+                <div>
+                    <ol>
+                        <li>点击右上角按钮</li>
+                        <li>在弹出的菜单里，选择在浏览器里打开。</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- 展示提示信息的dialog弹框 -->
+            <section class="dialog flex_center fixed_top" v-if='dialog.is_open' @click.self='dialog.is_open = false'>
+                <div class="main">
+                    <h3>提示</h3>
+                    <div class="content">
+                        <span>{{ dialog.msg }}</span>
+                    </div>
+                    <div class="normal flex_between">
+                        <button class="cancel" @click='dialog.is_open = false'>取消</button>
+                        <button class="sure" @click='dialog.is_open = false'>确定</button>
+                    </div>
+                    <!-- <div class="no_cancel">
+                        <button class="sure" @click='dialog.is_open = false'>确定</button>
+                    </div> -->
+
+                    <!-- <div class="QR_code">
+                        <img src="imgs/QR_code.png" alt="QR_code">
+                        <p>长按识别二维码</p>
+                    </div> -->
+                    
+                    <svg class="icon" aria-hidden="true" @click='dialog.is_open = false'>
+                        <use xlink:href="#icon-chahao"></use>
+                    </svg>
+                </div>
+            </section>
+
+            <!-- 底部返回上一页 -->
+            <section class="back fixed_bottom" v-if='modules.is_back'>
+                <button>返回上一页</button>
+            </section>
+
+            <!-- li左右justify对齐 -->
+            <ul class="justify_li" v-if='modules.is_justify_li'>
+                <li class="flex_between">
+                    <span>官方网址</span>
+                    <!-- 混合开发的内嵌h5页面 在android和ios里 原生a标签href属性跳转链接可能会出问题 故建议使用事件跳转 -->
+                    <span @click='h5_jump("https://www.baidu.com")'>https://www.baidu.com</span>
+                </li>
+                <li class="flex_between">
+                    <span>客服电话</span>
+                    <!-- 混合开发的内嵌h5页面 在android和ios里 原生a标签tel属性跳转电话可能会出问题 故建议使用事件跳转 -->
+                    <span>400-88888888</span>
+                </li>
+                <li class="flex_between">
+                    <span>官方微信</span>
+                    <div>
+                        <span id="copy_text">weixinhao123</span>
+                        <i class="copy" data-clipboard-target="#copy_text" @click='copy_text'>复制</i>
+                    </div>
+                </li>
+            </ul>
+
+            <!-- 复制成功的提示 -->
+            <transition name="fade"><div class="copy_tip" v-if='modules.is_copy_tip'><span>复制成功!</span></div></transition>
+
+             <!-- 登录和注册页面 -->
+             <div class="form flex_center" v-if='modules.is_form'>
                 <el-input
                     clearable
                     placeholder="请输入手机号"
@@ -89,82 +199,12 @@
                 <el-button type="success" :loading="form_data.login" @click='register'>注册</el-button>
             </div>
 
-            <!-- 微信右上角提示 -->
-            <section class="tip">
-                <div>
-                    <img src="imgs/arrow.png" alt="arrow">
-                </div>
-                <div>
-                    <ol>
-                        <li>点击右上角按钮</li>
-                        <li>在弹出的菜单里，选择在浏览器里打开。</li>
-                    </ol>
-                </div>
-            </section>
-
-            <!-- 展示提示信息的dialog弹框 -->
-            <section class="dialog" v-if='dialog.is_open' @click.self='dialog.is_open = false'>
-                <div class="main">
-                    <h3>提示</h3>
-                    <div class="content">
-                        <span>success！</span>
-                    </div>
-                    <!-- <div class="normal">
-                        <button class="cancel" @click='dialog.is_open = false'>取消</button>
-                        <button class="sure" @click='dialog.is_open = false'>确定</button>
-                    </div> -->
-                    <div class="no_cancel">
-                        <button class="sure" @click='dialog.is_open = false'>确定</button>
-                    </div>
-
-                    <!-- <div class="QR_code">
-                        <img src="imgs/QR_code.jpg" alt="QR_code">
-                        <p>长按识别二维码</p>
-                    </div> -->
-                    
-                    <svg class="icon" aria-hidden="true" @click='dialog.is_open = false'>
-                        <use xlink:href="#icon-chahao"></use>
-                    </svg>
-                </div>
-            </section>
-
-            <!-- 底部返回上一页 -->
-            <section class="back">
-                <button>返回上一页</button>
-            </section>
-
-            <!-- li左右justify对齐 -->
-            <ul class="justify_li">
-                <li>
-                    <span>官方网址</span>
-                    <!-- 混合开发的内嵌h5页面 在android和ios里 原生a标签href属性跳转链接可能会出问题 故建议使用事件跳转 -->
-                    <span @click='h5_jump("https://www.baidu.com")'>https://www.baidu.com</span>
-                </li>
-                <li>
-                    <span>客服电话</span>
-                    <!-- 混合开发的内嵌h5页面 在android和ios里 原生a标签tel属性跳转电话可能会出问题 故建议使用事件跳转 -->
-                    <span @click='h5_call(400-88888888)'>400-88888888</span>
-                </li>
-                <li>
-                    <span>官方微信</span>
-                    <div>
-                        <span id="copy_text">weixinhao123</span>
-                        <i class="copy" data-clipboard-target="#copy_text" @click='copy_text'>复制</i>
-                    </div>
-                </li>
-            </ul>
-
-            <!-- 复制成功的提示 -->
-            <transition name="fade"><div class="copy_tip" v-if='is_copy_suc'><span>复制成功!</span></div></transition>
-
-
-
         </footer>
     </div>
 
 
     <!-- 阿里图标 symbol引入方式 -->
-    <script src="http://at.alicdn.com/t/font_1180618_6j56f8z6n8y.js"></script>
+    <script src="http://at.alicdn.com/t/font_1180618_6qnrolywsza.js"></script>
     <!-- vue -->
     <script src="js/vue_2.6.1.js"></script>
     <!-- element-ui -->
@@ -175,7 +215,9 @@
     <script src="js/md5.js"></script>
     <!-- 复制文字 -->
     <script src="js/clipboard_2.0.4.js"></script>
-    
+    <!-- html dom元素转截图 -->
+    <script src="js/html2canvas.min.js"></script>
+    <!-- 自定义的js -->
     <script src="js/index.js"></script>
 
 
