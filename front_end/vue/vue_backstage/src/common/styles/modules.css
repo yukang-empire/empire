@@ -1,0 +1,319 @@
+
+/* 共用的类 */
+.full_width {
+    width: 100%;
+}
+.block {
+    display: block;
+}
+.flex_center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.flex_between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.fixed_top {
+    top: 0;
+    left: 0;
+	z-index: 2;
+    width: 100%;
+    position: fixed;
+}
+.fixed_bottom {
+    left: 0;
+    bottom: 0;
+	z-index: 2;
+    width: 100%;
+    position: fixed;
+}
+
+
+/* 微信右上角提示 */
+.tip {
+	height: 100%;
+	color: #eee;
+	font-size: 1rem;
+    padding: 10rem 0 0 0;
+    background-color: rgba(0,0,0,0.65);
+}
+.tip ol {
+    padding: 0 0 0 3rem;
+    line-height: 2.5rem;
+}
+.tip img {
+	top: 2rem;
+	right: 2rem;
+	width: 5rem;
+	position: absolute;
+	transform: rotate(22deg);
+}
+
+
+/* 自定义dialog弹框 */
+.dialog {
+    height: 100%;
+    background-color: rgba(0,0,0,0.65);
+}
+.dialog .main {
+    width: 80%;
+    text-align: center;
+    position: relative;
+    border-radius: 10px;
+    margin: -12% 10% 0 10%;
+    background-color: #fff;
+}
+.dialog .main .icon {
+    top: 8px;
+    right: 10px;
+    color: #bbb;
+    width: 1.1rem;
+    height: 1.1rem;
+    position: absolute;
+}
+.dialog .main h3 {
+    margin: 0;
+    color: #666;
+    font-size: 1.1rem;
+    padding: 10px 0 8px 0;
+    border-bottom: 1px solid #ddd;
+}
+.dialog .main .content {
+    color: #999;
+    margin: 20px;
+    font-size: 1rem;
+    text-align: center;
+}
+.dialog .main .no_cancel, .dialog .main .normal {
+    margin: 25px 30px;
+}
+.dialog .main .no_cancel .sure, .dialog .main .normal button{
+    color: #eee;
+    width: 85px;
+    height: 45px;
+    font-size: 1rem;
+    line-height: 45px;
+    background-color: #fba711;
+}
+.dialog .main .normal .cancel {
+    background-color: #ccc;
+}
+.dialog .main .QR_code {
+    width: 80%;
+    margin: 0 10%;
+    padding: 35px 0 25px 0;
+}
+.dialog .main .QR_code img {
+    width: 100%;
+}
+.dialog .main .QR_code p {
+    color: #999;
+    font-size: 0.95rem;
+    margin: 10px 0 0 0;
+}
+
+
+/* 登录和注册页面 */
+.form {
+    padding-top: 30px;
+    flex-direction: column;
+}
+.form .icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: #eee;
+}
+.form .el-input {
+    width: 80%;
+    margin: 0 10% 20px 10%;
+    border-bottom: 1px solid #999;
+}
+.form .el-input--prefix .el-input__inner{
+    border: none;
+    outline: none;
+    background-color: transparent;
+}
+.form .el-input__prefix {
+    line-height: 45px;
+}
+.form .el-input--prefix .el-input__inner {
+    padding-left: 40px;
+}
+.form .el-input__inner {
+    font-size: 1rem;
+    color: #eee;
+}
+.form .el-button--success {
+    width: 80%;
+    height: 48px;
+    border: none;
+    color: #eee;
+    font-size: 1rem;
+    margin-top: 20px;
+    border-radius: 8px;
+    background: linear-gradient(to right, #00a0e9, #aacd06);
+}
+.form .verify {
+    width: 100%;
+    position: relative;
+}
+.form .get_code {
+    top: 0px;
+    right: 10%;
+    color: #00a0e9;
+    font-size: 0.9rem;
+    position: absolute;
+}
+.form .get_code.disabled {
+    color: #C0C4CC;
+}
+.form .verify_tip {
+    width: 80%;
+    color: #e60012;
+    text-align: left;
+    font-size: 0.5rem;
+    margin: -15px 10% 5px 10%;
+}
+.form .verify_tip span {
+    padding-left: 40px;
+}
+
+
+/* 底部返回上一页 */
+.back {
+    padding: 20px 0;
+    text-align: center;
+    background-color: #eee;
+}
+.back button {
+    height: 40px;
+    color: #666;
+    padding: 0 25px;
+    line-height: 40px;
+    font-size: 0.95rem;
+    border: 1px solid #ccc;
+    background-color: transparent;
+}
+
+/* li左右justify对齐 */
+.justify_li {
+    color: #999;
+}
+.justify_li li {
+    margin: 15px 0;
+    font-size: 0.9rem;
+    padding: 0 20px 14px 20px;
+    border-bottom: 1px solid #ddd;
+}
+.justify_li li span:first-of-type {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+/* 复制成功的提示语 */
+.copy_tip {
+    z-index: 10;
+    width: 100%;
+    bottom: 20px;
+    position: fixed;
+    text-align: center;
+}
+.copy_tip span {
+    color: #777;
+    font-size: 0.9rem;
+    padding: 8px 15px;
+    border-radius: 5px;
+    background-color: #ddd;
+}
+#copy_text {
+    color: #999;
+    margin-right: 8px;
+}
+.copy {
+    color: #B3B3B3;
+    padding: 4px 8px;
+    font-size: 0.8rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+
+/* 底部分享 */
+.bottom_share {
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+}
+.bottom_share .main {
+    padding-bottom: 15px;
+    background-color: #fff;
+}
+.bottom_share .main h3 {
+    margin: 20px 0;
+    color: #CCCCCC;
+    text-align: center;
+    background-color: transparent;
+}
+.bottom_share .main ul {
+    padding: 0 25px;
+}
+.bottom_share .main ul li{
+    color: #999;
+    font-size: 0.9rem;
+    text-align: center;
+}
+.bottom_share .main ul img {
+    width: 50px;
+}
+
+/* 车票 */
+.ticket {
+    width: 80%;
+    height: 130px;
+    border-radius: 10px;
+    margin: 20px 10% 0 10%;
+    background-color: #fff;
+}
+.ticket .left .top,.ticket .left .bottom {
+    right: -8px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    position: absolute;
+    background-color: #FFE48B;
+}
+.ticket .left .top {
+    top: -8px;
+}
+.ticket .left .bottom {
+    bottom: -8px;
+}
+.ticket .left {
+    width: 35%;
+    height: 100%;
+    color: #999999;
+    position: relative;
+    flex-direction: column;
+    border-right: 1px dashed #E0E0E0;
+}
+.ticket .left .img {
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    border-radius: 50%;
+    margin-bottom: 5px;
+}
+.ticket .right {
+    width: 62%;
+    height: 100%;
+    flex-direction: column;
+}
+.ticket .right span {
+    color: #B3B3B3;
+    font-size: 0.8rem;
+}
+.ticket .right b {
+    font-size: 1.4rem;
+}
