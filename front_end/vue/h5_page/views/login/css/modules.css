@@ -1,3 +1,4 @@
+
 /* 共用的类 */
 .block {
     display: block;
@@ -99,92 +100,103 @@
     margin: 10px 0 0 0;
 }
 
-/* 登录页面 */
-.login {
-    color: #fff;
-    padding: 4.5rem 0 0 0;
-    flex-direction: column;
+/* 微信右上角提示 */
+.wx_right {
+	height: 100%;
+	color: #eee;
+	font-size: 1rem;
+    padding: 10rem 0 0 0;
+    background-color: rgba(0,0,0,0.65);
 }
-.login img {
-    width: 80px;
-    border-radius: 50%;
-    margin-bottom: 10px;
+.wx_right ol {
+    padding: 0 0 0 3rem;
+    line-height: 2.5rem;
 }
-/* 表单 */
-.form {
-    padding-top: 25px;
-    flex-direction: column;
+.wx_right img {
+	top: 2rem;
+	right: 2rem;
+	width: 5rem;
+	position: absolute;
+	transform: rotate(22deg);
 }
-.form .icon {
-    width: 1.5rem;
-    height: 1.5rem;
-    color: #fff;
-}
-.form .input {
-    width: 80%;
-    height: 43px;
-    margin-bottom: 15px;
-    justify-content: unset;
-    border-bottom: 1px solid #999;
-}
-.form .left {
-    padding: 0 5px;
-    margin-right: 15px;
-    border-right: 1px solid #999;
-}
-.form .middle {
-    position: relative;
-}
-.form .middle .icon {
-    right: 8px;
-    top: 50%;
-    color: #ddd;
-    width: 0.8rem;
-    height: 0.8rem;
-    position: absolute;
-    transform: translate(-50%,-50%);
-}
-.form .right {
-    font-size: 0.95rem;
+
+/* 底部分享 */
+.bottom_share {
     height: 100%;
-    color: #409eff;
-    white-space: nowrap;
+    background-color: rgba(0,0,0,0.6);
 }
-.form .right.disabled {
+.bottom_share .main {
+    padding-bottom: 15px;
+    background-color: #fff;
+}
+.bottom_share h3 {
+    margin: 20px 0;
+    color: #666;
+    text-align: center;
+}
+.bottom_share ul {
+    padding: 0 25px;
+}
+.bottom_share li{
+    color: #999;
+    font-size: 0.9rem;
+    text-align: center;
+}
+.bottom_share li img {
+    width: 50px;
+    height: 50px;
+}
+
+/* 底部返回上一页 */
+.go_back {
+    padding: 20px 0;
+}
+.go_back button {
+    height: 45px;
+    color: #666;
+    padding: 0 25px;
+    font-size: 0.95rem;
+    border: 1px solid #ccc;
+    background-color: transparent;
+}
+
+/* li左右justify对齐 */
+.justify_li {
     color: #999;
 }
-.form .right span {
-    margin: -3px 0 0 0;
+.justify_li li {
+    margin: 15px 0;
+    font-size: 0.9rem;
+    padding: 0 20px 14px 20px;
+    border-bottom: 1px solid #ddd;
 }
-.form .verify_warn {
-    width: 80%;
-    color: #ff0000;
+.justify_li li>span:first-of-type {
+    color: #333;
+    font-size: 0.95rem;
+}
+.justify_li li div span {
+    margin-right: 5px;
+}
+
+/* 复制按钮样式 */
+.copy_btn {
+    color: #999;
+    padding: 4px 8px;
     font-size: 0.8rem;
-    margin: -12px 0 0 0;
-    white-space: nowrap;
+    border-radius: 5px;
+    border: 1px solid #ccc;
 }
-.form .verify_warn span {
-    padding-left: 50px;
+
+/* 复制成功的提示语 */
+.copy_tips {
+    bottom: 20px;
+    text-align: center;
 }
-.form .btn {
-    width: 80%;
-    height: 50px;
-    margin-top: 15px;
-    border-radius: 8px;
-    background-color: #31BFAD;
+.copy_tips span {
+    color: #666;
+    font-size: 0.9rem;
+    padding: 8px 15px;
+    border-radius: 5px;
+    background-color: #ddd;
 }
-.form .btn .icon {
-    width: 1.3rem;
-    height: 1.3rem;
-}
-.form .btn img {
-    width: 16px;
-    margin-top: 3px;
-}
-.form .btn input[type='submit'] {
-    margin-left: 10px;
-    letter-spacing: 3px;
-}
-.form .btn .login {
-    color: rgba(255, 255, 255, 0.5);
-}
+

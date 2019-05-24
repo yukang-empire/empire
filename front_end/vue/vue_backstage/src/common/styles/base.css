@@ -34,6 +34,8 @@ a {
 }
 input {
     border: none;
+    outline: none;
+    background-color: transparent;
 }
 input[type="button"],button {
     border: none;

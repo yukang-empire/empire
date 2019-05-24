@@ -3,20 +3,10 @@
 new Vue({
     el:'#app',
     data: {
-        //要显示的组件
-        modules: {
-            is_wx_right: false,
-            is_form: true,
-            is_ticket: false,
-            is_bottom_share: false,
-            is_justify_li: false,
-            is_copy_tip: false,
-            is_back: false,
-        },
         //弹框相关
         dialog: {
             is_open: false,
-            msg: ''
+            msg: null
         },
         //表单数据
         form_data: {
@@ -64,17 +54,17 @@ new Vue({
     methods: {
         //判断返回的数据是否为JSON格式 如果不是 则转换成JSON格式
         is_JSON (data) {
-            if( typeof(data) == 'string') {
+            if( typeof(data) === 'string') {
                 return JSON.parse(data);
             }else {
                 return data;
-            }
+            };
         },
-        //错误时的操作
-        if_error (error) {
+        //打开dialog弹框
+        is_dialog (info) {
             //打开遮罩
             this.dialog.is_open = true;
-            this.dialog.msg = error;
+            this.dialog.msg = info;
         },
         //验证失败的提示操作
         open_tip (which, text) {
