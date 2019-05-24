@@ -1,4 +1,3 @@
-
 /* 共用的类 */
 .full_width {
     width: 100%;
@@ -96,103 +95,65 @@
     margin: 10px 0 0 0;
 }
 
-/* 微信右上角提示 */
-.wx_right {
-	height: 100%;
-	color: #eee;
-	font-size: 1rem;
-    padding: 10rem 0 0 0;
-    background-color: rgba(0,0,0,0.65);
+/* 登录页面 */
+.form {
+    padding-top: 25px;
+    flex-direction: column;
 }
-.wx_right ol {
-    padding: 0 0 0 3rem;
-    line-height: 2.5rem;
+.form .icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: #fff;
 }
-.wx_right img {
-	top: 2rem;
-	right: 2rem;
-	width: 5rem;
-	position: absolute;
-	transform: rotate(22deg);
+.form .el-input {
+    width: 80%;
+    margin: 0 10% 20px 10%;
+    border-bottom: 1px solid #999;
 }
-
-/* 底部分享 */
-.bottom_share {
-    height: 100%;
-    background-color: rgba(0,0,0,0.6);
-}
-.bottom_share .main {
-    padding-bottom: 15px;
-    background-color: #fff;
-}
-.bottom_share h3 {
-    margin: 20px 0;
-    color: #666;
-    text-align: center;
-}
-.bottom_share ul {
-    padding: 0 25px;
-}
-.bottom_share li{
-    color: #999;
-    font-size: 0.9rem;
-    text-align: center;
-}
-.bottom_share li img {
-    width: 50px;
-    height: 50px;
-}
-
-/* 底部返回上一页 */
-.go_back {
-    padding: 20px 0;
-}
-.go_back button {
-    height: 45px;
-    color: #666;
-    padding: 0 25px;
-    font-size: 0.95rem;
-    border: 1px solid #ccc;
+.form .el-input__inner{
+    color: #fff;
+    border: none;
+    font-size: 1rem;
+    padding-left: 40px;
     background-color: transparent;
 }
-
-/* li左右justify对齐 */
-.justify_li {
-    color: #999;
+.form .el-input__prefix {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-.justify_li li {
-    margin: 15px 0;
+.form .el-button--success {
+    width: 80%;
+    height: 50px;
+    border: none;
+    color: #eee;
+    margin-top: 20px;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    background-color: #67c23a;
+}
+.form .verify {
+    width: 100%;
+    position: relative;
+}
+.form .get_code {
+    top: 0px;
+    right: 10%;
+    color: #409eff;
     font-size: 0.9rem;
-    padding: 0 20px 14px 20px;
-    border-bottom: 1px solid #ddd;
+    position: absolute;
 }
-.justify_li li>span:first-of-type {
-    color: #333;
-    font-size: 0.95rem;
+.form .get_code.disabled {
+    color: #909399;
 }
-.justify_li li div span {
-    margin-right: 5px;
-}
-
-/* 复制按钮样式 */
-.copy_btn {
-    color: #999;
-    padding: 4px 8px;
+.form .verify_tip {
+    width: 80%;
+    color: #f56c6c;
     font-size: 0.8rem;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+    white-space: nowrap;
+    margin: -15px 10% 5px 10%;
 }
-
-/* 复制成功的提示语 */
-.copy_tips {
-    bottom: 20px;
-    text-align: center;
-}
-.copy_tips span {
-    color: #666;
-    font-size: 0.9rem;
-    padding: 8px 15px;
-    border-radius: 5px;
-    background-color: #ddd;
+.form .verify_tip span {
+    padding-left: 40px;
 }
 

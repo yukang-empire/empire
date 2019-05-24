@@ -12,6 +12,10 @@ export default new Router({
     // base: process.env.BASE_URL,
     routes: [
         {
+            path: '/',
+            redirect: '/login'
+        },
+        {
             path: "/login",
             name: "登录",
             component: login

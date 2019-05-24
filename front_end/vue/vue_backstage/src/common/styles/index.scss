@@ -1,11 +1,11 @@
 
 @charset "utf-8";
 
-//基础样式
+//基础标签样式
 @import "./base.css";
 
 //可复用的模块样式
 @import "./modules.css";
 
-//全局变量、占位符%、mixin
+//全局css变量、占位符%、mixin
 @import "./global.scss";

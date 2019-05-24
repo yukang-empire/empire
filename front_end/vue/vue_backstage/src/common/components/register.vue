@@ -53,6 +53,7 @@
             <span v-if='is_register' class="get_code" :class="{'disabled': !limit_get.is_disabled}" @click='get_code'>{{ limit_get.text }}</span>
         </div>
         <el-button type="success" :loading="form_data.login" @click='login'>登录</el-button>
+
     </div>
 </template>
 
