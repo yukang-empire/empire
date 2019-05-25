@@ -33,7 +33,7 @@
                         </svg>
                     </div>
                     <div class="middle full">
-                        <input class="full" type="text" placeholder="请输入账号/手机号" v-model='form.account' @blur='verify_input("account")' @keyup='get_focus("account")'>
+                        <input class="full" type="tel" placeholder="请输入账号/手机号" v-model='form.account' @blur='verify_input("account")' @keyup='input_data("account")' @focus='get_focus("account")' @input='limit_input("account")'>
                         <svg class="icon" aria-hidden="true" v-if='form_ico.account' @click='clear_input("account")'>
                             <use xlink:href="#icon-chahao"></use>
                         </svg>
@@ -48,7 +48,11 @@
                         </svg>
                     </div>
                     <div class="middle full">
-                        <input class="full" type="tel" placeholder="请输入密码" v-model='form.password' @blur='verify_input("password")' @keyup.enter="login" @keyup='get_focus("password")'>
+                        <input class="full" :type="form.password_type" placeholder="请输入密码" v-model='form.password' @blur='verify_input("password")' @keyup.enter="login" @keyup='input_data("password")' @focus='get_focus("password")'>
+                        <svg class="icon icon02" aria-hidden="true" v-if='form_ico.password' @click='see_or_hide'>
+                            <use v-if='form_ico.see' xlink:href="#icon-yincang"></use>
+                            <use v-if='form_ico.hide' xlink:href="#icon-yincang1"></use>
+                        </svg>
                         <svg class="icon" aria-hidden="true" v-if='form_ico.password' @click='clear_input("password")'>
                             <use xlink:href="#icon-chahao"></use>
                         </svg>
@@ -56,30 +60,34 @@
                 </div>
                 <transition name="fade"><p class='verify_warn' v-if='verify_warn.password.is_open'><span>{{ verify_warn.password.text }}</span></p></transition>
 
-                <div class="input flex_center">
+                <div class="input flex_center" v-if='form.login_error > 2'>
                     <div class="left flex_center">
                         <svg class="icon" aria-hidden="true">
                             <use xlink:href="#icon-yanzhengyanzhengma"></use>
                         </svg>
                     </div>
                     <div class="middle full">
-                        <input class="full" type="tel" placeholder="请输入验证码" v-model='form.verify_code' @blur='verify_input("verify_code")' @keyup.enter="login" @keyup='get_focus("verify_code")'>
+                        <input class="full" type="text" placeholder="请输入验证码" v-model='form.verify_code' @blur='verify_input("verify_code")' @keyup.enter="login" @keyup='input_data("verify_code")' @focus='get_focus("verify_code")' @input='limit_input("verify_code")'>
                         <svg class="icon" aria-hidden="true" v-if='form_ico.verify_code' @click='clear_input("verify_code")'>
                             <use xlink:href="#icon-chahao"></use>
                         </svg>
                     </div>
-                    <div class="right flex_center">
-                        <span @click='get_code'>获取验证码</span>
+                    <div class="right flex_center" :class='{disabled: limit_get.is_disabled}'>
+                        <!-- <span @click='get_code'>{{ limit_get.text }}</span> -->
+                        <img :src="form.img_code" alt="code">
                     </div>
                 </div>
                 <transition name="fade"><p class='verify_warn' v-if='verify_warn.verify_code.is_open'><span>{{ verify_warn.verify_code.text }}</span></p></transition>
                 
                 <div class="btn flex_center" @click='login'>
                     <img src="../../imgs/wait.gif" alt="wait" v-if='form.is_circle'>
-                    <input type="button" value="登录" :class="{login: form.is_circle}">
+                    <input type="button" value="登录" :class="{is_circle: form.is_circle}">
                 </div>
             </form>
-    
+            <div class="bottom_info flex_between">
+                <span>忘记密码?</span>
+                <span>注册账号</span>
+            </div>
         </article>
             
         <footer>

@@ -128,8 +128,8 @@
     border-bottom: 1px solid #999;
 }
 .form .left {
-    padding: 0 5px;
     margin-right: 15px;
+    padding: 0 8px 0 5px;
     border-right: 1px solid #999;
 }
 .form .middle {
@@ -144,10 +144,16 @@
     position: absolute;
     transform: translate(-50%,-50%);
 }
+.form .middle .icon02 {
+    width: 1rem;
+    height: 1rem;
+    right: 30px;
+}
 .form .right {
-    font-size: 0.95rem;
     height: 100%;
     color: #409eff;
+    font-size: 0.95rem;
+    position: relative;
     white-space: nowrap;
 }
 .form .right.disabled {
@@ -155,6 +161,13 @@
 }
 .form .right span {
     margin: -3px 0 0 0;
+}
+.form .right img {
+    right: 0;
+    bottom: 0;
+    width: 80px;
+    height: 85%;
+    position: absolute;
 }
 .form .verify_warn {
     width: 80%;
@@ -169,7 +182,7 @@
 .form .btn {
     width: 80%;
     height: 50px;
-    margin-top: 15px;
+    margin-top: 20px;
     border-radius: 8px;
     background-color: #31BFAD;
 }
@@ -180,11 +193,25 @@
 .form .btn img {
     width: 16px;
     margin-top: 3px;
+    margin-right: 8px;
 }
 .form .btn input[type='submit'] {
     margin-left: 10px;
     letter-spacing: 3px;
 }
-.form .btn .login {
+.form .btn .is_circle {
     color: rgba(255, 255, 255, 0.5);
+}
+
+.bottom_info {
+    width: 80%;
+    color: #31BFAD;
+    margin: 10px 10%;
+    font-size: 0.95rem;
+}
+.bottom_info span {
+    outline: none;
+}
+.bottom_info span:hover {
+    color: #fff;
 }
