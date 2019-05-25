@@ -3,76 +3,110 @@
 <head>
     <meta charset="utf-8" />
     <meta name="author" content="yukang" />
-    <meta name="keywords" content="登录" />
-    <meta name="description" content="登录" />
+    <meta name="keywords" content="找回密码" />
+    <meta name="description" content="找回密码" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <title>登录</title>
+    <title>找回密码</title>
     <link rel="stylesheet" href="./css/base.css">
-    <link rel="stylesheet" href="./css/login.css">
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 响应式css -->
+    <link rel="stylesheet" media="screen and (max-width: 768px)" href="./css/forget.css">
+    <link rel="stylesheet" media="screen and (min-width: 769px)" href="./css/forget_pc.css">
     <style>
-        body {
-            background-color: rgba(0, 0, 0, 0.6);
-        }
+        
     </style>
 </head>
 <body>
     <div id="app" v-cloak>
-        <header class="login">
-            <!-- <img src="../../imgs/logo.png" alt="login">
-            <h2>公司名</h2> -->
+        <header class="find flex_center">
+            <h2>找回密码</h2>
         </header>
 
         <article>
-            <section class="form flex_center">
-                <!-- input的type类型为number 在IOS端可能允许输入中文 故改成tel -->
-                <div class="input">
-                    <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-shouji"></use>
-                    </svg>
-                    <input type="tel" placeholder="请输入手机号" v-model='form_data.phone'>
-                    <transition name="fade"><p class='verify_tip' v-if='tip.phone.is_open'><span>{{ tip.phone.text }}</span></p></transition>
-                </div>
+            <form class="form flex_center">
 
-                <div class="input">
-                    <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-mima"></use>
-                    </svg>
-                    <input type="password" placeholder="请输入密码" v-model='form_data.phone'>
-                    <transition name="fade"><p class='verify_tip' v-if='tip.phone.is_open'><span>{{ tip.phone.text }}</span></p></transition>
-                </div>
-
-                <el-input
-                    clearable
-                    show-password
-                    placeholder="请设置密码"
-                    @blur='blur_verify("password")'
-                    @clear='clear_input("password")'
-                    v-model="form_data.password">
-                    <svg slot="prefix" class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-mima"></use>
-                    </svg>
-                </el-input>
-                <transition name="fade"><p class='verify_tip' v-if='tip.password.is_open'><span>{{ tip.password.text }}</span></p></transition>
-                
-                <div class="verify">
-                    <el-input
-                        placeholder="请输入验证码"
-                        type='tel'
-                        @blur='blur_verify("verify_code")'
-                        @clear='clear_input("verify_code")'
-                        v-model="form_data.verify_code">
-                        <svg slot="prefix" class="icon" aria-hidden="true">
-                            <use xlink:href="#icon-yanzhengyanzhengma"></use>
+                <div class="input flex_center">
+                    <div class="left flex_center">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-denglu"></use>
                         </svg>
-                    </el-input>
-                    <transition name="fade"><p class='verify_tip' v-if='tip.verify_code.is_open'><span>{{ tip.verify_code.text }}</span></p></transition>
-                    <span class="get_code" :class="{'disabled': !limit_get.is_disabled}" @click='get_code'>{{ limit_get.text }}</span>
+                    </div>
+                    <div class="middle full">
+                        <input class="full" type="tel" placeholder="请输入账号/手机号" v-model='form.account' @blur='verify_input("account")' @keyup='input_data("account")' @focus='get_focus("account")' @input='limit_input("account")'>
+                        <svg class="icon" aria-hidden="true" v-if='form_ico.account' @click='clear_input("account")'>
+                            <use xlink:href="#icon-chahao"></use>
+                        </svg>
+                    </div>
                 </div>
-                <el-button type="success" :loading="form_data.login" @click='register'>登录</el-button>
-            </section>
-    
+                <transition name="fade"><p class='verify_warn' v-if='verify_warn.account.is_open'><span>{{ verify_warn.account.text }}</span></p></transition>
+
+                <div class="input flex_center" v-if='form.is_verify_code'>
+                    <div class="left flex_center">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-shouji"></use>
+                        </svg>
+                    </div>
+                    <div class="middle full">
+                        <input class="full" type="text" placeholder="请输入验证码" v-model='form.verify_code' @blur='verify_input("verify_code")' @keyup='input_data("verify_code")' @focus='get_focus("verify_code")' @input='limit_input("verify_code")'>
+                        <svg class="icon" aria-hidden="true" v-if='form_ico.verify_code' @click='clear_input("verify_code")'>
+                            <use xlink:href="#icon-chahao"></use>
+                        </svg>
+                    </div>
+                    <div class="right flex_center" :class='{disabled: limit_get.is_disabled}'>
+                        <span @click='get_code'>{{ limit_get.text }}</span>
+                    </div>
+                </div>
+                <transition name="fade"><p class='verify_warn' v-if='verify_warn.verify_code.is_open'><span>{{ verify_warn.verify_code.text }}</span></p></transition>
+
+                <div class="input flex_center" v-if='form.is_old_password'>
+                    <div class="left flex_center">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-mima"></use>
+                        </svg>
+                    </div>
+                    <div class="middle full">
+                        <input class="full" :type="form.password_type" placeholder="请输入原密码" v-model='form.password' @blur='verify_input("password")' @keyup='input_data("password")' @focus='get_focus("password")'>
+                        <svg class="icon icon02" aria-hidden="true" v-if='form_ico.password' @click='see_or_hide("password")'>
+                            <use v-if='form_ico.see' xlink:href="#icon-yincang"></use>
+                            <use v-if='form_ico.hide' xlink:href="#icon-yincang1"></use>
+                        </svg>
+                        <svg class="icon" aria-hidden="true" v-if='form_ico.password' @click='clear_input("password")'>
+                            <use xlink:href="#icon-chahao"></use>
+                        </svg>
+                    </div>
+                </div>
+                <transition name="fade"><p class='verify_warn' v-if='verify_warn.password.is_open'><span>{{ verify_warn.password.text }}</span></p></transition>
+
+                <div class="input flex_center">
+                    <div class="left flex_center">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-mima"></use>
+                        </svg>
+                    </div>
+                    <div class="middle full">
+                        <input class="full" :type="form.new_password_type" placeholder="请输入新密码" v-model='form.new_password' @blur='verify_input("new_password")' @keyup.enter="find('new_password')" @keyup='input_data("new_password")' @focus='get_focus("new_password")'>
+                        <svg class="icon icon02" aria-hidden="true" v-if='form_ico.new_password' @click='see_or_hide("new_password")'>
+                            <use v-if='form_ico.new_see' xlink:href="#icon-yincang"></use>
+                            <use v-if='form_ico.new_hide' xlink:href="#icon-yincang1"></use>
+                        </svg>
+                        <svg class="icon" aria-hidden="true" v-if='form_ico.new_password' @click='clear_input("new_password")'>
+                            <use xlink:href="#icon-chahao"></use>
+                        </svg>
+                    </div>
+                </div>
+                <transition name="fade"><p class='verify_warn' v-if='verify_warn.new_password.is_open'><span>{{ verify_warn.new_password.text }}</span></p></transition>
+
+                <div class="btn flex_center" @click='find'>
+                    <img src="../../imgs/wait.gif" alt="wait" v-if='form.is_circle'>
+                    <input type="button" value="确认修改" :class="{is_circle: form.is_circle}">
+                </div>
+
+                <div class="back" @click='go_back'>
+                    <!-- 在表单内的button 如果不声明type="button" 则有些浏览器会默认type="submit" 按回车键会直接刷新提交 -->
+                    <button type="button">返回</button>
+                </div>
+
+            </form>
         </article>
             
         <footer>
@@ -112,11 +146,12 @@
     <!-- 阿里图标 symbol引入方式 -->
     <script src="./js/fonts/iconfont.js"></script>
     <!-- vue -->
-    <script src="./js/frames/vue_2.6.1.min.js"></script>
+    <!-- <script src="./js/frames/vue_2.6.1.min.js"></script> -->
+    <script src="./js/frames/vue_2.6.1.js"></script>
     <!-- jquery -->
     <script src="./js/plugins/jquery_3.4.1.min.js"></script>
     <!-- md5加密 -->
     <script src="./js/plugins/md5.js"></script>
-    <script src="./js/login.js"></script>
+    <script src="./js/forget.js"></script>
 </body>
 </html>

@@ -9,11 +9,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <title>登录</title>
     <link rel="stylesheet" href="./css/base.css">
-    <link rel="stylesheet" href="./css/login.css">
+    <!-- 响应式css -->
+    <link rel="stylesheet" media="screen and (max-width: 768px)" href="./css/login.css">
+    <link rel="stylesheet" media="screen and (min-width: 769px)" href="./css/login_pc.css">
     <style>
-        body {
-            background-color: rgba(0, 0, 0, 0.6);
-        }
+        
     </style>
 </head>
 <body>
@@ -29,7 +29,7 @@
                 <div class="input flex_center">
                     <div class="left flex_center">
                         <svg class="icon" aria-hidden="true">
-                            <use xlink:href="#icon-shouji"></use>
+                            <use xlink:href="#icon-denglu"></use>
                         </svg>
                     </div>
                     <div class="middle full">
@@ -48,7 +48,7 @@
                         </svg>
                     </div>
                     <div class="middle full">
-                        <input class="full" :type="form.password_type" placeholder="请输入密码" v-model='form.password' @blur='verify_input("password")' @keyup.enter="login" @keyup='input_data("password")' @focus='get_focus("password")'>
+                        <input class="full" :type="form.password_type" placeholder="请输入密码" v-model='form.password' @blur='verify_input("password")' @keyup.enter="login('password')" @keyup='input_data("password")' @focus='get_focus("password")'>
                         <svg class="icon icon02" aria-hidden="true" v-if='form_ico.password' @click='see_or_hide'>
                             <use v-if='form_ico.see' xlink:href="#icon-yincang"></use>
                             <use v-if='form_ico.hide' xlink:href="#icon-yincang1"></use>
@@ -67,13 +67,12 @@
                         </svg>
                     </div>
                     <div class="middle full">
-                        <input class="full" type="text" placeholder="请输入验证码" v-model='form.verify_code' @blur='verify_input("verify_code")' @keyup.enter="login" @keyup='input_data("verify_code")' @focus='get_focus("verify_code")' @input='limit_input("verify_code")'>
+                        <input class="full" type="text" placeholder="请输入验证码" v-model='form.verify_code' @blur='verify_input("verify_code")' @keyup.enter="login('verify_code')" @keyup='input_data("verify_code")' @focus='get_focus("verify_code")' @input='limit_input("verify_code")'>
                         <svg class="icon" aria-hidden="true" v-if='form_ico.verify_code' @click='clear_input("verify_code")'>
                             <use xlink:href="#icon-chahao"></use>
                         </svg>
                     </div>
-                    <div class="right flex_center" :class='{disabled: limit_get.is_disabled}'>
-                        <!-- <span @click='get_code'>{{ limit_get.text }}</span> -->
+                    <div class="right flex_center">
                         <img :src="form.img_code" alt="code">
                     </div>
                 </div>
@@ -83,11 +82,12 @@
                     <img src="../../imgs/wait.gif" alt="wait" v-if='form.is_circle'>
                     <input type="button" value="登录" :class="{is_circle: form.is_circle}">
                 </div>
+                
+                <div class="bottom_info flex_between">
+                    <a href="./forget.html">忘记密码?</a>
+                    <a href="./register.html">注册账号</a>
+                </div>
             </form>
-            <div class="bottom_info flex_between">
-                <span>忘记密码?</span>
-                <span>注册账号</span>
-            </div>
         </article>
             
         <footer>

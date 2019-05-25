@@ -12,15 +12,16 @@ new Vue({
         form: {
             account: null,
             password: null,
-            re_password: null,
-            verify_code: null,
-            is_circle: null,
-            //初始密码框input类型
+            //初始化密码框input类型
             password_type: 'password',
-            //登录失败次数过多 则显示验证码input
-            login_error: 0,
-            //图形验证码
-            img_code: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1558772465016&di=d501a36846df4f75e86f9adb8cc1554c&imgtype=0&src=http%3A%2F%2Fwww.xiaobaixitong.com%2Fd%2Ffile%2Fhelp%2F2018-08-06%2Ff15ce5d652d8da38e9e0e384f35b39d7.png'
+            re_password: null,
+            //初始化密码框input类型
+            re_password_type: 'password',
+            verify_code: null,
+            //邀请码 默认从url里抓取 禁止修改
+            invi_code: null,
+            //点击注册转圈圈 禁止频繁点击
+            is_circle: null,
         },
         //表单正则
         form_RE: {
@@ -36,6 +37,8 @@ new Vue({
             see: null,
             hide: null,
             re_password: null,
+            re_see: null,
+            re_hide: null,
             verify_code: null,
         },
         //验证错误时的提示
@@ -59,8 +62,8 @@ new Vue({
         },
         //限制频繁获取验证码
         limit_get: {
-            sec: 5,
-            init_sec: 5,
+            sec: 60,
+            init_sec: 60,
             timer: null,
             text: '获取验证码',
             is_disabled: false
@@ -89,15 +92,25 @@ new Vue({
             this.verify_warn[which].text = text;
         },
         //查看or隐藏密码
-        see_or_hide () {
+        see_or_hide (name) {
             //切换密码框input的type
-            if (this.form_ico.see) {
-                this.form.password_type = 'text';
+            if (name == 'password') {
+                if (this.form_ico.see) {
+                    this.form.password_type = 'text';
+                }else {
+                    this.form.password_type = 'password';
+                };
+                this.form_ico.see = !this.form_ico.see;
+                this.form_ico.hide = !this.form_ico.hide;
             }else {
-                this.form.password_type = 'password';
-            };
-            this.form_ico.see = !this.form_ico.see;
-            this.form_ico.hide = !this.form_ico.hide;
+                if (this.form_ico.re_see) {
+                    this.form.re_password_type = 'text';
+                }else {
+                    this.form.re_password_type = 'password';
+                };
+                this.form_ico.re_see = !this.form_ico.re_see;
+                this.form_ico.re_hide = !this.form_ico.re_hide;
+            }
         },
         //input获得焦点
         get_focus (name) {
@@ -113,14 +126,17 @@ new Vue({
             if (name == 'password') {
                 this.form_ico.see = true;
                 this.form_ico.hide = false;
+            }else if (name == 're_password') {
+                this.form_ico.re_see = true;
+                this.form_ico.re_hide = false;
             };
         },
         //限制某些input的输入数据格式 设置type为number 在IOS端无效 设置为tel 在PC端无效 所以只能用js限制
         limit_input (name) {
-            if (name == 'account') {
+            if (name == 'account' && this.form[name]) {
                 //限制手机号码只能纯数字
                 this.form[name] = this.form[name].replace(/[^\d]/g, '');
-            }else if(name == 'verify_code') {
+            }else if(name == 'verify_code' && this.form[name]) {
                 //限制验证码不能输入中文
                 this.form[name] = this.form[name].replace(/[\u4e00-\u9fa5]/ig, '');
             };
@@ -131,16 +147,16 @@ new Vue({
             this.form_ico[name] = false;
             switch (name) {
                 case 'account':
-                    this.verify_error('account', '请输入正确格式的手机号码！');
+                    this.verify_error('account', '请输入手机号码！');
                     break;
                 case 'password':
-                    this.verify_error('password', '请输入6-16位数字与字母组成的密码！');
+                    this.verify_error('password', '请输入密码！');
                     break;
-                case 're_password':
-                    this.verify_error('re_password', '两次输入的密码不一致！');
+                case 'password':
+                    this.verify_error('re_password', '请再次输入密码！');
                     break;
                 case 'verify_code':
-                    this.verify_error('verify_code', '请输入6位纯数字组成的验证码！');
+                    this.verify_error('verify_code', '请输入验证码！');
                     break;
             };
         },
@@ -172,8 +188,8 @@ new Vue({
                     };
                     break;
                 case 'verify_code':
-                    if (!this.form_RE.verify_code.test(this.form.verify_code)) {
-                        this.verify_error('verify_code', '请输入6位纯数字组成的验证码！');
+                    if (!this.form.verify_code) {
+                        this.verify_error('verify_code', '请输入验证码！');
                     }else {
                         this.verify_warn.verify_code.is_open = false;
                     };
@@ -191,6 +207,7 @@ new Vue({
             };
             //判断是否填入了正确的手机号码
             if (!this.form_RE.phone.test(account)) {
+                this.is_dialog('请输入正确格式的手机号码！')
                 this.verify_error('account', '请输入正确格式的手机号码！')
             }else {
                 //储存手机号码 刷新后检测到有的话 则自动填入 更人性化
@@ -266,32 +283,27 @@ new Vue({
                 
             };
         },
-        //登录
-        login () {
-            //如果上次请求还未完成 则不允许继续点击
+        //注册
+        register (name) {
+            //如果上次请求还未完成(在转圈圈) 则不允许继续点击
             if (this.form.is_circle) {
                 this.is_dialog('请勿频繁点击！');
                 return false;
             };
+            //用户按了回车键直接注册的 会跳过失去焦点的正则检验 所以要回去检验一遍
+            if (name) {
+                this.verify_input(name);
+            };
             var that = this;
             var account = this.form.account;
             var password = this.form.password;
-            var error_num = this.form.login_error;
-            //检测是否有验证码input框
-            if (error_num > 2) {
-                //验证input值是否有空值
-                var is_empty = !account || !password || !this.form.verify_code;
-                //都不为空值的情况下 继续验证input值是否都符合正则
-                var is_RE = is_empty || this.verify_warn.account.is_open || this.verify_warn.password.is_open || this.verify_warn.verify_code.is_open;
-            }else {
-                var is_empty = !account || !password;
-                var is_RE = is_empty || this.verify_warn.account.is_open || this.verify_warn.password.is_open;
-            };
+            var re_password = this.form.re_password;
+            //验证input值是否有空值
+            var is_empty = !account || !password || !re_password || !this.form.verify_code;
+            //都不为空值的情况下 继续验证input值是否都符合正则
+            var is_RE = is_empty || this.verify_warn.account.is_open || this.verify_warn.password.is_open || this.verify_warn.re_password.is_open || this.verify_warn.verify_code.is_open;
             if (!is_RE) {
-                this.form.login_error ++;
-                //存储登陆失败次数 以防刷新丢失
-                localStorage.setItem('login_error', this.form.login_error);
-                //转圈圈 禁止再继续点击登录
+                //转圈圈 禁止再继续点击注册
                 this.form.is_circle = true;
                 //md5加密规定的字符串
                 var time = new Date().getTime();
@@ -306,7 +318,8 @@ new Vue({
                     time: time,
                     sign: sign_md5,
                     password: password_md5,
-                    codes: error_num > 2 ? this.form.verify_code : '',
+                    codes: this.form.verify_code,
+                    invited: this.form.invi_code,
                 };
                 $.ajax({
                     type: "POST",
@@ -320,26 +333,32 @@ new Vue({
                     success: function (response) {
                         console.log(response);
                         if (response.code == 0) {
-                            //登录成功后 删掉错误次数
-                            that.form.login_error = 0;
-                            localStorage.removeItem('login_error');
+                            that.is_dialog("注册成功！请前往登录！");
                             that.form.is_circle = false;
+                            setTimeout(function () {
+                                window.location.href = './login.html';
+                            }, 2000);
                         }else {
-                            that.is_dialog(response.start);
                             that.form.is_circle = false;
+                            that.is_dialog(response.start);
                         };
-                    },
-
+                    }
                 });
             }else {
-                this.is_dialog("请完善必要的信息！");
+                this.is_dialog("请完善注册信息！");
             };
+        },
+        //返回上一页
+        go_back () {
+            window.history.go(-1);
         },
     },
     mounted () {
         var that = this;
-        //检查登录失败的次数
-        this.form.login_error = localStorage.getItem('login_error') ? parseInt(localStorage.getItem('login_error')) : 0;
+        //截取url里的邀请码
+        var url = location.href;
+        //一般为6位数
+        this.form.invi_code = url.substring(url.indexOf('first_leader=') + 13, url.indexOf('first_leader=') + 19) || null;
         //检查是否有存储的手机号码
         this.form.account = localStorage.getItem('account') ? localStorage.getItem('account') : null;
         //检查是否有存储的定时器

@@ -93,7 +93,7 @@ body {
     background-color: #909399;
 }
 .dialog .QR_code {
-    width: 80%;
+    width: 370px;
     color: #999;
     margin: 0 auto;
     font-size: 0.95rem;
@@ -106,11 +106,11 @@ body {
 /* 登录页面 */
 .login {
     color: #fff;
-    padding: 4.5rem 0 0 0;
+    padding: 13rem 0 0 0;
     flex-direction: column;
 }
 .login img {
-    width: 80px;
+    width: 100px;
     border-radius: 50%;
     margin-bottom: 10px;
 }
@@ -125,7 +125,7 @@ body {
     color: #fff;
 }
 .form .input {
-    width: 80%;
+    width: 370px;
     height: 43px;
     margin-bottom: 15px;
     justify-content: unset;
@@ -174,7 +174,7 @@ body {
     position: absolute;
 }
 .form .verify_warn {
-    width: 80%;
+    width: 370px;
     color: #ff0000;
     font-size: 0.8rem;
     margin: -12px 0 0 0;
@@ -184,7 +184,7 @@ body {
     padding-left: 53px;
 }
 .form .btn {
-    width: 80%;
+    width: 400px;
     height: 50px;
     margin-top: 20px;
     border-radius: 8px;
@@ -207,8 +207,8 @@ body {
     color: rgba(255, 255, 255, 0.5);
 }
 .form .bottom_info {
-    width: 80%;
-    margin: 10px 10%;
+    width: 400px;
+    margin: 10px 0;
     font-size: 0.95rem;
 }
 .form .bottom_info a {

@@ -93,7 +93,7 @@ body {
     background-color: #909399;
 }
 .dialog .QR_code {
-    width: 80%;
+    width: 370px;
     color: #999;
     margin: 0 auto;
     font-size: 0.95rem;
@@ -103,16 +103,15 @@ body {
     margin: 10px 0 0 0;
 }
 
-/* 登录页面 */
-.login {
+/* 注册页面 */
+.find {
     color: #fff;
-    padding: 4.5rem 0 0 0;
+    padding: 14rem 0 0 0;
     flex-direction: column;
 }
-.login img {
-    width: 80px;
-    border-radius: 50%;
-    margin-bottom: 10px;
+.find h2 {
+    font-size: 1.8rem;
+    letter-spacing: 2px;
 }
 /* 表单 */
 .form {
@@ -125,7 +124,7 @@ body {
     color: #fff;
 }
 .form .input {
-    width: 80%;
+    width: 370px;
     height: 43px;
     margin-bottom: 15px;
     justify-content: unset;
@@ -153,6 +152,9 @@ body {
     height: 1rem;
     right: 30px;
 }
+.form .middle .disabled {
+   color: #fff;
+}
 .form .right {
     height: 100%;
     color: #409eff;
@@ -174,7 +176,7 @@ body {
     position: absolute;
 }
 .form .verify_warn {
-    width: 80%;
+    width: 370px;
     color: #ff0000;
     font-size: 0.8rem;
     margin: -12px 0 0 0;
@@ -184,7 +186,7 @@ body {
     padding-left: 53px;
 }
 .form .btn {
-    width: 80%;
+    width: 370px;
     height: 50px;
     margin-top: 20px;
     border-radius: 8px;
@@ -206,15 +208,24 @@ body {
 .form .btn .is_circle {
     color: rgba(255, 255, 255, 0.5);
 }
-.form .bottom_info {
-    width: 80%;
-    margin: 10px 10%;
-    font-size: 0.95rem;
+.form .agreement {
+    margin-top: 15px;
+    margin-bottom: -15px;
+    color: #fff;
+    font-size: 0.9rem;
 }
-.form .bottom_info a {
-    outline: none;
+.form .agreement a {
     color: #409EFF;
 }
-.form .bottom_info a:hover {
-    color: #fff;
+.back {
+    width: 370px;
+    margin-top: 15px;
+}
+.back button {
+    width: 100%;
+    height: 50px;
+    font-size: 1rem;
+    color: #409EFF;
+    border: 1px solid #409EFF;
+    background-color: transparent;
 }

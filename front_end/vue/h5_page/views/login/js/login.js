@@ -51,14 +51,6 @@ new Vue({
                 text: null
             }
         },
-        //限制频繁获取验证码
-        limit_get: {
-            sec: 5,
-            init_sec: 5,
-            timer: null,
-            text: '获取验证码',
-            is_disabled: false
-        },
 
     },
     methods: {
@@ -143,6 +135,8 @@ new Vue({
                     if (!this.form_RE.phone.test(this.form.account)) {
                         this.verify_error('account', '请输入正确格式的手机号码！');
                     }else {
+                        //储存手机号码 刷新后检测到有的话 则自动填入 更人性化
+                        localStorage.setItem('account', this.form.account);
                         this.verify_warn.account.is_open = false;
                     };
                     break;
@@ -162,98 +156,63 @@ new Vue({
                     break;
             };
         },
-        //获取验证码
+        //获取图形验证码
         get_code () {
             var that = this;
             var account = this.form.account;
-            //判断是否还在计时
-            if (this.limit_get.is_disabled) {
-                this.is_dialog('请勿频繁获取！');
-                return false;
-            };
-            //判断是否填入了正确的手机号码
-            if (!this.form_RE.phone.test(account)) {
-                this.verify_error('account', '请输入正确格式的手机号码！')
-            }else {
-                //储存手机号码 刷新后检测到有的话 则自动填入 更人性化
-                localStorage.setItem('account', account);
-                //禁止频繁获取
-                if (!this.limit_get.is_disabled) {
-                    //定时器
-                    this.limit_get.is_disabled = true;
-                    //即刻改变 避免有延迟
-                    this.limit_get.text = '重新获取(' + this.limit_get.init_sec + 's)';
-                    this.limit_get.timer = setInterval( function () {
-                        if (that.limit_get.sec <= 0) {
-                            //计时结束
-                            that.limit_get.text = '获取验证码';
-                            that.limit_get.is_disabled = false;
-                            //初始化秒数
-                            that.limit_get.sec = that.limit_get.init_sec;
-                            //清除定时器 并且删掉存储的localStorage
-                            clearInterval(that.limit_get.timer);
-                            that.limit_get.timer = null;
-                            localStorage.removeItem('limit_get');
-                        }else {
-                            that.limit_get.sec--;
-                            that.limit_get.text = '重新获取(' + that.limit_get.sec + 's)';
-                            //储存定时器数据 以防页面刷新丢失
-                            localStorage.setItem('limit_get', JSON.stringify(that.limit_get));
-                        };
-                    }, 1000);
-                    //md5加密规定的字符串
-                    var time = new Date().getTime();
-                    var sign = 'accountSign201903' + account + 'H5LOGIN' + time + 'accountSign201903';
-                    //默认16位加密 可修改为32位
-                    sign_md5 = sign.MD5(32);
-                    console.log('MD5(32位):', sign_md5);
-                    //获取验证码需要的参数
-                    var code_para = {
-                        mobile: account,
-                        type: 'H5LOGIN',
-                        time: time,
-                        sign: sign_md5
-                    }
-                    $.ajax({
-                        type: "POST",
-                        //jq ajax参数API可查看文档 http://www.w3school.com.cn/jquery/ajax_ajax.asp;
-                        //不设定这个参数为false 则jq会以Form Data数据类型发送给后端 可能会导致后端无法识别
-                        contentType: false,
-                        // processData: false,
-                        url: "https://api.technologyle.com/sms/sms.php",
-                        dataType : "json",
-                        data: JSON.stringify(code_para),
-                        success: function (response) {
-                            console.log(response);
-                        }
-                    });
-                    //使用axios请求 在某些低版本浏览器里 可能会导致页面空白无法加载
-                    // axios.post("https://mall.xr-network.com/api/sms/sms.php", code_para, 
-                    //     // 可设定请求头
-                    //     // {
-                    //     //     headers: {
-                    //     //         'X-Requested-With': 'XMLHttpRequest',
-                    //     //         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-                    //     // 	}
-                    //     // }
-                    //     ).then( function (response) {
-                    //         var res = that.is_JSON(response.data);
-                    //         console.log(res);
-                    //     }).catch( function (error) {
-                    //         that.is_dialog(error);
-                    // },"json");
-                }else {
-                    this.is_dialog('请勿频繁获取！');
-                };
-                
-            };
+            //md5加密规定的字符串
+            var time = new Date().getTime();
+            var sign = 'accountSign201903' + account + 'H5LOGIN' + time + 'accountSign201903';
+            //默认16位加密 可修改为32位
+            sign_md5 = sign.MD5(32);
+            console.log('MD5(32位):', sign_md5);
+            //获取图形验证码需要的参数
+            var code_para = {
+                mobile: account,
+                type: 'H5LOGIN',
+                time: time,
+                sign: sign_md5
+            }
+            $.ajax({
+                type: "POST",
+                //jq ajax参数API可查看文档 http://www.w3school.com.cn/jquery/ajax_ajax.asp;
+                //不设定这个参数为false 则jq会以Form Data数据类型发送给后端 可能会导致后端无法识别
+                contentType: false,
+                // processData: false,
+                url: "https://api.technologyle.com/hthapi.php",
+                dataType : "json",
+                data: JSON.stringify(code_para),
+                success: function (response) {
+                    console.log(response);
+                    // that.form.img_code = response.src;
+                }
+            });
+            //使用axios请求 在某些低版本浏览器里 可能会导致页面空白无法加载
+            // axios.post("https://mall.xr-network.com/api/sms/sms.php", code_para, 
+            //     // 可设定请求头
+            //     // {
+            //     //     headers: {
+            //     //         'X-Requested-With': 'XMLHttpRequest',
+            //     //         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            //     // 	}
+            //     // }
+            //     ).then( function (response) {
+            //         var res = that.is_JSON(response.data);
+            //         console.log(res);
+            //     }).catch( function (error) {
+            //         that.is_dialog(error);
+            // },"json");
         },
         //登录
-        login () {
+        login (name) {
             //如果上次请求还未完成(在转圈圈) 则不允许继续点击
             if (this.form.is_circle) {
                 this.is_dialog('请勿频繁点击！');
                 return false;
+            };
+            //用户按了回车键直接登录的 会跳过失去焦点的正则检验 所以要回去检验一遍
+            if (name) {
+                this.verify_input(name);
             };
             var that = this;
             var account = this.form.account;
@@ -269,6 +228,8 @@ new Vue({
                 var is_empty = !account || !password;
                 var is_RE = is_empty || this.verify_warn.account.is_open || this.verify_warn.password.is_open;
             };
+            console.log(is_RE);
+            console.log(password);
             if (!is_RE) {
                 this.form.login_error ++;
                 //存储登陆失败次数 以防刷新丢失
@@ -296,21 +257,28 @@ new Vue({
                     //不设定这个参数为false 则jq会以Form Data数据类型发送给后端 可能会导致后端无法识别
                     contentType: false,
                     // processData: false,
-                    url: "https://api.technologyle.com/hthapi.php",
+                    url: "https://mall.xr-network.com/api/sms/sms.php",
                     dataType : "json",
                     data: JSON.stringify(register_para),
                     success: function (response) {
                         console.log(response);
                         if (response.code == 0) {
+                            that.form.is_circle = false;
                             //登录成功后 删掉错误次数
                             that.form.login_error = 0;
                             localStorage.removeItem('login_error');
-                            that.form.is_circle = false;
                         }else {
-                            that.is_dialog(response.start);
                             that.form.is_circle = false;
+                            that.is_dialog(response.start);
+                            //错误次数过多 获取图形验证码
+                            if (that.form.login_error > 2) {
+                                that.get_code();
+                            };
                         };
                     },
+                    error: function (response) {
+                        that.is_dialog(response.start);
+                    }
 
                 });
             }else {
@@ -322,34 +290,12 @@ new Vue({
         var that = this;
         //检查登录失败的次数
         this.form.login_error = localStorage.getItem('login_error') ? parseInt(localStorage.getItem('login_error')) : 0;
+        if (this.form.login_error > 2) {
+            //获取图形验证码
+            this.get_code();
+        };
         //检查是否有存储的手机号码
         this.form.account = localStorage.getItem('account') ? localStorage.getItem('account') : null;
-        //检查是否有存储的定时器
-        var store_limit_get = localStorage.getItem('limit_get') || null;
-        //获取剩余的秒数
-        var remain_sec = store_limit_get ? JSON.parse(store_limit_get).sec : 0;
-        if ( store_limit_get && remain_sec > 0) {
-            this.limit_get.sec = remain_sec;
-            this.limit_get.is_disabled = true;
-            //减掉1秒是为了看起来不突兀 否则刷新后的一开始需要等待2秒才会计时
-            this.limit_get.text = '重新获取(' + (this.limit_get.sec - 1) + 's)';
-            this.limit_get.timer = setInterval( function () {
-                if (that.limit_get.sec <= 0) {
-                    //计时结束
-                    that.limit_get.text = '获取验证码';
-                    that.limit_get.is_disabled = false;
-                    //把定时器的秒数初始化
-                    that.limit_get.sec = that.limit_get.init_sec;
-                    //清除定时器 删掉存储的localStorage
-                    clearInterval(that.limit_get.timer);
-                    that.limit_get.timer = null;
-                    localStorage.removeItem('limit_get');
-                }else {
-                    that.limit_get.sec--;
-                    that.limit_get.text = '重新获取(' + that.limit_get.sec + 's)';
-                    localStorage.setItem('limit_get', JSON.stringify(that.limit_get));
-                };
-            }, 1000);
-        };
+        
     }
 })
