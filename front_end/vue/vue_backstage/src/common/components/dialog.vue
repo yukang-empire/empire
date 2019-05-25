@@ -1,44 +1,43 @@
 <template>
-    <div class="dialog flex_center fixed_top" v-if='dialog.is_open' @click.self='dialog.is_open = false'>
-        <div class="main">
-            <h3>提示</h3>
-            <div class="content">
-                <span>{{ dialog.msg }}</span>
+    <div class="dialog_component">
+        <section class="dialog flex_center fixed_top" v-if='dialog.is_open' @click.self='off_dialog'>
+            <div class="main">
+                <h3>提示</h3>
+                <div class="content">
+                    <span>{{ dialog.msg ? dialog.msg : '网络错误' }}</span>
+                </div>
+                <div class="no_cancel flex_center" v-if='dialog.type == 0'>
+                    <button @click='off_dialog'>确定</button>
+                </div>
+                <div class="normal flex_between" v-if='dialog.type == 1'>
+                    <button class="cancel" @click='off_dialog'>取消</button>
+                    <button @click='off_dialog'>确定</button>
+                </div>
+                <!-- 二维码展示 -->
+                <div class="QR_code" v-if='dialog.type == 2'>
+                    <img class="full_width" src="imgs/QR_code.jpg" alt="QR_code">
+                    <p>扫描/长按识别二维码</p>
+                </div>
+                <!-- 叉号 -->
+                <svg class="icon" aria-hidden="true" @click='off_dialog'>
+                    <use xlink:href="#icon-chahao"></use>
+                </svg>
             </div>
-            <div class="normal flex_between">
-                <button class="cancel" @click='dialog.is_open = false'>取消</button>
-                <button class="sure" @click='dialog.is_open = false'>确定</button>
-            </div>
-            <!-- <div class="no_cancel">
-                <button class="sure" @click='dialog.is_open = false'>确定</button>
-            </div> -->
-
-            <!-- <div class="QR_code">
-                <img src="imgs/QR_code.png" alt="QR_code">
-                <p>长按识别二维码</p>
-            </div> -->
-            
-            <svg class="icon" aria-hidden="true" @click='dialog.is_open = false'>
-                <use xlink:href="#icon-chahao"></use>
-            </svg>
-        </div>
+        </section>
     </div>
 </template>
 
-<script lang="ts">
-    //必须先引入全局组件
-    import { Component, Vue, Prop } from "vue-property-decorator";
+<script>
 
-    //typescript装饰器语法 要引入的组件
-    @Component({
-        components: {
-            
+export default {
+    name: 'dialog_component',
+    props: [
+        'dialog'
+    ],
+    methods: {
+        off_dialog () {
+            this.$emit('off_dialog');
         }
-    })
-
-    export default class dialog extends Vue {
-        //从父组件获取数据
-        @Prop() private dialog !: object;
-        
     }
+}
 </script>

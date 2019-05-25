@@ -20,7 +20,7 @@ new Vue({
             //点击登录转圈圈 禁止频繁点击
             is_circle: null,
             //图形验证码
-            img_code: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1558772465016&di=d501a36846df4f75e86f9adb8cc1554c&imgtype=0&src=http%3A%2F%2Fwww.xiaobaixitong.com%2Fd%2Ffile%2Fhelp%2F2018-08-06%2Ff15ce5d652d8da38e9e0e384f35b39d7.png'
+            img_code: ''
         },
         //表单正则
         form_RE: {
@@ -164,7 +164,7 @@ new Vue({
             var time = new Date().getTime();
             var sign = 'accountSign201903' + account + 'H5LOGIN' + time + 'accountSign201903';
             //默认16位加密 可修改为32位
-            sign_md5 = sign.MD5(32);
+            var sign_md5 = sign.MD5(32);
             console.log('MD5(32位):', sign_md5);
             //获取图形验证码需要的参数
             var code_para = {
@@ -228,8 +228,6 @@ new Vue({
                 var is_empty = !account || !password;
                 var is_RE = is_empty || this.verify_warn.account.is_open || this.verify_warn.password.is_open;
             };
-            console.log(is_RE);
-            console.log(password);
             if (!is_RE) {
                 this.form.login_error ++;
                 //存储登陆失败次数 以防刷新丢失

@@ -155,6 +155,7 @@ body {
 }
 .form .right {
     height: 100%;
+    width: 145px;
     color: #409eff;
     font-size: 0.95rem;
     position: relative;
