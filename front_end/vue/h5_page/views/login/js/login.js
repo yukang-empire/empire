@@ -16,7 +16,7 @@ new Vue({
             password_type: 'password',
             //登录失败次数过多 则显示验证码input
             login_error: 0,
-            verify_code: null,
+            img_code: null,
             //点击登录转圈圈 禁止频繁点击
             is_circle: null,
             //图形验证码
@@ -34,7 +34,8 @@ new Vue({
             password: null,
             see: null,
             hide: null,
-            verify_code: null,
+            img_code: null,
+            password_clear: null
         },
         //验证错误时的提示
         verify_warn: {
@@ -46,7 +47,7 @@ new Vue({
                 is_open: false,
                 text: null
             },
-            verify_code: {
+            img_code: {
                 is_open: false,
                 text: null
             }
@@ -90,6 +91,12 @@ new Vue({
             //当input获得焦点时 如果其值不为空 也要显示清除图标
             if (this.form[name]) {
                 this.form_ico[name] = true;
+                //密码框额外处理
+                if (name == 'password') {
+                    this.form_ico.password_clear = true;
+                    this.form_ico.see = this.form_ico.see ? this.form_ico.see : !this.form_ico.hide;
+                    this.form_ico.hide = this.form_ico.hide ? this.form_ico.hide : !this.form_ico.see;
+                }
             };
         },
         //input输入数据 显示清除图标
@@ -97,38 +104,45 @@ new Vue({
             this.form_ico[name] = true;
             //密码框额外处理 显示隐藏/查看图标
             if (name == 'password') {
-                this.form_ico.see = true;
-                this.form_ico.hide = false;
+                this.form_ico.password_clear = true;
+                this.form_ico.see = this.form_ico.see ? this.form_ico.see : !this.form_ico.hide;
+                this.form_ico.hide = this.form_ico.hide ? this.form_ico.hide : !this.form_ico.see;
             };
         },
         //限制某些input的输入数据格式 设置type为number 在IOS端无效 设置为tel 在PC端无效 所以只能用js限制
         limit_input (name) {
-            if (name == 'account' && this.form[name]) {
-                //限制手机号码只能纯数字
-                this.form[name] = this.form[name].replace(/[^\d]/g, '');
-            }else if(name == 'verify_code' && this.form[name]) {
-                //限制验证码不能输入中文
-                this.form[name] = this.form[name].replace(/[\u4e00-\u9fa5]/ig, '');
+            if (this.form[name]) {
+                if (name == 'account' && this.form[name]) {
+                    //限制手机号码只能纯数字
+                    this.form[name] = this.form[name].replace(/[^\d]/g, '');
+                }else {
+                    //禁止输入中文
+                    this.form[name] = this.form[name].replace(/[\u4e00-\u9fa5]/ig, '');
+                };
             };
         },
         //清空input的操作
         clear_input (name) {
-            this.form[name] = '';
-            this.form_ico[name] = false;
+            this.form[name] = null;
+            //隐藏密码查看图标
+            if (name == 'password') {
+                this.form_ico[name] = false;
+            };
             switch (name) {
                 case 'account':
-                    this.verify_error('account', '请输入手机号码！');
+                    this.verify_error('account', '请输入账号/手机号码！');
                     break;
                 case 'password':
                     this.verify_error('password', '请输入密码！');
                     break;
-                case 'verify_code':
-                    this.verify_error('verify_code', '请输入验证码！');
+                case 'img_code':
+                    this.verify_error('img_code', '请输入验证码！');
                     break;
             };
         },
         //失去焦点时 验证input值
         verify_input (name) {
+            var that = this;
             switch (name) {
                 case 'account':
                     //正则验证
@@ -139,6 +153,10 @@ new Vue({
                         localStorage.setItem('account', this.form.account);
                         this.verify_warn.account.is_open = false;
                     };
+                    //隐藏图标 不加延时 则会和点击事件冲突 优先执行失去焦点事件
+                    setTimeout(function () {
+                        that.form_ico.account = false;
+                    }, 200);
                     break;
                 case 'password':
                     if (!this.form_RE.password.test(this.form.password)) {
@@ -146,13 +164,19 @@ new Vue({
                     }else {
                         this.verify_warn.password.is_open = false;
                     };
+                    setTimeout(function () {
+                        that.form_ico.password_clear = false;
+                    }, 200);
                     break;
-                case 'verify_code':
-                    if (!this.form.verify_code) {
-                        this.verify_error('verify_code', '请输入验证码！');
+                case 'img_code':
+                    if (!this.form.img_code) {
+                        this.verify_error('img_code', '请输入验证码！');
                     }else {
-                        this.verify_warn.verify_code.is_open = false;
+                        this.verify_warn.img_code.is_open = false;
                     };
+                    setTimeout(function () {
+                        that.form_ico.img_code = false;
+                    }, 200);
                     break;
             };
         },
@@ -165,7 +189,6 @@ new Vue({
             var sign = 'accountSign201903' + account + 'H5LOGIN' + time + 'accountSign201903';
             //默认16位加密 可修改为32位
             var sign_md5 = sign.MD5(32);
-            console.log('MD5(32位):', sign_md5);
             //获取图形验证码需要的参数
             var code_para = {
                 mobile: account,
@@ -187,21 +210,6 @@ new Vue({
                     // that.form.img_code = response.src;
                 }
             });
-            //使用axios请求 在某些低版本浏览器里 可能会导致页面空白无法加载
-            // axios.post("https://mall.xr-network.com/api/sms/sms.php", code_para, 
-            //     // 可设定请求头
-            //     // {
-            //     //     headers: {
-            //     //         'X-Requested-With': 'XMLHttpRequest',
-            //     //         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-            //     // 	}
-            //     // }
-            //     ).then( function (response) {
-            //         var res = that.is_JSON(response.data);
-            //         console.log(res);
-            //     }).catch( function (error) {
-            //         that.is_dialog(error);
-            // },"json");
         },
         //登录
         login (name) {
@@ -221,9 +229,9 @@ new Vue({
             //检测是否有验证码input框
             if (error_num > 2) {
                 //验证input值是否有空值
-                var is_empty = !account || !password || !this.form.verify_code;
+                var is_empty = !account || !password || !this.form.img_code;
                 //都不为空值的情况下 继续验证input值是否都符合正则
-                var is_RE = is_empty || this.verify_warn.account.is_open || this.verify_warn.password.is_open || this.verify_warn.verify_code.is_open;
+                var is_RE = is_empty || this.verify_warn.account.is_open || this.verify_warn.password.is_open || this.verify_warn.img_code.is_open;
             }else {
                 var is_empty = !account || !password;
                 var is_RE = is_empty || this.verify_warn.account.is_open || this.verify_warn.password.is_open;
@@ -240,14 +248,13 @@ new Vue({
                 //默认16位加密 可自行修改
                 var sign_md5 = sign.MD5(32);
                 var password_md5 = password.MD5(32);
-                console.log('MD5(32位):', sign_md5);
                 var register_para = {
                     mobile: account,
                     type: 'H5LOGIN',
                     time: time,
                     sign: sign_md5,
                     password: password_md5,
-                    codes: error_num > 2 ? this.form.verify_code : '',
+                    codes: error_num > 2 ? this.form.img_code : '',
                 };
                 $.ajax({
                     type: "POST",

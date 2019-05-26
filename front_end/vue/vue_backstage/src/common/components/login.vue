@@ -363,7 +363,7 @@ export default {
         //限制某些input的输入数据格式 设置type为number 在IOS端无效 设置为tel 在PC端无效 所以只能用js限制
         limit_input (name) {
             if (this.form[name]) {
-                if (name == 'account') {
+                if (name == 'account' && this.form[name]) {
                     //限制手机号码只能纯数字
                     this.form[name] = this.form[name].replace(/[^\d]/g, '');
                 }else {
