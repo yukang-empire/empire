@@ -1,167 +1,167 @@
 <template>
-    <div class="login_component">
-        <form class="form flex_center">
-            <!-- 账号 -->
-            <div class="input flex_center">
-                <div class="left flex_center">
-                    <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-denglu"></use>
-                    </svg>
-                </div>
-                <div class="middle full">
-                    <input class="full" type="tel" placeholder="请输入账号/手机号" v-model='form.account' @blur='verify_input("account")' @keyup='input_data("account")' @focus='get_focus("account")' @input='limit_input("account")'>
-                    <svg class="icon" aria-hidden="true" v-if='form_ico.account' @click='clear_input("account")'>
-                        <use xlink:href="#icon-chahao"></use>
-                    </svg>
-                </div>
+<div class="login_component">
+    <form class="form flex_center">
+        <!-- 账号/手机号 -->
+        <div class="input flex_center">
+            <div class="left flex_center">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-denglu"></use>
+                </svg>
             </div>
-            <transition name="fade"><p class='verify_warn' v-if='verify_warn.account.is_open'><span>{{ verify_warn.account.text }}</span></p></transition>
-
-            <!-- 密码 -->
-            <div class="input flex_center" v-if='!(this.send_data.type == "find" && this.send_data.is_verify_code)'>
-                <div class="left flex_center">
-                    <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-mima"></use>
-                    </svg>
-                </div>
-                <div class="middle full">
-                    <input class="full" :type="form.password_type" placeholder="请输入密码" v-model='form.password' @blur='verify_input("password")' @keyup.enter="login('password')" @keyup='input_data("password")' @focus='get_focus("password")'>
-                    <svg class="icon icon02" aria-hidden="true" v-if='form_ico.password' @click='see_or_hide("password")'>
-                        <use v-if='form_ico.see' xlink:href="#icon-yincang"></use>
-                        <use v-if='form_ico.hide' xlink:href="#icon-yincang1"></use>
-                    </svg>
-                    <svg class="icon" aria-hidden="true" v-if='form_ico.password' @click='clear_input("password")'>
-                        <use xlink:href="#icon-chahao"></use>
-                    </svg>
-                </div>
+            <div class="middle full">
+                <input class="full" type="tel" placeholder="请输入账号/手机号" v-model='form.account' @blur='verify_input("account")' @keyup='input_data("account")' @focus='get_focus("account")' @input='limit_input("account")'>
+                <svg class="icon" aria-hidden="true" v-if='form_ico.account' @click='clear_input("account")'>
+                    <use xlink:href="#icon-chahao"></use>
+                </svg>
             </div>
-            <transition name="fade"><p class='verify_warn' v-if='verify_warn.password.is_open'><span>{{ verify_warn.password.text }}</span></p></transition>
+        </div>
+        <transition name="fade"><p class='verify_warn' v-if='verify_warn.account.is_open'><span>{{ verify_warn.account.text }}</span></p></transition>
 
-            <!-- 再次输入密码 -->
-            <div class="input flex_center" v-if='send_data.type == "register"'>
-                <div class="left flex_center">
-                    <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-zaicishurumima"></use>
-                    </svg>
-                </div>
-                <div class="middle full">
-                    <input class="full" :type="form.re_password_type" placeholder="请再次输入密码" v-model='form.re_password' @blur='verify_input("re_password")' @keyup='input_data("re_password")' @focus='get_focus("re_password")'>
-                    <svg class="icon icon02" aria-hidden="true" v-if='form_ico.re_password' @click='see_or_hide("re_password")'>
-                        <use v-if='form_ico.re_see' xlink:href="#icon-yincang"></use>
-                        <use v-if='form_ico.re_hide' xlink:href="#icon-yincang1"></use>
-                    </svg>
-                    <svg class="icon" aria-hidden="true" v-if='form_ico.re_password' @click='clear_input("re_password")'>
-                        <use xlink:href="#icon-chahao"></use>
-                    </svg>
-                </div>
+        <!-- 密码 -->
+        <div class="input flex_center" v-if='!(this.send_data.type == "find" && this.send_data.is_verify_code)'>
+            <div class="left flex_center">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-mima"></use>
+                </svg>
             </div>
-            <transition name="fade"><p class='verify_warn' v-if='verify_warn.re_password.is_open'><span>{{ verify_warn.re_password.text }}</span></p></transition>
-
-            <!-- 输入新密码 -->
-            <div class="input flex_center" v-if='send_data.type == "find"'>
-                <div class="left flex_center">
-                    <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-mima"></use>
-                    </svg>
-                </div>
-                <div class="middle full">
-                    <input class="full" :type="form.new_password_type" placeholder="请输入新密码" v-model='form.new_password' @blur='verify_input("new_password")' @keyup.enter="find('new_password')" @keyup='input_data("new_password")' @focus='get_focus("new_password")'>
-                    <svg class="icon icon02" aria-hidden="true" v-if='form_ico.new_password' @click='see_or_hide("new_password")'>
-                        <use v-if='form_ico.new_see' xlink:href="#icon-yincang"></use>
-                        <use v-if='form_ico.new_hide' xlink:href="#icon-yincang1"></use>
-                    </svg>
-                    <svg class="icon" aria-hidden="true" v-if='form_ico.new_password' @click='clear_input("new_password")'>
-                        <use xlink:href="#icon-chahao"></use>
-                    </svg>
-                </div>
+            <div class="middle full">
+                <input class="full" :type="form.password_type" placeholder="请输入密码" v-model='form.password' @blur='verify_input("password")' @keyup='input_data("password")' @focus='get_focus("password")' @input='limit_input("password")' @keyup.enter="login('password')">
+                <svg class="icon icon02" aria-hidden="true" v-if='form_ico.password' @click='see_or_hide("password")'>
+                    <use v-if='form_ico.see' xlink:href="#icon-yincang"></use>
+                    <use v-if='form_ico.hide' xlink:href="#icon-yincang1"></use>
+                </svg>
+                <svg class="icon" aria-hidden="true" v-if='form_ico.password_clear' @click='clear_input("password")'>
+                    <use xlink:href="#icon-chahao"></use>
+                </svg>
             </div>
-            <transition name="fade"><p class='verify_warn' v-if='verify_warn.new_password.is_open'><span>{{ verify_warn.new_password.text }}</span></p></transition>
+        </div>
+        <transition name="fade"><p class='verify_warn' v-if='verify_warn.password.is_open'><span>{{ verify_warn.password.text }}</span></p></transition>
 
-            <!-- 手机验证码 -->
-            <div class="input flex_center" v-if='send_data.type == "register" || (send_data.type == "find" && send_data.is_verify_code)'>
-                <div class="left flex_center">
-                    <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-shouji"></use>
-                    </svg>
-                </div>
-                <div class="middle full">
-                    <input class="full" type="text" placeholder="请输入验证码" v-model='form.verify_code' @blur='verify_input("verify_code")' @keyup.enter="register('verify_code')" @keyup='input_data("verify_code")' @focus='get_focus("verify_code")' @input='limit_input("verify_code")'>
-                    <svg class="icon" aria-hidden="true" v-if='form_ico.verify_code' @click='clear_input("verify_code")'>
-                        <use xlink:href="#icon-chahao"></use>
-                    </svg>
-                </div>
-                <div class="right flex_center" :class='{disabled: limit_get.is_disabled}'>
-                    <span @click='get_code'>{{ limit_get.text }}</span>
-                </div>
+        <!-- 再次输入密码 -->
+        <div class="input flex_center" v-if='send_data.type == "register"'>
+            <div class="left flex_center">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-zaicishurumima"></use>
+                </svg>
             </div>
-            <transition name="fade"><p class='verify_warn' v-if='verify_warn.verify_code.is_open'><span>{{ verify_warn.verify_code.text }}</span></p></transition>
-
-            <!-- 邀请码 -->
-            <div class="input flex_center" v-if='send_data.type == "register" && send_data.is_invi'>
-                <div class="left flex_center">
-                    <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-yaoqing"></use>
-                    </svg>
-                </div>
-                <div class="middle full">
-                    <input class="full disabled" type="text" v-model='form.invi_code' disabled='disabled'>
-                </div>
+            <div class="middle full">
+                <input class="full" :type="form.re_password_type" placeholder="请再次输入密码" v-model='form.re_password' @blur='verify_input("re_password")' @keyup='input_data("re_password")' @focus='get_focus("re_password")' @input='limit_input("re_password")'>
+                <svg class="icon icon02" aria-hidden="true" v-if='form_ico.re_password' @click='see_or_hide("re_password")'>
+                    <use v-if='form_ico.re_see' xlink:href="#icon-yincang"></use>
+                    <use v-if='form_ico.re_hide' xlink:href="#icon-yincang1"></use>
+                </svg>
+                <svg class="icon" aria-hidden="true" v-if='form_ico.re_password_clear' @click='clear_input("re_password")'>
+                    <use xlink:href="#icon-chahao"></use>
+                </svg>
             </div>
+        </div>
+        <transition name="fade"><p class='verify_warn' v-if='verify_warn.re_password.is_open'><span>{{ verify_warn.re_password.text }}</span></p></transition>
 
-            <!-- 图形验证码 -->
-            <div class="input flex_center" v-if='send_data.type == "login" && form.login_error > 2'>
-                <div class="left flex_center">
-                    <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-yanzhengyanzhengma"></use>
-                    </svg>
-                </div>
-                <div class="middle full">
-                    <input class="full" type="text" placeholder="请输入验证码" v-model='form.img_code' @blur='verify_input("img_code")' @keyup.enter="login('img_code')" @keyup='input_data("img_code")' @focus='get_focus("img_code")' @input='limit_input("img_code")'>
-                    <svg class="icon" aria-hidden="true" v-if='form_ico.img_code' @click='clear_input("img_code")'>
-                        <use xlink:href="#icon-chahao"></use>
-                    </svg>
-                </div>
-                <div class="right flex_center">
-                    <img :src="form.img_code" alt="code">
-                </div>
+        <!-- 输入新密码 -->
+        <div class="input flex_center" v-if='send_data.type == "find"'>
+            <div class="left flex_center">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-mima"></use>
+                </svg>
             </div>
-            <transition name="fade"><p class='verify_warn' v-if='verify_warn.img_code.is_open'><span>{{ verify_warn.img_code.text }}</span></p></transition>
-
-            <div class="agreement" v-if='send_data.type == "register"'>
-                <p>点击注册即代表同意<a href="###">《用户协议》</a></p>
+            <div class="middle full">
+                <input class="full" :type="form.new_password_type" placeholder="请输入新密码" v-model='form.new_password' @blur='verify_input("new_password")' @keyup='input_data("new_password")' @focus='get_focus("new_password")' @input='limit_input("new_password")' @keyup.enter="find('new_password')">
+                <svg class="icon icon02" aria-hidden="true" v-if='form_ico.new_password' @click='see_or_hide("new_password")'>
+                    <use v-if='form_ico.new_see' xlink:href="#icon-yincang"></use>
+                    <use v-if='form_ico.new_hide' xlink:href="#icon-yincang1"></use>
+                </svg>
+                <svg class="icon" aria-hidden="true" v-if='form_ico.new_password_clear' @click='clear_input("new_password")'>
+                    <use xlink:href="#icon-chahao"></use>
+                </svg>
             </div>
+        </div>
+        <transition name="fade"><p class='verify_warn' v-if='verify_warn.new_password.is_open'><span>{{ verify_warn.new_password.text }}</span></p></transition>
 
-            <div class="btn flex_center" @click='login' v-if='send_data.type == "login"'>
-                <img src="@/common/imgs/wait.gif" alt="wait" v-if='form.is_circle'>
-                <input type="button" value="登录" :class="{is_circle: form.is_circle}">
+        <!-- 手机验证码 -->
+        <div class="input flex_center" v-if='send_data.type == "register" || (send_data.type == "find" && send_data.is_verify_code)'>
+            <div class="left flex_center">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-shouji"></use>
+                </svg>
             </div>
-
-            <div class="btn flex_center" @click='register' v-if='send_data.type == "register"'>
-                <img src="@/common/imgs/wait.gif" alt="wait" v-if='form.is_circle'>
-                <input type="button" value="注册" :class="{is_circle: form.is_circle}">
+            <div class="middle full">
+                <input class="full" type="text" placeholder="请输入验证码" v-model='form.verify_code' @blur='verify_input("verify_code")' @keyup='input_data("verify_code")' @focus='get_focus("verify_code")' @input='limit_input("verify_code")' @keyup.enter="register('verify_code')">
+                <svg class="icon" aria-hidden="true" v-if='form_ico.verify_code' @click='clear_input("verify_code")'>
+                    <use xlink:href="#icon-chahao"></use>
+                </svg>
             </div>
-
-            <div class="btn flex_center" @click='find' v-if='send_data.type == "find"'>
-                <img src="@/common/imgs/wait.gif" alt="wait" v-if='form.is_circle'>
-                <input type="button" value="确认修改" :class="{is_circle: form.is_circle}">
+            <div class="right flex_center" :class='{disabled: limit_get.is_disabled}'>
+                <span @click='get_code'>{{ limit_get.text }}</span>
             </div>
+        </div>
+        <transition name="fade"><p class='verify_warn' v-if='verify_warn.verify_code.is_open'><span>{{ verify_warn.verify_code.text }}</span></p></transition>
 
-            <div class="back" @click='go_back' v-if='send_data.type != "login"'>
-                <!-- 在表单内的button 如果不声明type="button" 则有些浏览器会默认type="submit" 按回车键会直接刷新提交 -->
-                <button type="button">返回</button>
+        <!-- 邀请码 -->
+        <div class="input flex_center" v-if='send_data.type == "register" && send_data.is_invi'>
+            <div class="left flex_center">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-yaoqing"></use>
+                </svg>
             </div>
-            
-            <div class="bottom_info flex_between" v-if='send_data.type == "login"'>
-                <router-link to='/find'>忘记密码?</router-link>
-                <router-link to='/register'>注册账号</router-link>
+            <div class="middle full">
+                <input class="full disabled" type="text" v-model='form.invi_code' disabled='disabled'>
             </div>
+        </div>
 
-        </form>
+        <!-- 图形验证码 -->
+        <div class="input flex_center" v-if='send_data.type == "login" && form.login_error > 2'>
+            <div class="left flex_center">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-yanzhengyanzhengma"></use>
+                </svg>
+            </div>
+            <div class="middle full">
+                <input class="full" type="text" placeholder="请输入验证码" v-model='form.img_code' @blur='verify_input("img_code")' @keyup='input_data("img_code")' @focus='get_focus("img_code")' @input='limit_input("img_code")' @keyup.enter="login('img_code')">
+                <svg class="icon" aria-hidden="true" v-if='form_ico.img_code' @click='clear_input("img_code")'>
+                    <use xlink:href="#icon-chahao"></use>
+                </svg>
+            </div>
+            <div class="right flex_center">
+                <img :src="form.img_code_src" alt="code">
+            </div>
+        </div>
+        <transition name="fade"><p class='verify_warn' v-if='verify_warn.img_code.is_open'><span>{{ verify_warn.img_code.text }}</span></p></transition>
 
-        <transition name='fade'>
-            <dialog_component :dialog='dialog' @off_dialog='off_dialog' />
-        </transition>
-    </div>
+        <div class="agreement" v-if='send_data.type == "register"'>
+            <p>点击注册即代表同意<a href="https://shop.technologyle.com/userReg/register_agreement.html" target="_blank">《用户协议》</a></p>
+        </div>
+
+        <div class="btn flex_center" @click='login' v-if='send_data.type == "login"'>
+            <img src="@/common/imgs/wait.gif" alt="wait" v-if='form.is_circle'>
+            <input type="button" value="登录" :class="{is_circle: form.is_circle}">
+        </div>
+
+        <div class="btn flex_center" @click='register' v-if='send_data.type == "register"'>
+            <img src="@/common/imgs/wait.gif" alt="wait" v-if='form.is_circle'>
+            <input type="button" value="注册" :class="{is_circle: form.is_circle}">
+        </div>
+
+        <div class="btn flex_center" @click='find' v-if='send_data.type == "find"'>
+            <img src="@/common/imgs/wait.gif" alt="wait" v-if='form.is_circle'>
+            <input type="button" value="确认修改" :class="{is_circle: form.is_circle}">
+        </div>
+
+        <div class="back" @click='go_back' v-if='send_data.type != "login"'>
+            <!-- 在表单内的button 如果不声明type="button" 则有些浏览器会默认type="submit" 按回车键会直接刷新提交 -->
+            <button type="button">返回</button>
+        </div>
+        
+        <div class="bottom_info flex_between" v-if='send_data.type == "login"'>
+            <router-link to='/find'>忘记密码?</router-link>
+            <router-link to='/register'>注册账号</router-link>
+        </div>
+
+    </form>
+
+    <transition name='fade'>
+        <dialog_component :dialog='dialog' @off_dialog='off_dialog' />
+    </transition>
+</div>
 </template>
 
 <script>
@@ -173,6 +173,7 @@ export default {
         dialog_component
     },
     props: [
+        //判断需要加载那些input框
         'send_data'
     ],
     data () {
@@ -211,18 +212,22 @@ export default {
                 password: /^[\w]{6,16}$/,
                 verify_code: /^\d{6}$/
             },
-            //表单输入数据 显示清除图标
+            //表单输入数据 显示图标
             form_ico: {
                 account: null,
                 password: null,
+                //密码框有2个图标 一个查看 一个清除
                 see: null,
                 hide: null,
+                password_clear: null,
                 re_password: null,
                 re_see: null,
                 re_hide: null,
+                re_password_clear: null,
                 new_password: null,
                 new_see: null,
                 new_hide: null,
+                new_password_clear: null,
                 img_code: null,
                 verify_code: null,
             },
@@ -287,12 +292,6 @@ export default {
             this.dialog.is_open = true;
             this.dialog.msg = info;
         },
-        //验证失败的提示操作
-        verify_error (which, text) {
-            //打开提示段落
-            this.verify_warn[which].is_open = true;
-            this.verify_warn[which].text = text;
-        },
         //查看or隐藏密码
         see_or_hide (name) {
             //切换密码框input的type
@@ -324,9 +323,23 @@ export default {
         },
         //input获得焦点
         get_focus (name) {
-            //当input获得焦点时 如果其值不为空 也要显示清除图标
+            //当input获得焦点时 如果有值 则要显示清除图标
             if (this.form[name]) {
                 this.form_ico[name] = true;
+                //密码框额外处理
+                if (name == 'password') {
+                    this.form_ico.password_clear = true;
+                    this.form_ico.see = this.form_ico.see ? this.form_ico.see : !this.form_ico.hide;
+                    this.form_ico.hide = this.form_ico.hide ? this.form_ico.hide : !this.form_ico.see;
+                }else if (name == 're_password') {
+                    this.form_ico.re_password_clear = true;
+                    this.form_ico.re_see = this.form_ico.re_see ? this.form_ico.re_see : !this.form_ico.re_hide;
+                    this.form_ico.re_hide = this.form_ico.re_hide ? this.form_ico.re_hide : !this.form_ico.re_see;
+                }else if (name == 'new_password') {
+                    this.form_ico.new_password_clear = true;
+                    this.form_ico.new_see = this.form_ico.new_see ? this.form_ico.new_see : !this.form_ico.new_hide;
+                    this.form_ico.new_hide = this.form_ico.new_hide ? this.form_ico.new_hide : !this.form_ico.new_see;
+                };
             };
         },
         //input输入数据 显示清除图标
@@ -334,33 +347,47 @@ export default {
             this.form_ico[name] = true;
             //密码框额外处理 显示隐藏/查看图标
             if (name == 'password') {
-                this.form_ico.see = true;
-                this.form_ico.hide = false;
+                this.form_ico.password_clear = true;
+                this.form_ico.see = this.form_ico.see ? this.form_ico.see : !this.form_ico.hide;
+                this.form_ico.hide = this.form_ico.hide ? this.form_ico.hide : !this.form_ico.see;
             }else if (name == 're_password') {
-                this.form_ico.re_see = true;
-                this.form_ico.re_hide = false;
+                this.form_ico.re_password_clear = true;
+                this.form_ico.re_see = this.form_ico.re_see ? this.form_ico.re_see : !this.form_ico.re_hide;
+                this.form_ico.re_hide = this.form_ico.re_hide ? this.form_ico.re_hide : !this.form_ico.re_see;
             }else if (name == 'new_password') {
-                this.form_ico.new_see = true;
-                this.form_ico.new_hide = false;
+                this.form_ico.new_password_clear = true;
+                this.form_ico.new_see = this.form_ico.new_see ? this.form_ico.new_see : !this.form_ico.new_hide;
+                this.form_ico.new_hide = this.form_ico.new_hide ? this.form_ico.new_hide : !this.form_ico.new_see;
             };
         },
         //限制某些input的输入数据格式 设置type为number 在IOS端无效 设置为tel 在PC端无效 所以只能用js限制
         limit_input (name) {
-            if (name == 'account' && this.form[name]) {
-                //限制手机号码只能纯数字
-                this.form[name] = this.form[name].replace(/[^\d]/g, '');
-            }else if(name == 'verify_code' && this.form[name]) {
-                //限制验证码不能输入中文
-                this.form[name] = this.form[name].replace(/[\u4e00-\u9fa5]/ig, '');
+            if (this.form[name]) {
+                if (name == 'account') {
+                    //限制手机号码只能纯数字
+                    this.form[name] = this.form[name].replace(/[^\d]/g, '');
+                }else {
+                    //禁止输入中文
+                    this.form[name] = this.form[name].replace(/[\u4e00-\u9fa5]/ig, '');
+                };
             };
+        },
+        //验证失败的提示操作
+        verify_error (which, text) {
+            //打开提示段落
+            this.verify_warn[which].is_open = true;
+            this.verify_warn[which].text = text;
         },
         //清空input的操作
         clear_input (name) {
-            this.form[name] = '';
-            this.form_ico[name] = false;
+            this.form[name] = null;
+            //隐藏密码查看图标
+            if (name == 'password' || name == 're_password' || name == 'new_password' ) {
+                this.form_ico[name] = false;
+            };
             switch (name) {
                 case 'account':
-                    this.verify_error('account', '请输入手机号码！');
+                    this.verify_error('account', '请输入账号/手机号码！');
                     break;
                 case 'password':
                     this.verify_error('password', '请输入密码！');
@@ -381,6 +408,7 @@ export default {
         },
         //失去焦点时 验证input值
         verify_input (name) {
+            var that = this;
             switch (name) {
                 case 'account':
                     //正则验证
@@ -391,8 +419,13 @@ export default {
                         localStorage.setItem('account', this.form.account);
                         this.verify_warn.account.is_open = false;
                     };
+                    //隐藏图标 不加延时 则会和点击事件冲突 优先执行失去焦点事件
+                    setTimeout(function () {
+                        that.form_ico.account = false;
+                    }, 200);
                     break;
                 case 'password':
+                    //密码框额外处理 隐藏 隐藏/查看图标
                     if (!this.form_RE.password.test(this.form.password)) {
                         this.verify_error('password', '请输入6-16位数字与字母组成的密码！');
                     }else if (this.send_data.type == 'find' && this.form.password == this.form.new_password){
@@ -400,6 +433,9 @@ export default {
                     }else {
                         this.verify_warn.password.is_open = false;
                     };
+                    setTimeout(function () {
+                        that.form_ico.password_clear = false;
+                    }, 200);
                     break;
                 case 're_password':
                     if (!this.form.re_password) {
@@ -409,6 +445,9 @@ export default {
                     }else {
                         this.verify_warn.re_password.is_open = false;
                     };
+                    setTimeout(function () {
+                        that.form_ico.re_password_clear = false;
+                    }, 200);
                     break;
                 case 'new_password':
                     if (!this.form_RE.password.test(this.form.new_password)) {
@@ -418,6 +457,9 @@ export default {
                     }else {
                         this.verify_warn.new_password.is_open = false;
                     };
+                    setTimeout(function () {
+                        that.form_ico.new_password_clear = false;
+                    }, 200);
                     break;
                 case 'img_code':
                     if (!this.form.img_code) {
@@ -425,6 +467,9 @@ export default {
                     }else {
                         this.verify_warn.img_code.is_open = false;
                     };
+                    setTimeout(function () {
+                        that.form_ico.img_code = false;
+                    }, 200);
                     break;
                 case 'verify_code':
                     if (!this.form.verify_code) {
@@ -432,6 +477,9 @@ export default {
                     }else {
                         this.verify_warn.verify_code.is_open = false;
                     };
+                    setTimeout(function () {
+                        that.form_ico.verify_code = false;
+                    }, 200);
                     break;
             };
         },
@@ -444,18 +492,16 @@ export default {
             var sign = 'accountSign201903' + account + 'H5LOGIN' + time + 'accountSign201903';
             //默认16位加密 可修改为32位
             var sign_md5 = this.$md5(sign, 32);
-            console.log('MD5(32位):', sign_md5);
             //获取图形验证码需要的参数
             var code_para = {
                 mobile: account,
                 type: 'H5LOGIN',
                 time: time,
                 sign: sign_md5
-            }
+            };
             this.$axios.post("https://mall.xr-network.com/api/sms/sms.php", code_para,
                 ).then( function (response) {
-                    var res = that.is_JSON(response.data);
-                    console.log(res);
+                    console.log(response);
                 }).catch( function (error) {
                     that.is_dialog(error);
             },"json");
@@ -474,8 +520,6 @@ export default {
                 this.is_dialog('请输入正确格式的手机号码！')
                 this.verify_error('account', '请输入正确格式的手机号码！')
             }else {
-                //储存手机号码 刷新后检测到有的话 则自动填入 更人性化
-                localStorage.setItem('account', account);
                 //禁止频繁获取
                 if (!this.limit_get.is_disabled) {
                     //定时器
@@ -505,18 +549,16 @@ export default {
                     var sign = 'accountSign201903' + account + 'H5LOGIN' + time + 'accountSign201903';
                     //默认16位加密 可修改为32位
                     var sign_md5 = this.$md5(sign, 32);
-                    console.log('MD5(32位):', sign_md5);
                     //获取验证码需要的参数
                     var code_para = {
                         mobile: account,
                         type: 'H5LOGIN',
                         time: time,
                         sign: sign_md5
-                    }
+                    };
                     this.$axios.post("https://mall.xr-network.com/api/sms/sms.php", code_para,
                         ).then( function (response) {
-                            var res = that.is_JSON(response.data);
-                            console.log(res);
+                            console.log(response);
                         }).catch( function (error) {
                             that.is_dialog(error);
                     },"json");
@@ -563,7 +605,6 @@ export default {
                 //默认16位加密 可自行修改
                 var sign_md5 = this.$md5(sign, 32);
                 var password_md5 = this.$md5(password, 32);
-                console.log('MD5(32位):', sign_md5);
                 var login_para = {
                     mobile: account,
                     type: 'H5LOGIN',
@@ -624,7 +665,6 @@ export default {
                 //默认16位加密 可自行修改
                 var sign_md5 = this.$md5(sign, 32);
                 var password_md5 = this.$md5(password, 32);
-                console.log('MD5(32位):', sign_md5);
                 var register_para = {
                     mobile: account,
                     type: 'H5LOGIN',
@@ -641,7 +681,7 @@ export default {
                             that.is_dialog("注册成功！请前往登录！");
                             that.form.is_circle = false;
                             setTimeout(function () {
-                                window.location.href = './login.html';
+                                that.$router.push('/login');
                             }, 2000);
                         }else {
                             that.form.is_circle = false;
@@ -705,7 +745,7 @@ export default {
                             that.is_dialog("找回密码成功！请前往登录！");
                             that.form.is_circle = false;
                             setTimeout(function () {
-                                window.location.href = './login.html';
+                                that.$router.push('/login');
                             }, 2000);
                         }else {
                             that.form.is_circle = false;
@@ -715,7 +755,7 @@ export default {
                         that.is_dialog(error);
                 },"json");
             }else {
-                this.is_dialog("请完善找回密码的信息！");
+                this.is_dialog("请完善信息！");
             };
         },
     },
@@ -799,13 +839,13 @@ export default {
         transform: translate(-50%,-50%);
     }
     .form .middle .icon02 {
-        width: 1rem;
-        height: 1rem;
+        width: 1.1rem;
+        height: 1.1rem;
         right: 30px;
     }
     .form .right {
         height: 100%;
-        width: 145px;
+        width: 155px;
         color: #409eff;
         font-size: 0.95rem;
         position: relative;

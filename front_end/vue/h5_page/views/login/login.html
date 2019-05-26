@@ -48,7 +48,7 @@
                         </svg>
                     </div>
                     <div class="middle full">
-                        <input class="full" :type="form.password_type" placeholder="请输入密码" v-model='form.password' @blur='verify_input("password")' @keyup.enter="login('password')" @keyup='input_data("password")' @focus='get_focus("password")'>
+                        <input class="full" :type="form.password_type" placeholder="请输入密码" v-model='form.password' @blur.self='verify_input("password")' @keyup.enter="login('password')" @keyup='input_data("password")' @focus='get_focus("password")'>
                         <svg class="icon icon02" aria-hidden="true" v-if='form_ico.password' @click='see_or_hide'>
                             <use v-if='form_ico.see' xlink:href="#icon-yincang"></use>
                             <use v-if='form_ico.hide' xlink:href="#icon-yincang1"></use>
