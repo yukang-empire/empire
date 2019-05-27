@@ -1,14 +1,13 @@
 <template>
-    <div class="main_component">
-        <p>main</p>
-        
+    <div class="shops_info">
+        <p>shops_info</p>
     </div>
 </template>
 
 <script>
 
 export default {
-    name: 'main_component',
+    name: 'shops_info',
     components: {
         
     },
@@ -21,11 +20,7 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-    .main_component {
-        flex-grow: 1;
-        padding: 12px 20px;
-    }
-
+    
     @media screen and (min-width: 769px) {
         
     }

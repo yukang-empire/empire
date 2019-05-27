@@ -1,31 +1,27 @@
 <template>
     <div class="check">
-        <div>
-            check
-        </div>
+        <p>check</p>
     </div>
 </template>
 
-<script lang="ts">
-    import { Component, Vue, Prop } from "vue-property-decorator";
+<script>
 
-    @Component({
-        components: {
+export default {
+    name: 'check',
+    components: {
+        
+    },
+    data () {
+        return {
             
         }
-    })
-
-    export default class check extends Vue {
-        @Prop() private father !: object;
-        private data: any = {
-
-        };
-        methods () {
-
-        };
     }
+}
 </script>
 
 <style lang='scss' scoped>
     
+    @media screen and (min-width: 769px) {
+        
+    }
 </style>

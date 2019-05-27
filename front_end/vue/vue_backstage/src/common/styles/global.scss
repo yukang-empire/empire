@@ -1,10 +1,16 @@
 
+@charset "utf-8";
+
 // 颜色
+    //背景色
+    $back: #2d3a4b;
+    //侧边栏
+    $aside: #304156;
     //主颜色
-    $main_color: #409eff;
+    $main: #409eff;
     //成功
-    $suc_color: #67c23a;
+    $succ: #67c23a;
     //失败
-    $fail_color: #909399;
+    $fail: #909399;
     //危险
-    $dan_color: #f56c6c;
+    $dang: #f56c6c;

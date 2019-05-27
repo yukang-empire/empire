@@ -19,6 +19,7 @@ export default {
         return {
             send_data: {
                 type: 'register',
+                //注册是否需要邀请码
                 is_invi: false,
             }
         }

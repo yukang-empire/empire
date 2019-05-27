@@ -759,12 +759,10 @@ export default {
             };
         },
     },
-    beforeCreate () {
-        //修改body背景色
-        document.getElementsByTagName('body')[0].style.backgroundColor = '#2d3a4b';
-    },
     mounted () {
         var that = this;
+        //修改body背景色
+        document.getElementsByTagName('body')[0].style.backgroundColor = '#2d3a4b';
         //检查登录失败的次数
         this.form.login_error = localStorage.getItem('login_error') ? parseInt(localStorage.getItem('login_error')) : 0;
         if (this.send_data.type == 'login' && this.form.login_error > 2) {

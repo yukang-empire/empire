@@ -5,9 +5,9 @@ import store from "./stores/index.js";
 import axios from 'axios';
 Vue.prototype.$axios= axios;
 
-//引入全局css和阿里图标
-import '@/common/styles/index.scss';
-import '@/common/styles/iconfont.js';
+//基础样式和阿里图标
+import '@/common/styles/base.css';
+// import '@/common/styles/iconfont.js';
 
 //引入element-ui
 import ElementUI from 'element-ui';

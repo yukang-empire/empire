@@ -1,36 +1,51 @@
 <template>
-    <div class="layout">
-        <div>
-            layout
+    <div class="layout full">
+        <header_component />
+        <div class='footer full'>
+            <aside_component :role='role' />
+            <main_component />
         </div>
     </div>
 </template>
 
-<script lang="ts">
-    //必须先引入全局组件
-    import { Component, Vue, Prop } from "vue-property-decorator";
+<script>
+//引入文件夹的话 需要此文件夹里有一个js文件 注入所有需要引入的vue组件
+import { header_component, aside_component, main_component } from './components';
 
-    //typescript装饰器语法 要引入的组件
-    @Component({
-        components: {
-            
+export default {
+    name: 'layout',
+    components: {
+        header_component,
+        aside_component,
+        main_component
+    },
+    data () {
+        return {
+            //登录后的角色信息
+            role: {
+                status: 'admin',
+            }
         }
-    })
+    },
+    methods: {
 
-    export default class layout extends Vue {
-        //从父组件获取数据
-        @Prop() private father !: object;
-        //数据(如果不清楚要创建什么类型的数据 就声明为any)
-        private data: object = {
-
-        };
-        //方法
-        methods () {
-
-        };
+    },
+    mounted () {
+        
     }
+}
 </script>
 
 <style lang='scss' scoped>
-    
+    .layout {
+        display: flex;
+        flex-direction: column;
+    }
+    .footer {
+        display: flex;
+    }
+
+    @media screen and (min-width: 769px) {
+        
+    }
 </style>
