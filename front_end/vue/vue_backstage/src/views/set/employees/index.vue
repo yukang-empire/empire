@@ -1,5 +1,5 @@
 <template>
-    <div class="main_component">
+    <div class="employees">
         <transition name="fade-transform" mode="out-in">
             <router-view></router-view>
         </transition>
@@ -9,7 +9,7 @@
 <script>
 
 export default {
-    name: 'main_component',
+    name: 'employees',
     components: {
         
     },
@@ -22,13 +22,7 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-    .main_component {
-        flex-grow: 1;
-        overflow-y: scroll;
-        word-break: break-word;
-        padding: 15px 20px 20px 20px;
-    }
-
+    
     @media screen and (min-width: 769px) {
         
     }

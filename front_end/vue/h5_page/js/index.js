@@ -1,6 +1,8 @@
 
+
 // 纯H5页面不建议使用ES5以上的语法 比如let或箭头函数 axios也不建议用 否则会因为兼容不识别导致整个页面空白无法加载
 new Vue({
+    router,
     el:'#app',
     data: {
         //要显示的复用模块
@@ -64,6 +66,5 @@ new Vue({
         this.browser.width = document.documentElement.clientWidth || document.body.clientWidth || window.innerWidth;
         this.browser.height = document.documentElement.clientHeight || document.body.clientHeight || window.innerHeight;
 
-        
     }
 })

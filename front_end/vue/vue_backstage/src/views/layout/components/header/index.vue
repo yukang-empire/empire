@@ -34,8 +34,8 @@ export default {
 <style lang='scss' scoped>
     .header_component {
         color: #fff;
-        height: 60px;
         padding: 0 20px;
+        min-height: 60px;
         background-color: $back;
     }
     .header_component img {

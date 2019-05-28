@@ -10,7 +10,6 @@ html,body {
 }
 body {
     color: #333;
-    overflow-x: hidden;
     text-align: justify;
     background-color: #fff;
     font: 15px/1.8 -apple-system-font,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Hiragino Sans GB,Microsoft YaHei UI,Microsoft YaHei,Arial,sans-serif;
@@ -82,14 +81,42 @@ input::-ms-input-placeholder{
 [v-cloak] {
     display: none;
 }
-/* fade淡入淡出 */
+/* 淡入淡出 */
 .fade-enter-active, .fade-leave-active {
-    transition: opacity .5s;
+    transition: opacity .28s;
 }
 .fade-enter, .fade-leave-to {
     opacity: 0;
 }
-
+/*fade-transform*/
+.fade-transform-leave-active,
+.fade-transform-enter-active {
+  transition: all .5s;
+}
+.fade-transform-enter {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+.fade-transform-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+/*breadcrumb transition*/
+.breadcrumb-enter-active,
+.breadcrumb-leave-active {
+  transition: all .5s;
+}
+.breadcrumb-enter,
+.breadcrumb-leave-active {
+  opacity: 0;
+  transform: translateX(20px);
+}
+.breadcrumb-move {
+  transition: all .5s;
+}
+.breadcrumb-leave-active {
+  position: absolute;
+}
 
 
 /* 共用的类 */

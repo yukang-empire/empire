@@ -43,8 +43,9 @@ export default {
     }
     .footer {
         display: flex;
+        overflow: hidden;
     }
-
+    
     @media screen and (min-width: 769px) {
         
     }

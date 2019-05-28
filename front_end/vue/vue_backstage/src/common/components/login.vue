@@ -930,6 +930,7 @@ export default {
         border: 1px solid #409EFF;
         background-color: transparent;
     }
+    /* 简单的响应式 */
     @media screen and (min-width: 769px) {
         .form .input, .form .verify_warn, .back, .form .bottom_info, .form .btn {
             width: 370px;
