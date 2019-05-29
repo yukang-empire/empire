@@ -1,13 +1,13 @@
 <template>
-        <div class="details">
-            <p>details</p>
+        <div class="user_details">
+            <p>user_details</p>
         </div>
     </template>
     
     <script>
     
     export default {
-        name: 'details',
+        name: 'user_details',
         components: {
             
         },

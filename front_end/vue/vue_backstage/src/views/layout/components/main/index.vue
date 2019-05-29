@@ -1,5 +1,9 @@
 <template>
     <div class="main_component">
+        <!-- 面包屑 -->
+        <mbx />
+        <!-- 历史记录 -->
+        <history />
         <transition name="fade-transform" mode="out-in">
             <router-view></router-view>
         </transition>
@@ -7,16 +11,23 @@
 </template>
 
 <script>
+// 面包屑导航
+import mbx from './mbx.vue';
+import history from './history.vue';
 
 export default {
     name: 'main_component',
     components: {
-        
+        mbx,
+        history,
     },
     data () {
         return {
             
         }
+    },
+    mounted () {
+
     }
 }
 </script>
@@ -26,7 +37,6 @@ export default {
         flex-grow: 1;
         overflow-y: scroll;
         word-break: break-word;
-        padding: 15px 20px 20px 20px;
     }
 
     @media screen and (min-width: 769px) {

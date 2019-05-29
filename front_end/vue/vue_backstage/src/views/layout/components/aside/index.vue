@@ -1,7 +1,7 @@
 <template>
     <div class="aside_component">
         <el-menu
-            :default-active="$route.path"
+            :default-active="now_path"
             :router='is_router_mode'
             class="el-menu-vertical-demo"
             background-color="#304156"
@@ -10,7 +10,7 @@
             
             <li v-for="(item, index) in routers.show">
                 <!-- 没有子选项 -->
-                <el-menu-item :index="item.path" v-if='!item.children || (item.children.length < 2)'>
+                <el-menu-item @click='get_history(item.meta.title, item.path)' :index="item.path" v-if='!item.children || (item.children.length < 2)'>
                     <svg class="icon" aria-hidden="true">
                         <use :xlink:href="item.meta.icon"></use>
                     </svg>
@@ -27,17 +27,17 @@
                     </template>
                     
                     <li v-for="(item01, index) in item.children">
-                        <el-menu-item :index="item01.path" v-if='!item01.children || (item01.children.length < 2)'>
+                        <el-menu-item @click='get_history(item01.meta.title, item01.path)' :index="item01.path" v-if='!item01.children || (item01.children.length < 2)'>
                             {{ item01.meta.title }}
                         </el-menu-item>
         
-                        <el-submenu :index="item.path + '/' + item01.path" v-else>
+                        <el-submenu :index="item01.path" v-else>
                             <template slot="title">
                                 {{ item01.meta.title }}
                             </template>
 
                             <li v-for="(item02, index) in item01.children">
-                                <el-menu-item :index="item.path + '/' + item01.path + '/' + item02.path" v-if='!item02.children || (item02.children.length < 2)'>
+                                <el-menu-item @click='get_history(item02.meta.title, item02.path)' :index="item02.path" v-if='!item02.children || (item02.children.length < 2)'>
                                     {{ item02.meta.title }}
                                 </el-menu-item>
                             </li>
@@ -74,8 +74,19 @@ export default {
             }
         }
     },
+    computed: {
+        now_path () {
+            return this.$store.state.now_path;
+        }
+    },
     methods: {
-        
+        get_history (name, path) {
+            var history = {
+                name: name,
+                path: path
+            };
+            this.$store.commit('revise_history', history);
+        }
     },
     mounted () {
         var routers = this.$router.options.routes;
@@ -100,7 +111,7 @@ export default {
         }else {
             this.routers.show = this.routers.user;
         };
-        console.log('show',this.routers.show);
+        console.log('show_routers',this.routers.show);
     }
 }
 </script>
