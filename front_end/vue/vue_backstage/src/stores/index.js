@@ -3,58 +3,38 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
-// console.log(this.$route);
-
 const store = new Vuex.Store({
     state: {
-        //用于面包屑
-        router_matched: null,
-        //用于面包屑下面的历史记录
-        router_history: localStorage.getItem('router_history') ? [JSON.parse(localStorage.getItem('router_history'))] : [],
-        //选中某个面包屑
-        select_idex: localStorage.getItem('router_history') ? 0 : -1,
-        //删除后 自动选择末尾的面包屑
-        now_path: '/home',
+        //当前路由
+        current_route: null,
+        //历史记录的数组汇总
+        history_arr: [],
+
     },
     mutations: {
-        get_matched: (state, to) => {
-            state.router_matched = to.matched;
-        },
-        revise_history: (state, history) => {
-            //判断此路由是否已经存在了
-            var is_push = state.router_history.some( (item, index) => {
-                if (item.name == history.name) {
-                    state.select_idex = index;
-                    localStorage.setItem('router_history', JSON.stringify(state.router_history[index]));
+        //进入页面 先发送路由给vuex 存到历史记录数组里 state参数别忘了写上
+        get_route (state, route) {
+            state.current_route = route;
+            //检查历史记录里是否已经存在这个路由
+            //some是遍历数组检查是否有满足条件的一个方法 注入函数和参数 一旦有一个满足条件 就直接返回true
+            var is_have = state.history_arr.some((item, index) => {
+                //path相同就判定已经拥有了这个路由
+                if (item.path == route.path) {
+                    return true;
                 };
-                return item.name == history.name;
             });
-            if (!is_push) {
-                state.router_history.push(history);
-                var length = state.router_history.length - 1;
-                state.select_idex = length;
-                localStorage.setItem('router_history', JSON.stringify(state.router_history[length]));
+            //没有拥有 并且不是首页 才push进去
+            if (!is_have && route.path != '/home') {
+                state.history_arr.push(route);
             };
+            console.log(state.current_route);
+            console.log(state.history_arr);
         },
-        revise_idex (state, index) {
-            state.select_idex = index;
-            state.now_path = state.router_history[state.select_idex].path;
-        },
-        del_history(state, index) {
-            state.router_history.splice(index, 1);
-            //删掉最后一个的时候
-            if (state.router_history.length == 0) {
-                state.select_idex = -1;
-                state.now_path = '/home';
-            };
-            if (index == state.select_idex) {
-                var length = state.router_history.length - 1;
-                state.select_idex = length;
-                state.now_path = state.router_history[state.select_idex].path;
-            }else if (index < state.select_idex) {
-                state.select_idex --;
-            };
-        },
+        //删除某个历史记录tag
+        del_tag (state, index) {
+            state.history_arr.splice(index, 1);
+        }
+
     }
 });
 

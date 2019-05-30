@@ -5,11 +5,11 @@
             <use xlink:href="#icon-mianbaoxie"></use>
         </svg>
         <el-breadcrumb separator="/">
+            <!-- transition-group必须要有一个key值 -->
             <transition-group name="breadcrumb">
-                <!-- transition-group必须要有一个key值 -->
-                <el-breadcrumb-item key="home" to="/home">首页</el-breadcrumb-item>
-                <el-breadcrumb-item :key="item.path" v-if='$store.state.router_matched[0].name != "home"' v-for='item in $store.state.router_matched' :to="item.path">
-                    <span>{{ item.meta.title }}</span>
+                <el-breadcrumb-item key="/home" to="/home">首页</el-breadcrumb-item>
+                <el-breadcrumb-item :key="item.path" :to="item.path" v-if='mbx_lists[0].name != "home"' v-for='item in mbx_lists'>
+                    {{ item.meta.title }}
                 </el-breadcrumb-item>
             </transition-group>
         </el-breadcrumb>
@@ -34,9 +34,9 @@ export default {
     methods: {
         
     },
-    watch: {
-        '$route' (to, from) {
-            this.$store.commit('get_matched', to);
+    computed: {
+        mbx_lists () {
+            return this.$store.state.current_route ? this.$store.state.current_route.matched : []
         }
     },
     mounted () {

@@ -1,18 +1,17 @@
 <template>
     <div class="history">
-        <el-tag type="info" :class="{is_select: select_idex == -1}" @click='select(-1)'>
+        <el-tag type="info" :class="{is_select: history_arr.length <= 0 || $store.state.current_route.path == '/home'}">
             <router-link to="/home">首页</router-link>
         </el-tag>
         <el-tag
-            v-for="(tag, index) in $store.state.router_history"
-            :key="tag.name"
+            v-for="(item, index) in history_arr"
             closable
             type="info"
-            :class="{is_select: select_idex == index}"
+            :key="item.name"
+            :class="{is_select: item.name == $store.state.current_route.name}"
             @close="del_tag(index)"
-            @click='select(index)'
         >
-            <router-link :to="tag.path">{{tag.name}}</router-link>
+            <router-link :to="item.fullPath">{{item.meta.title}}</router-link>
         </el-tag>
     </div>
 </template>
@@ -33,24 +32,19 @@ export default {
         }
     },
     computed: {
-        select_idex () {
-            return this.$store.state.select_idex;
+        history_arr () {
+            return this.$store.state.history_arr ? this.$store.state.history_arr : [];
         }
     },
     methods: {
-        
-    },
-    methods: {
-        select (index) {
-            this.$store.commit('revise_idex', index);
-        },
-        del_tag(index) {
-            this.$store.commit('del_history', index);
-            //删掉最后一个的时候
-            if (this.$store.state.router_history.length == 0) {
+        del_tag (index) {
+            this.$store.commit('del_tag', index);
+            //如果都删完了 那么就回到home页
+            if (this.$store.state.history_arr.length <= 0) {
                 this.$router.push('/home');
             };
         },
+
     },
     mounted () {
 
