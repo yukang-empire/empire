@@ -76,7 +76,7 @@ export default {
     },
     computed: {
         current_route () {
-            return this.$store.state.current_route ? this.$store.state.current_route.path : this.$route.fullPath;
+            return this.$store.state.current_route ? this.$store.state.current_route.path : this.$route.path;
         }
     },
     methods: {

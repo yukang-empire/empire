@@ -28,7 +28,6 @@ const store = new Vuex.Store({
                 state.history_arr.push(route);
             };
             console.log(state.current_route);
-            console.log(state.history_arr);
         },
         //删除某个历史记录tag
         del_tag (state, index) {

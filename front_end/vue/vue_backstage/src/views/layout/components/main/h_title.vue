@@ -27,7 +27,7 @@ export default {
     .h_title {
         display: flex;
         align-items: center;
-        padding: 0 0 0 20px;
+        padding: 10px 0 0 20px;
     }
     .border {
         width: 5px;
@@ -38,7 +38,6 @@ export default {
     .h_title h1{
         font-size: 1.7rem;
         text-align: left;
-        margin: 10px 20px 10px 0;
     }
 
     @media screen and (min-width: 769px) {
