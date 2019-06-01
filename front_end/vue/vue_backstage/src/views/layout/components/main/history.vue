@@ -71,7 +71,7 @@ export default {
 </style>
 <style lang='scss' scoped>
     .history {
-        padding: 5px 20px 15px 20px;
+        padding: 5px 20px 20px 20px;
         border-bottom: 2px solid #d8dce5;
     }
     .el-tag--info.is_select {
