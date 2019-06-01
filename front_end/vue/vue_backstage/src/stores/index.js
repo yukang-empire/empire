@@ -23,9 +23,14 @@ const store = new Vuex.Store({
                     return true;
                 };
             });
-            //没有拥有 并且不是首页 才push进去
+            //没有拥有 且不是首页 才push进去
             if (!is_have && route.path != '/home') {
                 state.history_arr.push(route);
+            };
+            //如果长度大于10个 则删掉最前面一个(太长了会导致左边导航栏缩短)
+            var length = state.history_arr.length;
+            if (length > 7) {
+                state.history_arr.shift();
             };
             console.log(state.current_route);
         },

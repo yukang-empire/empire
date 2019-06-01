@@ -25,7 +25,7 @@ const business = {
                 title: '新增商家'
             },
             children: [
-                {
+                {   
                     path: '/business/xzsj/sjtx',
                     name: 'sjtx',
                     //终端子组件 将会渲染在直接父组件的router-view里
@@ -72,6 +72,41 @@ const business = {
             ]
         },
         {
+            path: '/business/mdlb',
+            name: 'mdlb',
+            component: () => import('@/views/business/stores/index.vue'),
+            redirect: '/business/mdlb/lbxq',
+            meta: {
+                title: '门店列表'
+            },
+            children: [
+                {
+                    path: '/business/mdlb/add',
+                    name: 'xzmd',
+                    component: () => import('@/views/business/stores/add.vue'),
+                    meta: {
+                        title: '新增门店'
+                    }
+                },
+                {
+                    path: '/business/mdlb/lbxq',
+                    name: 'stores_lbxq',
+                    component: () => import('@/views/business/stores/list.vue'),
+                    meta: {
+                        title: '列表详情'
+                    }
+                },
+                {
+                    path: '/business/mdlb/mdxq',
+                    name: 'mdxq',
+                    component: () => import('@/views/business/stores/details.vue'),
+                    meta: {
+                        title: '门店详情'
+                    }
+                },
+            ]
+        },
+        {
             path: '/business/splb',
             name: 'splb',
             component: () => import('@/views/business/goods/index.vue'),
@@ -80,6 +115,14 @@ const business = {
                 title: '商品列表'
             },
             children: [
+                {
+                    path: '/business/splb/xzsp',
+                    name: 'xzsp',
+                    component: () => import('@/views/business/goods/add.vue'),
+                    meta: {
+                        title: '新增商品'
+                    }
+                },
                 {
                     path: '/business/splb/lbxq',
                     name: 'goods_lbxq',
@@ -91,37 +134,21 @@ const business = {
                 {
                     path: '/business/splb/spxq',
                     name: 'spxq',
-                    component: () => import('@/views/business/goods/list.vue'),
+                    component: () => import('@/views/business/goods/details.vue'),
                     meta: {
                         title: '商品详情'
                     }
                 },
-                {
-                    path: '/business/splb/xzsp',
-                    name: 'xzsp',
-                    component: () => import('@/views/business/goods/add.vue'),
-                    meta: {
-                        title: '新增商品'
-                    }
-                },
             ]
         },
-        {
-            path: '/business/mdlb',
-            name: 'mdlb',
-            component: () => import('@/views/business/stores.vue'),
-            meta: {
-                title: '门店列表'
-            }
-        },
-        {
-            path: '/business/rzsh',
-            name: 'rzsh',
-            component: () => import('@/views/business/check.vue'),
-            meta: {
-                title: '入驻审核'
-            }
-        },
+        // {
+        //     path: '/business/rzsh',
+        //     name: 'rzsh',
+        //     component: () => import('@/views/business/check.vue'),
+        //     meta: {
+        //         title: '入驻审核'
+        //     }
+        // },
         
     ]
 };

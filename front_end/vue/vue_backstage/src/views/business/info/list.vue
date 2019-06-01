@@ -37,18 +37,18 @@
         </div>
 
         <!-- 弹框 -->
-        <!-- <dialog_component :dialog='dialog' @off_dialog='off_dialog' /> -->
+        <dialog_component :dialog='dialog' @off_dialog='off_dialog' />
     </div>
 </template>
 
 <script>
-// import dialog_component from '@/common/components/dialog.vue';
+import dialog_component from '@/common/components/dialog.vue';
 import table_page from '@/common/components/table_page.vue';
 
 export default {
     name: 'business_list',
     components: {
-        // dialog_component,
+        dialog_component,
         table_page
     },
     data () {
@@ -58,17 +58,18 @@ export default {
                 is_open: false,
                 msg: '',
                 type: '1',
-                is_sure: null,
             },
-            //搜索的内容
-            search_input: null,
             //表格和页码的数据
             table_data: {
                 //表格
                 table: {
+                    //要展示哪些行
+                    select: 'sjlb',
+                    //是否固定表头
+                    is_height: false,
                     //表格数据
                     lists: [
-                        {id: '0126',name: '百得利健身会所',phone: '19928749823',people: '康哥',stores: 12,address: '深圳',time: 1559214576,ban: 0},
+                        {id: '0126',name: '百得利健身会所',phone: '19928749823',people: '康哥',stores: 12,address: '深圳',time: 1559214576,ban: 1},
                         {id: '0127',name: '百得利健身会所',phone: '19928749823',people: '康哥',stores: 11,address: '深圳',time: 1558214576,ban: 1},
                         {id: '0128',name: '百得利健身会所',phone: '19928749823',people: '康哥',stores: 10,address: '深圳',time: 1557214576,ban: 1},
                         {id: '0129',name: '百得利健身会所',phone: '19928749823',people: '康哥',stores: 9,address: '深圳',time: 1556214576,ban: 1},
@@ -78,19 +79,35 @@ export default {
                         {id: '0133',name: '百得利健身会所',phone: '19928749823',people: '康哥',stores: 5,address: '深圳',time: 1552214576,ban: 1},
                         {id: '0134',name: '百得利健身会所',phone: '19928749823',people: '康哥',stores: 4,address: '深圳',time: 1551214576,ban: 1},
                         {id: '0135',name: '百得利健身会所',phone: '19928749823',people: '康哥',stores: 3,address: '深圳',time: 1549214576,ban: 1},
-                        // {id: '0136',name: '百得利健身会所',phone: '19928749823',people: '康哥',stores: 2,address: '深圳',time: 1539214576,ban: 1},
                     ],
-                    //是否禁用账户
-                    is_ban: true,
+                    //需要改变的行开关状态
+                    switch: {
+                        index: null,
+                        ban: null
+                    },
                 },
                 //页码
                 page: {
-                    current_page: 1
+                    //当前页码
+                    current_page: 1,
+                    //总数量
+                    total: 30,
                 }
-            }
+            },
+            //搜索的内容
+            search_input: null,
+
         }
     },
     methods: {
+        //关闭弹框
+        off_dialog (state) {
+            //确定则修改此行的ban状态
+            if (state == 'sure') {
+                this.table_data.table.lists[this.table_data.table.switch.index].ban = this.table_data.table.switch.ban;
+            };
+            this.dialog.is_open = false;
+        },
         //改变页码页数
         change_page(val) {
             console.log(`当前页: ${val}`);
@@ -100,13 +117,22 @@ export default {
             console.log(`每页 ${val} 条`);
         },
         //点击禁用/开启账户
-        change_ban (index) {
-            
+        change_ban (index, val) {
+            this.dialog.is_open = true;
+            if (val == 1) {
+                this.dialog.msg = '是否禁用?';
+                //改为禁用 提交给弹框处理
+                this.table_data.table.switch.ban = 0;
+            }else {
+                this.dialog.msg = '是否开启?';
+                //改为开启 交接给弹框处理
+                this.table_data.table.switch.ban = 1;
+            };
+            this.table_data.table.switch.index = index;
         },
         //查看详情
-        look_up (index, row) {
-            console.log(index);
-            console.log(row);
+        look_up (row) {
+            this.$router.push({ path: '/business/sjlb/sjxq', query: { id: row.id } });
         }
     }
 }

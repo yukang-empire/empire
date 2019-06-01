@@ -1,8 +1,9 @@
 <template>
     <div class="table_page">
-        <!-- 表格 -->
+        <!-- 表格 指定height则代表固定表头并将多余的内容滚动条化-->
         <el-table
         stripe
+        :height="table_data.table.is_height ? table_data.table.is_height : 'auto'"
         :data="table_data.table.lists"
         style="width: 100%">
             <!-- 实现多选 -->
@@ -10,52 +11,131 @@
                 type="selection"
                 width="40">
             </el-table-column>
-            <el-table-column
+
+            <!-- 商家列表 -->
+            <el-table-column 
+                v-if="table_data.table.select=='sjlb'"
                 prop="id"
                 sortable
+                :sort-method='date_sort'
                 label="商家ID">
             </el-table-column>
             <el-table-column
+                v-if="table_data.table.select=='sjlb'"
                 prop="name"
                 label="企业名称">
             </el-table-column>
+            <!-- 门店列表 -->
+            <el-table-column 
+                v-if="table_data.table.select=='mdlb'"
+                prop="id"
+                sortable
+                :sort-method='date_sort'
+                label="门店ID">
+            </el-table-column>
             <el-table-column
+                v-if="table_data.table.select=='mdlb'"
+                prop="name"
+                label="门店名称">
+            </el-table-column>
+            <!-- 商品列表 -->
+            <el-table-column 
+                v-if="table_data.table.select=='splb'"
+                prop="id"
+                sortable
+                :sort-method='date_sort'
+                label="门店ID">
+            </el-table-column>
+            <el-table-column
+                v-if="table_data.table.select=='splb'"
+                prop="name"
+                label="商品名称">
+            </el-table-column>
+            <el-table-column
+                v-if="table_data.table.select=='mdlb' || table_data.table.select=='splb'"
+                prop="sssj"
+                label="所属商家">
+            </el-table-column>
+            <el-table-column
+                v-if="table_data.table.select=='splb'"
+                prop="ssmd"
+                label="所属门店">
+            </el-table-column>
+            <el-table-column
+                v-if="table_data.table.select=='splb'"
+                prop="xsje"
+                label="商品销售金额">
+            </el-table-column>
+            <el-table-column
+                v-if="table_data.table.select=='splb'"
+                prop="jsje"
+                label="商品结算金额">
+            </el-table-column>
+            <el-table-column
+                v-if="table_data.table.select=='splb'"
+                prop="num"
+                label="销量">
+            </el-table-column>
+            <el-table-column
+                v-if="table_data.table.select=='sjlb'"
                 prop="phone"
                 label="手机号">
             </el-table-column>
             <el-table-column
+                v-if="table_data.table.select=='sjlb'"
                 prop="people"
                 label="联系人">
             </el-table-column>
             <el-table-column
+                v-if="table_data.table.select=='sjlb'"
                 prop="stores"
                 sortable
+                :sort-method='date_sort'
                 label="门店数量">
             </el-table-column>
             <el-table-column
+                v-if="table_data.table.select=='sjlb'"
                 prop="address"
                 label="地区">
             </el-table-column>
+            <el-table-column
+                v-if="table_data.table.select=='mdlb'"
+                prop="ssqy"
+                label="所属区域">
+            </el-table-column>
+            <el-table-column
+                v-if="table_data.table.select=='mdlb'"
+                prop="xxdz"
+                label="详细地址">
+            </el-table-column>
+            <el-table-column
+                v-if="table_data.table.select=='mdlb'"
+                prop="num"
+                sortable
+                :sort-method='date_sort'
+                label="商品数量">
+            </el-table-column>
             <!-- 转换日期格式后 默认的排序方式会出错 所以要用自定义排序方法sort-method -->
             <el-table-column
+                v-if="table_data.table.select=='sjlb'"
                 prop="time"
                 sortable
                 :sort-method='date_sort'
                 label="进驻日期">
             </el-table-column>
-            <el-table-column label="禁用账户">
+            <el-table-column label="禁用账户" v-if="table_data.table.select=='sjlb' || table_data.table.select=='mdlb'">
                 <template slot-scope="scope">
                     <el-switch
                         v-model="scope.row.ban == 1 ? true : false"
-                        @change='change_ban(scope.$index)'
+                        @change='change_ban(scope.$index, scope.row.ban)'
                         active-color="#13ce66"
                         inactive-color="#ccc">
                     </el-switch>
                 </template>
             </el-table-column>
-            <el-table-column label="操作">
+            <el-table-column label="操作" v-if="table_data.table.select=='sjlb' || table_data.table.select=='mdlb' || table_data.table.select=='splb'">
                 <template slot-scope="scope">
-                    <el-button type="text" @click="look_up(scope.$index, scope.row)">查看</el-button>
+                    <el-button type="text" @click="look_up(scope.row)">查看</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -69,46 +149,26 @@
                 :page-sizes="[5, 10, 15, 20]"
                 :page-size="10"
                 layout="total, sizes, prev, pager, next, jumper"
-                :total="30">
+                :total="table_data.page.total">
             </el-pagination>
         </div>
 
-        <!-- 弹框 -->
-        <dialog_component :dialog='dialog' @off_dialog='off_dialog' />
     </div>
 </template>
 
 <script>
-import dialog_component from '@/common/components/dialog.vue';
 
 export default {
     name: 'table_page',
-    components: {
-        dialog_component
-    },
     props: [
         'table_data'
     ],
     data () {
         return {
-            //弹框数据
-            dialog: {
-                is_open: false,
-                msg: '',
-                type: '1',
-                is_sure: null,
-            },
+            
         }
     },
     methods: {
-        //关闭弹框
-        off_dialog (num) {
-            if (num == 0) {
-                this.dialog.is_sure = false;
-            }else {
-                this.dialog.is_sure = true;
-            };
-        },
         //改变页码页数
         change_page (val) {
             this.$emit('change_page', val);
@@ -118,26 +178,12 @@ export default {
             this.$emit('change_page_size', val);
         },
         //点击禁用/开启账户
-        change_ban (index) {
-            this.dialog.is_open = true;
-            if (this.table_data.table.lists[index].ban == 1) {
-                this.dialog.msg = '是否禁用?';
-                if (this.dialog.is_sure) {
-                    this.table_data.table.lists[index].ban = 0;
-                };
-                this.dialog.is_open = false;
-            }else {
-                this.dialog.msg = '是否开启?';
-                if (this.dialog.is_sure) {
-                    this.table_data.table.lists[index] = 1;
-                };
-                this.dialog.is_open = false;
-            };
-            // this.$emit('change_ban', index);
+        change_ban (index, val) {
+            this.$emit('change_ban', index, val);
         },
         //查看详情
-        look_up (index, row) {
-            this.$emit('look_up', index, row);
+        look_up (row) {
+            this.$emit('look_up', row);
         },
         //日期排序
         date_sort (a, b) {

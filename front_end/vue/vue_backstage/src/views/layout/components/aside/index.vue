@@ -1,5 +1,5 @@
 <template>
-    <div class="aside_component">
+    <div class="aside_component" id="aside_component">
         <el-menu
             :default-active="current_route"
             :router='is_router_mode'
@@ -45,7 +45,6 @@
                     </li>
                 </el-submenu>
             </li>
-            
         </el-menu>
     </div>
 </template>
@@ -121,7 +120,7 @@ export default {
 
 <style lang='scss' scoped>
     .aside_component {
-        width: 200px;
+        width: 210px;
         overflow-y: scroll;
         padding-bottom: 25px;
         background-color: $aside;

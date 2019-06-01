@@ -1,5 +1,5 @@
 <template>
-        <div class="goods_list">
+        <div class="stores_list">
             <div class="repeat_div">
                 <p>
                     <svg class="icon" aria-hidden="true">
@@ -46,7 +46,7 @@
     import table_page from '@/common/components/table_page.vue';
     
     export default {
-        name: 'goods_list',
+        name: 'stores_list',
         components: {
             dialog_component,
             table_page
@@ -64,21 +64,21 @@
                     //表格
                     table: {
                         //要展示哪些行
-                        select: 'splb',
+                        select: 'mdlb',
                         //是否固定表头
                         is_height: false,
                         //表格数据
                         lists: [
-                            {id: '6',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 10},
-                            {id: '7',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 9},
-                            {id: '8',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 8},
-                            {id: '9',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 7},
-                            {id: '10',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 6},
-                            {id: '11',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 5},
-                            {id: '12',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 4},
-                            {id: '13',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 3},
-                            {id: '14',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 2},
-                            {id: '15',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 1},
+                            {id: '6',name: '百得利健身会所',sssj: '百得利',ssqy: '深圳龙华',xxdz: '清湖地铁站',num: 10,ban: 1},
+                            {id: '7',name: '百得利健身会所',sssj: '百得利',ssqy: '深圳龙华',xxdz: '清湖地铁站',num: 9,ban: 1},
+                            {id: '8',name: '百得利健身会所',sssj: '百得利',ssqy: '深圳龙华',xxdz: '清湖地铁站',num: 8,ban: 1},
+                            {id: '9',name: '百得利健身会所',sssj: '百得利',ssqy: '深圳龙华',xxdz: '清湖地铁站',num: 7,ban: 1},
+                            {id: '10',name: '百得利健身会所',sssj: '百得利',ssqy: '深圳龙华',xxdz: '清湖地铁站',num: 6,ban: 1},
+                            {id: '11',name: '百得利健身会所',sssj: '百得利',ssqy: '深圳龙华',xxdz: '清湖地铁站',num: 5,ban: 1},
+                            {id: '12',name: '百得利健身会所',sssj: '百得利',ssqy: '深圳龙华',xxdz: '清湖地铁站',num: 4,ban: 1},
+                            {id: '13',name: '百得利健身会所',sssj: '百得利',ssqy: '深圳龙华',xxdz: '清湖地铁站',num: 3,ban: 1},
+                            {id: '14',name: '百得利健身会所',sssj: '百得利',ssqy: '深圳龙华',xxdz: '清湖地铁站',num: 2,ban: 1},
+                            {id: '15',name: '百得利健身会所',sssj: '百得利',ssqy: '深圳龙华',xxdz: '清湖地铁站',num: 1,ban: 1},
                         ],
                         //需要改变的行开关状态
                         switch: {
@@ -132,7 +132,7 @@
             },
             //查看详情
             look_up (row) {
-                this.$router.push({ path: '/business/splb/spxq', query: { id: row.id } });
+                this.$router.push({ path: '/business/mdlb/mdxq', query: { id: row.id } });
             }
         }
     }
@@ -150,7 +150,7 @@
         }
     </style>
     <style lang='scss' scoped>
-        .goods_list {
+        .stores_list {
             padding: 0 20px;
     
             .el-input {

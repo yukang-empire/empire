@@ -10,8 +10,8 @@
                     <button @click='off_dialog'>确定</button>
                 </div>
                 <div class="normal flex_between" v-if='dialog.type == 1'>
-                    <button class="cancel" @click='off_dialog(0)'>取消</button>
-                    <button @click='off_dialog(1)'>确定</button>
+                    <button class="cancel" @click='off_dialog("cancel")'>取消</button>
+                    <button @click='off_dialog("sure")'>确定</button>
                 </div>
                 <!-- 二维码展示 -->
                 <div class="QR_code" v-if='dialog.type == 2'>
@@ -35,8 +35,8 @@ export default {
         'dialog'
     ],
     methods: {
-        off_dialog (num) {
-            this.$emit('off_dialog', num);
+        off_dialog (state) {
+            this.$emit('off_dialog', state);
         }
     }
 }
