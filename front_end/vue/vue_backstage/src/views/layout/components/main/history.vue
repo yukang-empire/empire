@@ -75,7 +75,7 @@ export default {
         border-bottom: 2px solid #d8dce5;
     }
     .el-tag--info.is_select {
-        background-color: #42b983;
+        background-color: $succ;
     }
     .el-tag--info a {
         margin-right: 3px;

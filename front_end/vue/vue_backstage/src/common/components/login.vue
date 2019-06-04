@@ -173,7 +173,7 @@ export default {
         dialog_component
     },
     props: [
-        //判断需要加载那些input框
+        //判断需要加载哪些input框
         'send_data'
     ],
     data () {
