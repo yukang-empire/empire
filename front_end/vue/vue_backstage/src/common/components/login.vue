@@ -122,7 +122,7 @@
                 </svg>
             </div>
             <div class="right flex_center">
-                <img :src="form.img_code_src" alt="code">
+                <img :src="form.img_code_src" @click='re_get_img_code' alt="code">
             </div>
         </div>
         <transition name="fade"><p class='verify_warn' v-if='verify_warn.img_code.is_open'><span>{{ verify_warn.img_code.text }}</span></p></transition>
@@ -365,7 +365,8 @@ export default {
             if (this.form[name]) {
                 if (name == 'account' && this.form[name]) {
                     //限制手机号码只能纯数字
-                    this.form[name] = this.form[name].replace(/[^\d]/g, '');
+                    // this.form[name] = this.form[name].replace(/[^\d]/g, '');
+                    this.form[name] = this.form[name].replace(/[\u4e00-\u9fa5]/ig, '');
                 }else {
                     //禁止输入中文
                     this.form[name] = this.form[name].replace(/[\u4e00-\u9fa5]/ig, '');
@@ -412,7 +413,8 @@ export default {
             switch (name) {
                 case 'account':
                     //正则验证
-                    if (!this.form_RE.phone.test(this.form.account)) {
+                    // if (!this.form_RE.phone.test(this.form.account)) {
+                    if (!this.form.account) {
                         this.verify_error('account', '请输入正确格式的手机号码！');
                     }else {
                         //储存手机号码 刷新后检测到有的话 则自动填入 更人性化
@@ -426,8 +428,10 @@ export default {
                     break;
                 case 'password':
                     //密码框额外处理 隐藏 隐藏/查看图标
-                    if (!this.form_RE.password.test(this.form.password)) {
-                        this.verify_error('password', '请输入6-16位数字与字母组成的密码！');
+                    // if (!this.form_RE.password.test(this.form.password)) {
+                    if (!this.form.password) {
+                        // this.verify_error('password', '请输入6-16位数字与字母组成的密码！');
+                        this.verify_error('password', '请输入密码！');
                     }else if (this.send_data.type == 'find' && this.form.password == this.form.new_password){
                         this.verify_error('password', '新密码不能与原密码一致！');
                     }else {
@@ -499,12 +503,17 @@ export default {
                 time: time,
                 sign: sign_md5
             };
-            this.$axios.post("https://mall.xr-network.com/api/sms/sms.php", code_para,
+            this.$axios.get( that.$store.state.domain + "/api/imgCode",
                 ).then( function (response) {
                     console.log(response);
+                    this.form.img_code_src = response;
                 }).catch( function (error) {
                     that.is_dialog(error);
             },"json");
+        },
+        re_get_img_code () {
+            var num = Math.random();
+            this.form.img_code_src = this.$store.state.domain + "/api/imgCode?" + num;
         },
         //获取验证码
         get_code () {
@@ -599,35 +608,31 @@ export default {
                 localStorage.setItem('login_error', this.form.login_error);
                 //转圈圈 禁止再继续点击登录
                 this.form.is_circle = true;
-                //md5加密规定的字符串
-                var time = new Date().getTime();
-                var sign = 'phoneSign201903' + account + 'H5LOGIN' + time + 'phoneSign201903';
-                //默认16位加密 可自行修改
-                var sign_md5 = this.$md5(sign, 32);
-                var password_md5 = this.$md5(password, 32);
                 var login_para = {
-                    mobile: account,
-                    type: 'H5LOGIN',
-                    time: time,
-                    sign: sign_md5,
-                    password: password_md5,
-                    codes: error_num > 2 ? this.form.img_code : '',
+                    username: account,
+                    password: password,
+                    validation: error_num > 2 ? this.form.img_code : '',
                 };
-                this.$axios.post("https://mall.xr-network.com/api/sms/sms.php", login_para,
+                this.$axios.post( that.$store.state.domain + "/api/login", JSON.stringify(login_para),
                     ).then( function (response) {
                         console.log(response);
-                        var response = that.is_JSON(response.data);
-                        if (response.code == 0) {
+                        var res = that.is_JSON(response.data);
+                        if (res.code == 0) {
                             that.form.is_circle = false;
                             //登录成功后 删掉错误次数
                             that.form.login_error = 0;
                             localStorage.removeItem('login_error');
+                            //临时存储后端返回的token和角色
+                            sessionStorage.setItem('token', res.data.token);
+                            sessionStorage.setItem('role', res.data.user.username);
+                            that.$router.push({ path: '/home' });
                         }else {
                             that.form.is_circle = false;
-                            that.is_dialog(response.start);
+                            that.is_dialog(response.data.msg);
                             //错误次数过多 获取图形验证码
                             if (that.form.login_error > 2) {
-                                that.get_img_code();
+                                // that.get_img_code();
+                                this.form.img_code_src = this.$store.state.domain + '/api/imgCode';
                             };
                         };
                     }).catch( function (error) {
@@ -761,13 +766,12 @@ export default {
     },
     mounted () {
         var that = this;
-        //修改body背景色
-        document.getElementsByTagName('body')[0].style.backgroundColor = '#2d3a4b';
         //检查登录失败的次数
         this.form.login_error = localStorage.getItem('login_error') ? parseInt(localStorage.getItem('login_error')) : 0;
         if (this.send_data.type == 'login' && this.form.login_error > 2) {
             //获取图形验证码
-            this.get_img_code();
+            // this.get_img_code();
+            this.form.img_code_src = this.$store.state.domain + "/api/imgCode";
         };
         //检查是否有存储的手机号码
         this.form.account = localStorage.getItem('account') ? localStorage.getItem('account') : null;

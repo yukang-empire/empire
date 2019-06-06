@@ -57,7 +57,7 @@ export default {
         
     },
     props: [
-        'role'
+        
     ],
     data () {
         return {
@@ -108,9 +108,11 @@ export default {
                 };
             };
         };
-        if (this.role.status == 'admin') {
+        var role = sessionStorage.getItem('role') ? sessionStorage.getItem('role') : '';
+        if (role == 'admin') {
             this.routers.show = this.routers.all;
         }else {
+            console.log(222);
             this.routers.show = this.routers.user;
         };
         console.log('show_routers',this.routers.show);

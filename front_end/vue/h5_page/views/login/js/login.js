@@ -297,10 +297,37 @@ new Vue({
         this.form.login_error = localStorage.getItem('login_error') ? parseInt(localStorage.getItem('login_error')) : 0;
         if (this.form.login_error > 2) {
             //获取图形验证码
-            this.get_code();
+            // this.get_code();
         };
         //检查是否有存储的手机号码
         this.form.account = localStorage.getItem('account') ? localStorage.getItem('account') : null;
         
+        var login_para = {
+            username: "admin",
+            password: "wsad",
+            validation: ""
+        };
+        // $.ajax({
+        //     type: "POST",
+        //     //jq ajax参数API可查看文档 http://www.w3school.com.cn/jquery/ajax_ajax.asp;
+        //     //不设定这个参数为false 则jq会以Form Data数据类型发送给后端 可能会导致后端无法识别
+        //     contentType: false,
+        //     // processData: false,
+        //     url: "https://manage.technologyle.com/api/login",
+        //     dataType : "json",
+        //     data: JSON.stringify(login_para),
+        //     success: function (response) {
+        //         console.log(response);
+        //     },
+        //     error: function (response) {
+        //         that.is_dialog(response.start);
+        //     }
+        // });
+        axios.post("https://manage.technologyle.com/api/login", JSON.stringify(login_para),
+            ).then( function (response) {
+                console.log(response);
+            }).catch( function (error) {
+                that.is_dialog(error);
+        });
     }
 })

@@ -80,14 +80,14 @@ const business = {
                 title: '门店列表'
             },
             children: [
-                {
-                    path: '/business/mdlb/add',
-                    name: 'xzmd',
-                    component: () => import('@/views/business/stores/add.vue'),
-                    meta: {
-                        title: '新增门店'
-                    }
-                },
+                // {
+                //     path: '/business/mdlb/add',
+                //     name: 'xzmd',
+                //     component: () => import('@/views/business/stores/add.vue'),
+                //     meta: {
+                //         title: '新增门店'
+                //     }
+                // },
                 {
                     path: '/business/mdlb/lbxq',
                     name: 'stores_lbxq',

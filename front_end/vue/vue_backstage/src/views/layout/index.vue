@@ -2,7 +2,7 @@
     <div class="layout full">
         <header_component />
         <div class='footer full'>
-            <aside_component :role='role' />
+            <aside_component />
             <main_component />
         </div>
     </div>
@@ -21,17 +21,15 @@ export default {
     },
     data () {
         return {
-            //登录后的角色信息
-            role: {
-                status: 'admin',
-            }
+
         }
     },
     methods: {
 
     },
     mounted () {
-
+        //修改body背景色
+        document.getElementsByTagName('body')[0].style.backgroundColor = '#fff';
     }
 }
 </script>

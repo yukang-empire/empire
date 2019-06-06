@@ -23,6 +23,10 @@ export default {
                 is_verify_code: true
             }
         }
+    },
+    mounted () {
+        //修改body背景色
+        document.getElementsByTagName('body')[0].style.backgroundColor = '#2d3a4b';
     }
 }
 </script>
