@@ -31,14 +31,14 @@ const users = {
                 title: '用户详情'
             }
         },
-        {
-            path: '/yhgl/smsh',
-            name: 'smsh',
-            component: () => import('@/views/users/check.vue'),
-            meta: {
-                title: '实名审核'
-            }
-        }
+        // {
+        //     path: '/yhgl/smsh',
+        //     name: 'smsh',
+        //     component: () => import('@/views/users/check.vue'),
+        //     meta: {
+        //         title: '实名审核'
+        //     }
+        // }
         
     ]
 };

@@ -1,15 +1,15 @@
 <template>
     <div class="business_details">
         <div class="repeat_div">
-            <p>
+            <!-- <p>
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-jibenxinxi"></use>
                 </svg>
                 <span>基本信息</span>
-            </p>
+            </p> -->
             <div class="base_info flex_between">
                 <div class="left">
-                    <p>基本信息：</p>
+                    <p class="copy_title">基本信息：</p>
                 </div>
                 <div class="middle flex_center">
                     <div>
@@ -41,12 +41,13 @@
         </div>
 
         <div class="repeat_div">
-            <p>
+            <!-- <p>
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-shangjia"></use>
                 </svg>
                 <span>门店信息</span>
-            </p>
+            </p> -->
+            <p class="copy_title">门店信息：</p>
             <!-- 门店列表 -->
             <table_page
             :table_data='table_data_md'
@@ -58,12 +59,13 @@
         </div>
 
         <div class="repeat_div">
-            <p>
+            <!-- <p>
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-shangpin"></use>
                 </svg>
                 <span>商品信息</span>
-            </p>
+            </p> -->
+            <p class="copy_title">商品信息：</p>
             <!-- 商品列表 -->
             <table_page
             :table_data='table_data_sp'
@@ -265,15 +267,16 @@ export default {
 
         }
     }
-    .left p{
+    .copy_title{
         border-left: 2px solid $main;
         height: 17px;
         padding: 0 0 0 10px;
         font-weight: 900;
-        margin: 0 0 0 10px;
         font-size: 1.1rem;
         display: flex;
         align-items: center;
+        color: #333;
+        margin: 15px 0 !important;
     }
     .middle,.right {
         margin-right: 10%;
@@ -284,8 +287,9 @@ export default {
             text-align: right;
         }
         
-        &>div:nth-of-type(2) {
+        &>div:nth-of-type(2) p{
             color: #999;
+            text-align: left;
         }
     }
 

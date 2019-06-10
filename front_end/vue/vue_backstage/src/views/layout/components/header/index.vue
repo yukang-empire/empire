@@ -45,6 +45,9 @@ export default {
     methods: {
         off_dialog (state) {
             if (state == 'sure') {
+                //删掉token和role
+                sessionStorage.removeItem('token');
+                sessionStorage.removeItem('role');
                 this.$router.push({ path: '/login' });
             };
             this.dialog.is_open = false;

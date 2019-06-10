@@ -112,7 +112,6 @@ export default {
         if (role == 'admin') {
             this.routers.show = this.routers.all;
         }else {
-            console.log(222);
             this.routers.show = this.routers.user;
         };
         console.log('show_routers',this.routers.show);

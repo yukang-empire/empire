@@ -10,16 +10,14 @@ Vue.prototype.$axios= axios;
 import '@/common/styles/base.css';
 // import '@/common/styles/iconfont.js';
 
+import moment from 'moment';
+moment.locale('zh-cn');
+Vue.prototype.$moment= moment;
 
 //引入element-ui
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);
-
-//引入NProgress进度条及样式
-import NProgress from 'nprogress';
-import 'nprogress/nprogress.css';
-Vue.use(NProgress);
 
 import Cookies from 'js-cookie';
 Vue.use(Cookies);

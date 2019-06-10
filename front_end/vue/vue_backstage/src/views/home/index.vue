@@ -17,7 +17,7 @@
                         </div>
                         <div>
                             <p>今日注册</p>
-                            <b>18</b>
+                            <b>{{ home_data.regUser }}</b>
                         </div>
                     </li>
                     <li class="flex_center" style="background-color: #ff9999;">
@@ -28,7 +28,7 @@
                         </div>
                         <div>
                             <p>今日充值收入</p>
-                            <b>¥2330.00</b>
+                            <b>¥ {{ home_data.recharge }}</b>
                         </div>
                     </li>
                     <li class="flex_center" style="background-color: #a47bd0;">
@@ -39,7 +39,7 @@
                         </div>
                         <div>
                             <p>今日订单数</p>
-                            <b>16</b>
+                            <b>{{ home_data.day_order.num }}</b>
                         </div>
                     </li>
                     <li class="flex_center" style="background-color: #00cc99;">
@@ -50,7 +50,7 @@
                         </div>
                         <div>
                             <p>今日订单收入</p>
-                            <b>¥1266.00</b>
+                            <b>¥ {{ home_data.day_order.total_amount }}</b>
                         </div>
                     </li>
                 </ul>
@@ -73,7 +73,7 @@
                             </svg>
                         </div>
                         <div>
-                            <b>6</b>
+                            <b>{{ home_data.store_withdrawals }}</b>
                             <p>提现申请</p>
                         </div>
                     </li>
@@ -84,7 +84,7 @@
                             </svg>
                         </div>
                         <div>
-                            <b>8</b>
+                            <b>{{ home_data.card_out }}</b>
                             <p>转让卡待审</p>
                         </div>
                     </li>
@@ -95,7 +95,7 @@
                             </svg>
                         </div>
                         <div>
-                            <b>12</b>
+                            <b>{{ home_data.store_apply }}</b>
                             <p>商家入驻审核</p>
                         </div>
                     </li>
@@ -106,7 +106,7 @@
                             </svg>
                         </div>
                         <div>
-                            <b>14</b>
+                            <b>{{ home_data.feedback }}</b>
                             <p>意见反馈</p>
                         </div>
                     </li>
@@ -130,6 +130,27 @@ export default {
     },
     data () {
         return {
+            //首页数据
+            home_data: {
+                regUser: 0,
+                recharge: 0,
+                day_order: {
+                    num: 0,
+                    total_amount: 0
+                },
+                store_withdrawals: 0,
+                card_out: 0,
+                store_apply: 0,
+                feedback: 0,
+                weeks_order: {
+                    num: 0,
+                    total_amount: 0
+                },
+                month_order: {
+                    num: 0,
+                    total_amount: 0
+                }
+            },
             //API可查看官网文档 https://www.echartsjs.com/option.html#title;
             //周图表数据
             echarts_data_week: {
@@ -191,9 +212,14 @@ export default {
             //获取日
             var day = time.getDate() < 10 ? '0' + (time.getDate()) : time.getDate();
             return mon + '-' + day;
-        }
+        },
+
     },
     created () {
+        this.$axios.post('/api/statistical').then(response => {
+            console.log(response);
+            this.home_data = response.data.data;
+        });
         //获取最近一周和最近一月的日期
         var time = new Date();
         for (var i = 0; i < 31; i++) {
@@ -210,6 +236,9 @@ export default {
             5000, 22000, 18000, 28000, 30000, 18000, 22000,18000, 28000,18000,
             5000, 22000, 18000, 28000, 30000, 18000, 22000,18000, 28000,18000,18000,
         ];
+    },
+    mounted () {
+        
     }
 }
 </script>
@@ -236,6 +265,10 @@ export default {
                 width: 3rem;
                 height: 3rem;
                 margin-right: 15px;
+            }
+
+            &>div:nth-of-type(2) {
+                text-align: center;
             }
 
             p {

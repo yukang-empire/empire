@@ -317,7 +317,7 @@ export default {
                     
                 };
             };
-            this.form.address = this.form.p + this.form.c + this.form.a + this.form.p;
+            this.form.address = this.form.p + this.form.c + this.form.a + this.form.s;
         },
     },
     mounted () {
@@ -402,7 +402,7 @@ export default {
         span {
             white-space: nowrap;
             margin-right: 8px;
-            width: 130px;
+            min-width: 130px;
             text-align: right;
         }
     }

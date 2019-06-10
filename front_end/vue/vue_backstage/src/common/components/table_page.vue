@@ -44,12 +44,57 @@
                 prop="id"
                 sortable
                 :sort-method='date_sort'
-                label="门店ID">
+                label="商品ID">
             </el-table-column>
             <el-table-column
                 v-if="table_data.table.select=='splb'"
                 prop="name"
                 label="商品名称">
+            </el-table-column>
+            <!-- 用户列表 -->
+            <el-table-column 
+                v-if="table_data.table.select=='yhlb'"
+                prop="id"
+                sortable
+                :sort-method='date_sort'
+                label="用户ID">
+            </el-table-column>
+            <el-table-column
+                v-if="table_data.table.select=='yhlb'"
+                prop="name"
+                label="昵称">
+            </el-table-column>
+            <!-- 统计信息 -->
+            <el-table-column
+                v-if="table_data.table.select=='tjxx'"
+                prop="xfje"
+                label="累计消费金额">
+            </el-table-column>
+            <el-table-column
+                v-if="table_data.table.select=='tjxx'"
+                prop="ddsl"
+                label="订单数量">
+            </el-table-column>
+            <el-table-column
+                v-if="table_data.table.select=='tjxx'"
+                prop="yqhy"
+                label="邀请好友数">
+            </el-table-column>
+            <el-table-column
+                v-if="table_data.table.select=='tjxx'"
+                prop="yhj"
+                label="优惠券">
+            </el-table-column>
+            <el-table-column
+                v-if="table_data.table.select=='tjxx'"
+                prop="kd"
+                label="酷点">
+            </el-table-column>
+            <el-table-column
+                v-if="table_data.table.select=='tjxx'"
+                prop="kb"
+                label="酷币">
+            </el-table-column>
             </el-table-column>
             <el-table-column
                 v-if="table_data.table.select=='mdlb' || table_data.table.select=='splb'"
@@ -77,9 +122,23 @@
                 label="销量">
             </el-table-column>
             <el-table-column
-                v-if="table_data.table.select=='sjlb'"
+                v-if="table_data.table.select=='sjlb' || table_data.table.select=='yhlb'"
                 prop="phone"
                 label="手机号">
+            </el-table-column>
+            <el-table-column
+                v-if="table_data.table.select=='yhlb'"
+                prop="price"
+                sortable
+                :sort-method='date_sort'
+                label="消费金额">
+            </el-table-column>
+            <el-table-column
+                v-if="table_data.table.select=='yhlb'"
+                prop="order"
+                sortable
+                :sort-method='date_sort'
+                label="订单数量">
             </el-table-column>
             <el-table-column
                 v-if="table_data.table.select=='sjlb'"
@@ -94,7 +153,7 @@
                 label="门店数量">
             </el-table-column>
             <el-table-column
-                v-if="table_data.table.select=='sjlb'"
+                v-if="table_data.table.select=='sjlb' || table_data.table.select=='yhlb'"
                 prop="address"
                 label="地区">
             </el-table-column>
@@ -123,7 +182,21 @@
                 :sort-method='date_sort'
                 label="进驻日期">
             </el-table-column>
-            <el-table-column label="禁用账户" v-if="table_data.table.select=='sjlb' || table_data.table.select=='mdlb'">
+            <el-table-column
+                v-if="table_data.table.select=='yhlb'"
+                prop="time02"
+                sortable
+                :sort-method='date_sort'
+                label="上次消费时间">
+            </el-table-column>
+            <el-table-column
+                v-if="table_data.table.select=='tjxx'"
+                prop="time02"
+                sortable
+                :sort-method='date_sort'
+                label="最近登录时间">
+            </el-table-column>
+            <el-table-column label="禁用账户" v-if="table_data.table.select=='sjlb' || table_data.table.select=='mdlb' || table_data.table.select=='yhlb'">
                 <template slot-scope="scope">
                     <el-switch
                         v-model="scope.row.ban == 1 ? true : false"
@@ -133,9 +206,10 @@
                     </el-switch>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" v-if="table_data.table.select=='sjlb' || table_data.table.select=='mdlb' || table_data.table.select=='splb'">
+            <el-table-column label="操作" v-if="table_data.table.select=='sjlb' || table_data.table.select=='mdlb' || table_data.table.select=='splb' || table_data.table.select=='yhlb'">
                 <template slot-scope="scope">
                     <el-button type="text" @click="look_up(scope.row)">查看</el-button>
+                    <!-- <el-button type="text" @click="look_up(scope.row)" v-else>编辑</el-button> -->
                 </template>
             </el-table-column>
         </el-table>
@@ -146,7 +220,7 @@
                 @size-change="change_page_size"
                 @current-change="change_page"
                 :current-page="table_data.page.current_page"
-                :page-sizes="[5, 10, 15, 20]"
+                :page-sizes="[10]"
                 :page-size="10"
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="table_data.page.total">
@@ -194,8 +268,16 @@ export default {
         //将时间戳转为日期格式
         var lists = this.table_data.table.lists;
         var length = this.table_data.table.lists.length;
-        for (var i = 0; i < length; i ++) {
-            this.table_data.table.lists[i].time = new Date(lists[i].time * 1000).toLocaleDateString().replace(/\//g, "-");
+        if (this.table_data.table.lists[0].time) {
+            for (var i = 0; i < length; i ++) {
+                // this.table_data.table.lists[i].time = new Date(lists[i].time * 1000).toLocaleDateString().replace(/\//g, "-");
+                this.table_data.table.lists[i].time = this.$moment(lists[i].time * 1000).format('YYYY-MM-DD');
+            };
+        };
+        if (this.table_data.table.lists[0].time02) {
+            for (var i = 0; i < length; i ++) {
+                this.table_data.table.lists[i].time02 = this.$moment(lists[i].time02 * 1000).format('YYYY-MM-DD HH:mm:ss');
+            };
         };
     }
 }

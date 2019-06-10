@@ -2,6 +2,11 @@ import Vue from "vue";
 import Router from "vue-router";
 Vue.use(Router);
 
+//引入NProgress进度条及样式
+import NProgress from 'nprogress';
+import 'nprogress/nprogress.css';
+Vue.use(NProgress);
+
 import layout from "@/views/layout/index.vue";
 
 import home from './modules/home.js';
@@ -9,7 +14,7 @@ import business from './modules/business.js';
 import users from './modules/users.js';
 // import set from './modules/set.js';
 
-export default new Router({
+const routers = new Router({
     // mode: "history",
     // base: process.env.BASE_URL,
     routes: [
@@ -47,3 +52,23 @@ export default new Router({
         // set,
     ]
 });
+
+//全局导航守卫
+routers.beforeEach((to, from, next) => {
+    NProgress.start();
+    if (to.path == '/login') {
+        next();
+        NProgress.done();
+    }else {
+        if (!sessionStorage.getItem('token')) {
+            next({ path: '/login' });
+            NProgress.done();
+        }else {
+            next();
+            document.title = to.meta.title ? '轻酷后台-' +  to.meta.title : '轻酷-后台管理';
+            NProgress.done();
+        };
+    }
+});
+
+export default routers;
