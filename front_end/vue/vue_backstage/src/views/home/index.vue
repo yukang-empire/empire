@@ -142,14 +142,6 @@ export default {
                 card_out: 0,
                 store_apply: 0,
                 feedback: 0,
-                weeks_order: {
-                    num: 0,
-                    total_amount: 0
-                },
-                month_order: {
-                    num: 0,
-                    total_amount: 0
-                }
             },
             //API可查看官网文档 https://www.echartsjs.com/option.html#title;
             //周图表数据
@@ -176,6 +168,11 @@ export default {
                     borderColor: 'rgb(164, 123, 208)',
                     borderWidth: '2',
                 },
+                weeks_order: {
+                    num: 0,
+                    total_amount: 0
+                },
+                chart_weeks_order: {}
             },
             //月图表数据
             echarts_data_mon: {
@@ -201,6 +198,11 @@ export default {
                     borderColor: 'rgb(164, 123, 208)',
                     borderWidth: '2',
                 },
+                month_order: {
+                    num: 0,
+                    total_amount: 0
+                },
+                chart_month_order: {}
             },
         }
     },
@@ -216,30 +218,40 @@ export default {
 
     },
     created () {
+        var that = this;
+        //获取首页数据
         this.$axios.post('/api/statistical').then(response => {
-            console.log(response);
-            this.home_data = response.data.data;
-        });
-        //获取最近一周和最近一月的日期
-        var time = new Date();
-        for (var i = 0; i < 31; i++) {
-            var prev_time = new Date(time.getTime() - i*24*60*60*1000);
-            var final_time = this.init_time(prev_time);
-            if (i < 7) {
-                this.echarts_data_week.xAxis.data.unshift(final_time);
+            var res = response.data.data;
+            that.home_data = res;
+            console.log(res);
+            //初始化周图表和月图表的数据
+            that.echarts_data_week.weeks_order = res.weeks_order;
+            that.echarts_data_mon.month_order = res.month_order;
+            that.echarts_data_week.chart_weeks_order = res.chart_weeks_order;
+            that.echarts_data_mon.chart_month_order = res.chart_month_order;
+
+            //获取最近一周和最近一月的日期
+            var time = new Date();
+            var week_value = that.echarts_data_week.chart_weeks_order;
+            var mon_value = that.echarts_data_mon.chart_month_order;
+            var is_week = week_value.length > 0;
+            for (var i = 0; i < 31; i++) {
+                var prev_time = new Date(time.getTime() - i*24*60*60*1000);
+                var final_time = that.init_time(prev_time);
+                if (i < 7) {
+                    that.echarts_data_week.xAxis.data.unshift(final_time);
+                    if (is_week) {
+                        var week_days = week_value[i] ? week_value[i].total_amount : 0;
+                        that.echarts_data_week.series[0].data.unshift(week_days);
+                    };
+                };
+                that.echarts_data_mon.xAxis.data.unshift(final_time);
+                var mon_days = mon_value[i] ? mon_value[i].total_amount : 0;
+                that.echarts_data_mon.series[0].data.unshift(mon_days);
             };
-            this.echarts_data_mon.xAxis.data.unshift(final_time);
-        };
-        this.echarts_data_week.series[0].data = [5000, 22000, 18000, 28000, 30000, 18000, 22000];
-        this.echarts_data_mon.series[0].data = [
-            5000, 22000, 18000, 28000, 30000, 18000, 22000,18000, 28000,18000,
-            5000, 22000, 18000, 28000, 30000, 18000, 22000,18000, 28000,18000,
-            5000, 22000, 18000, 28000, 30000, 18000, 22000,18000, 28000,18000,18000,
-        ];
-    },
-    mounted () {
+        });
         
-    }
+    },
 }
 </script>
 

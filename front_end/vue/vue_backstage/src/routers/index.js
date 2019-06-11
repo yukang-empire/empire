@@ -50,7 +50,9 @@ const routers = new Router({
         business,
         users,
         // set,
-    ]
+    ],
+    //所有页面自动滚动到顶部
+    // scrollBehavior: () => ({ y: 0 }),
 });
 
 //全局导航守卫

@@ -16,7 +16,7 @@
                 </el-input>
                 <el-button type="primary">搜索</el-button>
                 
-                <span class="time">上次消费时间：</span>
+                <span class="time">最近登录时间：</span>
                 <el-date-picker
                     v-model="search_time"
                     type="datetimerange"
@@ -92,7 +92,8 @@ export default {
                     //需要改变的行开关状态
                     switch: {
                         index: null,
-                        ban: null
+                        ban: null,
+                        user_sn: ''
                     },
                 },
                 //页码
@@ -100,7 +101,7 @@ export default {
                     //当前页码
                     current_page: 1,
                     //总数量
-                    total: 30,
+                    total: null,
                 }
             },
             //搜索的内容
@@ -113,36 +114,74 @@ export default {
         off_dialog (state) {
             //确定则修改此行的ban状态
             if (state == 'sure') {
-                this.table_data.table.lists[this.table_data.table.switch.index].ban = this.table_data.table.switch.ban;
+                this.table_data.table.lists[this.table_data.table.switch.index].is_lock = this.table_data.table.switch.is_lock;
+                var params = {
+                    userSN: this.table_data.table.switch.user_sn,
+                    isLock: this.table_data.table.switch.is_lock
+                };
+                this.$axios.post('/api/userLock', JSON.stringify(params)).then(response => {
+                    console.log(response);
+                });
             };
             this.dialog.is_open = false;
         },
         //改变页码页数
         change_page(val) {
-            console.log(`当前页: ${val}`);
+            var params = {
+                page: val,
+                size: 10,
+                where: {
+                    user_sn: '',
+                    stime: '',
+                    etime: ''
+                }
+            };
+            this.get_lists(params);
         },
         //改变每页的条数
         change_page_size(val) {
             console.log(`每页 ${val} 条`);
         },
         //点击禁用/开启账户
-        change_ban (index, val) {
+        change_ban (index, val, user_sn) {
             this.dialog.is_open = true;
             if (val == 1) {
-                this.dialog.msg = '是否禁用?';
-                //改为禁用 提交给弹框处理
-                this.table_data.table.switch.ban = 0;
-            }else {
                 this.dialog.msg = '是否开启?';
+                //改为禁用 提交给弹框处理
+                this.table_data.table.switch.is_lock = 0;
+            }else {
+                this.dialog.msg = '是否禁用?';
                 //改为开启 交接给弹框处理
-                this.table_data.table.switch.ban = 1;
+                this.table_data.table.switch.is_lock = 1;
             };
             this.table_data.table.switch.index = index;
+            this.table_data.table.switch.user_sn = user_sn;
         },
         //查看
         look_up (row) {
             this.$router.push({ path: '/yhgl/yhxq', query: { id: row.id } });
+        },
+        //请求数据
+        get_lists(params) {
+            this.$axios.post('/api/getUserList', JSON.stringify(params)).then(response => {
+                console.log(response);
+                var res = response.data;
+                this.table_data.table.lists = res.data;
+                this.table_data.page.total = parseInt(res.count);
+            })
         }
+    },
+    mounted () {
+        var params = {
+            page: 1,
+            size: 10,
+            where: {
+                user_sn: '',
+                stime: '',
+                etime: ''
+            }
+        };
+        this.get_lists(params);
     }
 }
 </script>

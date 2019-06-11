@@ -54,45 +54,57 @@
             <!-- 用户列表 -->
             <el-table-column 
                 v-if="table_data.table.select=='yhlb'"
-                prop="id"
+                prop="user_id"
                 sortable
                 :sort-method='date_sort'
                 label="用户ID">
             </el-table-column>
             <el-table-column
                 v-if="table_data.table.select=='yhlb'"
-                prop="name"
+                prop="nickname"
                 label="昵称">
             </el-table-column>
             <!-- 统计信息 -->
             <el-table-column
                 v-if="table_data.table.select=='tjxx'"
                 prop="xfje"
+                sortable
+                :sort-method='date_sort'
                 label="累计消费金额">
             </el-table-column>
             <el-table-column
                 v-if="table_data.table.select=='tjxx'"
                 prop="ddsl"
+                sortable
+                :sort-method='date_sort'
                 label="订单数量">
             </el-table-column>
             <el-table-column
                 v-if="table_data.table.select=='tjxx'"
                 prop="yqhy"
+                sortable
+                :sort-method='date_sort'
                 label="邀请好友数">
             </el-table-column>
             <el-table-column
                 v-if="table_data.table.select=='tjxx'"
                 prop="yhj"
+                sortable
+                :sort-method='date_sort'
                 label="优惠券">
             </el-table-column>
             <el-table-column
                 v-if="table_data.table.select=='tjxx'"
                 prop="kd"
+                sortable
+                :sort-method='date_sort'
                 label="酷点">
             </el-table-column>
             <el-table-column
                 v-if="table_data.table.select=='tjxx'"
                 prop="kb"
+                sortable
+                :sort-method='date_sort'
                 label="酷币">
             </el-table-column>
             </el-table-column>
@@ -123,23 +135,23 @@
             </el-table-column>
             <el-table-column
                 v-if="table_data.table.select=='sjlb' || table_data.table.select=='yhlb'"
-                prop="phone"
+                prop="mobile"
                 label="手机号">
             </el-table-column>
             <el-table-column
                 v-if="table_data.table.select=='yhlb'"
-                prop="price"
+                prop="total_amount"
                 sortable
                 :sort-method='date_sort'
                 label="消费金额">
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
                 v-if="table_data.table.select=='yhlb'"
                 prop="order"
                 sortable
                 :sort-method='date_sort'
                 label="订单数量">
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column
                 v-if="table_data.table.select=='sjlb'"
                 prop="people"
@@ -154,7 +166,7 @@
             </el-table-column>
             <el-table-column
                 v-if="table_data.table.select=='sjlb' || table_data.table.select=='yhlb'"
-                prop="address"
+                prop="city"
                 label="地区">
             </el-table-column>
             <el-table-column
@@ -184,10 +196,10 @@
             </el-table-column>
             <el-table-column
                 v-if="table_data.table.select=='yhlb'"
-                prop="time02"
+                prop="reg_time"
                 sortable
                 :sort-method='date_sort'
-                label="上次消费时间">
+                label="最近登录时间">
             </el-table-column>
             <el-table-column
                 v-if="table_data.table.select=='tjxx'"
@@ -199,8 +211,8 @@
             <el-table-column label="禁用账户" v-if="table_data.table.select=='sjlb' || table_data.table.select=='mdlb' || table_data.table.select=='yhlb'">
                 <template slot-scope="scope">
                     <el-switch
-                        v-model="scope.row.ban == 1 ? true : false"
-                        @change='change_ban(scope.$index, scope.row.ban)'
+                        v-model="scope.row.is_lock == 0 ? true : false"
+                        @change='change_ban(scope.$index, scope.row.is_lock, scope.row.user_sn)'
                         active-color="#13ce66"
                         inactive-color="#ccc">
                     </el-switch>
@@ -252,8 +264,8 @@ export default {
             this.$emit('change_page_size', val);
         },
         //点击禁用/开启账户
-        change_ban (index, val) {
-            this.$emit('change_ban', index, val);
+        change_ban (index, val, user_sn) {
+            this.$emit('change_ban', index, val, user_sn);
         },
         //查看详情
         look_up (row) {
@@ -265,7 +277,7 @@ export default {
         }
     },
     mounted () {
-        //将时间戳转为日期格式
+        //将时间戳转为日期格式(异步 因为要请求后台数据)
         var lists = this.table_data.table.lists;
         var length = this.table_data.table.lists.length;
         if (this.table_data.table.lists[0].time) {

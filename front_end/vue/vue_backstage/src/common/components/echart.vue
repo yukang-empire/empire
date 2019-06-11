@@ -7,9 +7,13 @@
             <span>收入趋势</span>
         </p>
         <div class="echart_title flex_between">
-            <h4>
-                <span>本月订单总数: 320</span>
-                <span>本月订单总额: ¥126000</span>
+            <h4 v-if='is_select'>
+                <span>本周订单总数: {{ echarts_data_week.weeks_order.num }}</span>
+                <span>本周订单总额: ¥{{ echarts_data_week.weeks_order.total_amount }}</span>
+            </h4>
+            <h4 v-show='!is_select'>
+                <span>本月订单总数: {{ echarts_data_mon.month_order.num }}</span>
+                <span>本月订单总额: ¥{{ echarts_data_mon.month_order.total_amount }}</span>
             </h4>
             <div>
                 <span :class="{select: is_select}" @click='switch_select(0)'>本周</span>
@@ -51,11 +55,21 @@ export default {
                 Echarts_mon.init(this.$refs.echarts_mon).setOption(this.echarts_data_mon);
                 this.is_select = false;
             };
-        }
+        },
+        //格式化时间为月-日
+        init_time (time) {
+            //获取月份 index从0开始算的 所以加1
+            var mon = time.getMonth() + 1 < 10 ? '0' + (time.getMonth() + 1) : time.getMonth() + 1;
+            //获取日
+            var day = time.getDate() < 10 ? '0' + (time.getDate()) : time.getDate();
+            return mon + '-' + day;
+        },
     },
     mounted () {
-        //只加载周图表 月图表不要一起加载 否则宽度会有问题
-        Echarts_week.init(this.$refs.echarts_week).setOption(this.echarts_data_week);
+        //只加载周图表(需要异步 因为数据是请求后台得来的) 月图表不要一起加载 否则宽度会有问题
+        setTimeout(() => {
+            Echarts_week.init(this.$refs.echarts_week).setOption(this.echarts_data_week);
+        }, 300);
     }
 }
 </script>
