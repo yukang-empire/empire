@@ -62,7 +62,7 @@
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-shitu_gaikuang"></use>
                 </svg>
-                <span>代办事项</span>
+                <span>待办事项</span>
             </p>
             <div class="profit wait">
                 <ul class="flex_between">

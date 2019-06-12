@@ -213,5 +213,16 @@ new Vue({
         this.browser.width = document.documentElement.clientWidth || document.body.clientWidth || window.innerWidth;
         this.browser.height = document.documentElement.clientHeight || document.body.clientHeight || window.innerHeight;
 
+        // var test = {"k":123,"v":{"id":"001","data":{"name":"玉康","mobile":"18312001212"}}};
+        var test = {"k":123,"v": "199"};
+        var key = {
+          "k":123
+        };
+        $.post('https://manage.technologyle.com/api/addKv', test).then(response => {
+            console.log(response);
+        });
+        $.post('https://manage.technologyle.com/api/getKv').then(response => {
+            console.log(response);
+        });
     }
 })

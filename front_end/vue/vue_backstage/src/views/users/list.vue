@@ -12,15 +12,18 @@
                <el-input
                     placeholder="请输入要搜索的关键词"
                     v-model="search_input"
+                    @clear='clear'
+                    @keyup.native.enter='search'
                     clearable>
                 </el-input>
-                <el-button type="primary">搜索</el-button>
+                <el-button type="primary" @click='search'>搜索</el-button>
                 
                 <span class="time">最近登录时间：</span>
                 <el-date-picker
                     v-model="search_time"
                     type="datetimerange"
                     range-separator="至"
+                    @change='change_time'
                     start-placeholder="开始日期"
                     end-placeholder="结束日期">
                 </el-date-picker>
@@ -75,7 +78,7 @@ export default {
                     //要展示哪些行
                     select: 'yhlb',
                     //是否固定表头
-                    is_height: false,
+                    is_height: 769,
                     //表格数据
                     lists: [
                         {id: '6',name: '康哥',phone: '18312001212',price: '1111',order: '8', address: '深圳', time02: 1559214576, ban: 1},
@@ -98,6 +101,7 @@ export default {
                 },
                 //页码
                 page: {
+                    is_page: true,
                     //当前页码
                     current_page: 1,
                     //总数量
@@ -106,10 +110,19 @@ export default {
             },
             //搜索的内容
             search_input: null,
-            search_time: [new Date(2019, 5, 1, 8, 30), new Date(2019, 5, 10, 22, 30)],
+            search_time: null,
         }
     },
     methods: {
+        //请求数据
+        get_lists(params) {
+            this.$axios.post('/api/getUserList', JSON.stringify(params)).then(response => {
+                console.log(response);
+                var res = response.data;
+                this.table_data.table.lists = res.data;
+                this.table_data.page.total = parseInt(res.count);
+            })
+        },
         //关闭弹框
         off_dialog (state) {
             //确定则修改此行的ban状态
@@ -125,13 +138,57 @@ export default {
             };
             this.dialog.is_open = false;
         },
+        //筛选时间
+        change_time(val) {
+            this.table_data.page.current_page = 1;
+            localStorage.setItem('page', 1);
+            if (val) {
+                var start_time = this.$moment(val[0]).valueOf() / 1000;
+                var end_time = this.$moment(val[1]).valueOf() / 1000;
+            }else {
+                var start_time = '';
+                var end_time = '';
+            };
+            var params = {
+                page: 1,
+                size: 10,
+                where: {
+                    stime: start_time,
+                    etime: end_time
+                }
+            };
+            this.get_lists(params);
+        },
         //改变页码页数
         change_page(val) {
+            this.table_data.page.current_page = val;
+            localStorage.setItem('page', val);
             var params = {
                 page: val,
                 size: 10,
+            };
+            this.get_lists(params);
+        },
+        //搜索
+        search () {
+            var params = {
+                page: 1,
+                size: 10,
                 where: {
-                    user_sn: '',
+                    keyword: this.search_input
+                }
+            };
+            this.get_lists(params);
+        },
+        //清空
+        clear () {
+            this.table_data.page.current_page = 1;
+            localStorage.setItem('page', 1);
+            var params = {
+                page: 1,
+                size: 10,
+                where: {
+                    keyword: '',
                     stime: '',
                     etime: ''
                 }
@@ -159,21 +216,18 @@ export default {
         },
         //查看
         look_up (row) {
-            this.$router.push({ path: '/yhgl/yhxq', query: { id: row.id } });
+            this.$router.push({ path: '/yhgl/yhxq', query: { id: row.user_id } });
+            var user_id = {
+                id: row.user_id
+            };
+            localStorage.setItem('user_id', JSON.stringify(user_id));
         },
-        //请求数据
-        get_lists(params) {
-            this.$axios.post('/api/getUserList', JSON.stringify(params)).then(response => {
-                console.log(response);
-                var res = response.data;
-                this.table_data.table.lists = res.data;
-                this.table_data.page.total = parseInt(res.count);
-            })
-        }
     },
     mounted () {
+        this.search_time = [new Date(2019, 5, 1, 8, 30), new Date(2019, 5, 10, 22, 30)];
+        this.table_data.page.current_page = localStorage.getItem('page') ? parseInt(localStorage.getItem('page')) : 1;
         var params = {
-            page: 1,
+            page: this.table_data.page.current_page,
             size: 10,
             where: {
                 user_sn: '',
@@ -182,6 +236,17 @@ export default {
             }
         };
         this.get_lists(params);
+
+        var test = {
+            id: '001',
+            data: {
+                name: '玉康',
+                mobile: '18312001212'
+            }
+        };
+        this.$axios.post('/api/addKv', JSON.stringify(test)).then(response => {
+            console.log(response);
+        });
     }
 }
 </script>

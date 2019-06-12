@@ -8,7 +8,7 @@ Vue.prototype.$axios= axios;
 
 //基础样式和阿里图标
 import '@/common/styles/base.css';
-// import '@/common/styles/iconfont.js';
+import '@/common/styles/iconfont.js';
 
 import moment from 'moment';
 moment.locale('zh-cn');

@@ -10,7 +10,7 @@
             <p class="copy_title">基本信息：</p>
             <div class="base_info flex_between">
                 <div class="left">
-                    <img src="@/common/imgs/logo.png" alt="">
+                    <img :src="base_data.head_pic" alt="">
                 </div>
                 <div class="middle flex_center">
                     <div>
@@ -20,10 +20,10 @@
                         <p>地区：</p>
                     </div>
                     <div>
-                        <p>康大大</p>
-                        <p>90后</p>
-                        <p>今天</p>
-                        <p>深圳</p>
+                        <p>{{ base_data.nickname }}</p>
+                        <p>{{ base_data.birthday }}</p>
+                        <p>{{ base_data.reg_time }}</p>
+                        <p>{{ base_data.province + base_data.city }}</p>
                     </div>
                 </div>
                 <div class="right">
@@ -34,10 +34,10 @@
                         <p>详细地址：</p>
                     </div>
                     <div>
-                        <p>男</p>
-                        <p>18312001212</p>
-                        <p>已认证</p>
-                        <p>深圳某处地方</p>
+                        <p>{{ base_data.sex == 1 ? '男' : '女' }}</p>
+                        <p>{{ base_data.mobile }}</p>
+                        <p>{{ base_data.idcard > 0 ? '已认证' : '未认证' }}</p>
+                        <p>{{ base_data.address ? base_data.address : base_data.province + base_data.city + base_data.district }}</p>
                     </div>
                 </div>
             </div>
@@ -51,13 +51,8 @@
                 <span>门店信息</span>
             </p> -->
             <p class="copy_title">统计信息：</p>
-            <!-- 门店列表 -->
             <table_page
             :table_data='table_data_tj'
-            @change_page='change_page_tj'
-            @change_page_size='change_page_size_tj'
-            @change_ban='change_ban_tj'
-            @look_up='look_up_tj'
             />
         </div>
 
@@ -69,112 +64,122 @@
                 <span>商品信息</span>
             </p> -->
             <p class="copy_title">订单记录：</p>
-            <!-- 商品列表 -->
             <table_page
             :table_data='table_data_dd'
             @change_page='change_page_dd'
             @change_page_size='change_page_size_dd'
-            @change_ban='change_ban_dd'
             @look_up='look_up_dd'
             />
         </div>
 
-        <!-- 弹框 -->
-        <dialog_component_tj :dialog='dialog_tj' @off_dialog='off_dialog_tj' />
-        <dialog_component_dd :dialog='dialog_dd' @off_dialog='off_dialog_dd' />
+        <div class="repeat_div">
+            <!-- <p>
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-shangpin"></use>
+                </svg>
+                <span>商品信息</span>
+            </p> -->
+            <p class="copy_title">充值记录：</p>
+            <table_page
+            :table_data='table_data_cz'
+            @change_page='change_page_cz'
+            @change_page_size='change_page_size_cz'
+            />
+        </div>
 
     </div>
 </template>
 
 <script>
-import dialog_component_tj from '@/common/components/dialog.vue';
-import dialog_component_dd from '@/common/components/dialog.vue';
 import table_page from '@/common/components/table_page.vue';
 
 export default {
     name: 'user_details',
     components: {
-        dialog_component_tj,
-        dialog_component_dd,
         table_page
     },
     data () {
         return {
-            //弹框数据
-            dialog_tj: {
-                is_open: false,
-                msg: '',
-                type: '1',
+            base_data: {
+                head_pic: ''
             },
-            dialog_dd: {
-                is_open: false,
-                msg: '',
-                type: '1',
-            },
-            //表格和页码的数据(门店的)
+            //表格和页码的数据(统计信息)
             table_data_tj: {
                 //表格
                 table: {
                     //要展示哪些行
                     select: 'tjxx',
                     //是否固定表头
-                    is_height: 300,
+                    is_height: 126,
                     //表格数据
                     lists: [
-                        {xfje: '6',ddsl: '1',yqhy: '1',yhj: '25',kd: 10,kb: 1, time02: 1559214576},
-                        {xfje: '7',ddsl: '2',yqhy: '2',yhj: '25',kd: 9,kb: 1, time02: 1559214576},
-                        {xfje: '8',ddsl: '3',yqhy: '3',yhj: '25',kd: 8,kb: 1, time02: 1559214576},
-                        {xfje: '9',ddsl: '4',yqhy: '4',yhj: '25',kd: 7,kb: 1, time02: 1559214576},
-                        {xfje: '10',ddsl: '4',yqhy: '5',yhj: '25',kd: 6,kb: 1, time02: 1559214576},
-                        {xfje: '11',ddsl: '5',yqhy: '6',yhj: '25',kd: 5,kb: 1, time02: 1559214576},
-                        {xfje: '12',ddsl: '6',yqhy: '7',yhj: '25',kd: 4,kb: 1, time02: 1559214576},
-                        {xfje: '13',ddsl: '7',yqhy: '8',yhj: '25',kd: 3,kb: 1, time02: 1559214576},
-                        {xfje: '14',ddsl: '8',yqhy: '9',yhj: '25',kd: 2,kb: 1, time02: 1559214576},
-                        {xfje: '15',ddsl: '9',yqhy: '10',yhj: '25',kd: 1,kb: 1, time02: 1559214576},
+                        {ddsl: '1',yqhy: '1',yhj: '25',kd: 10,},
                     ],
-                    //需要改变的行开关状态
-                    switch: {
-                        index: null,
-                        ban: null
-                    },
                 },
                 //页码
                 page: {
+                    //是否需要页码(仅有1页的情况下)
+                    is_page: false,
                     //当前页码
                     current_page: 1,
                     //总数量
                     total: 30,
                 }
             },
-            //表格和页码的数据(商品的)
+            //表格和页码的数据(订单记录)
             table_data_dd: {
                 //表格
                 table: {
                     //要展示哪些行
-                    select: 'splb',
+                    select: 'ddjl',
                     //是否固定表头
                     is_height: 300,
                     //表格数据
                     lists: [
-                        {id: '6',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 10},
-                        {id: '7',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 9},
-                        {id: '8',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 8},
-                        {id: '9',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 7},
-                        {id: '10',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 6},
-                        {id: '11',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 5},
-                        {id: '12',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 4},
-                        {id: '13',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 3},
-                        {id: '14',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 2},
-                        {id: '15',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 1},
+                        {ddbh: '46456546434',name: 'Cassy',ddmc: '健身房次卡',zffs: '微信支付', ddzt: '待支付', tjsj: '2019-01-25 10:55', ddje: '100.00'},
+                        {ddbh: '46456546434',name: 'Cassy',ddmc: '共享卡预约',zffs: '微信支付', ddzt: '待核销', tjsj: '2019-01-25 10:55', ddje: '100.00'},
+                        {ddbh: '46456546434',name: 'Cassy',ddmc: '健身房次卡',zffs: '微信支付', ddzt: '待支付', tjsj: '2019-01-25 10:55', ddje: '100.00'},
+                        {ddbh: '46456546434',name: 'Cassy',ddmc: '健身房次卡',zffs: '微信支付', ddzt: '待支付', tjsj: '2019-01-25 10:55', ddje: '100.00'},
+                        {ddbh: '46456546434',name: 'Cassy',ddmc: '健身房次卡',zffs: '微信支付', ddzt: '待支付', tjsj: '2019-01-25 10:55', ddje: '100.00'},
+                        {ddbh: '46456546434',name: 'Cassy',ddmc: '健身房次卡',zffs: '微信支付', ddzt: '待支付', tjsj: '2019-01-25 10:55', ddje: '100.00'},
+                        {ddbh: '46456546434',name: 'Cassy',ddmc: '健身房次卡',zffs: '微信支付', ddzt: '待支付', tjsj: '2019-01-25 10:55', ddje: '100.00'},
+                        {ddbh: '46456546434',name: 'Cassy',ddmc: '健身房次卡',zffs: '微信支付', ddzt: '待支付', tjsj: '2019-01-25 10:55', ddje: '100.00'},
+                        {ddbh: '46456546434',name: 'Cassy',ddmc: '健身房次卡',zffs: '微信支付', ddzt: '待支付', tjsj: '2019-01-25 10:55', ddje: '100.00'},
                     ],
-                    //需要改变的行开关状态
-                    switch: {
-                        index: null,
-                        ban: null
-                    },
                 },
                 //页码
                 page: {
+                    is_page: true,
+                    //当前页码
+                    current_page: 1,
+                    //总数量
+                    total: 30,
+                }
+            },
+            //表格和页码的数据(充值记录)
+            table_data_cz: {
+                //表格
+                table: {
+                    //要展示哪些行
+                    select: 'czjl',
+                    //是否固定表头
+                    is_height: 300,
+                    //表格数据
+                    lists: [
+                        {czbh: '46456546434',czkb: '100.00',zskd: '100.00',zffs: '微信支付', zfje: '100.00', czsj: '2019-01-25 10:55'},
+                        {czbh: '46456546434',czkb: '100.00',zskd: '100.00',zffs: '支付宝支付', zfje: '100.00', czsj: '2019-01-25 10:55'},
+                        {czbh: '46456546434',czkb: '100.00',zskd: '100.00',zffs: '微信支付', zfje: '100.00', czsj: '2019-01-25 10:55'},
+                        {czbh: '46456546434',czkb: '100.00',zskd: '100.00',zffs: '微信支付', zfje: '100.00', czsj: '2019-01-25 10:55'},
+                        {czbh: '46456546434',czkb: '100.00',zskd: '100.00',zffs: '微信支付', zfje: '100.00', czsj: '2019-01-25 10:55'},
+                        {czbh: '46456546434',czkb: '100.00',zskd: '100.00',zffs: '微信支付', zfje: '100.00', czsj: '2019-01-25 10:55'},
+                        {czbh: '46456546434',czkb: '100.00',zskd: '100.00',zffs: '微信支付', zfje: '100.00', czsj: '2019-01-25 10:55'},
+                        {czbh: '46456546434',czkb: '100.00',zskd: '100.00',zffs: '微信支付', zfje: '100.00', czsj: '2019-01-25 10:55'},
+                        {czbh: '46456546434',czkb: '100.00',zskd: '100.00',zffs: '微信支付', zfje: '100.00', czsj: '2019-01-25 10:55'},
+                    ],
+                },
+                //页码
+                page: {
+                    is_page: true,
                     //当前页码
                     current_page: 1,
                     //总数量
@@ -184,72 +189,38 @@ export default {
         }
     },
     methods: {
-        //关闭弹框
-        off_dialog_tj (state) {
-            //确定则修改此行的ban状态
-            if (state == 'sure') {
-                this.table_data_tj.table.lists[this.table_data_tj.table.switch.index].ban = this.table_data_tj.table.switch.ban;
-            };
-            this.dialog_tj.is_open = false;
-        },
-        off_dialog_dd (state) {
-            //确定则修改此行的ban状态
-            if (state == 'sure') {
-                this.table_data_dd.table.lists[this.table_data_dd.table.switch.index].ban = this.table_data_dd.table.switch.ban;
-            };
-            this.dialog_dd.is_open = false;
-        },
         //改变页码页数
-        change_page_tj(val) {
+        change_page_cz(val) {
             console.log(`当前页: ${val}`);
         },
         change_page_dd(val) {
             console.log(`当前页: ${val}`);
         },
         //改变每页的条数
-        change_page_size_tj(val) {
+        change_page_size_cz(val) {
             console.log(`每页 ${val} 条`);
         },
         change_page_size_dd(val) {
             console.log(`每页 ${val} 条`);
-        },
-        //点击禁用/开启账户
-        change_ban_tj (index, val) {
-            this.dialog_tj.is_open = true;
-            if (val == 1) {
-                this.dialog_tj.msg = '是否禁用?';
-                //改为禁用 提交给弹框处理
-                this.table_data_tj.table.switch.ban = 0;
-            }else {
-                this.dialog_tj.msg = '是否开启?';
-                //改为开启 交接给弹框处理
-                this.table_data_tj.table.switch.ban = 1;
-            };
-            this.table_data_tj.table.switch.index = index;
-        },
-        change_ban_dd (index, val) {
-            this.dialog_dd.is_open = true;
-            if (val == 1) {
-                this.dialog_dd.msg = '是否禁用?';
-                //改为禁用 提交给弹框处理
-                this.table_data_dd.table.switch.ban = 0;
-            }else {
-                this.dialog_dd.msg = '是否开启?';
-                //改为开启 交接给弹框处理
-                this.table_data_dd.table.switch.ban = 1;
-            };
-            this.table_data_dd.table.switch.index = index;
-        },
-        //查看详情
-        look_up_tj (row) {
-            this.$router.push({ path: '/business/mdlb/mdxq', query: { id: row.id } });
         },
         look_up_dd (row) {
             this.$router.push({ path: '/business/splb/spxq', query: { id: row.id } });
         },
     },
     mounted () {
-        console.log(this.$route.query);
+        var default_id = { id: '699766' };
+        var id = localStorage.getItem('user_id') ? JSON.parse(localStorage.getItem('user_id')) : default_id;
+        this.$axios.post('/api/getUser', JSON.stringify(id)).then(response => {
+            console.log(response);
+            var res = response.data.data;
+            this.base_data = res;
+            this.table_data_tj.table.lists[0].total_amount = res.total_amount;
+            this.table_data_tj.table.lists[0].total_amount = res.total_amount;
+            this.table_data_tj.table.lists[0].total_amount = res.total_amount;
+            this.table_data_tj.table.lists[0].total_amount = res.total_amount;
+            this.table_data_tj.table.lists[0].cool_B = res.cool_B;
+            this.table_data_tj.table.lists[0].last_login = res.last_login;
+        });
     }
 }
 </script>
@@ -262,6 +233,7 @@ export default {
 
         div {
             line-height: 2rem;
+            height: 130px;
 
             p {
                 margin: 0;
@@ -285,6 +257,7 @@ export default {
         width: 60px;
         height: 60px;
         margin: 10px 0 0 20px;
+        border-radius: 50%;
     }
     .middle,.right {
         margin-right: 10%;

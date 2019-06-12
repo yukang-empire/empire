@@ -58,7 +58,7 @@ const routers = new Router({
 //全局导航守卫
 routers.beforeEach((to, from, next) => {
     NProgress.start();
-    if (to.path == '/login') {
+    if (to.path == '/login' || to.path == '/find' || to.path == '/register') {
         next();
         NProgress.done();
     }else {

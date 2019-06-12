@@ -63,7 +63,7 @@ export default {
 
 <style lang="scss">
     .el-tooltip__popper.is-light {
-        background: none !important;
+        background: none;
         border: none !important;
     }
     .el-tooltip__popper .popper__arrow {
