@@ -8,8 +8,8 @@
                 <span>筛选数据</span>
             </p>
             <div class="search_input">
-               <span>输入关键词：</span>
-               <el-input
+                <span>输入关键词：</span>
+                <el-input
                     placeholder="请输入要搜索的关键词"
                     v-model="search_input"
                     @clear='clear'
@@ -18,7 +18,7 @@
                 </el-input>
                 <el-button type="primary" @click='search'>搜索</el-button>
                 
-                <span class="time">最近登录时间：</span>
+                <span class="time">添加时间：</span>
                 <el-date-picker
                     v-model="search_time"
                     type="datetimerange"
@@ -76,21 +76,21 @@ export default {
                 //表格
                 table: {
                     //要展示哪些行
-                    select: 'yhlb',
+                    select: 'jslb',
                     //是否固定表头
                     is_height: 769,
                     //表格数据
                     lists: [
-                        {id: '6',name: '康哥',phone: '18312001212',price: '1111',order: '8', address: '深圳', time02: 1559214576, ban: 1},
-                        {id: '7',name: '康哥',phone: '18312001212',price: '2222',order: '8', address: '深圳', time02: 1559214576, ban: 1},
-                        {id: '8',name: '康哥',phone: '18312001212',price: '3333',order: '8', address: '深圳', time02: 1559215576, ban: 1},
-                        {id: '9',name: '康哥',phone: '18312001212',price: '4444',order: '8', address: '深圳', time02: 1559316576, ban: 1},
-                        {id: '10',name: '康哥',phone: '18312001212',price: '5555',order: '8', address: '深圳', time02: 1559417576, ban: 1},
-                        {id: '11',name: '康哥',phone: '18312001212',price: '6666',order: '8', address: '深圳', time02: 1559518576, ban: 1},
-                        {id: '12',name: '康哥',phone: '18312001212',price: '7777',order: '8', address: '深圳', time02: 1559619576, ban: 1},
-                        {id: '13',name: '康哥',phone: '18312001212',price: '8888',order: '8', address: '深圳', time02: 1559714576, ban: 1},
-                        {id: '14',name: '康哥',phone: '18312001212',price: '9999',order: '8', address: '深圳', time02: 1559814576, ban: 1},
-                        {id: '15',name: '康哥',phone: '18312001212',price: '10000',order: '8', address: '深圳', time02: 1559914576, ban: 1},
+                        {id: '6',name: '康哥',describe: 'BOSS',num: '1111',order: '8', address: '深圳', jslb_time: 1559214576, ban: 1},
+                        {id: '7',name: '康哥',describe: 'BOSS',num: '2222',order: '8', address: '深圳', jslb_time: 1559214576, ban: 1},
+                        {id: '8',name: '康哥',describe: 'BOSS',num: '3333',order: '8', address: '深圳', jslb_time: 1559215576, ban: 1},
+                        {id: '9',name: '康哥',describe: 'BOSS',num: '4444',order: '8', address: '深圳', jslb_time: 1559316576, ban: 1},
+                        {id: '10',name: '康哥',describe: 'BOSS',num: '5555',order: '8', address: '深圳', jslb_time: 1559417576, ban: 1},
+                        {id: '11',name: '康哥',describe: 'BOSS',num: '6666',order: '8', address: '深圳', jslb_time: 1559518576, ban: 1},
+                        {id: '12',name: '康哥',describe: 'BOSS',num: '7777',order: '8', address: '深圳', jslb_time: 1559619576, ban: 1},
+                        {id: '13',name: '康哥',describe: 'BOSS',num: '8888',order: '8', address: '深圳', jslb_time: 1559714576, ban: 1},
+                        {id: '14',name: '康哥',describe: 'BOSS',num: '9999',order: '8', address: '深圳', jslb_time: 1559814576, ban: 1},
+                        {id: '15',name: '康哥',describe: 'BOSS',num: '10000',order: '8', address: '深圳', jslb_time: 1559914576, ban: 1},
                     ],
                     //需要改变的行开关状态
                     switch: {
@@ -235,7 +235,7 @@ export default {
                 etime: ''
             }
         };
-        this.get_lists(params);
+        // this.get_lists(params);
     }
 }
 </script>

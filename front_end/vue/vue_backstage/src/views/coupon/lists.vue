@@ -1,5 +1,5 @@
 <template>
-    <div class="users_list">
+    <div class="coupon_list">
         <div class="repeat_div">
             <p>
                 <svg class="icon" aria-hidden="true">
@@ -8,8 +8,8 @@
                 <span>筛选数据</span>
             </p>
             <div class="search_input">
-               <span>输入关键词：</span>
-               <el-input
+                <span>输入关键词：</span>
+                <el-input
                     placeholder="请输入要搜索的关键词"
                     v-model="search_input"
                     @clear='clear'
@@ -18,7 +18,7 @@
                 </el-input>
                 <el-button type="primary" @click='search'>搜索</el-button>
                 
-                <span class="time">最近登录时间：</span>
+                <span class="time">使用截止时间：</span>
                 <el-date-picker
                     v-model="search_time"
                     type="datetimerange"
@@ -58,7 +58,7 @@ import dialog_component from '@/common/components/dialog.vue';
 import table_page from '@/common/components/table_page.vue';
 
 export default {
-    name: 'users_list',
+    name: 'coupon_list',
     components: {
         dialog_component,
         table_page
@@ -76,21 +76,21 @@ export default {
                 //表格
                 table: {
                     //要展示哪些行
-                    select: 'yhlb',
+                    select: 'yhjlb',
                     //是否固定表头
                     is_height: 769,
                     //表格数据
                     lists: [
-                        {id: '6',name: '康哥',phone: '18312001212',price: '1111',order: '8', address: '深圳', time02: 1559214576, ban: 1},
-                        {id: '7',name: '康哥',phone: '18312001212',price: '2222',order: '8', address: '深圳', time02: 1559214576, ban: 1},
-                        {id: '8',name: '康哥',phone: '18312001212',price: '3333',order: '8', address: '深圳', time02: 1559215576, ban: 1},
-                        {id: '9',name: '康哥',phone: '18312001212',price: '4444',order: '8', address: '深圳', time02: 1559316576, ban: 1},
-                        {id: '10',name: '康哥',phone: '18312001212',price: '5555',order: '8', address: '深圳', time02: 1559417576, ban: 1},
-                        {id: '11',name: '康哥',phone: '18312001212',price: '6666',order: '8', address: '深圳', time02: 1559518576, ban: 1},
-                        {id: '12',name: '康哥',phone: '18312001212',price: '7777',order: '8', address: '深圳', time02: 1559619576, ban: 1},
-                        {id: '13',name: '康哥',phone: '18312001212',price: '8888',order: '8', address: '深圳', time02: 1559714576, ban: 1},
-                        {id: '14',name: '康哥',phone: '18312001212',price: '9999',order: '8', address: '深圳', time02: 1559814576, ban: 1},
-                        {id: '15',name: '康哥',phone: '18312001212',price: '10000',order: '8', address: '深圳', time02: 1559914576, ban: 1},
+                        {title: '6',state: '上架',price: '1111', get_way: '注册', deadline: 1559214576},
+                        {title: '7',state: '上架',price: '2222', get_way: '注册', deadline: 1559214576},
+                        {title: '8',state: '上架',price: '3333', get_way: '注册', deadline: 1559215576},
+                        {title: '9',state: '上架',price: '4444', get_way: '注册', deadline: 1559316576},
+                        {title: '10',state: '上架',price: '5555', get_way: '注册', deadline: 1559417576},
+                        {title: '11',state: '上架',price: '6666', get_way: '注册', deadline: 1559518576},
+                        {title: '12',state: '上架',price: '7777', get_way: '注册', deadline: 1559619576},
+                        {title: '13',state: '上架',price: '8888', get_way: '注册', deadline: 1559714576},
+                        {title: '14',state: '上架',price: '9999', get_way: '注册', deadline: 1559814576},
+                        {title: '15',state: '上架',price: '10000', get_way: '注册', deadline: 1559914576},
                     ],
                     //需要改变的行开关状态
                     switch: {
@@ -235,7 +235,7 @@ export default {
                 etime: ''
             }
         };
-        this.get_lists(params);
+        // this.get_lists(params);
     }
 }
 </script>
@@ -252,7 +252,7 @@ export default {
     }
 </style>
 <style lang='scss' scoped>
-    .users_list {
+    .coupon_list {
         padding: 0 20px;
 
         .el-input {

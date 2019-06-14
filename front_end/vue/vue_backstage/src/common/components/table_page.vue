@@ -73,33 +73,113 @@
             <!-- 订单记录 -->
             <el-table-column
                 v-if="table_data_self.table.select=='ddjl'"
-                prop="ddbh"
+                prop="order_sn"
+                sortable
+                :sort-method='date_sort'
                 label="订单编号">
             </el-table-column>
             <!-- 充值记录 -->
             <el-table-column
                 v-if="table_data_self.table.select=='czjl'"
-                prop="czbh"
+                prop="order_sn"
+                sortable
+                :sort-method='date_sort'
                 label="充值编号">
+            </el-table-column>
+            <!-- 优惠券 -->
+            <el-table-column
+                v-if="table_data_self.table.select=='yhjlb'"
+                prop="title"
+                label="优惠券标题">
+            </el-table-column>
+            <!-- 操作日志 -->
+            <el-table-column
+                v-if="table_data_self.table.select=='logs'"
+                prop="operator"
+                label="操作人">
+            </el-table-column>
+            <!-- 员工列表 -->
+            <el-table-column
+                v-if="table_data_self.table.select=='yglb'"
+                prop="id"
+                sortable
+                :sort-method='date_sort'
+                label="工号">
+            </el-table-column>
+            <!-- 角色列表 -->
+            <el-table-column
+                v-if="table_data_self.table.select=='jslb'"
+                prop="name"
+                label="角色名称">
+            </el-table-column>
+            <el-table-column
+                v-if="table_data_self.table.select=='jslb'"
+                prop="describe"
+                label="描述">
+            </el-table-column>
+            <el-table-column
+                v-if="table_data_self.table.select=='jslb'"
+                prop="num"
+                sortable
+                :sort-method='date_sort'
+                label="员工数量">
+            </el-table-column>
+            <el-table-column
+                v-if="table_data_self.table.select=='yglb'"
+                prop="operator"
+                label="姓名">
+            </el-table-column>
+            <el-table-column
+                v-if="table_data_self.table.select=='logs'"
+                prop="modules"
+                label="操作模块">
+            </el-table-column>
+            <el-table-column
+                v-if="table_data_self.table.select=='logs'"
+                prop="contents"
+                label="操作内容">
+            </el-table-column>
+            <el-table-column
+                v-if="table_data_self.table.select=='yhjlb'"
+                prop="price"
+                sortable
+                :sort-method='date_sort'
+                label="金额（元）">
+            </el-table-column>
+            <el-table-column
+                v-if="table_data_self.table.select=='yhjlb'"
+                prop="get_way"
+                label="获得方式">
+            </el-table-column>
+            <el-table-column
+                v-if="table_data_self.table.select=='yhjlb'"
+                prop="state"
+                label="状态">
             </el-table-column>
             <el-table-column
                 v-if="table_data_self.table.select=='czjl'"
-                prop="czkb"
+                prop="account"
+                sortable
+                :sort-method='date_sort'
                 label="充值酷币">
             </el-table-column>
             <el-table-column
                 v-if="table_data_self.table.select=='czjl'"
-                prop="zskd"
+                prop="user_points"
+                sortable
+                :sort-method='date_sort'
                 label="赠送酷点">
             </el-table-column>
             <el-table-column
                 v-if="table_data_self.table.select=='czjl'"
-                prop="zffs"
+                prop="pay_name"
                 label="支付方式">
             </el-table-column>
             <el-table-column
                 v-if="table_data_self.table.select=='czjl'"
-                prop="zfje"
+                prop="account"
+                sortable
+                :sort-method='date_sort'
                 label="支付金额">
             </el-table-column>
             <el-table-column
@@ -109,7 +189,7 @@
             </el-table-column>
             <el-table-column
                 v-if="table_data_self.table.select=='tjxx'"
-                prop="yqhy"
+                prop="underling_number"
                 label="邀请好友数">
             </el-table-column>
             <el-table-column
@@ -119,7 +199,7 @@
             </el-table-column>
             <el-table-column
                 v-if="table_data_self.table.select=='tjxx'"
-                prop="kd"
+                prop="user_points"
                 label="酷点">
             </el-table-column>
             <el-table-column
@@ -154,23 +234,30 @@
                 label="销量">
             </el-table-column>
             <el-table-column
-                v-if="table_data_self.table.select=='sjlb' || table_data_self.table.select=='yhlb'"
+                v-if="table_data_self.table.select=='sjlb' || table_data_self.table.select=='yhlb' || table_data_self.table.select=='yglb'"
                 prop="mobile"
                 label="手机号">
             </el-table-column>
             <el-table-column
-                v-if="table_data_self.table.select=='ddjl'"
-                prop="ddmc"
-                label="订单名称">
+                v-if="table_data_self.table.select=='yglb'"
+                prop="role"
+                label="角色">
             </el-table-column>
             <el-table-column
                 v-if="table_data_self.table.select=='ddjl'"
-                prop="ddje"
+                prop="goods_name"
+                label="商品名称">
+            </el-table-column>
+            <el-table-column
+                v-if="table_data_self.table.select=='ddjl'"
+                prop="total_amount"
+                sortable
+                :sort-method='date_sort'
                 label="订单金额(元)">
             </el-table-column>
             <el-table-column
                 v-if="table_data_self.table.select=='ddjl'"
-                prop="ddzt"
+                prop="order_status"
                 label="订单状态">
             </el-table-column>
             <el-table-column
@@ -243,15 +330,51 @@
             </el-table-column>
             <el-table-column
                 v-if="table_data_self.table.select=='ddjl'"
-                prop="tjsj"
+                prop="add_time"
+                sortable
+                :sort-method='date_sort'
                 label="提交时间">
             </el-table-column>
             <el-table-column
                 v-if="table_data_self.table.select=='czjl'"
-                prop="czsj"
+                prop="pay_time"
+                sortable
+                :sort-method='date_sort'
                 label="充值时间">
             </el-table-column>
-            <el-table-column label="禁用账户" v-if="table_data_self.table.select=='sjlb' || table_data_self.table.select=='mdlb' || table_data_self.table.select=='yhlb'">
+            <el-table-column
+                v-if="table_data_self.table.select=='yhjlb'"
+                prop="deadline"
+                sortable
+                :sort-method='date_sort'
+                label="截止时间">
+            </el-table-column>
+            <el-table-column
+                v-if="table_data_self.table.select=='logs'"
+                prop="czsj"
+                sortable
+                :sort-method='date_sort'
+                label="操作时间">
+            </el-table-column>
+            <el-table-column
+                v-if="table_data_self.table.select=='yglb'"
+                prop="tjsj"
+                sortable
+                :sort-method='date_sort'
+                label="添加时间">
+            </el-table-column>
+            <el-table-column
+                v-if="table_data_self.table.select=='jslb'"
+                prop="jslb_time"
+                sortable
+                :sort-method='date_sort'
+                label="添加时间">
+            </el-table-column>
+            <el-table-column label="禁用账户" v-if="
+                table_data_self.table.select=='sjlb' || 
+                table_data_self.table.select=='mdlb' || 
+                table_data_self.table.select=='yhlb'
+            ">
                 <template slot-scope="scope">
                     <el-switch
                         v-model="scope.row.is_lock == 0 ? true : false"
@@ -261,10 +384,46 @@
                     </el-switch>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" v-if="table_data_self.table.select=='sjlb' || table_data_self.table.select=='mdlb' || table_data_self.table.select=='splb' || table_data_self.table.select=='yhlb' || table_data_self.table.select=='ddjl'">
+            <el-table-column label="状态" v-if="
+                table_data_self.table.select=='yglb'
+            ">
                 <template slot-scope="scope">
-                    <el-button type="text" @click="look_up(scope.row)">查看</el-button>
-                    <!-- <el-button type="text" @click="look_up(scope.row)" v-else>编辑</el-button> -->
+                    <el-switch
+                        v-model="scope.row.is_lock == 0 ? true : false"
+                        @change='change_ban(scope.$index, scope.row.is_lock, scope.row.user_sn)'
+                        active-color="#13ce66"
+                        inactive-color="#ccc">
+                    </el-switch>
+                </template>
+            </el-table-column>
+            <el-table-column label="操作" v-if="
+               table_data_self.table.select=='sjlb'|| 
+               table_data_self.table.select=='mdlb'|| 
+               table_data_self.table.select=='splb'|| 
+               table_data_self.table.select=='yhlb'|| 
+               table_data_self.table.select=='ddjl'|| 
+               table_data_self.table.select=='yhjlb' ||
+               table_data_self.table.select=='yglb' ||
+               table_data_self.table.select=='jslb'
+            ">
+                <template slot-scope="scope">
+                    <el-button type="text" @click="look_up(scope.row)"  v-if="
+                    table_data_self.table.select=='sjlb'|| 
+                    table_data_self.table.select=='mdlb'|| 
+                    table_data_self.table.select=='splb'|| 
+                    table_data_self.table.select=='yhlb'|| 
+                    table_data_self.table.select=='ddjl'
+                 ">查看</el-button>
+                    <el-button type="text" @click="look_up(scope.row)" v-if="
+                        table_data_self.table.select=='yhjlb' ||
+                        table_data_self.table.select=='yglb'||
+                        table_data_self.table.select=='jslb'
+                    ">编辑</el-button>
+                    <el-button type="text" @click="look_up(scope.row)" v-if="
+                        table_data_self.table.select=='yhjlb' ||
+                        table_data_self.table.select=='yglb'||
+                        table_data_self.table.select=='jslb'
+                    ">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -318,6 +477,9 @@ export default {
         change_ban (index, val, user_sn) {
             this.$emit('change_ban', index, val, user_sn);
         },
+        change_ban02 (index, val, user_sn) {
+            this.$emit('change_ban02', index, val, user_sn);
+        },
         //查看详情
         look_up (row) {
             this.$emit('look_up', row);
@@ -335,20 +497,82 @@ export default {
             //将时间戳转为日期格式(异步 因为要请求后台数据)
             var lists = that.table_data_self.table.lists;
             var length = that.table_data_self.table.lists.length;
-            if (that.table_data_self.table.lists[0].time) {
+            if (that.table_data_self.table.lists[0] && that.table_data_self.table.lists[0].time) {
                 for (var i = 0; i < length; i ++) {
                     // that.table_data_self.table.lists[i].time = new Date(lists[i].time * 1000).toLocaleDateString().replace(/\//g, "-");
                     that.table_data_self.table.lists[i].time = that.$moment(lists[i].time * 1000).format('YYYY-MM-DD');
                 };
             };
-            if (that.table_data_self.table.lists[0].time02) {
+            if (that.table_data_self.table.lists[0] && that.table_data_self.table.lists[0].time02) {
                 for (var i = 0; i < length; i ++) {
                     that.table_data_self.table.lists[i].time02 = that.$moment(lists[i].time02 * 1000).format('YYYY-MM-DD HH:mm:ss');
                 };
             };
-            if (that.table_data_self.table.lists[0].last_login) {
+            //最近登录时间
+            if (that.table_data_self.table.lists[0] && that.table_data_self.table.lists[0].last_login) {
                 for (var i = 0; i < length; i ++) {
                     that.table_data_self.table.lists[i].last_login = that.$moment(lists[i].last_login * 1000).format('YYYY-MM-DD HH:mm:ss');
+                };
+            };
+            //充值时间
+            if (that.table_data_self.table.lists[0] && that.table_data_self.table.lists[0].pay_time) {
+                for (var i = 0; i < length; i ++) {
+                    that.table_data_self.table.lists[i].pay_time = that.$moment(lists[i].pay_time * 1000).format('YYYY-MM-DD HH:mm:ss');
+                };
+            };
+            //下单时间
+            if (that.table_data_self.table.lists[0] && that.table_data_self.table.lists[0].add_time) {
+                for (var i = 0; i < length; i ++) {
+                    that.table_data_self.table.lists[i].add_time = that.$moment(lists[i].add_time * 1000).format('YYYY-MM-DD HH:mm:ss');
+                };
+            };
+            //优惠券截止时间
+            if (that.table_data_self.table.lists[0] && that.table_data_self.table.lists[0].deadline) {
+                for (var i = 0; i < length; i ++) {
+                    that.table_data_self.table.lists[i].deadline = that.$moment(lists[i].deadline * 1000).format('YYYY-MM-DD HH:mm:ss');
+                };
+            };
+            //操作时间
+            if (that.table_data_self.table.lists[0] && that.table_data_self.table.lists[0].czsj) {
+                for (var i = 0; i < length; i ++) {
+                    that.table_data_self.table.lists[i].czsj = that.$moment(lists[i].czsj * 1000).format('YYYY-MM-DD HH:mm:ss');
+                };
+            };
+            //添加时间
+            if (that.table_data_self.table.lists[0] && that.table_data_self.table.lists[0].tjsj) {
+                for (var i = 0; i < length; i ++) {
+                    that.table_data_self.table.lists[i].tjsj = that.$moment(lists[i].tjsj * 1000).format('YYYY-MM-DD HH:mm:ss');
+                };
+            };
+            //角色列表-添加时间
+            if (that.table_data_self.table.lists[0] && that.table_data_self.table.lists[0].jslb_time) {
+                for (var i = 0; i < length; i ++) {
+                    that.table_data_self.table.lists[i].jslb_time = that.$moment(lists[i].jslb_time * 1000).format('YYYY-MM-DD HH:mm:ss');
+                };
+            };
+            //订单状态
+            if (that.table_data_self.table.lists[0] && that.table_data_self.table.lists[0].order_status) {
+                for (var i = 0; i < length; i ++) {
+                    switch (that.table_data_self.table.lists[i].order_status) {
+                        case 0:
+                            that.table_data_self.table.lists[i].order_status = '待确认';
+                            break;
+                        case 1:
+                            that.table_data_self.table.lists[i].order_status = '已确认';
+                            break;
+                        case 2:
+                            that.table_data_self.table.lists[i].order_status = '已收货';
+                            break;
+                        case 3:
+                            that.table_data_self.table.lists[i].order_status = '已取消';
+                            break;
+                        case 4:
+                            that.table_data_self.table.lists[i].order_status = '已完成';
+                            break;
+                        case 5:
+                            that.table_data_self.table.lists[i].order_status = '已作废';
+                            break;
+                    };
                 };
             };
         }, 300);

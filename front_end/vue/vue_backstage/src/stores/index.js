@@ -34,7 +34,7 @@ const store = new Vuex.Store({
             if (length > 7) {
                 state.history_arr.shift();
             };
-            console.log(state.current_route);
+            console.log('当前路由信息', state.current_route);
         },
         //删除某个历史记录tag
         del_tag (state, index) {

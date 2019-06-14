@@ -1,5 +1,5 @@
 <template>
-    <div class="users_list">
+    <div class="employees_lists">
         <div class="repeat_div">
             <p>
                 <svg class="icon" aria-hidden="true">
@@ -8,8 +8,31 @@
                 <span>筛选数据</span>
             </p>
             <div class="search_input">
-               <span>输入关键词：</span>
-               <el-input
+                <span style="margin-right: 10px">选择角色：</span>
+                <el-dropdown trigger='click' placement='bottom' @command="handleCommand">
+                    <el-button type="primary">
+                        {{ default_select }}<i class="el-icon-arrow-down el-icon--right"></i>
+                    </el-button>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item command="admin">admin</el-dropdown-item>
+                        <el-dropdown-item command="康哥">康哥</el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+                
+                <span style="margin: 0 10px 0 20px">员工状态：</span>
+                <el-dropdown trigger='click' placement='bottom' @command="handleCommand02">
+                    <el-button type="primary">
+                        {{ default_select02 }}<i class="el-icon-arrow-down el-icon--right"></i>
+                    </el-button>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item command="启用">启用</el-dropdown-item>
+                        <el-dropdown-item command="停用">停用</el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+                
+
+                <span style="margin-left: 50px;">输入关键词：</span>
+                <el-input
                     placeholder="请输入要搜索的关键词"
                     v-model="search_input"
                     @clear='clear'
@@ -17,16 +40,6 @@
                     clearable>
                 </el-input>
                 <el-button type="primary" @click='search'>搜索</el-button>
-                
-                <span class="time">最近登录时间：</span>
-                <el-date-picker
-                    v-model="search_time"
-                    type="datetimerange"
-                    range-separator="至"
-                    @change='change_time'
-                    start-placeholder="开始日期"
-                    end-placeholder="结束日期">
-                </el-date-picker>
             </div>
         </div>
 
@@ -58,7 +71,7 @@ import dialog_component from '@/common/components/dialog.vue';
 import table_page from '@/common/components/table_page.vue';
 
 export default {
-    name: 'users_list',
+    name: 'employees_lists',
     components: {
         dialog_component,
         table_page
@@ -76,21 +89,21 @@ export default {
                 //表格
                 table: {
                     //要展示哪些行
-                    select: 'yhlb',
+                    select: 'yglb',
                     //是否固定表头
                     is_height: 769,
                     //表格数据
                     lists: [
-                        {id: '6',name: '康哥',phone: '18312001212',price: '1111',order: '8', address: '深圳', time02: 1559214576, ban: 1},
-                        {id: '7',name: '康哥',phone: '18312001212',price: '2222',order: '8', address: '深圳', time02: 1559214576, ban: 1},
-                        {id: '8',name: '康哥',phone: '18312001212',price: '3333',order: '8', address: '深圳', time02: 1559215576, ban: 1},
-                        {id: '9',name: '康哥',phone: '18312001212',price: '4444',order: '8', address: '深圳', time02: 1559316576, ban: 1},
-                        {id: '10',name: '康哥',phone: '18312001212',price: '5555',order: '8', address: '深圳', time02: 1559417576, ban: 1},
-                        {id: '11',name: '康哥',phone: '18312001212',price: '6666',order: '8', address: '深圳', time02: 1559518576, ban: 1},
-                        {id: '12',name: '康哥',phone: '18312001212',price: '7777',order: '8', address: '深圳', time02: 1559619576, ban: 1},
-                        {id: '13',name: '康哥',phone: '18312001212',price: '8888',order: '8', address: '深圳', time02: 1559714576, ban: 1},
-                        {id: '14',name: '康哥',phone: '18312001212',price: '9999',order: '8', address: '深圳', time02: 1559814576, ban: 1},
-                        {id: '15',name: '康哥',phone: '18312001212',price: '10000',order: '8', address: '深圳', time02: 1559914576, ban: 1},
+                        {id: '6',operator: '康哥',role: '管理员',price: '1111',order: '8', address: '深圳', tjsj: 1559214576, mobile: '18312001212', is_lock: 0},
+                        {id: '7',operator: '康哥',role: '管理员',price: '2222',order: '8', address: '深圳', tjsj: 1559214576, mobile: '18312001212', is_lock: 0},
+                        {id: '8',operator: '康哥',role: '管理员',price: '3333',order: '8', address: '深圳', tjsj: 1559215576, mobile: '18312001212', is_lock: 0},
+                        {id: '9',operator: '康哥',role: '管理员',price: '4444',order: '8', address: '深圳', tjsj: 1559316576, mobile: '18312001212', is_lock: 0},
+                        {id: '10',operator: '康哥',role: '管理员',price: '5555',order: '8', address: '深圳', tjsj: 1559417576, mobile: '18312001212', is_lock: 0},
+                        {id: '11',operator: '康哥',role: '管理员',price: '6666',order: '8', address: '深圳', tjsj: 1559518576, mobile: '18312001212', is_lock: 0},
+                        {id: '12',operator: '康哥',role: '管理员',price: '7777',order: '8', address: '深圳', tjsj: 1559619576, mobile: '18312001212', is_lock: 0},
+                        {id: '13',operator: '康哥',role: '管理员',price: '8888',order: '8', address: '深圳', tjsj: 1559714576, mobile: '18312001212', is_lock: 0},
+                        {id: '14',operator: '康哥',role: '管理员',price: '9999',order: '8', address: '深圳', tjsj: 1559814576, mobile: '18312001212', is_lock: 0},
+                        {id: '15',operator: '康哥',role: '管理员',price: '10000',order: '8', address: '深圳', tjsj: 1559914576, mobile: '18312001212', is_lock: 0},
                     ],
                     //需要改变的行开关状态
                     switch: {
@@ -111,9 +124,46 @@ export default {
             //搜索的内容
             search_input: null,
             search_time: null,
+            //默认下拉选项
+            default_select: 'admin',
+            default_select02: '启用',
+            search_input: ''
         }
     },
     methods: {
+        //清空
+        clear () {
+            this.table_data.page.current_page = 1;
+            sessionStorage.setItem('page', 1);
+            var params = {
+                page: 1,
+                size: 10,
+                where: {
+                    keyword: '',
+                    stime: '',
+                    etime: ''
+                }
+            };
+            this.get_lists(params);
+        },
+        //搜索
+        search () {
+            var params = {
+                page: 1,
+                size: 10,
+                where: {
+                    keyword: this.search_input
+                }
+            };
+            this.get_lists(params);
+        },
+        //下拉选择
+        handleCommand(command) {
+            this.default_select = command;
+        },
+        handleCommand02(command) {
+            this.default_select02 = command;
+        },
         //请求数据
         get_lists(params) {
             this.$axios.post('/api/getUserList', JSON.stringify(params)).then(response => {
@@ -235,7 +285,7 @@ export default {
                 etime: ''
             }
         };
-        this.get_lists(params);
+        // this.get_lists(params);
     }
 }
 </script>
@@ -252,7 +302,7 @@ export default {
     }
 </style>
 <style lang='scss' scoped>
-    .users_list {
+    .employees_lists {
         padding: 0 20px;
 
         .el-input {

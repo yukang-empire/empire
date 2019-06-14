@@ -2,113 +2,89 @@ import layout from "@/views/layout/index.vue";
 
 const business = {
 
-    path: "/business",
-    name: "business",
+    path: "/set",
+    name: "set",
     //最顶层layout组件包含main_component组件 而main_component带有router-view 意味着底下所有的children组件都在里面渲染
     component: layout,
-    redirect: '/business/sjlb/lbxq',
+    redirect: '/set/revise',
     meta: {
-        title: '商家管理',
-        icon: '#icon-shangjia',
+        title: '设置',
+        icon: '#icon-shezhi',
         //是否属于侧边栏展示项
         is_aside: true,
         roles: ['admin']
     },
     children: [
         {
-            path: 'xzsj',
-            name: 'xzsj',
+            path: '/set/yggl',
+            name: 'yggl',
+            component: () => import('@/views/set/employees/index.vue'),
+            meta: {
+                title: '员工管理'
+            },
+            children: [
+                
+                {
+                    path: '/set/yggl/xzyg',
+                    name: 'xzyg',
+                    component: () => import('@/views/set/employees/add.vue'),
+                    meta: {
+                        title: '新增/编辑员工'
+                    }
+                },
+                {
+                    path: '/set/yggl/yglb',
+                    name: 'yglb',
+                    component: () => import('@/views/set/employees/lists.vue'),
+                    meta: {
+                        title: '员工列表'
+                    }
+                },
+            ]
+        },
+        {
+            path: '/set/jsgl',
+            name: 'jsgl',
+            component: () => import('@/views/set/roles/index.vue'),
+            meta: {
+                title: '角色管理'
+            },
+            children: [
+                
+                {
+                    path: '/set/yggl/xzjs',
+                    name: 'xzjs',
+                    component: () => import('@/views/set/roles/add.vue'),
+                    meta: {
+                        title: '新增/编辑角色'
+                    }
+                },
+                {
+                    path: '/set/yggl/jslb',
+                    name: 'jslb',
+                    component: () => import('@/views/set/roles/lists.vue'),
+                    meta: {
+                        title: '角色列表'
+                    }
+                },
+            ]
+        },
+        
+        {
+            path: '/set/xgzl',
+            name: 'xgzl',
             //次顶层需要有一个带router-view的index组件 来渲染更底层的children组件
-            component: () => import('@/views/business/add/index.vue'),
+            component: () => import('@/views/set/revise'),
             meta: {
-                title: '新增商家'
+                title: '修改资料'
             },
-            children: [
-                {
-                    path: 'sjtx',
-                    name: 'sjtx',
-                    //终端子组件 将会渲染在直接父组件的router-view里
-                    component: () => import('@/views/business/add/business_info.vue'),
-                    meta: {
-                        title: '填写商家信息'
-                    }
-                },
-                {
-                    path: 'mdtx',
-                    name: 'mdtx',
-                    component: () => import('@/views/business/add/stores_info.vue'),
-                    meta: {
-                        title: '填写门店信息'
-                    }
-                }
-            ]
         },
         {
-            path: 'sjlb',
-            name: 'sjlb',
-            component: () => import('@/views/business/info/index.vue'),
+            path: '/set/log',
+            name: 'log',
+            component: () => import('@/views/set/logs.vue'),
             meta: {
-                title: '商家列表'
-            },
-            children: [
-                {
-                    path: 'lbxq',
-                    name: 'lbxq',
-                    component: () => import('@/views/business/info/list.vue'),
-                    meta: {
-                        title: '列表详情'
-                    }
-                },
-                {
-                    path: 'sjxq',
-                    name: 'sjxq',
-                    component: () => import('@/views/business/info/details.vue'),
-                    meta: {
-                        title: '商家详情'
-                    }
-                }
-            ]
-        },
-        {
-            path: 'splb',
-            name: 'splb',
-            component: () => import('@/views/business/goods/index.vue'),
-            meta: {
-                title: '商品列表'
-            },
-            children: [
-                {
-                    path: 'spxq',
-                    name: 'spxq',
-                    component: () => import('@/views/business/goods/list.vue'),
-                    meta: {
-                        title: '商品详情'
-                    }
-                },
-                {
-                    path: 'xzsp',
-                    name: 'xzsp',
-                    component: () => import('@/views/business/goods/add.vue'),
-                    meta: {
-                        title: '新增商品'
-                    }
-                },
-            ]
-        },
-        {
-            path: '/business/mdlb',
-            name: 'mdlb',
-            component: () => import('@/views/business/stores.vue'),
-            meta: {
-                title: '门店列表'
-            }
-        },
-        {
-            path: '/business/rzsh',
-            name: 'rzsh',
-            component: () => import('@/views/business/check.vue'),
-            meta: {
-                title: '入驻审核'
+                title: '操作日志'
             }
         },
         

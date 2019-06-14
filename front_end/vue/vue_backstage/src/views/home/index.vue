@@ -223,7 +223,7 @@ export default {
         this.$axios.post('/api/statistical').then(response => {
             var res = response.data.data;
             that.home_data = res;
-            console.log(res);
+            console.log('首页数据', res);
             //初始化周图表和月图表的数据
             that.echarts_data_week.weeks_order = res.weeks_order;
             that.echarts_data_mon.month_order = res.month_order;

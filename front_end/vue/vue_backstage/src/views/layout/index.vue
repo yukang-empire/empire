@@ -35,6 +35,19 @@ export default {
 </script>
 
 <style lang="scss">
+    .el-dropdown-link {
+        cursor: pointer;
+        color: #409EFF;
+    }
+    .el-icon-arrow-down {
+        font-size: 12px;
+    }
+    .demonstration {
+        display: block;
+        color: #8492a6;
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
     .repeat_div {
         color: #999;
         margin: 20px 0;

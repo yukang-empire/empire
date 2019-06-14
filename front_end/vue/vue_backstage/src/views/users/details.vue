@@ -209,17 +209,58 @@ export default {
     },
     mounted () {
         var default_id = { id: '699766' };
-        var id = localStorage.getItem('user_id') ? JSON.parse(localStorage.getItem('user_id')) : default_id;
+        var id = sessionStorage.getItem('user_id') ? JSON.parse(sessionStorage.getItem('user_id')) : default_id;
+        
+        //订单记录
+        var param_dd = {
+            user_id: id,
+            page: 1,
+            size: 10
+        }
+        this.$axios.post('/api/userRrder', JSON.stringify(param_dd)).then(response => {
+            console.log('订单记录', response);
+            var res = response.data;
+            var is_next = res.data.length > 0;
+            this.table_data_dd.table.lists = is_next ? res.data : [];
+            this.table_data_dd.table.is_height = is_next ? 300 : 100;
+            this.table_data_dd.page.total = is_next ? res.data : 0;
+            this.table_data_tj.table.lists[0].ddsl = res.count;
+        });
+        //优惠券信息
+        var param_yhj = {
+            user_id: id,
+            page: 1,
+            size: 10
+        }
+        this.$axios.post('/api/userCoupon', JSON.stringify(param_yhj)).then(response => {
+            console.log('优惠券信息', response);
+            var res = response.data;
+            this.table_data_tj.table.lists[0].yhj = res.count;
+        });
+        //用户基本信息
         this.$axios.post('/api/getUser', JSON.stringify(id)).then(response => {
-            console.log(response);
+            console.log('基本信息', response);
             var res = response.data.data;
             this.base_data = res;
             this.table_data_tj.table.lists[0].total_amount = res.total_amount;
-            this.table_data_tj.table.lists[0].total_amount = res.total_amount;
-            this.table_data_tj.table.lists[0].total_amount = res.total_amount;
-            this.table_data_tj.table.lists[0].total_amount = res.total_amount;
+            this.table_data_tj.table.lists[0].underling_number = res.underling_number;
+            this.table_data_tj.table.lists[0].user_points = res.user_points;
             this.table_data_tj.table.lists[0].cool_B = res.cool_B;
             this.table_data_tj.table.lists[0].last_login = res.last_login;
+        });
+        //充值记录
+        var param_cz = {
+            user_id: id,
+            page: 1,
+            size: 10
+        }
+        this.$axios.post('/api/userRecharge', JSON.stringify(param_cz)).then(response => {
+            console.log('充值记录', response);
+            var res = response.data;
+            var is_next = res.data.length > 0;
+            this.table_data_cz.table.lists = is_next ? res.data : [];
+            this.table_data_cz.table.is_height = is_next ? 300 : 100;
+            this.table_data_cz.page.total = is_next ? res.data : 0;
         });
     }
 }

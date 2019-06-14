@@ -114,7 +114,7 @@ export default {
         }else {
             this.routers.show = this.routers.user;
         };
-        console.log('show_routers',this.routers.show);
+        console.log('自身权限能查看到的所有路由页面',this.routers.show);
     }
 }
 </script>
