@@ -40,7 +40,25 @@
                 <span>权限信息</span>
             </p>
             <div class="business_write">
-                
+                <div class="serves">
+                    <el-checkbox :indeterminate="form.isIndeterminate" v-model="form.check_all" @change="handleCheckAllChange">所有权限</el-checkbox>
+                    <h3>首页</h3>
+                    <el-checkbox-group v-model="form.checked01" @change="handleCheckedCitiesChange">
+                        <el-checkbox v-for="item in form.all_serves01" :label="item" :key="item" border>{{ item }}</el-checkbox>
+                    </el-checkbox-group>
+                    <h3>文章管理</h3>
+                    <el-checkbox-group v-model="form.checked02" @change="handleCheckedCitiesChange">
+                        <el-checkbox v-for="item in form.all_serves02" :label="item" :key="item" border>{{ item }}</el-checkbox>
+                    </el-checkbox-group>
+                    <h3>用户管理</h3>
+                    <el-checkbox-group v-model="form.checked03" @change="handleCheckedCitiesChange">
+                        <el-checkbox v-for="item in form.all_serves03" :label="item" :key="item" border>{{ item }}</el-checkbox>
+                    </el-checkbox-group>
+                    <h3>财务管理</h3>
+                    <el-checkbox-group v-model="form.checked04" @change="handleCheckedCitiesChange">
+                        <el-checkbox v-for="item in form.all_serves04" :label="item" :key="item" border>{{ item }}</el-checkbox>
+                    </el-checkbox-group>
+                </div>
             </div>
         </div>
         
@@ -85,7 +103,20 @@ export default {
                     width: '',
                     height: '',
                     fixed: true,
-                }
+                },
+                //健身会所提供的服务
+                all_serves01: ['经营概况', '待办事项', '收入趋势'],
+                all_serves02: ['查看', '新增', '编辑', '批量删除', '导出', '搜索' ],
+                all_serves03: ['查看', '编辑', '导出', '搜索', ],
+                all_serves04: ['查看', '编辑', '导出', '搜索', ],
+                //全选
+                check_all: false,
+                checked01: [],
+                checked02: [],
+                checked03: [],
+                checked04: [],
+                isIndeterminate: true,
+                serves: [],
             },
             //裁剪参数
             option: {
@@ -113,6 +144,16 @@ export default {
         }
     },
     methods: {
+        //全选相关
+        handleCheckAllChange(val) {
+            this.form.checked = val ? this.form.all_serves : [];
+            this.form.isIndeterminate = false;
+        },
+        handleCheckedCitiesChange(value) {
+            let checkedCount = value.length;
+            this.form.check_all = checkedCount === this.form.all_serves.length;
+            this.form.isIndeterminate = checkedCount > 0 && checkedCount < this.form.all_serves.length;
+        },
         //裁剪图片相关
         startCrop() {
             this.is_cropper = true;
@@ -315,6 +356,22 @@ export default {
 </style>
 
 <style lang='scss' scoped>
+    .el-checkbox-group {
+        margin-left: 20px;
+    }
+    .el-checkbox {
+        margin: 0 10px 10px 10px;
+    }
+    .serves {
+        h3 {
+            margin: 10px 0 -5px 30px;
+        }
+        padding-bottom: 30px;
+
+        .el-checkbox.is-bordered {
+            margin: 10px;
+        }
+    }
     .vue-cropper {
         width: 50%;
         height: 100%;
