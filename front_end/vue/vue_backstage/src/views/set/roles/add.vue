@@ -41,21 +41,30 @@
             </p>
             <div class="business_write">
                 <div class="serves">
-                    <el-checkbox :indeterminate="form.isIndeterminate" v-model="form.check_all" @change="handleCheckAllChange">所有权限</el-checkbox>
-                    <h3>首页</h3>
-                    <el-checkbox-group v-model="form.checked01" @change="handleCheckedCitiesChange">
+                    <el-checkbox :indeterminate="form.isIndeterminate_boss" v-model="form.check_all_boss" @change="handleCheckAllChange_boss"><h3>所有权限</h3></el-checkbox>
+                    
+                    <h4>
+                        <el-checkbox :indeterminate="form.isIndeterminate01" v-model="form.check_all01" @change="handleCheckAllChange01"><h3>首页</h3></el-checkbox>
+                    </h4>
+                    <el-checkbox-group v-model="form.checked01" @change="handleCheckedCitiesChange01">
                         <el-checkbox v-for="item in form.all_serves01" :label="item" :key="item" border>{{ item }}</el-checkbox>
                     </el-checkbox-group>
-                    <h3>文章管理</h3>
-                    <el-checkbox-group v-model="form.checked02" @change="handleCheckedCitiesChange">
+                    <h4>
+                        <el-checkbox :indeterminate="form.isIndeterminate02" v-model="form.check_all02" @change="handleCheckAllChange02"><h3>文章管理</h3></el-checkbox>
+                    </h4>
+                    <el-checkbox-group v-model="form.checked02" @change="handleCheckedCitiesChange02">
                         <el-checkbox v-for="item in form.all_serves02" :label="item" :key="item" border>{{ item }}</el-checkbox>
                     </el-checkbox-group>
-                    <h3>用户管理</h3>
-                    <el-checkbox-group v-model="form.checked03" @change="handleCheckedCitiesChange">
+                    <h4>
+                        <el-checkbox :indeterminate="form.isIndeterminate03" v-model="form.check_all03" @change="handleCheckAllChange03"><h3>用户管理</h3></el-checkbox>
+                    </h4>
+                    <el-checkbox-group v-model="form.checked03" @change="handleCheckedCitiesChange03">
                         <el-checkbox v-for="item in form.all_serves03" :label="item" :key="item" border>{{ item }}</el-checkbox>
                     </el-checkbox-group>
-                    <h3>财务管理</h3>
-                    <el-checkbox-group v-model="form.checked04" @change="handleCheckedCitiesChange">
+                    <h4>
+                        <el-checkbox :indeterminate="form.isIndeterminate04" v-model="form.check_all04" @change="handleCheckAllChange04"><h3>财务管理</h3></el-checkbox>
+                    </h4>
+                    <el-checkbox-group v-model="form.checked04" @change="handleCheckedCitiesChange04">
                         <el-checkbox v-for="item in form.all_serves04" :label="item" :key="item" border>{{ item }}</el-checkbox>
                     </el-checkbox-group>
                 </div>
@@ -110,12 +119,20 @@ export default {
                 all_serves03: ['查看', '编辑', '导出', '搜索', ],
                 all_serves04: ['查看', '编辑', '导出', '搜索', ],
                 //全选
-                check_all: false,
+                check_all_boss: false,
+                check_all01: false,
+                check_all02: false,
+                check_all03: false,
+                check_all04: false,
                 checked01: [],
                 checked02: [],
                 checked03: [],
                 checked04: [],
-                isIndeterminate: true,
+                isIndeterminate_boss: false,
+                isIndeterminate01: false,
+                isIndeterminate02: false,
+                isIndeterminate03: false,
+                isIndeterminate04: false,
                 serves: [],
             },
             //裁剪参数
@@ -145,14 +162,63 @@ export default {
     },
     methods: {
         //全选相关
-        handleCheckAllChange(val) {
-            this.form.checked = val ? this.form.all_serves : [];
-            this.form.isIndeterminate = false;
+        handleCheckAllChange_boss(val) {
+            for (var i = 1; i < 5; i++) {
+                var str01 = 'this.handleCheckAllChange0';
+                eval(str01 + i + '(' + val + ')');
+                var str02 = 'this.handleCheckedCitiesChange0';
+                if (val) {
+                    var str03 = 'this.form.all_serves0';
+                    eval(str02 + i + '(' + str03 + i + ')');
+                }else {
+                    eval(str02 + i + '([])');
+                };
+            };
+            this.form.isIndeterminate_boss = false;
         },
-        handleCheckedCitiesChange(value) {
+        handleCheckAllChange01(val) {
+            this.form.checked01 = val ? this.form.all_serves01 : [];
+            this.form.isIndeterminate01 = false;
+            this.form.isIndeterminate_boss = !this.form.isIndeterminate01 && !this.form.isIndeterminate02 && !this.form.isIndeterminate03 && !this.form.isIndeterminate04;
+        },
+        handleCheckAllChange02(val) {
+            this.form.checked02 = val ? this.form.all_serves02 : [];
+            this.form.isIndeterminate02 = false;
+            this.form.isIndeterminate_boss = !this.form.isIndeterminate01 && !this.form.isIndeterminate02 && !this.form.isIndeterminate03 && !this.form.isIndeterminate04;
+        },
+        handleCheckAllChange03(val) {
+            this.form.checked03 = val ? this.form.all_serves03 : [];
+            this.form.isIndeterminate03 = false;
+            this.form.isIndeterminate_boss = !this.form.isIndeterminate01 && !this.form.isIndeterminate02 && !this.form.isIndeterminate03 && !this.form.isIndeterminate04;
+        },
+        handleCheckAllChange04(val) {
+            this.form.checked04 = val ? this.form.all_serves04 : [];
+            this.form.isIndeterminate04 = false;
+            this.form.isIndeterminate_boss = !this.form.isIndeterminate01 && !this.form.isIndeterminate02 && !this.form.isIndeterminate03 && !this.form.isIndeterminate04;
+        },
+        handleCheckedCitiesChange01(value) {
             let checkedCount = value.length;
-            this.form.check_all = checkedCount === this.form.all_serves.length;
-            this.form.isIndeterminate = checkedCount > 0 && checkedCount < this.form.all_serves.length;
+            this.form.check_all01 = checkedCount === this.form.all_serves01.length;
+            this.form.isIndeterminate01 = checkedCount > 0 && checkedCount < this.form.all_serves01.length;
+            this.form.isIndeterminate_boss = this.form.isIndeterminate01 || this.form.isIndeterminate02 || this.form.isIndeterminate03 || this.form.isIndeterminate04;
+        },
+        handleCheckedCitiesChange02(value) {
+            let checkedCount = value.length;
+            this.form.check_all02 = checkedCount === this.form.all_serves02.length;
+            this.form.isIndeterminate02 = checkedCount > 0 && checkedCount < this.form.all_serves02.length;
+            this.form.isIndeterminate_boss = this.form.isIndeterminate01 || this.form.isIndeterminate02 || this.form.isIndeterminate03 || this.form.isIndeterminate04;
+        },
+        handleCheckedCitiesChange03(value) {
+            let checkedCount = value.length;
+            this.form.check_all03 = checkedCount === this.form.all_serves03.length;
+            this.form.isIndeterminate03 = checkedCount > 0 && checkedCount < this.form.all_serves03.length;
+            this.form.isIndeterminate_boss = this.form.isIndeterminate01 || this.form.isIndeterminate02 || this.form.isIndeterminate03 || this.form.isIndeterminate04;
+        },
+        handleCheckedCitiesChange04(value) {
+            let checkedCount = value.length;
+            this.form.check_all04 = checkedCount === this.form.all_serves04.length;
+            this.form.isIndeterminate04 = checkedCount > 0 && checkedCount < this.form.all_serves04.length;
+            this.form.isIndeterminate_boss = this.form.isIndeterminate01 || this.form.isIndeterminate02 || this.form.isIndeterminate03 || this.form.isIndeterminate04;
         },
         //裁剪图片相关
         startCrop() {
@@ -349,13 +415,14 @@ export default {
     .el-textarea__inner {
         width: 450px;
     }
-    .repeat_div {
-        padding-bottom: 0;
-    }
 
 </style>
 
 <style lang='scss' scoped>
+    
+    .repeat_div {
+        padding-bottom: 0;
+    }
     .el-checkbox-group {
         margin-left: 20px;
     }
@@ -363,7 +430,7 @@ export default {
         margin: 0 10px 10px 10px;
     }
     .serves {
-        h3 {
+        h4 {
             margin: 10px 0 -5px 30px;
         }
         padding-bottom: 30px;
@@ -457,7 +524,14 @@ export default {
             
         }
     }
-    
+    .el-checkbox {
+        margin-left: 0;
+        margin-bottom: 0;
+        margin-top: 5px;
+    }
+    .el-textarea {
+        width: auto;
+    }
     @media screen and (min-width: 769px) {
         
     }

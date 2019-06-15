@@ -424,13 +424,13 @@ export default {
     .el-textarea__inner {
         width: 450px;
     }
-    .repeat_div {
-        padding-bottom: 0;
-    }
 
 </style>
 
 <style lang='scss' scoped>
+    .repeat_div {
+        padding-bottom: 0;
+    }
     .vue-cropper {
         width: 50%;
         height: 100%;

@@ -13,6 +13,7 @@ import home from './modules/home.js';
 import business from './modules/business.js';
 import users from './modules/users.js';
 import set from './modules/set.js';
+import orders from './modules/orders.js';
 
 const routers = new Router({
     // mode: "history",
@@ -47,6 +48,7 @@ const routers = new Router({
             }
         },
         home,
+        orders,
         business,
         users,
         {
@@ -55,7 +57,7 @@ const routers = new Router({
             component: layout,
             redirect: '/coupon/lists',
             meta: {
-                title: "优惠券列表",
+                title: "优惠券管理",
                 icon: '#icon-youhuiquan',
                 //是否属于侧边栏展示项
                 is_aside: true,
