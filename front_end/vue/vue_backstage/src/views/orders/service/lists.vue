@@ -18,7 +18,7 @@
                 </el-input>
                 <el-button type="primary" @click='search'>搜索</el-button>
                 
-                <span class="time">最近登录时间：</span>
+                <span class="time">提交时间：</span>
                 <el-date-picker
                     v-model="search_time"
                     type="datetimerange"

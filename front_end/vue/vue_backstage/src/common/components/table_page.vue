@@ -317,15 +317,10 @@
                 label="进驻日期">
             </el-table-column>
             <el-table-column
-                v-if="table_data_self.table.select=='yhlb'"
-                prop="reg_time"
+                v-if="table_data_self.table.select=='yhlb' || table_data_self.table.select=='tjxx'"
+                prop="last_login"
                 sortable
                 :sort-method='date_sort'
-                label="最近登录时间">
-            </el-table-column>
-            <el-table-column
-                v-if="table_data_self.table.select=='tjxx'"
-                prop="last_login"
                 label="最近登录时间">
             </el-table-column>
             <el-table-column
@@ -509,11 +504,15 @@ export default {
                 };
             };
             //最近登录时间
-            if (that.table_data_self.table.lists[0] && that.table_data_self.table.lists[0].last_login) {
-                for (var i = 0; i < length; i ++) {
-                    that.table_data_self.table.lists[i].last_login = that.$moment(lists[i].last_login * 1000).format('YYYY-MM-DD HH:mm:ss');
-                };
-            };
+            // if (that.table_data_self.table.lists[0] && that.table_data_self.table.lists[0].last_login) {
+            //     for (var i = 0; i < length; i ++) {
+            //         if (lists[i].last_login <= 0) {
+            //             that.table_data_self.table.lists[i].last_login = '/';
+            //         }else {
+            //             that.table_data_self.table.lists[i].last_login = that.$moment(lists[i].last_login * 1000).format('YYYY-MM-DD HH:mm:ss');
+            //         }
+            //     };
+            // };
             //充值时间
             if (that.table_data_self.table.lists[0] && that.table_data_self.table.lists[0].pay_time) {
                 for (var i = 0; i < length; i ++) {

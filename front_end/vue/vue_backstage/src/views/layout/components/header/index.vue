@@ -1,7 +1,7 @@
 <template>
     <div class="header_component flex_between">
         <div class="flex_center">
-            <img src="@/common/imgs/logo02.png" alt="logo">
+            <img src="@/common/imgs/logo02.png" alt="logo" class="rotation">
             <dialog_component :dialog='dialog' @off_dialog='off_dialog' />
         </div>
         <div class="right">
@@ -14,10 +14,10 @@
                 <el-tooltip effect="light" placement="top">
                     <div slot="content" class="admin_info flex_center">
                         <img src="@/common/imgs/logo.png" alt="log">
-                        <p>admin</p>
+                        <p>{{ RoleName }}</p>
                         <el-button type="text" @click='logout'>退出登录</el-button>
                     </div>
-                    <el-button>admin</el-button>
+                    <el-button>{{ RoleName }}</el-button>
                 </el-tooltip>
             </div>
         </div>
@@ -39,7 +39,8 @@ export default {
                 msg: '',
                 type: 1,
                 is_sure: false
-            }
+            },
+            RoleName: sessionStorage.getItem('RoleName') ? sessionStorage.getItem('RoleName') : '管理员'
         }
     },
     methods: {
@@ -56,6 +57,9 @@ export default {
             this.dialog.is_open = true;
             this.dialog.msg = '确定退出登录?';
         }
+    },
+    mounted () {
+
     }
 }
 </script>
@@ -119,6 +123,20 @@ export default {
             margin: 5px 0 10px 0;
         }
     }
+
+    .rotation{
+        -webkit-transform: rotate(360deg);
+        animation: rotation 3s linear infinite;
+        -moz-animation: rotation 3s linear infinite;
+        -webkit-animation: rotation 3s linear infinite;
+        -o-animation: rotation 3s linear infinite;
+    }
+
+    @-webkit-keyframes rotation{
+        from {-webkit-transform: rotate(0deg);}
+        to {-webkit-transform: rotate(360deg);}
+    }
+
     @media screen and (min-width: 769px) {
         
     }

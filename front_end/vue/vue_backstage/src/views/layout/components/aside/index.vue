@@ -100,7 +100,7 @@ export default {
                 if (routers[i].meta.roles) {
                     var roles = routers[i].meta.roles;
                     for (var j = 0; j < roles.length; j++) {
-                        if (roles[j] == 'admin') {
+                        if (roles[j] == '1') {
                             //删掉需要权限才能看的
                             this.routers.user.pop(routers[i]);
                         };
@@ -109,7 +109,7 @@ export default {
             };
         };
         var role = sessionStorage.getItem('role') ? sessionStorage.getItem('role') : '';
-        if (role == 'admin') {
+        if (role == '1') {
             this.routers.show = this.routers.all;
         }else {
             this.routers.show = this.routers.user;

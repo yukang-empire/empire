@@ -30,7 +30,7 @@
 
                 <div class="form">
                     <div class="item">
-                        <span>门店地址：</span>
+                        <span>门店名称：</span>
                         <el-input
                             placeholder="请输入门店名称"
                             v-model="form.name"

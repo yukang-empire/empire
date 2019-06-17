@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import axios from '../axios/index.js';
 
 Vue.use(Vuex);
 
@@ -39,8 +40,16 @@ const store = new Vuex.Store({
         //删除某个历史记录tag
         del_tag (state, index) {
             state.history_arr.splice(index, 1);
-        }
-
+        },
+        // //请求用户列表数据
+        // get_user_list () {
+        //     axios.post('/api/getUserList', JSON.stringify(params)).then(response => {
+        //         console.log('用户列表', response);
+        //         var res = response.data;
+        //         this.table_data.table.lists = res.data;
+        //         this.table_data.page.total = parseInt(res.count);
+        //     })
+        // },
     }
 });
 

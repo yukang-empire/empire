@@ -151,10 +151,10 @@
             <button type="button">返回</button>
         </div>
         
-        <div class="bottom_info flex_between" v-if='send_data.type == "login"'>
+        <!-- <div class="bottom_info flex_between" v-if='send_data.type == "login"'>
             <router-link to='/find'>忘记密码?</router-link>
             <router-link to='/register'>注册账号</router-link>
-        </div>
+        </div> -->
 
     </form>
 
@@ -489,31 +489,32 @@ export default {
         },
         //获取图形验证码
         get_img_code () {
-            var that = this;
-            var account = this.form.account;
-            //md5加密规定的字符串
-            var time = new Date().getTime();
-            var sign = 'accountSign201903' + account + 'H5LOGIN' + time + 'accountSign201903';
-            //默认16位加密 可修改为32位
-            var sign_md5 = this.$md5(sign, 32);
-            //获取图形验证码需要的参数
-            var code_para = {
-                mobile: account,
-                type: 'H5LOGIN',
-                time: time,
-                sign: sign_md5
-            };
-            this.$axios.get( that.$store.state.domain + "/api/imgCode",
-                ).then( function (response) {
-                    console.log(response);
-                    this.form.img_code_src = response;
-                }).catch( function (error) {
-                    that.is_dialog(error);
-            },"json");
+            // var that = this;
+            // var account = this.form.account;
+            // //md5加密规定的字符串
+            // var time = new Date().getTime();
+            // var sign = 'accountSign201903' + account + 'H5LOGIN' + time + 'accountSign201903';
+            // //默认16位加密 可修改为32位
+            // var sign_md5 = this.$md5(sign, 32);
+            // //获取图形验证码需要的参数
+            // var code_para = {
+            //     mobile: account,
+            //     type: 'H5LOGIN',
+            //     time: time,
+            //     sign: sign_md5
+            // };
+            // this.$axios.get( that.$store.state.domain + "/api/imgCode",
+            //     ).then( function (response) {
+            //         console.log(response);
+            //         this.form.img_code_src = response;
+            //     }).catch( function (error) {
+            //         that.is_dialog(error);
+            // },"json");
         },
         re_get_img_code () {
             var num = Math.random();
-            this.form.img_code_src = this.$store.state.domain + "/api/imgCode?" + num;
+            this.form.img_code_src = this.$store.state.domain + "/api/imgCode?";
+            // this.form.img_code_src = this.$store.state.domain + "/api/imgCode?" + num;
         },
         //获取验证码
         get_code () {
@@ -618,21 +619,22 @@ export default {
                         console.log(response);
                         var res = that.is_JSON(response.data);
                         if (res.code == 0) {
-                            that.form.is_circle = false;
                             //登录成功后 删掉错误次数
                             that.form.login_error = 0;
                             localStorage.removeItem('login_error');
                             //临时存储后端返回的token和角色
                             sessionStorage.setItem('token', res.data.token);
-                            sessionStorage.setItem('role', res.data.user.username);
+                            sessionStorage.setItem('role', res.data.roles[0].RoleId);
+                            sessionStorage.setItem('RoleName', res.data.roles[0].RoleName);
                             that.$router.push({ path: '/home' });
+                            that.form.is_circle = false;
                         }else {
                             that.form.is_circle = false;
                             that.is_dialog(response.data.msg);
                             //错误次数过多 获取图形验证码
                             if (that.form.login_error > 2) {
                                 // that.get_img_code();
-                                this.form.img_code_src = this.$store.state.domain + '/api/imgCode';
+                                // that.re_get_img_code();
                             };
                         };
                     }).catch( function (error) {
@@ -771,7 +773,7 @@ export default {
         if (this.send_data.type == 'login' && this.form.login_error > 2) {
             //获取图形验证码
             // this.get_img_code();
-            this.form.img_code_src = this.$store.state.domain + "/api/imgCode";
+            this.re_get_img_code();
         };
         //检查是否有存储的手机号码
         this.form.account = localStorage.getItem('account') ? localStorage.getItem('account') : null;

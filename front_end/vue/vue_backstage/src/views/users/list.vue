@@ -116,9 +116,24 @@ export default {
     methods: {
         //请求数据
         get_lists(params) {
+            var that = this;
             this.$axios.post('/api/getUserList', JSON.stringify(params)).then(response => {
                 console.log('用户列表', response);
                 var res = response.data;
+                
+                var lists = res.data;
+                var length = res.data.length;
+                //最近登录时间
+                if (res.data[0] && res.data[0].last_login) {
+                    for (var i = 0; i < length; i ++) {
+                        if (lists[i].last_login <= 0) {
+                            res.data[i].last_login = '/';
+                        }else {
+                            res.data[i].last_login = that.$moment(parseInt(lists[i].last_login) * 1000).format('YYYY-MM-DD HH:mm:ss');
+                        }
+                    };
+                };
+                console.log(res.data);
                 this.table_data.table.lists = res.data;
                 this.table_data.page.total = parseInt(res.count);
             })
@@ -145,16 +160,21 @@ export default {
             if (val) {
                 var start_time = this.$moment(val[0]).valueOf() / 1000;
                 var end_time = this.$moment(val[1]).valueOf() / 1000;
+                sessionStorage.setItem('start_time', start_time);
+                sessionStorage.setItem('end_time', end_time);
             }else {
                 var start_time = '';
                 var end_time = '';
+                sessionStorage.removeItem('start_time');
+                sessionStorage.removeItem('end_time');
             };
             var params = {
                 page: 1,
                 size: 10,
                 where: {
                     stime: start_time,
-                    etime: end_time
+                    etime: end_time,
+                    keyword: sessionStorage.getItem('search_input') ? sessionStorage.getItem('search_input') : '',
                 }
             };
             this.get_lists(params);
@@ -166,16 +186,24 @@ export default {
             var params = {
                 page: val,
                 size: 10,
+                where: {
+                    stime: sessionStorage.getItem('start_time') ? sessionStorage.getItem('start_time') : '',
+                    etime: sessionStorage.getItem('end_time') ? sessionStorage.getItem('end_time') : '',
+                    keyword: sessionStorage.getItem('search_input') ? sessionStorage.getItem('search_input') : '',
+                }
             };
             this.get_lists(params);
         },
         //搜索
         search () {
+            sessionStorage.setItem('search_input', this.search_input);
             var params = {
                 page: 1,
                 size: 10,
                 where: {
-                    keyword: this.search_input
+                    keyword: this.search_input,
+                    stime: sessionStorage.getItem('start_time') ? sessionStorage.getItem('start_time') : '',
+                    etime: sessionStorage.getItem('end_time') ? sessionStorage.getItem('end_time') : '',
                 }
             };
             this.get_lists(params);

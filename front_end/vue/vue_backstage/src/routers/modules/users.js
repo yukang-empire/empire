@@ -12,7 +12,7 @@ const users = {
         icon: '#icon-yonghu1',
         //是否属于侧边栏展示项
         is_aside: true,
-        roles: ['admin']
+        roles: ['1']
     },
     children: [
         {

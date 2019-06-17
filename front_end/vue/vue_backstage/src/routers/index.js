@@ -14,6 +14,7 @@ import business from './modules/business.js';
 import users from './modules/users.js';
 import set from './modules/set.js';
 import orders from './modules/orders.js';
+import coupon from './modules/coupon.js';
 
 const routers = new Router({
     // mode: "history",
@@ -48,41 +49,10 @@ const routers = new Router({
             }
         },
         home,
-        orders,
-        business,
         users,
-        {
-            path: "/coupon",
-            name: "coupon",
-            component: layout,
-            redirect: '/coupon/lists',
-            meta: {
-                title: "优惠券管理",
-                icon: '#icon-youhuiquan',
-                //是否属于侧边栏展示项
-                is_aside: true,
-                roles: ['admin']
-            },
-            children: [
-                {
-                    path: '/coupon/add',
-                    name: 'coupon_add',
-                    component: () => import('@/views/coupon/add.vue'),
-                    meta: {
-                        title: '新增优惠券'
-                    } 
-                },
-                {
-                    path: '/coupon/lists',
-                    name: 'coupon_lists',
-                    component: () => import('@/views/coupon/lists.vue'),
-                    meta: {
-                        title: '优惠券列表'
-                    }
-                },
-            ]
-        },
-        
+        business,
+        orders,
+        coupon,
         set,
     ],
     //所有页面自动滚动到顶部
