@@ -11,7 +11,7 @@
                <span>输入关键词：</span>
                <el-input
                     placeholder="请输入要搜索的关键词"
-                    v-model="search_input"
+                    v-model="where.keyword"
                     @clear='clear'
                     @keyup.native.enter='search'
                     clearable>
@@ -55,7 +55,7 @@
 
 <script>
 import dialog_component from '@/common/components/dialog.vue';
-import table_page from '@/common/components/table_page.vue';
+import table_page from '@/common/components/table_page02.vue';
 
 export default {
     name: 'users_list',
@@ -109,8 +109,12 @@ export default {
                 }
             },
             //搜索的内容
-            search_input: null,
             search_time: null,
+            where: {
+                keyword: '',
+                stime: '',
+                etime: '',
+            },
         }
     },
     methods: {
@@ -158,24 +162,17 @@ export default {
             this.table_data.page.current_page = 1;
             sessionStorage.setItem('page', 1);
             if (val) {
-                var start_time = this.$moment(val[0]).valueOf() / 1000;
-                var end_time = this.$moment(val[1]).valueOf() / 1000;
-                sessionStorage.setItem('start_time', start_time);
-                sessionStorage.setItem('end_time', end_time);
+                this.where.stime = this.$moment(val[0]).valueOf() / 1000;
+                this.where.etime = this.$moment(val[1]).valueOf() / 1000;
+
             }else {
-                var start_time = '';
-                var end_time = '';
-                sessionStorage.removeItem('start_time');
-                sessionStorage.removeItem('end_time');
+                this.where.stime = '';
+                this.where.etime = '';
             };
             var params = {
                 page: 1,
                 size: 10,
-                where: {
-                    stime: start_time,
-                    etime: end_time,
-                    keyword: sessionStorage.getItem('search_input') ? sessionStorage.getItem('search_input') : '',
-                }
+                where: this.where,
             };
             this.get_lists(params);
         },
@@ -186,11 +183,7 @@ export default {
             var params = {
                 page: val,
                 size: 10,
-                where: {
-                    stime: sessionStorage.getItem('start_time') ? sessionStorage.getItem('start_time') : '',
-                    etime: sessionStorage.getItem('end_time') ? sessionStorage.getItem('end_time') : '',
-                    keyword: sessionStorage.getItem('search_input') ? sessionStorage.getItem('search_input') : '',
-                }
+                where: this.where,
             };
             this.get_lists(params);
         },
@@ -200,11 +193,7 @@ export default {
             var params = {
                 page: 1,
                 size: 10,
-                where: {
-                    keyword: this.search_input,
-                    stime: sessionStorage.getItem('start_time') ? sessionStorage.getItem('start_time') : '',
-                    etime: sessionStorage.getItem('end_time') ? sessionStorage.getItem('end_time') : '',
-                }
+                where: this.where,
             };
             this.get_lists(params);
         },

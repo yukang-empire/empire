@@ -28,6 +28,7 @@ const users = {
             name: 'yhxq',
             component: () => import('@/views/users/details.vue'),
             meta: {
+                is_hidden: true,
                 title: '用户详情'
             }
         },

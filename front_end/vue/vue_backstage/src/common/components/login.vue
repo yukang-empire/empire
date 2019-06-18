@@ -122,7 +122,8 @@
                 </svg>
             </div>
             <div class="right flex_center">
-                <img :src="form.img_code_src" @click='re_get_img_code' alt="code">
+                <!-- <img :src="form.img_code_src" @click='re_get_img_code' alt="code"> -->
+                <!-- <img src="https://manage.technologyle.com/api/imgCode" @click='re_get_img_code' alt="code"> -->
             </div>
         </div>
         <transition name="fade"><p class='verify_warn' v-if='verify_warn.img_code.is_open'><span>{{ verify_warn.img_code.text }}</span></p></transition>
@@ -513,7 +514,7 @@ export default {
         },
         re_get_img_code () {
             var num = Math.random();
-            this.form.img_code_src = this.$store.state.domain + "/api/imgCode?";
+            // this.form.img_code_src = this.$store.state.domain + "/api/imgCode?";
             // this.form.img_code_src = this.$store.state.domain + "/api/imgCode?" + num;
         },
         //获取验证码

@@ -51,9 +51,9 @@ const routers = new Router({
         home,
         users,
         business,
-        orders,
-        coupon,
-        set,
+        // orders,
+        // coupon,
+        // set,
     ],
     //所有页面自动滚动到顶部
     // scrollBehavior: () => ({ y: 0 }),

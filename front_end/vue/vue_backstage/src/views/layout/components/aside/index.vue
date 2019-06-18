@@ -27,11 +27,11 @@
                     </template>
                     
                     <li v-for="(item01, index) in item.children">
-                        <el-menu-item :index="item01.path" v-if='!item01.children || (item01.children.length < 2)'>
+                        <el-menu-item :index="item01.path" v-if="(!item01.children || (item01.children.length < 2)) && !item01.meta.is_hidden">
                             {{ item01.meta.title }}
                         </el-menu-item>
         
-                        <el-submenu :index="item01.path" v-else>
+                        <el-submenu :index="item01.path" v-if="(item01.children && item01.children.length >= 2) && !item01.meta.is_hidden">
                             <template slot="title">
                                 {{ item01.meta.title }}
                             </template>

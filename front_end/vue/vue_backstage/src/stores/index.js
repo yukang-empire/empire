@@ -12,7 +12,15 @@ const store = new Vuex.Store({
         current_route: null,
         //历史记录的数组汇总
         history_arr: [],
-
+        table_data_self: {
+            table: {
+                is_height: 'auto',
+                lists: []
+            },
+            page: {
+                is_page: true
+            }
+        },
     },
     mutations: {
         //进入页面 先发送路由给vuex 存到历史记录数组里 state参数别忘了写上
