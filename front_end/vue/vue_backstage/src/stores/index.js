@@ -8,6 +8,7 @@ const store = new Vuex.Store({
     state: {
         //域名
         domain: 'https://manage.technologyle.com',
+        domain02: 'https://shop.technologyle.com',
         //当前路由
         current_route: null,
         //历史记录的数组汇总

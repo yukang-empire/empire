@@ -39,7 +39,8 @@ const business = {
                     name: 'mdtx',
                     component: () => import('@/views/business/add/stores_info.vue'),
                     meta: {
-                        title: '填写门店信息'
+                        title: '填写门店信息',
+                        is_hidden: true
                     }
                 }
             ]
@@ -66,7 +67,8 @@ const business = {
                     name: 'sjxq',
                     component: () => import('@/views/business/info/details.vue'),
                     meta: {
-                        title: '商家详情'
+                        title: '商家详情',
+                        is_hidden: true
                     }
                 }
             ]
@@ -101,7 +103,8 @@ const business = {
                     name: 'mdxq',
                     component: () => import('@/views/business/stores/details.vue'),
                     meta: {
-                        title: '门店详情'
+                        title: '门店详情',
+                        is_hidden: true
                     }
                 },
             ]
@@ -136,7 +139,8 @@ const business = {
                     name: 'spxq',
                     component: () => import('@/views/business/goods/details.vue'),
                     meta: {
-                        title: '商品详情'
+                        title: '商品详情',
+                        is_hidden: true
                     }
                 },
             ]

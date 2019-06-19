@@ -37,7 +37,7 @@
                             </template>
 
                             <li v-for="(item02, index) in item01.children">
-                                <el-menu-item :index="item02.path" v-if='!item02.children || (item02.children.length < 2)'>
+                                <el-menu-item :index="item02.path" v-if='(!item02.children || (item02.children.length < 2)) && !item02.meta.is_hidden'>
                                     {{ item02.meta.title }}
                                 </el-menu-item>
                             </li>

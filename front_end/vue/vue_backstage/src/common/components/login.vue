@@ -109,7 +109,8 @@
         </div>
 
         <!-- 图形验证码 -->
-        <div class="input flex_center" v-if='send_data.type == "login" && form.login_error > 2'>
+        <!-- <div class="input flex_center" v-if='send_data.type == "login" && form.login_error > 2'> -->
+        <div class="input flex_center" v-if='false'>
             <div class="left flex_center">
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-yanzhengyanzhengma"></use>
@@ -122,7 +123,7 @@
                 </svg>
             </div>
             <div class="right flex_center">
-                <!-- <img :src="form.img_code_src" @click='re_get_img_code' alt="code"> -->
+                <img :src="form.img_code_src" @click='re_get_img_code' alt="code">
                 <!-- <img src="https://manage.technologyle.com/api/imgCode" @click='re_get_img_code' alt="code"> -->
             </div>
         </div>
@@ -514,6 +515,12 @@ export default {
         },
         re_get_img_code () {
             var num = Math.random();
+            this.$axios.get( this.$store.state.domain + "/api/imgCode",
+                ).then( function (response) {
+                    console.log(response);
+                }).catch( function (error) {
+                    that.is_dialog(error);
+            },"json");
             // this.form.img_code_src = this.$store.state.domain + "/api/imgCode?";
             // this.form.img_code_src = this.$store.state.domain + "/api/imgCode?" + num;
         },
@@ -595,7 +602,8 @@ export default {
             var password = this.form.password;
             var error_num = this.form.login_error;
             //检测是否有验证码input框
-            if (error_num > 2) {
+            // if (error_num > 2) {
+            if (false) {
                 //验证input值是否有空值
                 var is_empty = !account || !password || !this.form.img_code;
                 //都不为空值的情况下 继续验证input值是否都符合正则
@@ -774,7 +782,7 @@ export default {
         if (this.send_data.type == 'login' && this.form.login_error > 2) {
             //获取图形验证码
             // this.get_img_code();
-            this.re_get_img_code();
+            // this.re_get_img_code();
         };
         //检查是否有存储的手机号码
         this.form.account = localStorage.getItem('account') ? localStorage.getItem('account') : null;

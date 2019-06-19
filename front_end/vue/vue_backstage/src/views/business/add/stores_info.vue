@@ -9,11 +9,14 @@
             </p>
             <div class="business_write">
                 <div class="top_nav">
-                    <div class="flat">
+                    <router-link tag="div" to="/business/xzsj/sjtx" class="flat" style="cursor: pointer;">
                         <span>商家信息</span>
-                        <!-- 箭头 -->
                         <div class="right"></div>
-                    </div>
+                    </router-link>
+                    <!-- <div class="flat" style="cursor: pointer;">
+                        <span>商家信息</span>
+                        <div class="right"></div>
+                    </div> -->
                     <div class="flat tip tip02">
                         <span>门店信息</span>
                         <!-- 箭头 -->
@@ -33,13 +36,13 @@
                         <span>门店名称：</span>
                         <el-input
                             placeholder="请输入门店名称"
-                            v-model="form.name"
+                            v-model="form.club_name"
                             clearable>
                         </el-input>
                     </div>
                     <div class="item">
                         <span>所在地区：</span>
-                        <el-select v-model="form.p" filterable placeholder="请选择省份" class="pcas" @change='change_p'>
+                        <el-select v-model="form.province" filterable placeholder="请选择省份" class="pcas" @change='change_p'>
                             <el-option
                                 v-for="item in pcas.p"
                                 :key="item.name"
@@ -47,7 +50,7 @@
                                 :value="item.name">
                             </el-option>
                         </el-select>
-                        <el-select v-model="form.c" filterable placeholder="请选择城市" class="pcas" @change='change_c'>
+                        <el-select v-model="form.city" filterable placeholder="请选择城市" class="pcas" @change='change_c'>
                             <el-option
                                 v-for="item in pcas.c"
                                 :key="item.name"
@@ -55,7 +58,7 @@
                                 :value="item.name">
                             </el-option>
                         </el-select>
-                        <el-select v-model="form.a" filterable placeholder="请选择区" class="pcas" @change='change_a'>
+                        <el-select v-model="form.area" filterable placeholder="请选择区" class="pcas" @change='change_a'>
                             <el-option
                                 v-for="item in pcas.a"
                                 :key="item.name"
@@ -63,7 +66,7 @@
                                 :value="item.name">
                             </el-option>
                         </el-select>
-                        <el-select v-model="form.s" filterable placeholder="请选择街道" class="pcas" @change='change_s'>
+                        <el-select v-model="form.street" filterable placeholder="请选择街道" class="pcas" @change='change_s'>
                             <el-option
                                 v-for="item in pcas.s"
                                 :key="item.name"
@@ -80,6 +83,14 @@
                             clearable>
                         </el-input>
                     </div>
+                    <div class="item">
+                        <span>门店电话：</span>
+                        <el-input
+                            placeholder="请输入门店电话"
+                            v-model="form.tel"
+                            clearable>
+                        </el-input>
+                    </div>
                     <!-- <div class="item">
                         <span>地图定位：</span>
                         
@@ -88,20 +99,20 @@
                         <span>营业时间：</span>
                         <el-time-picker
                             is-range
-                            v-model="form.time"
+                            v-model="init_time"
                             range-separator="至"
                             start-placeholder="开始时间"
                             end-placeholder="结束时间"
-                            @blur='com_time'
+                            @change='com_time'
                             placeholder="选择时间范围">
                         </el-time-picker>
                     </div>
                     <div class="item">
                         <span>可提供的附加服务：</span>
                         <div class="serves">
-                            <el-checkbox :indeterminate="form.isIndeterminate" v-model="form.check_all" @change="handleCheckAllChange">全选</el-checkbox>
-                            <el-checkbox-group v-model="form.checked" @change="handleCheckedCitiesChange">
-                                <el-checkbox v-for="item in form.all_serves" :label="item" :key="item" border>{{ item }}</el-checkbox>
+                            <el-checkbox :indeterminate="checkbox.isIndeterminate" v-model="checkbox.check_all" @change="handleCheckAllChange">全选</el-checkbox>
+                            <el-checkbox-group v-model="checkbox.checked" @change="handleCheckedCitiesChange">
+                                <el-checkbox v-for="item in checkbox.all_serves" :label="item.id" :key="item.id" border>{{ item.name }}</el-checkbox>
                             </el-checkbox-group>
                         </div>
                     </div>
@@ -111,9 +122,9 @@
                             <p style="text-align: center;">(5张以内)</p>
                         </div>
                         <el-upload
-                            action=""
+                            action="https://shop.technologyle.com/index.php?m=Api&c=User&a=add_club"
                             list-type="picture-card"
-                            :auto-upload='false'
+                            :auto-upload='true'
                             :limit='5'
                             :on-preview="handlePictureCardPreview"
                             :before-upload='beforeAvatarUpload'
@@ -121,9 +132,9 @@
                             :on-remove="handleRemove">
                             <i class="el-icon-plus"></i>
                         </el-upload>
-                        <el-dialog :visible.sync="form.pic.dialogVisible">
-                            <img width="100%" :src="form.pic.dialogImageUrl" alt="">
-                        </el-dialog>
+                        <!-- <el-dialog :visible.sync="pic.dialogVisible" class="test002">
+                            <img style="width: 100%" :src="pic.dialogImageUrl" alt="">
+                        </el-dialog> -->
                     </div>
                     <div class="item">
                         <span>门店介绍：</span>
@@ -133,7 +144,7 @@
                             maxlength="300"
                             show-word-limit
                             placeholder="请输入门店介绍"
-                            v-model="form.textarea">
+                            v-model="form.content">
                         </el-input>
                     </div>
                 </div>
@@ -179,35 +190,50 @@ export default {
                 s: []
             },
             form: {
-                name: '',
-                p: '',
-                c: '',
-                a: '',
-                s: '',
+                realname: '',
+                mobile: '',
+                password: '',
+                re_password: '',
+                tel: '',
+                image: '',
+                club_name: '',
+                province: '',
+                city: '',
+                area: '',
+                street: '',
                 address: '',
-                location: '',
-                //默认时间
-                time: [new Date(2019, 6, 6, 8), new Date(2019, 6, 6, 22)],
-                //健身会所提供的服务
-                all_serves: ['跑步机', '举重', '瑜伽', '洗浴', '充电宝', '数据线', '抽烟区' ],
+                lng: '',
+                lat: '',
+                open_time: '',
+                close_time: '',
+                club_facil: [],
+                shop_image: [],
+                content: '',
+            },
+            //默认时间
+            init_time: [new Date(2019, 6, 6, 8), new Date(2019, 6, 6, 22)],
+            pic: {
+                dialogImageUrl: '',
+                dialogVisible: false
+            },
+            checkbox: {
                 //全选
                 check_all: false,
-                checked: ['跑步机', '举重'],
+                checked: sessionStorage.getItem('form') ? JSON.parse(sessionStorage.getItem('form')).club_facil : [],
                 isIndeterminate: true,
-                serves: [],
-                pic: {
-                    dialogImageUrl: '',
-                    dialogVisible: false
-                },
-                textarea: '',
-            },
+                //健身会所提供的服务
+                all_serves: [],
+            }
+
         }
     },
     methods: {
         //上传营业执照相关
         handleAvatarSuccess(res, file) {
-            this.form.license = URL.createObjectURL(file.raw);
-            console.log(this.form.license)
+            // this.form.shop_image.push(URL.createObjectURL(file.raw));
+            this.form.shop_image.push(file.raw);
+            console.log(file);
+            console.log(this.form.shop_image);
         },
         beforeAvatarUpload(file) {
             const isJPG = file.type === 'image/jpeg';
@@ -221,24 +247,40 @@ export default {
             return isJPG && isLt2M;
         },
         handleRemove(file, fileList) {
-            console.log(file, fileList);
+            // console.log(file, fileList);
+            this.form.shop_image.pop(URL.createObjectURL(file.raw));
+            console.log(this.form.shop_image);
         },
         handlePictureCardPreview(file) {
             this.dialogImageUrl = file.url;
             this.dialogVisible = true;
+            console.log(file);
         },
         //全选相关
         handleCheckAllChange(val) {
-            this.form.checked = val ? this.form.all_serves : [];
-            this.form.isIndeterminate = false;
+            if (val) {
+                this.form.club_facil = [];
+                for (var i = 0; i < this.checkbox.all_serves.length; i++) {
+                    this.form.club_facil.push(this.checkbox.all_serves[i].id);
+                };
+            }else {
+                this.form.club_facil = [];
+            };
+            this.checkbox.checked = this.form.club_facil;
+            this.checkbox.isIndeterminate = false;
+            console.log(this.form.club_facil);
         },
         handleCheckedCitiesChange(value) {
             let checkedCount = value.length;
-            this.form.check_all = checkedCount === this.form.all_serves.length;
-            this.form.isIndeterminate = checkedCount > 0 && checkedCount < this.form.all_serves.length;
+            this.checkbox.check_all = checkedCount === this.checkbox.all_serves.length;
+            this.checkbox.isIndeterminate = checkedCount > 0 && checkedCount < this.checkbox.all_serves.length;
+            this.form.club_facil = value;
+            console.log(this.form.club_facil);
         },
-        com_time () {
-            console.log(this.form.time);
+        com_time (time) {
+            sessionStorage.setItem('init_time', JSON.stringify(time));
+            this.form.open_time = this.$moment(time[0]).format('HH:mm');
+            this.form.close_time = this.$moment(time[1]).format('HH:mm');
         },
         //接收子组件事件 关闭dialog弹框
         off_dialog () {
@@ -252,78 +294,139 @@ export default {
             this.dialog.msg = info;
         },
         submit_data () {
-            this.is_dialog('提交成功！');
+            this.form.image = '';
+            this.form.token = sessionStorage.getItem('token');
+            if (!this.form.open_time) {
+                var time1 = JSON.parse(sessionStorage.getItem('init_time'))[0];
+                this.form.open_time = this.$moment(time1).format('HH:mm');
+            };
+            if (!this.form.close_time) {
+                var time2 = JSON.parse(sessionStorage.getItem('init_time'))[1];
+                this.form.open_time = this.$moment(time2).format('HH:mm');
+            };
+            sessionStorage.setItem('form', JSON.stringify(this.form));
+            console.log("form", this.form);
+            var params = new FormData();
+            // formData.append('shop_image', this.form.shop_image[0]);
+            // console.log("formData", formData);
+            params.append("address", this.form.address);
+            params.append("area", this.form.area);
+            params.append("city", this.form.city);
+            params.append("close_time", this.form.close_time);
+            params.append("club_facil", this.form.club_facil);
+            params.append("club_name", this.form.club_name);
+            params.append("content", this.form.content);
+            params.append("image", this.form.image);
+            params.append("lat", this.form.lat);
+            params.append("lng", this.form.lng);
+            params.append("mobile", this.form.mobile);
+            params.append("open_time", this.form.open_time);
+            params.append("password", this.form.password);
+            params.append("province", this.form.province);
+            // params.append("shop_image[]", this.form.shop_image);
+            this.form.shop_image.forEach(file => {
+                params.append("shop_image[]", file);
+            });
+            params.append("realname", this.form.realname);
+            params.append("street", this.form.street);
+            params.append("tel", this.form.tel);
+            params.append("token", this.form.token);
+            this.$axios.post(this.$store.state.domain02 + '/index.php?m=Api&c=User&a=add_club', params).then(response => {
+                console.log("新增商家门店", response);
+                
+            });
         },
         cancel () {
             this.form = {
-                name: '',
-                p: '',
-                c: '',
-                a: '',
-                s: '',
+                realname: '',
+                mobile: '',
+                password: '',
+                re_password: '',
+                tel: '',
+                image: '',
+                club_name: '',
+                province: '',
+                city: '',
+                area: '',
+                street: '',
                 address: '',
-                location: '',
-                time: '',
-                serves: [],
-                pic: '',
-                textarea: '',
-            }
+                lng: '',
+                lat: '',
+                open_time: '',
+                close_time: '',
+                club_facil: [],
+                shop_image: [],
+                content: '',
+            };
+            this.checkbox.checked = []
         },
         //改变省份 筛选市
         change_p () {
             //改变前先清空
-            this.form.c = '';
-            this.form.a = '';
-            this.form.s = '';
+            this.form.city = '';
+            this.form.area = '';
+            this.form.street = '';
             //提取长度出来 提高性能
             var p_length = this.pcas.p.length;
             for (var i = 0; i < p_length; i ++) {
                 //匹配省份
-                if (this.pcas.p[i].name == this.form.p) {
+                if (this.pcas.p[i].name == this.form.province) {
                     this.pcas.c = this.pcas.p[i].children;
                 };
             };
             //填入详细地址栏里
-            this.form.address = this.form.p;
+            // this.form.address = this.form.province;
         },
         //改变市 筛选区
         change_c () {
-            this.form.a = '';
-            this.form.s = '';
+            this.form.area = '';
+            this.form.street = '';
             var c_length = this.pcas.c.length;
             for (var i = 0; i < c_length; i ++) {
-                if (this.pcas.c[i].name == this.form.c) {
+                if (this.pcas.c[i].name == this.form.city) {
                     this.pcas.a = this.pcas.c[i].children;
                 };
             };
-            this.form.address = this.form.p + this.form.c;
+            // this.form.address = this.form.province + this.form.city;
         },
         //改变区 筛选街道
         change_a () {
-            this.form.s = '';
+            this.form.street = '';
             var a_length = this.pcas.a.length;
             for (var i = 0; i < a_length; i ++) {
-                if (this.pcas.a[i].name == this.form.a) {
+                if (this.pcas.a[i].name == this.form.area) {
                     this.pcas.s = this.pcas.a[i].children;
                 };
             };
-            this.form.address = this.form.p + this.form.c + this.form.a;
+            // this.form.address = this.form.province + this.form.city + this.form.area;
         },
         //选择街道
         change_s () {
             var s_length = this.pcas.s.length;
             for (var i = 0; i < s_length; i ++) {
-                if (this.pcas.p[i].name == this.form.p) {
+                if (this.pcas.p[i].name == this.form.province) {
                     
                 };
             };
-            this.form.address = this.form.p + this.form.c + this.form.a + this.form.s;
+            // this.form.address = this.form.province + this.form.city + this.form.area + this.form.street;
         },
     },
     mounted () {
         //省
         this.pcas.p = pcas;
         // console.log(this.pcas.p);
+        this.$axios.get(this.$store.state.domain02 + '/index.php?m=Api&c=User&a=club_facil').then(response => {
+            console.log("附加服务", response);
+            var res = response.data;
+            this.checkbox.all_serves = res.result;
+        });
+        if (sessionStorage.getItem('form')) {
+            this.form = JSON.parse(sessionStorage.getItem('form'));
+            this.form.shop_image = [];
+        };
+        if (sessionStorage.getItem('init_time')) {
+            this.init_time = JSON.parse(sessionStorage.getItem('init_time'));
+        };
     }
 }
 </script>
@@ -366,6 +469,9 @@ export default {
         width: 160px;
         margin-right: 15px;
         font-size: 0.8rem;
+    }
+    .el-icon-zoom-in {
+        display: none;
     }
 </style>
 

@@ -33,24 +33,24 @@
                         <span>*联系人：</span>
                         <el-input
                             placeholder="请输入商家联系人名字"
-                            v-model="form.name"
-                            @blur='verify_input("name")'
+                            v-model="form.realname"
+                            @blur='verify_input("realname")'
                             clearable>
                         </el-input>
                     </div>
-                    <transition name="fade"><p class='verify_warn' v-if='verify_warn.name.is_open'><span>{{ verify_warn.name.text }}</span></p></transition>
+                    <transition name="fade"><p class='verify_warn' v-if='verify_warn.realname.is_open'><span>{{ verify_warn.realname.text }}</span></p></transition>
                     <div class="item">
                         <span>*手机号码：</span>
                         <el-input
                             placeholder="手机号码默认为登录账号"
-                            v-model="form.account"
+                            v-model="form.mobile"
                             type='tel'
-                            @blur='verify_input("account")'
-                            @input='limit_input("account")'
+                            @blur='verify_input("mobile")'
+                            @input='limit_input("mobile")'
                             clearable>
                         </el-input>
                     </div>
-                    <transition name="fade"><p class='verify_warn' v-if='verify_warn.account.is_open'><span>{{ verify_warn.account.text }}</span></p></transition>
+                    <transition name="fade"><p class='verify_warn' v-if='verify_warn.mobile.is_open'><span>{{ verify_warn.mobile.text }}</span></p></transition>
                     <div class="item">
                         <span>*密码：</span>
                         <el-input
@@ -77,23 +77,16 @@
                         </el-input>
                     </div>
                     <transition name="fade"><p class='verify_warn' v-if='verify_warn.re_password.is_open'><span>{{ verify_warn.re_password.text }}</span></p></transition>
-                    <div class="item">
+                    <!-- <div class="item">
                         <span>企业名称：</span>
                         <el-input
                             placeholder="请输入企业名称"
-                            v-model="form.company"
+                            v-model="form.club_name"
                             clearable>
                         </el-input>
-                    </div>
-                    <div class="item">
-                        <span>企业地址：</span>
-                        <el-input
-                            placeholder="请输入企业地址"
-                            v-model="form.address"
-                            clearable>
-                        </el-input>
-                    </div>
-                    <div class="item">
+                    </div> -->
+                    
+                    <!-- <div class="item">
                         <span>企业电话：</span>
                         <el-input
                             placeholder="请输入企业电话"
@@ -102,7 +95,7 @@
                             @input='limit_input("tel")'
                             clearable>
                         </el-input>
-                    </div>
+                    </div> -->
                     <div class="item">
                         <span>营业执照：</span>
                         <el-upload
@@ -114,7 +107,7 @@
                             :before-upload="upload_before"
                             :on-change='upload_change'
                             :on-success="upload_succ">
-                            <img v-if="form.license" :src="form.license" class="avatar">
+                            <img v-if="form.image" :src="form.image" class="avatar">
                             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                         </el-upload>
                     </div>
@@ -216,7 +209,7 @@ export default {
             },
             //验证错误时的提示
             verify_warn: {
-                account: {
+                mobile: {
                     is_open: false,
                     text: null
                 },
@@ -228,24 +221,35 @@ export default {
                     is_open: false,
                     text: null
                 },
-                name: {
+                realname: {
                     is_open: false,
                     text: null
                 },
             },
             form: {
-                name: '',
-                account: '',
+                realname: '',
+                mobile: '',
                 password: '',
                 re_password: '',
-                company: '',
-                address: '',
                 tel: '',
-                license: '',
+                image: '',
+                club_name: '',
+                province: '',
+                city: '',
+                area: '',
+                street: '',
+                address: '',
+                lng: '',
+                lat: '',
+                open_time: '',
+                close_time: '',
+                club_facil: [],
+                shop_image: [],
+                content: '',
             },
             //裁剪参数
             option: {
-                img: 'http://5b0988e595225.cdn.sohucs.com/images/20180410/f1f9fe3c9b3844e997de5a65d9962128.jpeg',
+                img: '',
                 size: 1,
                 full: true,
                 outputType: 'jpg',
@@ -299,17 +303,30 @@ export default {
                 this.$refs.cropper.getCropBlob((data) => {
                     console.log(data);
                     var img = window.URL.createObjectURL(data);
-                    this.form.license = img;
+                    this.form.image = img;
                     this.is_cropper = false;
                 })
             } else {
                 //base 64
                 this.$refs.cropper.getCropData((data) => {
                     // console.log(data);
-                    this.form.license = data;
+                    this.convertBase64UrlToBlob(data);
+                    console.log("convertBase64UrlToBlob", this.convertBase64UrlToBlob(data))
+                    this.form.image = this.convertBase64UrlToBlob(data);
                     this.is_cropper = false;
                 });
             };
+        },
+        // 将base64的图片转换为file文件
+        convertBase64UrlToBlob(urlData) {
+            let bytes = window.atob(urlData.split(',')[1]);//去掉url的头，并转换为byte
+            //处理异常,将ascii码小于0的转换为大于0
+            let ab = new ArrayBuffer(bytes.length);
+            let ia = new Uint8Array(ab);
+            for (var i = 0; i < bytes.length; i++) {
+                ia[i] = bytes.charCodeAt(i);
+            }
+            return new Blob([ab], { type: 'image/jpeg' });
         },
         //上传营业执照相关
         upload_before(file) {
@@ -343,31 +360,42 @@ export default {
             this.dialog.msg = info;
         },
         to_next () {
-            var name = this.form.name;
-            var account = this.form.account;
+            var realname = this.form.realname;
+            var mobile = this.form.mobile;
             var password = this.form.password;
             var re_password = this.form.re_password;
             //验证input值是否有空值
-            var is_empty = !account || !password || !re_password || !name;
+            var is_empty = !mobile || !password || !re_password || !realname;
             //都不为空值的情况下 继续验证input值是否都符合正则
-            var is_RE = is_empty || this.verify_warn.account.is_open || this.verify_warn.password.is_open || this.verify_warn.re_password.is_open || this.verify_warn.name.is_open;
+            var is_RE = is_empty || this.verify_warn.mobile.is_open || this.verify_warn.password.is_open || this.verify_warn.re_password.is_open || this.verify_warn.realname.is_open;
             if (!is_RE) {
-
+                sessionStorage.setItem('form', JSON.stringify(this.form));
                 this.$router.push({ path: '/business/xzsj/mdtx' });
             }else {
                 this.is_dialog("请完善必填信息！");
             }
         },
         cancel () {
-            this.form = {
-                name: '',
-                account: '',
+            this.form =  {
+                realname: '',
+                mobile: '',
                 password: '',
                 re_password: '',
-                company: '',
-                address: '',
                 tel: '',
-                license: '',
+                image: '',
+                club_name: '',
+                province: '',
+                city: '',
+                area: '',
+                street: '',
+                address: '',
+                lng: '',
+                lat: '',
+                open_time: '',
+                close_time: '',
+                club_facil: [],
+                shop_image: [],
+                content: '',
             }
         },
         //验证失败的提示操作
@@ -380,14 +408,14 @@ export default {
         verify_input (name) {
             var that = this;
             switch (name) {
-                case 'account':
+                case 'mobile':
                     //正则验证
-                    if (!this.form_RE.phone.test(this.form.account)) {
-                        this.verify_error('account', '请输入正确格式的手机号码！');
+                    if (!this.form_RE.phone.test(this.form.mobile)) {
+                        this.verify_error('mobile', '请输入正确格式的手机号码！');
                     }else {
                         //储存手机号码 刷新后检测到有的话 则自动填入 更人性化
-                        localStorage.setItem('account', this.form.account);
-                        this.verify_warn.account.is_open = false;
+                        localStorage.setItem('mobile', this.form.mobile);
+                        this.verify_warn.mobile.is_open = false;
                     };
                     break;
                 case 'password':
@@ -406,9 +434,9 @@ export default {
                         this.verify_warn.re_password.is_open = false;
                     };
                     break;
-                case 'name':
-                    if (!this.form.name) {
-                        this.verify_error('name', '商家名称不能为空！');
+                case 'realname':
+                    if (!this.form.realname) {
+                        this.verify_error('realname', '商家名称不能为空！');
                     }else {
                         this.verify_warn.re_password.is_open = false;
                     };
@@ -418,7 +446,7 @@ export default {
         //限制某些input的输入数据格式 设置type为number 在IOS端无效 设置为tel 在PC端无效 所以只能用js限制
         limit_input (name) {
             if (this.form[name]) {
-                if ((name == 'account' && this.form[name]) || (name == 'tel' && this.form[name]) ) {
+                if ((name == 'mobile' && this.form[name]) || (name == 'tel' && this.form[name]) ) {
                     //限制手机号码只能纯数字
                     this.form[name] = this.form[name].replace(/[^\d]/g, '');
                 }else {
@@ -430,7 +458,9 @@ export default {
 
     },
     mounted () {
-        
+        if (sessionStorage.getItem('form')) {
+            this.form = JSON.parse(sessionStorage.getItem('form'));
+        }
     }
 }
 </script>

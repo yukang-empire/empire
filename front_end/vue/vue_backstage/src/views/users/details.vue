@@ -34,7 +34,7 @@
                         <p>详细地址：</p>
                     </div>
                     <div>
-                        <p>{{ base_data.sex == 1 ? '男' : '女' }}</p>
+                        <p>{{ base_data.sex }}</p>
                         <p>{{ base_data.mobile }}</p>
                         <p>{{ base_data.idcard > 0 ? '已认证' : '未认证' }}</p>
                         <p>{{ base_data.address ? base_data.address : base_data.province + base_data.city + base_data.district }}</p>
@@ -242,6 +242,13 @@ export default {
             console.log('基本信息', response);
             var res = response.data.data;
             this.base_data = res;
+            if (res.sex == 1) {
+                this.base_data.sex = '男';
+            }else if (res.sex == 2) {
+                this.base_data.sex = '女';
+            }else {
+                this.base_data.sex = '保密';
+            };
             this.table_data_tj.table.lists[0].total_amount = res.total_amount;
             this.table_data_tj.table.lists[0].underling_number = res.underling_number;
             this.table_data_tj.table.lists[0].user_points = res.user_points;

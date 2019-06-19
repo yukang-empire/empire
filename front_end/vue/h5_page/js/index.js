@@ -218,10 +218,7 @@ new Vue({
         var key = {
           "k":123
         };
-        $.post('https://manage.technologyle.com/api/addKv', test).then(response => {
-            console.log(response);
-        });
-        $.post('https://manage.technologyle.com/api/getKv').then(response => {
+        $.get('https://shop.technologyle.com/index.php?m=Api&c=User&a=club_facil').then(response => {
             console.log(response);
         });
     }
