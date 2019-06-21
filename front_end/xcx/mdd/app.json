@@ -1,13 +1,24 @@
 {
   "pages": [
-    "pages/index/index",
-    "pages/logs/logs"
+    "pages/views/take_name/index",
+    "pages/views/take_name/word/index",
+    "pages/views/take_name/address/index",
+    "pages/views/verify_name/index",
+    "pages/views/home/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#2954f9",
     "navigationBarTitleText": "易站通",
     "navigationBarTextStyle": "white"
+  },
+  "networkTimeout": {
+    "request": 5000
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "易站通需要获取您所在的城市信息"
+    }
   },
   "sitemapLocation": "sitemap.json"
 }

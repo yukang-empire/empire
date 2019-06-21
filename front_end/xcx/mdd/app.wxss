@@ -1,10 +1,109 @@
 /**app.wxss**/
-.container {
-  height: 100%;
+/* 阿里icon */
+@import "pages/common/icon/icon.wxss";
+
+view {
+  color: #333;
+  font-size: 30rpx;
+}
+.flex {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
+}
+
+/* 自定义模态框 */
+.dialog {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 99;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.dialog .content {
+  width: 60%;
+  padding: 0 10%;
+  height: 740rpx;
+  border-radius: 20rpx;
+  background-color: #f7f7f7;
+}
+.dialog .content .h2 {
+  font-size: 40rpx;
+  font-weight: 900;
+  margin: 50rpx 0;
+  text-align: center;
+}
+.dialog .content .h3 {
+  font-weight: 600;
+  margin-bottom: 10rpx;
+  font-size: 32rpx;
+}
+.dialog .content .span {
+  margin: 30rpx 0;
+  color: #999;
+  line-height: 45rpx;
+}
+.dialog .content button {
+  width: 80%;
+  background-color: #3352f5;
+  color: #fff;
+  margin-top: 50rpx;
+  border-radius: 50rpx;
+}
+
+/* 收藏 */
+.collect {
+  width: 250rpx;
+  height: 80rpx;
+  display: flex;
+  color: #fff;
+  align-items: center;
+  border-radius: 50rpx;
+  background-color: #2149f4;
+}
+.collect .iconfont {
+  padding: 20rpx;
+  border-radius: 50%;
+  margin-right: 20rpx;
+  background-color: #0a38e4;
+}
+
+.form .item {
+  padding: 25rpx 35rpx;
+  color: #999;
+  border-bottom: 1px solid #ddd;
+}
+.form .item .select {
+  font-size: 35rpx;
+  margin-top: 25rpx;
+  display: flex;
   justify-content: space-between;
-  padding: 200rpx 0;
-  box-sizing: border-box;
-} 
+  align-items: center;
+}
+.form .item .select .iconfont {
+  color: #999;
+}
+.form .item text.iconfont {
+  color: #2149f4;
+  margin-left: 10rpx;
+}
+.form .item .placeholder {
+  color: #ccc;
+}
+
+.next {
+  margin: 80rpx 10% 30rpx 10%;
+}
+.next button {
+  width: 100%;
+  height: 100rpx;
+  color: #fff;
+  font-size: 35rpx;
+  border-radius: 50rpx;
+  background-color: #ddd;
+}

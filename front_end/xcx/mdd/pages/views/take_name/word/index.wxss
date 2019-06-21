@@ -1,0 +1,15 @@
+
+.header {
+  background-color: #2954f9;
+  color: #fff;
+  padding: 10rpx 0 30rpx 40rpx;
+}
+.footer {
+  color: #999;
+}
+.select input {
+  font-size: 30rpx;
+}
+.form .item {
+  padding-top: 50rpx;
+}
