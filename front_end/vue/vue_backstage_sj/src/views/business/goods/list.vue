@@ -1,6 +1,6 @@
 <template>
     <div class="goods_list">
-        <div class="repeat_div">
+        <!-- <div class="repeat_div">
             <p>
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-funnel"></use>
@@ -16,7 +16,7 @@
                 </el-input>
                 <el-button type="primary">搜索</el-button>
             </div>
-        </div>
+        </div> -->
 
         <div class="repeat_div">
             <p>
@@ -66,19 +66,19 @@ export default {
                     //要展示哪些行
                     select: 'splb',
                     //是否固定表头
-                    is_height: false,
+                    is_height: 400,
                     //表格数据
                     lists: [
-                        {id: '6',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 10},
-                        {id: '7',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 9},
-                        {id: '8',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 8},
-                        {id: '9',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 7},
-                        {id: '10',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 6},
-                        {id: '11',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 5},
-                        {id: '12',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 4},
-                        {id: '13',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 3},
-                        {id: '14',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 2},
-                        {id: '15',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 1},
+                        {goods_id: '6',goods_name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',club_name: '', shop_price: 6666.00, cost_price: 5555.00, sales_sum: 10},
+                        {goods_id: '7',goods_name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',club_name: '', shop_price: 6666.00, cost_price: 5555.00, sales_sum: 9},
+                        {goods_id: '8',goods_name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',club_name: '', shop_price: 6666.00, cost_price: 5555.00, sales_sum: 8},
+                        {goods_id: '9',goods_name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',club_name: '', shop_price: 6666.00, cost_price: 5555.00, sales_sum: 7},
+                        {goods_id: '10',goods_name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',club_name: '', shop_price: 6666.00, cost_price: 5555.00, sales_sum: 6},
+                        {goods_id: '11',goods_name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',club_name: '', shop_price: 6666.00, cost_price: 5555.00, sales_sum: 5},
+                        {goods_id: '12',goods_name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',club_name: '', shop_price: 6666.00, cost_price: 5555.00, sales_sum: 4},
+                        {goods_id: '13',goods_name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',club_name: '', shop_price: 6666.00, cost_price: 5555.00, sales_sum: 3},
+                        {goods_id: '14',goods_name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',club_name: '', shop_price: 6666.00, cost_price: 5555.00, sales_sum: 2},
+                        {goods_id: '15',goods_name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',club_name: '', shop_price: 6666.00, cost_price: 5555.00, sales_sum: 1},
                     ],
                     //需要改变的行开关状态
                     switch: {
@@ -132,8 +132,17 @@ export default {
         },
         //查看详情
         look_up (row) {
-            this.$router.push({ path: '/business/splb/spxq', query: { id: row.id } });
+            console.log(row);
+            this.$router.push({ path: '/business/splb/spxq', query: { goods_id: row.goods_id } });
         }
+    },
+    mounted () {
+        var params = new FormData();
+        params.append("token", sessionStorage.getItem('token'));
+        this.$axios.post("/index.php?m=Api&c=Club&a=club_goods_list", params).then( response => {
+            console.log("商品列表", response);
+            this.table_data.table.lists = response.data.result;
+        });
     }
 }
 </script>

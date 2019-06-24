@@ -35,20 +35,20 @@
             </el-table-column>
             <el-table-column
                 v-if="table_data_self.table.select=='mdlb'"
-                prop="name"
+                prop="club_name"
                 label="门店名称">
             </el-table-column>
             <!-- 商品列表 -->
             <el-table-column 
                 v-if="table_data_self.table.select=='splb'"
-                prop="id"
+                prop="goods_id"
                 sortable
                 :sort-method='date_sort'
                 label="商品ID">
             </el-table-column>
             <el-table-column
                 v-if="table_data_self.table.select=='splb'"
-                prop="name"
+                prop="goods_name"
                 label="商品名称">
             </el-table-column>
             <!-- 用户列表 -->
@@ -218,29 +218,29 @@
                 label="酷币">
             </el-table-column>
             </el-table-column>
-            <el-table-column
-                v-if="table_data_self.table.select=='mdlb' || table_data_self.table.select=='splb'"
+            <!-- <el-table-column
+                v-if="table_data_self.table.select=='splb'"
                 prop="sssj"
                 label="所属商家">
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column
                 v-if="table_data_self.table.select=='splb'"
-                prop="ssmd"
+                prop="club_name"
                 label="所属门店">
             </el-table-column>
             <el-table-column
                 v-if="table_data_self.table.select=='splb'"
-                prop="xsje"
+                prop="shop_price"
                 label="商品销售金额">
             </el-table-column>
             <el-table-column
                 v-if="table_data_self.table.select=='splb'"
-                prop="jsje"
+                prop="cost_price"
                 label="商品结算金额">
             </el-table-column>
             <el-table-column
                 v-if="table_data_self.table.select=='splb'"
-                prop="num"
+                prop="sales_sum"
                 label="销量">
             </el-table-column>
             <el-table-column
@@ -308,15 +308,20 @@
             </el-table-column>
             <el-table-column
                 v-if="table_data_self.table.select=='mdlb'"
-                prop="xxdz"
+                prop="address"
                 label="详细地址">
             </el-table-column>
             <el-table-column
                 v-if="table_data_self.table.select=='mdlb'"
-                prop="num"
+                prop="goods_num"
                 sortable
                 :sort-method='date_sort'
                 label="商品数量">
+            </el-table-column>
+            <el-table-column
+                v-if="table_data_self.table.select=='mdlb'"
+                prop="status"
+                label="门店状态">
             </el-table-column>
             <!-- 转换日期格式后 默认的排序方式会出错 所以要用自定义排序方法sort-method -->
             <el-table-column
@@ -377,7 +382,6 @@
             </el-table-column>
             <el-table-column label="禁用账户" v-if="
                 table_data_self.table.select=='sjlb' || 
-                table_data_self.table.select=='mdlb' || 
                 table_data_self.table.select=='yhlb'
             ">
                 <template slot-scope="scope">
@@ -430,7 +434,7 @@
                         table_data_self.table.select=='jslb'
                     ">删除</el-button>
                     <el-button type="text" @click="check(scope.row)" v-if="
-                        table_data_self.table.select=='ddjl'
+                        table_data_self.table.select=='ddjl' && scope.row.status != '已使用'
                     ">核销</el-button>
                 </template>
             </el-table-column>

@@ -66,8 +66,8 @@ routers.beforeEach((to, from, next) => {
         next();
         NProgress.done();
     }else {
-        // if (!sessionStorage.getItem('token')) {
-        if (false) {
+        if (!sessionStorage.getItem('token')) {
+        // if (false) {
             next({ path: '/login' });
             NProgress.done();
         }else {

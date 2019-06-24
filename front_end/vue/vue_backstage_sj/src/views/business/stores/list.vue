@@ -12,9 +12,11 @@
                    <el-input
                         placeholder="请输入要搜索的关键词"
                         v-model="search_input"
+                        @clear='search'
+                        @keyup.native.13='search'
                         clearable>
                     </el-input>
-                    <el-button type="primary">搜索</el-button>
+                    <el-button type="primary" @click='search'>搜索</el-button>
                 </div>
             </div>
     
@@ -66,19 +68,19 @@
                         //要展示哪些行
                         select: 'mdlb',
                         //是否固定表头
-                        is_height: false,
+                        is_height: 769,
                         //表格数据
                         lists: [
-                            {id: '6',name: '百得利健身会所',sssj: '百得利',ssqy: '深圳龙华',xxdz: '清湖地铁站',num: 10,ban: 1},
-                            {id: '7',name: '百得利健身会所',sssj: '百得利',ssqy: '深圳龙华',xxdz: '清湖地铁站',num: 9,ban: 1},
-                            {id: '8',name: '百得利健身会所',sssj: '百得利',ssqy: '深圳龙华',xxdz: '清湖地铁站',num: 8,ban: 1},
-                            {id: '9',name: '百得利健身会所',sssj: '百得利',ssqy: '深圳龙华',xxdz: '清湖地铁站',num: 7,ban: 1},
-                            {id: '10',name: '百得利健身会所',sssj: '百得利',ssqy: '深圳龙华',xxdz: '清湖地铁站',num: 6,ban: 1},
-                            {id: '11',name: '百得利健身会所',sssj: '百得利',ssqy: '深圳龙华',xxdz: '清湖地铁站',num: 5,ban: 1},
-                            {id: '12',name: '百得利健身会所',sssj: '百得利',ssqy: '深圳龙华',xxdz: '清湖地铁站',num: 4,ban: 1},
-                            {id: '13',name: '百得利健身会所',sssj: '百得利',ssqy: '深圳龙华',xxdz: '清湖地铁站',num: 3,ban: 1},
-                            {id: '14',name: '百得利健身会所',sssj: '百得利',ssqy: '深圳龙华',xxdz: '清湖地铁站',num: 2,ban: 1},
-                            {id: '15',name: '百得利健身会所',sssj: '百得利',ssqy: '深圳龙华',xxdz: '清湖地铁站',num: 1,ban: 1},
+                            {id: '6',club_name: '百得利健身会所',sssj: '百得利',ssqy: '深圳龙华',address: '清湖地铁站',goods_num: 10,status: 1},
+                            {id: '7',club_name: '百得利健身会所',sssj: '百得利',ssqy: '深圳龙华',address: '清湖地铁站',goods_num: 9,status: 1},
+                            {id: '8',club_name: '百得利健身会所',sssj: '百得利',ssqy: '深圳龙华',address: '清湖地铁站',goods_num: 8,status: 1},
+                            {id: '9',club_name: '百得利健身会所',sssj: '百得利',ssqy: '深圳龙华',address: '清湖地铁站',goods_num: 7,status: 1},
+                            {id: '10',club_name: '百得利健身会所',sssj: '百得利',ssqy: '深圳龙华',address: '清湖地铁站',goods_num: 6,status: 1},
+                            {id: '11',club_name: '百得利健身会所',sssj: '百得利',ssqy: '深圳龙华',address: '清湖地铁站',goods_num: 5,status: 1},
+                            {id: '12',club_name: '百得利健身会所',sssj: '百得利',ssqy: '深圳龙华',address: '清湖地铁站',goods_num: 4,status: 1},
+                            {id: '13',club_name: '百得利健身会所',sssj: '百得利',ssqy: '深圳龙华',address: '清湖地铁站',goods_num: 3,status: 1},
+                            {id: '14',club_name: '百得利健身会所',sssj: '百得利',ssqy: '深圳龙华',address: '清湖地铁站',goods_num: 2,status: 1},
+                            {id: '15',club_name: '百得利健身会所',sssj: '百得利',ssqy: '深圳龙华',address: '清湖地铁站',goods_num: 1,status: 1},
                         ],
                         //需要改变的行开关状态
                         switch: {
@@ -91,11 +93,12 @@
                         //当前页码
                         current_page: 1,
                         //总数量
-                        total: 30,
+                        total: 0,
+                        is_page: true
                     }
                 },
                 //搜索的内容
-                search_input: null,
+                search_input: '',
     
             }
         },
@@ -132,8 +135,54 @@
             },
             //查看详情
             look_up (row) {
+                console.log(row);
                 this.$router.push({ path: '/business/mdlb/mdxq', query: { id: row.id } });
+            },
+            //搜索
+            search () {
+                var params = new FormData();
+                params.append("search", this.search_input);
+                params.append("token", sessionStorage.getItem('token'));
+                this.$axios.post("/index.php?m=Api&c=Club&a=club_list", params).then( response => {
+                    console.log("门店列表" ,response);
+                    this.table_data.table.lists = response.data.result;
+                    var length = this.table_data.table.lists.length;
+                    for (var i = 0; i < length; i++) {
+                        if (this.table_data.table.lists[i].province.indexOf("市") != -1) {
+                            this.table_data.table.lists[i].city = '';
+                        };
+                        this.table_data.table.lists[i].ssqy = this.table_data.table.lists[i].province + this.table_data.table.lists[i].city + this.table_data.table.lists[i].area;
+                        if (this.table_data.table.lists[i].status == 1) {
+                            this.table_data.table.lists[i].status = '在线';
+                        }else {
+                            this.table_data.table.lists[i].status = '离线';
+                        };
+                    }
+                });
             }
+        },
+        mounted () {
+            
+            var params = new FormData();
+            params.append("search", this.search_input);
+            params.append("token", sessionStorage.getItem('token'));
+            this.$axios.post("/index.php?m=Api&c=Club&a=club_list", params).then( response => {
+                console.log("门店列表" ,response);
+                this.table_data.table.lists = response.data.result;
+                this.table_data.page.total = response.data.count;
+                var length = this.table_data.table.lists.length;
+                for (var i = 0; i < length; i++) {
+                    if (this.table_data.table.lists[i].province.indexOf("市") != -1) {
+                        this.table_data.table.lists[i].city = '';
+                    };
+                    this.table_data.table.lists[i].ssqy = this.table_data.table.lists[i].province + this.table_data.table.lists[i].city + this.table_data.table.lists[i].area;
+                    if (this.table_data.table.lists[i].status == 1) {
+                        this.table_data.table.lists[i].status = '在线';
+                    }else {
+                        this.table_data.table.lists[i].status = '离线';
+                    };
+                }
+            });
         }
     }
     </script>

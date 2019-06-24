@@ -9,7 +9,7 @@
   <view class='item'>
     <text>字号一</text>
     <view class='select'>
-      <input placeholder='您比较喜欢的一个字 必填' value="{{ one }}" bindblur='input_one'></input>
+      <input placeholder='您比较喜欢的一个字 必填' value="{{ one }}" bindinput='input_one'></input>
     </view>
   </view>
   <view class='item'>
@@ -31,6 +31,9 @@
   <button class='flex' style='background-color: #3352f5;' wx:if="{{ one }}" bindtap='preserve'>保存</button>
 </view>
 <view class='footer flex'>
-  <text style='margin-right: 40rpx;'>返回首页</text>
-  <text>在线核名</text>
+  <view class='content'>
+    <text class='home'>返回首页</text>
+    <text>在线核名</text>
+  </view>
+  <view class='line'></view>
 </view>

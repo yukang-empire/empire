@@ -84,7 +84,7 @@ Page({
       city: event.currentTarget.dataset.city
     });
     app.globalData.select_city = event.currentTarget.dataset.city;
-    wx.navigateTo({
+    wx.redirectTo({
       url: '/pages/views/take_name/index',
     })
   }

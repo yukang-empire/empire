@@ -2,6 +2,9 @@
 /* 阿里icon */
 @import "pages/common/icon/icon.wxss";
 
+page {
+  background-color: #f7f7f7;
+}
 view {
   color: #333;
   font-size: 30rpx;
@@ -32,6 +35,15 @@ view {
   border-radius: 20rpx;
   background-color: #f7f7f7;
 }
+.dialog02 .content{
+  height: 460rpx;
+  text-align: center;
+  padding-top: 60rpx;
+}
+.dialog02 .iconfont {
+  font-size: 120rpx;
+  color: #f76260;
+}
 .dialog .content .h2 {
   font-size: 40rpx;
   font-weight: 900;
@@ -47,6 +59,9 @@ view {
   margin: 30rpx 0;
   color: #999;
   line-height: 45rpx;
+}
+.dialog02 .content .span {
+  color: #666;
 }
 .dialog .content button {
   width: 80%;
@@ -106,4 +121,39 @@ view {
   font-size: 35rpx;
   border-radius: 50rpx;
   background-color: #ddd;
+}
+
+
+.btn {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  border-top: 1px solid #ddd;
+  background-color: #fff;
+}
+.btn view {
+  width: 33.3%;
+  height: 100rpx;
+  border-radius: 0;
+  font-size: 30rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.btn .again {
+  height: 50rpx;
+  font-weight: 900;
+  border-right: 1px solid #ddd;
+}
+.btn .check {
+  color: #2954f9;
+  font-weight: 900;
+}
+.btn .replace {
+  color: #fff;
+  background-color: #2954f9;
 }

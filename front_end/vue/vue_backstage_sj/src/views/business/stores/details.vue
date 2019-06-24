@@ -13,16 +13,14 @@
                 </div>
                 <div class="middle flex_center">
                     <div>
-                        <p>企业名称：</p>
-                        <p>企业地址：</p>
-                        <p>企业电话：</p>
-                        <p>营业执照：</p>
+                        <p>门店名称：</p>
+                        <p>门店地址：</p>
+                        <p>门店电话：</p>
                     </div>
                     <div>
-                        <p>某某</p>
-                        <p>某某</p>
-                        <p>某某</p>
-                        <p>某某</p>
+                        <p>{{ store_data.club_name }}</p>
+                        <p>{{ store_data.province }}{{ store_data.city }}{{ store_data.area }}{{ store_data.street }}{{ store_data.address }}</p>
+                        <p>{{ store_data.tel ? store_data.tel : "无" }}</p>
                     </div>
                 </div>
                 <div class="right">
@@ -32,9 +30,9 @@
                         <p>入驻时间：</p>
                     </div>
                     <div>
-                        <p>某某</p>
-                        <p>某某</p>
-                        <p>某某</p>
+                        <p>{{ store_data.nickname ? store_data.nickname : "无" }}</p>
+                        <p>{{ store_data.mobile }}</p>
+                        <p>{{ store_data.add_time }}</p>
                     </div>
                 </div>
             </div>
@@ -75,6 +73,18 @@ export default {
     },
     data () {
         return {
+            store_data: {
+                club_name: '',
+                province: '',
+                city: '',
+                area: '',
+                street: '',
+                address: '',
+                tel: '',
+                nickname: '',
+                mobile: '',
+                add_time: '',
+            },
             //弹框数据
             dialog_md: {
                 is_open: false,
@@ -93,19 +103,19 @@ export default {
                     //要展示哪些行
                     select: 'splb',
                     //是否固定表头
-                    is_height: 300,
+                    is_height: false,
                     //表格数据
                     lists: [
-                        {id: '6',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 10},
-                        {id: '7',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 9},
-                        {id: '8',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 8},
-                        {id: '9',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 7},
-                        {id: '10',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 6},
-                        {id: '11',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 5},
-                        {id: '12',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 4},
-                        {id: '13',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 3},
-                        {id: '14',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 2},
-                        {id: '15',name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',xsje: 6666.00, jsje: 5555.00, num: 1},
+                        // {goods_id: '6',goods_name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',shop_price: 6666.00, cost_price: 5555.00, sales_sum: 10},
+                        // {goods_id: '7',goods_name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',shop_price: 6666.00, cost_price: 5555.00, sales_sum: 9},
+                        // {goods_id: '8',goods_name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',shop_price: 6666.00, cost_price: 5555.00, sales_sum: 8},
+                        // {goods_id: '9',goods_name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',shop_price: 6666.00, cost_price: 5555.00, sales_sum: 7},
+                        // {goods_id: '10',goods_name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',shop_price: 6666.00, cost_price: 5555.00, sales_sum: 6},
+                        // {goods_id: '11',goods_name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',shop_price: 6666.00, cost_price: 5555.00, sales_sum: 5},
+                        // {goods_id: '12',goods_name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',shop_price: 6666.00, cost_price: 5555.00, sales_sum: 4},
+                        // {goods_id: '13',goods_name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',shop_price: 6666.00, cost_price: 5555.00, sales_sum: 3},
+                        // {goods_id: '14',goods_name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',shop_price: 6666.00, cost_price: 5555.00, sales_sum: 2},
+                        // {goods_id: '15',goods_name: '百得利健身会所',sssj: '百得利',ssmd: '百得利分店',shop_price: 6666.00, cost_price: 5555.00, sales_sum: 1},
                     ],
                     //需要改变的行开关状态
                     switch: {
@@ -152,11 +162,26 @@ export default {
             this.table_data_sp.table.switch.index = index;
         },
         look_up_sp (row) {
-            this.$router.push({ path: '/business/splb/spxq', query: { id: row.id } });
+            console.log(row);
+            this.$router.push({ path: '/business/splb/spxq', query: { goods_id: row.goods_id } });
         },
     },
     mounted () {
         console.log(this.$route.query);
+        if (this.$route.query) {
+            var params = new FormData();
+            params.append("id", this.$route.query.id);
+            params.append("token", sessionStorage.getItem('token'));
+            this.$axios.post("/index.php?m=Api&c=Club&a=club_shop_info", params).then( response => {
+                console.log("门店详情", response);
+                this.store_data = response.data.result;
+                this.table_data_sp.table.lists = response.data.result.goods;
+                if (this.store_data.province.indexOf("市") != -1) {
+                    this.store_data.city = '';
+                };
+                this.store_data.add_time = this.store_data.add_time ? this.$moment(this.store_data.add_time * 1000).format('YYYY-MM-DD HH:mm:ss') : '';
+            })
+        }
     }
 }
 </script>
@@ -198,6 +223,11 @@ export default {
         
         &>div:nth-of-type(2) {
             color: #999;
+            min-height: 96px;
+            p {
+                text-align: left;
+                margin-left: 5px;
+            }
         }
     }
 

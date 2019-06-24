@@ -9,8 +9,9 @@
   <view class='item'>
     <text>地区</text>
     <view class='select' bindtap='select_address'>
-      <text wx:if="{{ is_succ }}">{{ city }}</text>
+      <text wx:if="{{ is_succ && is_inside }}">{{ city }}</text>
       <text style='color: #ccc;' wx:if="{{ !is_succ }}">{{ city }}</text>
+      <text style='color: #ccc;' wx:if="{{ is_succ && !is_inside }}">{{ city }}</text>
       <text class='iconfont icon-you'></text>
     </view>
   </view>
@@ -24,8 +25,9 @@
   </view>
   <view class='item'>
     <text>行业类型</text>
-    <view class='select'>
-      <text class='placeholder'>请选择行业</text>
+    <view class='select' bindtap='select_trade'>
+      <text class='placeholder' wx:if="{{ trade == '请选择行业' }}">{{ trade }}</text>
+      <text class='placeholder' style='color: #333;' wx:if="{{ trade != '请选择行业' }}">{{ trade }}</text>
       <text class='iconfont icon-you'></text>
     </view>
   </view>
@@ -53,10 +55,24 @@
   </view>
 </view>
 
+<view class='dialog dialog02' wx:if="{{ is_dialog02 }}">
+  <view class='content'>
+    <view><text class='iconfont icon-gantanhao-copy'></text></view>
+    <view class='span'>
+      根据工商政策，需要微信授权核实您的真实身份！
+    </view>
+    <button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">前往授权</button>
+  </view>
+</view>
+
 <view class='next'>
-  <button class='flex'>下一步</button>
+  <button class='flex' wx:if="{{ !is_next }}">下一步</button>
+  <button class='flex' wx:if="{{ is_next }}" style='background-color: #3352f5;' bindtap='next'>下一步</button>
 </view>
 <view class='footer flex'>
-  <text style='margin-right: 40rpx;'>返回首页</text>
-  <text>在线核名</text>
+  <view class='content'>
+    <text class='home'>返回首页</text>
+    <text>在线核名</text>
+  </view>
+  <view class='line'></view>
 </view>

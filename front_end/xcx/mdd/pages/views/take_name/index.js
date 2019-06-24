@@ -15,9 +15,26 @@ Page({
     key: 'c11a7386404c0f717216dc0886aadebb',
     is_succ: app.globalData.is_address,
     is_dialog: false,
-    input_final: ""
+    is_dialog02: false,
+    input_final: "",
+    trade: '',
+    is_next: false,
+    all_city: ['深圳市', '广州市', '东莞市', '佛山市', '珠海市', '成都市', '南京市', '西安市'],
+    is_inside: true
   },
 
+  //获取手机号
+  getPhoneNumber(e) {
+    console.log(e);
+    wx.navigateTo({
+      url: '/pages/views/take_name/result/index',
+    });
+  },
+  next () {
+    this.setData({
+      is_dialog02: true
+    });
+  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -29,9 +46,14 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
+    console.log("全局变量", app.globalData);
+    if (app.globalData.input_final && app.globalData.select_city && app.globalData.select_trade) {
+      this.setData({ is_next: true })
+    };
     this.setData({
       city: app.globalData.select_city,
-      input_final: app.globalData.input_final ? app.globalData.input_final : "请输入您希望字号中包含的字"
+      input_final: app.globalData.input_final ? app.globalData.input_final : "请输入您希望字号中包含的字",
+      trade: app.globalData.select_trade ? app.globalData.select_trade : "请选择行业",
     });
   },
 
@@ -94,12 +116,17 @@ Page({
       url: '/pages/views/take_name/word/index',
     })
   },
+  //选择行业
+  select_trade() {
+    wx.navigateTo({
+      url: '/pages/views/take_name/trade/index',
+    })
+  },
   //获取定位
   get_address: function () {
     var that = this;
     wx.getLocation({
       success: function (res) {
-        console.log(res);
         that.setData({
           longitude: res.longitude,
           latitude: res.latitude
@@ -122,11 +149,26 @@ Page({
     myAmapFun.getRegeo({
       location: '' + that.data.longitude + ',' + that.data.latitude + '',
       success: function (data) {
-        console.log(data);
-        that.setData({
-          city: app.globalData.select_city ? app.globalData.select_city : data[0].regeocodeData.addressComponent.city
-        });
-        app.globalData.select_city = data[0].regeocodeData.addressComponent.city;
+        console.log("位置信息", data);
+        var city = data[0].regeocodeData.addressComponent.city;
+        var length = that.data.all_city.length;
+        var state = 0;
+        for (var i = 0; i < length; i++) {
+          if (that.data.all_city[i] == city) {
+            that.setData({
+              city: app.globalData.select_city ? app.globalData.select_city : city,
+              is_inside: true,
+            });
+            app.globalData.select_city = city;
+            state = 1;
+          };
+        };
+        if (state == 0) {
+          that.setData({
+            city: '当前定位城市不在开放城市内',
+            is_inside: false,
+          });
+        };
       },
       fail: function (info) {
         console.log(info);

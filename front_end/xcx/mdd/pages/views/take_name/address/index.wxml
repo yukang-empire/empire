@@ -11,7 +11,7 @@
 
 <view class='item'>
   <text class='title'>开放城市</text>
-  <view class='li' wx:for="{{ all_city }}" wx:key='index' data-city='{{ item }}' bindtap='selectCity'>
+  <view class='li li02' wx:for="{{ all_city }}" wx:key='index' data-city='{{ item }}' bindtap='selectCity'>
     <view>{{ item }}</view>
   </view>
 </view>

@@ -78,28 +78,40 @@ Page({
       this.setData({
         one: event.detail.value
       });
+      app.globalData.input_final = this.data.one;
+    }else {
+      this.setData({
+        one: ''
+      });
     };
-    app.globalData.input_final = this.data.one + "、" + this.data.two + "、" + this.data.three;
+    if (this.data.two) {
+      app.globalData.input_final = this.data.one + "、" + this.data.two;
+    };
+    if (this.data.three) {
+      app.globalData.input_final = this.data.one + "、" + this.data.two + "、" + this.data.three;
+    };
   },
   input_two: function (event) {
     if (event.detail.value) {
       this.setData({
         two: event.detail.value
       });
+      app.globalData.input_final = this.data.one + "、" + this.data.two;
     };
-    app.globalData.input_final = this.data.one + "、" + this.data.two + "、" + this.data.three;
+    if (this.data.three) {
+      app.globalData.input_final = this.data.one + "、" + this.data.two + "、" + this.data.three;
+    };
   },
   input_three: function (event) {
     if (event.detail.value) {
-      console.log(111);
       this.setData({
         three: event.detail.value
       });
+      app.globalData.input_final = this.data.one + "、" + this.data.two + "、" + this.data.three;
     };
-    app.globalData.input_final = this.data.one + "、" + this.data.two + "、" + this.data.three;
   },
   preserve: function () {
-    wx.navigateTo({
+    wx.redirectTo({
       url: '/pages/views/take_name/index',
     })
   }

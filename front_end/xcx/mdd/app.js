@@ -7,6 +7,7 @@ App({
   globalData: {
     select_city: '',
     is_address: true,
-    input_final: ''
+    input_final: '',
+    select_trade: ''
   }
 })

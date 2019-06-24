@@ -39,7 +39,7 @@
                         </div>
                         <div>
                             <p>今日订单数</p>
-                            <b>{{ home_data.day_order.num }}</b>
+                            <b>{{ home_data.today_count }}</b>
                         </div>
                     </li>
                     <li class="flex_center" style="background-color: #00cc99;">
@@ -50,7 +50,7 @@
                         </div>
                         <div>
                             <p>今日订单收入</p>
-                            <b>¥ {{ home_data.day_order.total_amount }}</b>
+                            <b>¥ {{ home_data.amount }}</b>
                         </div>
                     </li>
                 </ul>
@@ -106,7 +106,7 @@
                             </svg>
                         </div>
                         <div>
-                            <b>{{ home_data.feedback }}</b>
+                            <b>{{ home_data.count }}</b>
                             <p>订单管理</p>
                         </div>
                     </li>
@@ -142,6 +142,17 @@ export default {
                 card_out: 0,
                 store_apply: 0,
                 feedback: 0,
+                
+                today_count: '',
+                amount: '',
+                count: "",
+                card_count7: '',
+                club_amount7: '',
+                card_count30: "",
+                club_amount30: "",
+                list7: [],
+                list30: []
+
             },
             //API可查看官网文档 https://www.echartsjs.com/option.html#title;
             //周图表数据
@@ -172,7 +183,7 @@ export default {
                     num: 0,
                     total_amount: 0
                 },
-                chart_weeks_order: {}
+                chart_weeks_order: []
             },
             //月图表数据
             echarts_data_mon: {
@@ -202,7 +213,7 @@ export default {
                     num: 0,
                     total_amount: 0
                 },
-                chart_month_order: {}
+                chart_month_order: []
             },
         }
     },
@@ -220,17 +231,28 @@ export default {
     created () {
         var that = this;
         //获取首页数据
-        this.$axios.post('/api/statistical').then(response => {
-            var res = response.data.data;
-            that.home_data = res;
-            console.log('首页数据', res);
-            //初始化周图表和月图表的数据
-            that.echarts_data_week.weeks_order = res.weeks_order;
-            that.echarts_data_mon.month_order = res.month_order;
-            that.echarts_data_week.chart_weeks_order = res.chart_weeks_order;
-            that.echarts_data_mon.chart_month_order = res.chart_month_order;
+        var params = new FormData();
+        params.append("token", sessionStorage.getItem('token'));
 
-            //获取最近一周和最近一月的日期
+        this.$axios.post('/index.php?m=Api&c=Club&a=club_info', params).then(response => {
+            var res = response.data.result;
+            that.home_data = res;
+            console.log('首页数据', response);
+            //初始化周图表和月图表的数据
+            that.echarts_data_week.weeks_order.num = res.card_count7;
+            that.echarts_data_week.weeks_order.total_amount = res.club_amount7;
+            that.echarts_data_mon.month_order.num = res.card_count30;
+            that.echarts_data_mon.month_order.total_amount = res.club_amount30;
+            for (var i = 0; i < 30; i ++) {
+                if (i < 7) {
+                    that.echarts_data_week.chart_weeks_order.unshift(res.list7[i].amount);
+                };
+                that.echarts_data_mon.chart_month_order.unshift(res.list30[i].amount);
+            };
+            // that.echarts_data_week.chart_weeks_order = res.chart_weeks_order;
+            // that.echarts_data_mon.chart_month_order = res.chart_month_order;
+
+            // //获取最近一周和最近一月的日期
             var time = new Date();
             var week_value = that.echarts_data_week.chart_weeks_order;
             var mon_value = that.echarts_data_mon.chart_month_order;

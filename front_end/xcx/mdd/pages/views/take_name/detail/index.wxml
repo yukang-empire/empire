@@ -1,0 +1,130 @@
+<view class='header'>
+  <view class='h2'>易站通企业服务有限公司</view>
+  <view class='score'>
+    <view class='left'>
+      <text class='recommend'>推荐指数：3.0</text>
+      <text class='xin'>
+        <text class='iconfont icon-xin solid'></text>
+        <text class='iconfont icon-xin solid'></text>
+        <text class='iconfont icon-xin solid'></text>
+        <text class='iconfont icon-xin'></text>
+        <text class='iconfont icon-xin'></text>
+      </text>
+    </view>
+    
+    <view class='collect02'>
+      <text class='iconfont icon-xingxing'></text>
+      <text>我的收藏</text>
+    </view>
+  </view>
+
+  <view class='contact'>
+    <text>心仪名字难到手？让我们帮您抢注</text>
+    <text class='button'>联系工商顾问</text>
+  </view>
+
+</view>
+
+<view class='article'>
+  <view class='ul'>
+    <view class='li'>
+      <view class='title'>
+        <text class='iconfont icon-gantanhao-copy have' wx:if="{{ qmxz }}"></text>
+        <text class='iconfont icon-gantanhao-copy' wx:if="{{ !qmxz }}"></text>
+        <text>取名限制</text>
+        <text class='find have' wx:if="{{ qmxz }}">有发现</text>
+        <text class='find' wx:if="{{ !qmxz }}">有发现</text>
+      </view>
+
+      <view class='describe' wx:if="{{ qmxz }}">
+        <text>字号长度</text>
+        <text class='tip'>字号不得为两个字符</text>
+      </view>
+
+      <view class='r_t have' wx:if="{{ qmxz }}">
+        <text>有</text>
+      </view>
+      <view class='r_t' wx:if="{{ !qmxz }}">
+        <text>有</text>
+      </view>
+    </view>
+
+    <view class='li'>
+      <view class='title'>
+        <text class='iconfont icon-gantanhao-copy have' wx:if="{{ hyjc }}"></text>
+        <text class='iconfont icon-gantanhao-copy' wx:if="{{ !hyjc }}"></text>
+        <text>行业检测</text>
+        <text class='find have' wx:if="{{ hyjc }}">未发现</text>
+        <text class='find' wx:if="{{ !hyjc }}">未发现</text>
+      </view>
+
+      <view class='describe' wx:if="{{ hyjc }}">
+        <text>字号长度</text>
+        <text class='tip'>字号不得为两个字符</text>
+      </view>
+
+      <view class='r_t have' wx:if="{{ hyjc }}">
+        <text class='have'>有</text>
+      </view>
+      <view class='r_t' wx:if="{{ !hyjc }}">
+        <text class='have'>无</text>
+      </view>
+    </view>
+
+    <view class='li'>
+      <view class='title'>
+        <text class='iconfont icon-gantanhao-copy have' wx:if="{{ xzzh }}"></text>
+        <text class='iconfont icon-gantanhao-copy' wx:if="{{ !xzzh }}"></text>
+        <text>限制字号</text>
+        <text class='find have' wx:if="{{ xzzh }}">未发现</text>
+        <text class='find' wx:if="{{ !xzzh }}">未发现</text>
+      </view>
+
+      <view class='describe' wx:if="{{ xzzh }}">
+        <text>字号长度</text>
+        <text class='tip'>字号不得为两个字符</text>
+      </view>
+
+      <view class='r_t have' wx:if="{{ xzzh }}">
+        <text class='have'>有</text>
+      </view>
+      <view class='r_t' wx:if="{{ !xzzh }}">
+        <text class='have'>无</text>
+      </view>
+    </view>
+
+    <view class='li'>
+      <view class='title'>
+        <text class='iconfont icon-gantanhao-copy have' wx:if="{{ cmjc }}"></text>
+        <text class='iconfont icon-gantanhao-copy' wx:if="{{ !cmjc }}"></text>
+        <text>重名检测</text>
+        <text class='find have' wx:if="{{ cmjc }}">未发现</text>
+        <text class='find' wx:if="{{ !cmjc }}">未发现</text>
+      </view>
+
+      <view class='describe' wx:if="{{ cmjc }}">
+        <text>字号长度</text>
+        <text class='tip'>字号不得为两个字符</text>
+      </view>
+
+      <view class='r_t have' wx:if="{{ cmjc }}">
+        <text class='have'>有</text>
+      </view>
+      <view class='r_t' wx:if="{{ !cmjc }}">
+        <text class='have'>无</text>
+      </view>
+    </view>
+
+  </view>
+</view>
+
+<view class='understand' bindtap='understand'>
+  <text>了解核名规则</text>
+  <text class='iconfont icon-you'></text>
+</view>
+
+<view class='btn'>
+  <view class='again'>重新起名</view>
+  <view class='check'>试试核名</view>
+  <view class='replace'>加入收藏</view>
+</view>

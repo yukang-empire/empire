@@ -73,26 +73,27 @@
                 v-model="kjm"
                 clearable>
             </el-input>
-            <el-button type="text">检索</el-button>
+            <!-- <el-button type="text">检索</el-button> -->
+            <p style="color: red;margin: 5px 0 0 0;text-align: center;" v-if='is_show_kjm'>{{ check_tip }}</p>
             <div class="check_item" style="margin-top: 30px;">
                 <p>订单号：</p>
-                <p>2916237923</p>
+                <p>{{ check_data.order_sn }}</p>
             </div>
             <div class="check_item">
                 <p>用户手机：</p>
-                <p>18312001212</p>
+                <p>{{ check_data.mobile }}</p>
             </div>
             <div class="check_item">
                 <p>订单标题：</p>
-                <p>单次健身</p>
+                <p>{{ check_data.card_type }}</p>
             </div>
             <div class="check_item">
                 <p>订单金额：</p>
-                <p>60.00</p>
+                <p>¥{{ check_data.total_amount }}</p>
             </div>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogFormVisible = false">确定核销</el-button>
+                <el-button type="primary" @click="sure_check">确定核销</el-button>
             </div>
         </el-dialog>
 
@@ -114,6 +115,8 @@ export default {
         return {
             dialogFormVisible: false,
             kjm: '',
+            is_show_kjm: false,
+            check_tip: '',
             formLabelWidth: '120px',
             //弹框数据
             dialog: {
@@ -169,12 +172,47 @@ export default {
                 start_time: '',
                 end_time: '',
                 token: sessionStorage.getItem('token')
+            },
+            //核销需要的参数
+            check_data: {
+                order_sn: '',
+                mobile: '',
+                card_type: '',
+                total_amount: '',
             }
         }
     },
     methods: {
+        //确定核销
+        sure_check () {
+            if (!this.kjm) {
+                this.is_show_kjm = true;
+                this.check_tip= '请输入卡劵码！';
+            }else {
+                var that = this;
+                var params = new FormData();
+                params.append("id", this.check_data.id);
+                params.append("code", this.kjm);
+                params.append("token", sessionStorage.getItem('token'));
+                this.$axios.post("/index.php?m=Api&c=Club&a=store_use_order", params).then( response => {
+                    console.log("核销", response);
+                    var res = response.data;
+                    if (res.status == 0) {
+                        that.is_show_kjm = true;
+                        that.check_tip= res.msg;
+                    }else if (res.status == 1) {
+                        that.is_show_kjm = true;
+                        that.check_tip= res.msg;
+                        that.dialogFormVisible = false;
+                        that.get_lists(that.send_data);
+                    };
+                });
+            };
+        },
         //核销
-        check () {
+        check (row) {
+            console.log(row);
+            this.check_data = row;
             this.dialogFormVisible = true;
         },
         //下拉选择
@@ -296,11 +334,12 @@ export default {
         },
         //查看
         look_up (row) {
-            this.$router.push({ path: '/orders/ddxq', query: { id: row.user_id } });
+            console.log(row)
+            this.$router.push({ path: '/orders/ddxq', query: { id: row.id } });
             var user_id = {
-                id: row.user_id
+                id: row.id
             };
-            sessionStorage.setItem('user_id', JSON.stringify(user_id));
+            sessionStorage.setItem('order_id', JSON.stringify(user_id));
         },
     },
     mounted () {

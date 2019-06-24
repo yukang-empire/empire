@@ -11,27 +11,23 @@
                 <div class="form">
                     <div class="item">
                         <span>商品名称：</span>
-                        <i>某某商品</i>
+                        <i>{{ details_data.goods_name }}</i>
                     </div>
                     <div class="item">
                         <span>销售价格：</span>
-                        <i>某某商品</i>
+                        <i>{{ details_data.shop_price }}</i>
                     </div>
                     <div class="item">
                         <span>结算价格：</span>
-                        <i>某某商品</i>
-                    </div>
-                    <div class="item">
-                        <span>所属商家：</span>
-                        <i>某某商品</i>
+                        <i>{{ details_data.cost_price }}</i>
                     </div>
                     <div class="item">
                         <span>所属门店：</span>
-                        <i>某某商品</i>
+                        <i>{{ details_data.club_name }}</i>
                     </div>
                     <div class="item">
                         <span>购买须知：</span>
-                        <i>某某商品</i>
+                        <i>{{ details_data.card_info }}</i>
                     </div>
 
                 </div>
@@ -42,75 +38,38 @@
 </template>
 
 <script>
-import { VueCropper }  from 'vue-cropper'
 
 export default {
     name: 'goods_details',
     components: {
-        VueCropper
+        
     },
     data () {
         return {
-            previews: {},
-            form: {
-                name: '',
-                phone: '',
-                password: '',
-                re_password: '',
-                company: '',
-                address: '',
-                tel: '',
-                license: '',
-                cropper: {
-                    img: '',
-                    size: 1,
-                    type: 'jpeg',
-                    move: true,
-                    box: true,
-                    original: true,
-                    crop: true,
-                    width: '',
-                    height: '',
-                    fixed: true,
-                }
+            details_data: {
+                goods_name: '',
+                shop_price: '',
+                cost_price: '',
+                store_name: '',
+                card_info: '',
+                club_name: ''
             }
         }
     },
     methods: {
-        //上传营业执照相关
-        handleAvatarSuccess(res, file) {
-            this.form.license = URL.createObjectURL(file.raw);
-            console.log(this.form.license)
-        },
-        beforeAvatarUpload(file) {
-            const isJPG = file.type === 'image/jpeg';
-            const isLt2M = file.size / 1024 / 1024 < 2;
-            if (!isJPG) {
-                this.$message.error('上传头像图片只能是 JPG 格式!');
-            }
-            if (!isLt2M) {
-                this.$message.error('上传头像图片大小不能超过 2MB!');
-            }
-            return isJPG && isLt2M;
-        },
-        to_next () {
-            this.$router.push({ path: '/business/xzsj/mdtx' });
-        },
-        cancel () {
-            this.form = {
-                name: '',
-                phone: '',
-                password: '',
-                re_password: '',
-                company: '',
-                address: '',
-                tel: '',
-                license: '',
-            }
-        }
+        
     },
     mounted () {
-        console.log(VueCropper)
+        console.log(this.$route.query);
+        if (this.$route.query) {
+            var params = new FormData();
+            params.append("goods_id", this.$route.query.goods_id);
+            params.append("token", sessionStorage.getItem('token'));
+            this.$axios.post("/index.php?m=Api&c=Club&a=card_goods_info", params).then( response => {
+                console.log("商品详情", response);
+                this.details_data = response.data.result;
+            })
+        }
     }
 }
 </script>

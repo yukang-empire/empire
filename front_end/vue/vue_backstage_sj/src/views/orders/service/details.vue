@@ -40,36 +40,36 @@
                     <ul class="two">
                         <li>
                             <span>
-                                订单编号：2019030102369669
+                                订单编号：{{ order_data.order_sn }}
                             </span>
                             <span>
-                                订单状态：未支付
-                            </span>
-                        </li>
-                        <li>
-                            <span>
-                                下单时间：2019-03-01 02：36
-                            </span>
-                            <span>
-                                付款时间：2019-04-14 15：00
+                                订单状态：{{ order_data.status }}
                             </span>
                         </li>
                         <li>
                             <span>
-                                支付方式：微信支付
+                                下单时间：{{ order_data.add_time }}
+                            </span>
+                            <span>
+                                付款时间：{{ order_data.create_time }}
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                支付方式：{{ order_data.pay_name }}
                             </span>
                         </li>
                     </ul>
                     <p class="copy_title">买家信息：</p>
                     <p class="three">
                         <span>
-                            用户昵称：文一
+                            用户昵称：{{ order_data.nickname }}
                         </span>
                         <span>
-                            用户手机：18312001212
+                            用户手机：{{ order_data.mobile }}
                         </span>
                         <span>
-                            用户地区：广东深圳
+                            用户地区：{{ order_data.province }}{{ order_data.city }}
                         </span>
                     </p>
                     <p class="copy_title">商品信息：</p>
@@ -77,34 +77,34 @@
                         :data="tableData"
                         style="width: 100%">
                         <el-table-column
-                            prop="num"
+                            prop="order_sn"
                             label="商品编号">
                         </el-table-column>
                         <el-table-column
-                            prop="sj"
+                            prop="store_name"
                             label="所属商家">
                         </el-table-column>
                         <el-table-column
-                            prop="name"
+                            prop="card_type"
                             label="商品名称">
                         </el-table-column>
                         <el-table-column
-                            prop="price"
+                            prop="total_amount"
                             label="商品金额(元)">
                         </el-table-column>
                     </el-table>
                     <div class="four">
                         <div>
                             <span>订单金额：</span>
-                            <span>¥60.00</span>
+                            <span>¥{{ order_data.total_amount }}</span>
                         </div>
-                        <div>
+                        <!-- <div>
                             <span>优惠券：</span>
                             <span>¥10</span>
-                        </div>
+                        </div> -->
                         <div>
                             <span>实付金额：</span>
-                            <span>¥50.00</span>
+                            <span>¥{{ order_data.total_amount }}</span>
                         </div>
                     </div>
 
@@ -168,11 +168,27 @@ export default {
                 type: 0
             },
             tableData: [
-                {num: 123445345, name: '单次健身', price: '60.00', sj: 'XX健身房'}
+                {order_sn: 123445345, store_name: '单次健身', total_amount: '60.00', card_type: 'XX健身房'}
             ],
             tableData02: [
                 // {people: 123445345, state: '单次健身', fkzt: '60.00', czsj: 'XX健身房', bz: '暂无'}
-            ]
+            ],
+            order_data: {
+                id: '',
+                card_type: '',
+                status: '',
+                order_sn: '',
+                store_name: '',
+                add_time: '',
+                total_amount: '',
+                create_time: '',
+                pay_name: '',
+                province: '',
+                city: '',
+                nickname: '',
+                mobile: '',
+                use_time: '',
+            }
         }
     },
     methods: {
@@ -208,7 +224,32 @@ export default {
 
     },
     mounted () {
-        
+        var query = this.$route.query;
+        console.log(query.id);
+        var params = new FormData();
+        params.append("id", query.id);
+        params.append("token", sessionStorage.getItem('token'));
+        if (query.id) {
+            this.$axios.post("/index.php?m=Api&c=Club&a=club_order_info", params).then(response => {
+                var res = response.data.result;
+                if (res.status == 1) {
+                    res.status = "未使用";
+                }else if (res.status == 2) {
+                    res.status = "已使用";
+                };
+                res.add_time = res.add_time ? this.$moment(res.add_time * 1000).format('YYYY-MM-DD HH:mm:ss') : "暂无";
+                res.create_time = res.create_time ? this.$moment(res.create_time * 1000).format('YYYY-MM-DD HH:mm:ss') : "暂无";
+                if (res.province.indexOf("市") != -1) {
+                    res.city = '';
+                };
+                console.log("订单详情", response);
+                this.order_data = res;
+                this.tableData[0].order_sn = res.order_sn;
+                this.tableData[0].store_name = res.store_name;
+                this.tableData[0].card_type = res.card_type;
+                this.tableData[0].total_amount = res.total_amount;
+            })
+        }
     }
 }
 </script>
