@@ -29,7 +29,6 @@
 </template>
 
 <script>
-//ECharts
 import Echarts_week from 'echarts';
 import Echarts_mon from 'echarts';
 

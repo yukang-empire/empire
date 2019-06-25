@@ -165,7 +165,7 @@
 <script>
 import { VueCropper }  from 'vue-cropper';
 //省-市-区-街道数据
-import pcas from '@/common/api/pcas.js';
+import pcas from '@/common/plugins/pcas.js';
 import dialog_component from '@/common/components/dialog';
 
 export default {

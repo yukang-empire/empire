@@ -3,15 +3,17 @@ import { Message } from 'element-ui';
 import router from "../routers/index.js";
 
 
-// //创建自定义的axios实例
+//创建自定义的axios实例
 const diy_axios = Axios.create({
-    baseURL: 'https://manage.technologyle.com/',
+    //默认域名
+    baseURL: 'https://manage.technologyle.com',
     timeout: 5000
 });
 
 //发出请求之前做一些事情
 diy_axios.interceptors.request.use(
     config => {
+        //登录后拿到后端返回的临时token 附到请求头给后端验证
         if (sessionStorage.getItem('token')) {
             config.headers['token'] = sessionStorage.getItem('token');
         };
@@ -43,4 +45,3 @@ diy_axios.interceptors.response.use(
 );
 
 export default diy_axios;
-// export default Axios;

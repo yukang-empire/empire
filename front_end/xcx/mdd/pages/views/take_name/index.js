@@ -15,7 +15,7 @@ Page({
     key: 'c11a7386404c0f717216dc0886aadebb',
     is_succ: app.globalData.is_address,
     is_dialog: false,
-    is_dialog02: false,
+    is_dialog02: true,
     input_final: "",
     trade: '',
     is_next: false,

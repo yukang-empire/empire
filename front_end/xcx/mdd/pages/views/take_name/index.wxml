@@ -59,9 +59,13 @@
   <view class='content'>
     <view><text class='iconfont icon-gantanhao-copy'></text></view>
     <view class='span'>
-      根据工商政策，需要微信授权核实您的真实身份！
+      根据工商政策，微信需要授权核实您的真实身份！
     </view>
-    <button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">前往授权</button>
+    <view class='phone'>
+      <input placeholder='请输入您的手机号码'></input>
+    </view>
+    <!-- <button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">前往授权</button> -->
+    <button>确定授权</button>
   </view>
 </view>
 

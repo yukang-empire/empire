@@ -1,11 +1,11 @@
 {
   "pages": [
+    "pages/views/take_name/index",
+    "pages/views/take_name/trade/index",
+    "pages/views/take_name/result/index",
     "pages/views/take_name/detail/index",
     "pages/views/take_name/rule/index",
-    "pages/views/take_name/result/index",
-    "pages/views/take_name/trade/index",
     "pages/views/take_name/word/index",
-    "pages/views/take_name/index",
     "pages/views/take_name/address/index",
     "pages/views/verify_name/index",
     "pages/views/home/index"

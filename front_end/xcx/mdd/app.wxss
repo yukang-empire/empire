@@ -36,13 +36,19 @@ view {
   background-color: #f7f7f7;
 }
 .dialog02 .content{
-  height: 460rpx;
+  height: 560rpx;
   text-align: center;
   padding-top: 60rpx;
 }
 .dialog02 .iconfont {
   font-size: 120rpx;
   color: #f76260;
+}
+.dialog02 .phone input {
+  border: 1px solid #ddd;
+  height: 80rpx;
+  text-align: left;
+  padding: 0 0 0 30rpx;
 }
 .dialog .content .h2 {
   font-size: 40rpx;
