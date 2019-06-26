@@ -14,14 +14,14 @@
                         <!-- 箭头 -->
                         <div class="right"></div>
                     </div>
-                    <div class="flat tip">
+                    <div class="flat tip" :class="{ change_color: order_data.status == '待使用' }">
                         <span>待使用</span>
                         <!-- 箭头 -->
                         <div class="right"></div>
                         <div class="left"></div>
                     </div>
-                    <div class="flat tip">
-                        <span>已完成</span>
+                    <div class="flat tip" :class="{ change_color: order_data.status == '已使用' }">
+                        <span>已使用</span>
                         <!-- 箭头 -->
                         <div class="right"></div>
                         <div class="left"></div>
@@ -33,7 +33,7 @@
                         <svg class="icon" aria-hidden="true">
                             <use xlink:href="#icon-gantanhao-copy-copy"></use>
                         </svg>
-                        <span>订单状态：等待用户使用</span>
+                        <span>订单状态：{{ order_data.status }}</span>
                     </p>
 
                     <p class="copy_title">订单信息：</p>
@@ -233,7 +233,7 @@ export default {
             this.$axios.post("/index.php?m=Api&c=Club&a=club_order_info", params).then(response => {
                 var res = response.data.result;
                 if (res.status == 1) {
-                    res.status = "未使用";
+                    res.status = "待使用";
                 }else if (res.status == 2) {
                     res.status = "已使用";
                 };
@@ -382,6 +382,7 @@ export default {
     }
     .four {
         margin: 30px 0 0 0;
+
         &>div {
             display: flex;
             text-align: right;
@@ -450,8 +451,10 @@ export default {
             margin-right: 35px;
             text-align: center;
             line-height: 42px;
-            background-color: $succ;
+            background-color: #bbb;
         }
+
+        
 
         .flat {
             position: relative;
@@ -462,7 +465,7 @@ export default {
                 top: 0;
                 border-width: 21px;
                 border-style: solid;
-                border-color: transparent transparent transparent #67c23a;
+                border-color: transparent transparent transparent #bbb;
             }
         }
 
@@ -487,6 +490,19 @@ export default {
                 margin-left: 10px;
             }
             
+        }
+
+        
+        .change_color {
+            background-color: $succ;
+
+            .right {
+                border-color: transparent transparent transparent $succ;
+            }
+
+            .left {
+                border-color: transparent transparent transparent $succ;
+            }
         }
     }
     

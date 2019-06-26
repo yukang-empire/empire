@@ -1,6 +1,6 @@
 import Axios from 'axios';
 import { Message } from 'element-ui';
-import router from "../router/router";
+import router from "../../router/router";
 
 
 //创建自定义的axios实例
@@ -28,7 +28,7 @@ diy_axios.interceptors.request.use(
 //请求收到响应后做一些事情
 diy_axios.interceptors.response.use(
     response => {
-        return response;
+        return response.data;
     },
     error => {
         //如果授权过期 则跳转回登录页
@@ -37,7 +37,7 @@ diy_axios.interceptors.response.use(
             Message({
                 message: '授权过期, 请重新登录！',
                 type: 'error',
-                duration: 3 * 1000
+                duration: 2500
             });
         };
         return Promise.reject(error);

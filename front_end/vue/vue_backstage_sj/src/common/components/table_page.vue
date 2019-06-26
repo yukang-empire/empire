@@ -346,6 +346,13 @@
                 label="提交时间">
             </el-table-column>
             <el-table-column
+                v-if="table_data_self.table.select=='ddjl'"
+                prop="use_time"
+                sortable
+                :sort-method='date_sort'
+                label="核销时间">
+            </el-table-column>
+            <el-table-column
                 v-if="table_data_self.table.select=='czjl'"
                 prop="pay_time"
                 sortable

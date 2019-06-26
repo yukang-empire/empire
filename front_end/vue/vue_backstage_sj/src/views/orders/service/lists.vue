@@ -200,11 +200,21 @@ export default {
                     if (res.status == 0) {
                         that.is_show_kjm = true;
                         that.check_tip= res.msg;
+                        that.$message({
+                            message: res.msg,
+                            type: 'error',
+                            duration: 2500
+                        });
                     }else if (res.status == 1) {
                         that.is_show_kjm = true;
                         that.check_tip= res.msg;
                         that.dialogFormVisible = false;
                         that.get_lists(that.send_data);
+                        that.$message({
+                            message: "核销成功！",
+                            type: 'success',
+                            duration: 2500
+                        });
                     };
                 });
             };
@@ -256,6 +266,7 @@ export default {
                             break;
                     };
                     res.result[i].create_time = that.$moment(res.result[i].create_time * 1000).format('YYYY-MM-DD HH:mm:ss');
+                    res.result[i].use_time = res.result[i].use_time == 0 ? "" : that.$moment(res.result[i].use_time * 1000).format('YYYY-MM-DD HH:mm:ss');
                 };
                 this.table_data.table.lists = res.result;
                 this.table_data.page.total = parseInt(res.count);

@@ -6,6 +6,11 @@ import axios from './axios/index.js';
 // import axios from 'axios';
 Vue.prototype.$axios= axios;
 
+//引入element-ui
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+Vue.use(ElementUI);
+
 //基础样式和阿里图标
 import '@/common/styles/base.css';
 // import '@/common/styles/iconfont.js';
@@ -13,11 +18,6 @@ import '@/common/styles/base.css';
 import moment from 'moment';
 moment.locale('zh-cn');
 Vue.prototype.$moment= moment;
-
-//引入element-ui
-import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
-Vue.use(ElementUI);
 
 import Cookies from 'js-cookie';
 Vue.use(Cookies);

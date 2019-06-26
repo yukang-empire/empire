@@ -1,10 +1,12 @@
 import Vue from "vue";
 import Vuex from "vuex";
-
 Vue.use(Vuex);
 
-export default new Vuex.Store({
-  state: {},
-  mutations: {},
-  actions: {}
+import https from "./modules/https";
+
+const store = new Vuex.Store({
+  modules: {
+    https
+  }
 });
+export default store;

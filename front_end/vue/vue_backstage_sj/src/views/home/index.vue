@@ -245,9 +245,9 @@ export default {
             that.echarts_data_mon.month_order.total_amount = res.club_amount30;
             for (var i = 0; i < 30; i ++) {
                 if (i < 7) {
-                    that.echarts_data_week.chart_weeks_order.unshift(res.list7[i].amount);
+                    that.echarts_data_week.chart_weeks_order.push(res.list7[i].amount);
                 };
-                that.echarts_data_mon.chart_month_order.unshift(res.list30[i].amount);
+                that.echarts_data_mon.chart_month_order.push(res.list30[i].amount);
             };
             // that.echarts_data_week.chart_weeks_order = res.chart_weeks_order;
             // that.echarts_data_mon.chart_month_order = res.chart_month_order;
@@ -263,12 +263,12 @@ export default {
                 if (i < 7) {
                     that.echarts_data_week.xAxis.data.unshift(final_time);
                     if (is_week) {
-                        var week_days = week_value[i] ? week_value[i].total_amount : 0;
+                        var week_days = week_value[i] ? week_value[i] : 0;
                         that.echarts_data_week.series[0].data.unshift(week_days);
                     };
                 };
                 that.echarts_data_mon.xAxis.data.unshift(final_time);
-                var mon_days = mon_value[i] ? mon_value[i].total_amount : 0;
+                var mon_days = mon_value[i] ? mon_value[i] : 0;
                 that.echarts_data_mon.series[0].data.unshift(mon_days);
             };
         });

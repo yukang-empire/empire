@@ -118,14 +118,14 @@ const business = {
                 title: '商品管理'
             },
             children: [
-                {
-                    path: '/business/splb/xzsp',
-                    name: 'xzsp',
-                    component: () => import('@/views/business/goods/add.vue'),
-                    meta: {
-                        title: '新增商品'
-                    }
-                },
+                // {
+                //     path: '/business/splb/xzsp',
+                //     name: 'xzsp',
+                //     component: () => import('@/views/business/goods/add.vue'),
+                //     meta: {
+                //         title: '新增商品'
+                //     }
+                // },
                 {
                     path: '/business/splb/lbxq',
                     name: 'goods_lbxq',
