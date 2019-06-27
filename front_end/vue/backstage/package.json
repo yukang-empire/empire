@@ -11,9 +11,11 @@
   },
   "dependencies": {
     "@types/axios": "^0.14.0",
+    "@types/echarts": "^4.1.9",
     "@types/moment": "^2.13.0",
     "@types/nprogress": "^0.2.0",
     "core-js": "^2.6.5",
+    "echarts": "^4.2.1",
     "element-ui": "^2.9.2",
     "file-loader": "^4.0.0",
     "nprogress": "^0.2.0",

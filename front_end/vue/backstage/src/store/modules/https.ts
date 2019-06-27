@@ -5,37 +5,53 @@ const https = {
     state: {
         domain01: "https://manage.technologyle.com",
         domain02: "https://shop.technologyle.com",
-        //登录相关
-        login: {
-            token: '',
-            role: '',
-            role_name: ''
-        }
     },
     mutations: {
-        //临时储存后端返回的token,角色,角色名
-        set_token: (state: any, token: string) => {
-            state.login.token = token;
-        },
-        set_role: (state: any, role: string) => {
-            state.login.role = role;
-        },
-        set_role_name: (state: any, role_name: string) => {
-            state.login.role_name = role_name;
-        },
+        
     },
     actions: {
         //登录
-        login ({ commit }: any, data: object) {
+        login (state, data: any) {
             var send_data = JSON.stringify(data);
             //这里看不懂的可以查看vuex官网说明 https://vuex.vuejs.org/zh/guide/actions.html
             return new Promise((resolve, reject) => {
-                axios.post("/api/login", send_data).then( response => {
-                    console.log("登录数据", response);
-                    commit('set_token', response.data.token);
-                    commit('set_role', response.data.roles[0].RoleId);
-                    commit('set_role_name', response.data.roles[0].RoleName);
-                    resolve(response);
+                axios.post("/api/login", send_data).then( (res: any) => {
+                    if (res.code == 0) {
+                        //临时存到sessionStorage里
+                        sessionStorage.setItem("token", res.data.token);
+                        sessionStorage.setItem("role", res.data.roles[0].RoleId);
+                        sessionStorage.setItem("role_name", res.data.roles[0].RoleName);
+                    };
+                    //返回数据给调起dispatch的那边
+                    resolve(res);
+                }).catch( error => {
+                    //返回error给调起dispatch的那边
+                    reject(error);
+                });
+            });
+        },
+        //获取首页数据
+        home_data (state) {
+            return new Promise((resolve, reject) => {
+                axios.post("/api/statistical").then( (res: any) => {
+                    //返回数据给调起dispatch的那边
+                    resolve(res);
+                }).catch( error => {
+                    //返回error给调起dispatch的那边
+                    reject(error);
+                });
+            });
+        },
+        //获取user_list列表数据
+        user_list (state, { commit }: any, data: object) {
+            var send_data = JSON.stringify(data);
+            return new Promise((resolve, reject) => {
+                axios.post("/api/getUserList", send_data).then( (res: any) => {
+                    //返回数据给调起dispatch的那边
+                    resolve(res);
+                }).catch( error => {
+                    //返回error给调起dispatch的那边
+                    reject(error);
                 });
             });
         },

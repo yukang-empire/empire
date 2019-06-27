@@ -34,11 +34,7 @@ diy_axios.interceptors.response.use(
         //如果授权过期 则跳转回登录页
         if (error.response.data.code == 401) {
             router.push({ path: '/login' });
-            Message({
-                message: '授权过期, 请重新登录！',
-                type: 'error',
-                duration: 2500
-            });
+            Message({ message: '授权过期, 请重新登录！', type: 'error', duration: 2500 });
         };
         return Promise.reject(error);
     }

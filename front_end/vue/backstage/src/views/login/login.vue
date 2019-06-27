@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component } from "vue-property-decorator";
 
 @Component({
     components: {
@@ -37,8 +37,8 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 })
 
 export default class login extends Vue {
-    private ruleForm: object = {
-        username: '',
+    private ruleForm: any = {
+        username: localStorage.getItem('username') ? localStorage.getItem('username') : '',
         password: ''
     };
     private is_loading: boolean = false;
@@ -68,9 +68,23 @@ export default class login extends Vue {
             if (valid) {
                 this.is_loading = true;
                 //这里看不懂的可以查看vuex官网说明 https://vuex.vuejs.org/zh/guide/actions.html
-                this.$store.dispatch("login", this.ruleForm).then( data => {
-                    console.log(data);
-                    console.log(this.$store.state.https);
+                this.$store.dispatch("login", this.ruleForm).then( (res: any) => {
+                    // console.log("登录数据", res);
+                    if (res.code == 0) {
+                        //储存账户 方便用户下次登录
+                        localStorage.setItem('username', this.ruleForm.username);
+                        //登录成功提示
+                        this.$message({ message: '登录成功！', type: "success", duration: 1500 });
+                        this.$router.push({ path: '/home' });
+                    }else {
+                        //登录失败提示
+                        this.$message({ message: res.msg, type: "error", duration: 2500 });
+                    };
+                    //取消转圈圈
+                    this.is_loading = false;
+                }).catch( error => {
+                    console.log("登录error", error.response);
+                    this.$message({ message: error.response.data.code + "：" + error.response.data.msg, type: "error", duration: 2500 });
                 });
             } else {
                 this.$message({ message: "请完善登录信息！", type: 'error', duration: 2500 });

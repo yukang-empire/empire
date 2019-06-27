@@ -15,14 +15,14 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);
 
-//基础样式、阿里图标
-import '@/assets/style/base.css';
-// import '@/assets/style/iconfont.js';
-
 //转换时间格式的moment插件
 import moment from 'moment';
 moment.locale('zh-cn');
 Vue.prototype.$moment= moment;
+
+//基础样式、阿里图标
+import '@/assets/style/base.css';
+// import '@/assets/style/iconfont.js';
 
 Vue.config.productionTip = false;
 

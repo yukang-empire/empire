@@ -2,6 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 Vue.use(Router);
 
+import { Message } from 'element-ui';
 //引入NProgress插件
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
@@ -30,7 +31,8 @@ const router = new Router({
       name: "login",
       component: () => import('@/views/login/login.vue'),
       meta: {
-          title: '登录'
+          title: '登录',
+          hidden: true
       }
     },
     home,
@@ -60,6 +62,7 @@ router.beforeEach((to, from, next) => {
     //如果不在白名单内 先检查token
     if (!sessionStorage.getItem("token")) {
       //无token 返回登录页面
+      Message({ message: '未检测到token, 请重新登录！', type: 'error', duration: 2500 });
       next({ path: "/login" });
       NProgress.done();
     }else {
