@@ -235,19 +235,19 @@ export default {
             var week_value = that.echarts_data_week.chart_weeks_order;
             var mon_value = that.echarts_data_mon.chart_month_order;
             var is_week = week_value.length > 0;
-            for (var i = 0; i < 31; i++) {
+            for (var i = 0; i < 30; i++) {
                 var prev_time = new Date(time.getTime() - i*24*60*60*1000);
                 var final_time = that.init_time(prev_time);
                 if (i < 7) {
                     that.echarts_data_week.xAxis.data.unshift(final_time);
                     if (is_week) {
                         var week_days = week_value[i] ? week_value[i].total_amount : 0;
-                        that.echarts_data_week.series[0].data.unshift(week_days);
+                        that.echarts_data_week.series[0].data.push(week_days);
                     };
                 };
                 that.echarts_data_mon.xAxis.data.unshift(final_time);
                 var mon_days = mon_value[i] ? mon_value[i].total_amount : 0;
-                that.echarts_data_mon.series[0].data.unshift(mon_days);
+                that.echarts_data_mon.series[0].data.push(mon_days);
             };
         });
         

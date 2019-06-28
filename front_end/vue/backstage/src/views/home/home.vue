@@ -230,7 +230,7 @@ export default class home extends Vue{
                 var week_value = this.echarts_data_week.chart_weeks_order;
                 var mon_value = this.echarts_data_mon.chart_month_order;
                 var is_week = week_value.length > 0;
-                for (var i = 0; i < 31; i++) {
+                for (var i = 0; i < 30; i++) {
                     var prev_time = new Date(time.getTime() - i*24*60*60*1000);
                     var final_time = this.init_time(prev_time);
                     if (i < 7) {

@@ -23,8 +23,8 @@ const store = new Vuex.Store({
               return true;
           };
       });
-      //没有拥有 且不是首页 才push进去
-      if (!is_have && route.path != '/home') {
+      //没有拥有 && 不是首页 && hidden为false 才push进去
+      if (!is_have && route.path != '/home' && !route.meta.hidden) {
           //不这样写 ts会报错 很无奈！
           var arr: any = state.history_arr;
           arr.push(route);

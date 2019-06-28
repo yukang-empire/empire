@@ -36,8 +36,8 @@ const router = new Router({
       }
     },
     home,
-    business,
     user,
+    business,
     order,
   ],
   scrollBehavior (to, from, savedPosition) {

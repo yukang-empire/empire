@@ -11,7 +11,7 @@ html,body {
 body {
     color: #333;
     text-align: justify;
-    background-color: #fcfcfc;
+    background-color: #fff;
     font: 15px/1.8 -apple-system-font,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Hiragino Sans GB,Microsoft YaHei UI,Microsoft YaHei,Arial,sans-serif;
 }
 h1 {
@@ -231,6 +231,15 @@ input::-ms-input-placeholder{
 }
 .el-pagination {
     text-align: right;
+}
+.el-table th {
+    text-align: center;
+}
+.el-table td {
+    text-align: center;
+}
+.el-time-panel {
+    left: -20px;
 }
 
 /* 响应式 */

@@ -11,7 +11,7 @@ const https = {
     },
     actions: {
         //登录
-        login (state, data: any) {
+        login (data: any) {
             var send_data = JSON.stringify(data);
             //这里看不懂的可以查看vuex官网说明 https://vuex.vuejs.org/zh/guide/actions.html
             return new Promise((resolve, reject) => {
@@ -31,7 +31,7 @@ const https = {
             });
         },
         //获取首页数据
-        home_data (state) {
+        home_data () {
             return new Promise((resolve, reject) => {
                 axios.post("/api/statistical").then( (res: any) => {
                     //返回数据给调起dispatch的那边
@@ -43,10 +43,23 @@ const https = {
             });
         },
         //获取user_list列表数据
-        user_list (state, { commit }: any, data: object) {
+        user_list ({ commit }: any, data: any) {
             var send_data = JSON.stringify(data);
             return new Promise((resolve, reject) => {
                 axios.post("/api/getUserList", send_data).then( (res: any) => {
+                    //返回数据给调起dispatch的那边
+                    resolve(res);
+                }).catch( error => {
+                    //返回error给调起dispatch的那边
+                    reject(error);
+                });
+            });
+        },
+        //禁用user_list用户账号
+        change_state_user (state, data: any) {
+            var send_data = JSON.stringify(data);
+            return new Promise((resolve, reject) => {
+                axios.post("/api/userLock", send_data).then( (res: any) => {
                     //返回数据给调起dispatch的那边
                     resolve(res);
                 }).catch( error => {
