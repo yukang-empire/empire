@@ -46,6 +46,7 @@ const https = {
 
         //获取用户列表
         user_list (state: any, data: any) {
+            console.log(data);
             var send_data = JSON.stringify(data);
             return new Promise((resolve, reject) => {
                 axios.post("/api/getUserList", send_data).then( (res: any) => {
@@ -125,7 +126,14 @@ const https = {
 
         //获取商家列表
         business_list (state: any, data: any) {
-            var send_data = JSON.stringify(data);
+            //domain02接口需要这种数据
+            console.log(data);
+            var send_data: any = new FormData();
+            send_data.append("p", data.p);
+            send_data.append("size", data.size);
+            send_data.append("search", data.search);
+            send_data.append("start_time", data.start_time);
+            send_data.append("end_time", data.end_time);
             return new Promise((resolve, reject) => {
                 axios.post( state.state.domain02 + "/index.php?m=Api&c=Club&a=master_list", send_data).then( (res: any) => {
                     //返回数据给调起dispatch的那边
@@ -164,7 +172,6 @@ const https = {
         },
         //获取商家详细信息
         business_details (state: any, data: any) {
-            //后端需要这种数据
             var send_data: any = new FormData();
             send_data.append("club_id", data.club_id);
             return new Promise((resolve, reject) => {

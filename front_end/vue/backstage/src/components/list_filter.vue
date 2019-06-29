@@ -1,6 +1,18 @@
 <template>
     <div class="list_filter flex_between">
-        <div class="item" v-if="show_filter.is_search">
+        <div class="item" v-if="show_filter.is_type == 'domain01' && show_filter.is_search">
+            <span>输入关键词：</span>
+            <el-input
+                placeholder="请输入要搜索的关键词"
+                v-model="search_input"
+                @clear='clear_search'
+                @keyup.native.enter='search'
+                clearable>
+            </el-input>
+            <el-button type="primary" @click='search' icon="el-icon-search">搜索</el-button>
+        </div>
+        
+        <div class="item" v-if="show_filter.is_type == 'domain02' && show_filter.is_search">
             <span>输入关键词：</span>
             <el-input
                 placeholder="请输入要搜索的关键词"
@@ -12,7 +24,7 @@
             <el-button type="primary" @click='search' icon="el-icon-search">搜索</el-button>
         </div>
 
-        <div class="item" v-if="show_filter.is_login_time">
+        <div class="item" v-if="show_filter.is_type == 'domain01' && show_filter.is_login_time">
             <span>最近登录时间：</span>
             <el-date-picker
                 v-model="login_time"
@@ -24,7 +36,7 @@
             </el-date-picker>
         </div>
 
-        <div class="item" v-if="show_filter.is_entry_time">
+        <div class="item" v-if="show_filter.is_type == 'domain02' && show_filter.is_entry_time">
             <span>进驻日期：</span>
             <el-date-picker
                 v-model="login_time"
@@ -59,10 +71,17 @@ export default class list_filter extends Vue{
         console.log("send_data", this.send_data);
         var that: any = this;
         var time_arr: any = [];
-        time_arr.push(new Date(parseInt(this.send_data.where.stime) * 1000));
-        time_arr.push(new Date(parseInt(this.send_data.where.etime) * 1000));
-        this.login_time = time_arr;
-        this.search_input = this.send_data.where.keyword;
+        if (this.show_filter.is_type == "domain01") {
+            time_arr.push(new Date(parseInt(this.send_data.where.stime) * 1000));
+            time_arr.push(new Date(parseInt(this.send_data.where.etime) * 1000));
+            this.login_time = time_arr;
+            this.search_input = this.send_data.where.keyword;
+        }else {
+            time_arr.push(new Date(parseInt(this.send_data.start_time) * 1000));
+            time_arr.push(new Date(parseInt(this.send_data.end_time) * 1000));
+            this.login_time = time_arr;
+            this.search_input = this.send_data.search;
+        };
     };
     //搜索 重新获取列表数据
     search () {

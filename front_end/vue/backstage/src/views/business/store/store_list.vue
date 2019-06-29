@@ -115,7 +115,6 @@ export default class store_list extends Vue{
                 for (var i = 0; i < length; i++) {
                     //typescript语法严格 不声明会报错
                     var that: any = this;
-                    lists[i].last_login = lists[i].last_login == 0 ? "" : that.$moment(lists[i].last_login * 1000).format('YYYY-MM-DD HH:mm:ss');
                     //拼接省市区
                     lists[i].area_ = lists[i].province + lists[i].city + lists[i].area + lists[i].street;
                 };

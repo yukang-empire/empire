@@ -84,16 +84,15 @@ export default class business_list extends Vue{
     };
     //请求列表数据的参数
     private send_data: any = {
-        page: sessionStorage.getItem("business_list_page") ? sessionStorage.getItem("business_list_page") : 1,
+        p: sessionStorage.getItem("business_list_p") ? sessionStorage.getItem("business_list_p") : 1,
         size: sessionStorage.getItem("business_list_size") ? sessionStorage.getItem("business_list_size") : 10,
-        where: {
-            keyword: sessionStorage.getItem("business_list_keyword") ? sessionStorage.getItem("business_list_keyword") : "",
-            stime: sessionStorage.getItem("business_list_stime") ? sessionStorage.getItem("business_list_stime") : "",
-            etime: sessionStorage.getItem("business_list_etime") ? sessionStorage.getItem("business_list_etime") : ""
-        }
+        search: sessionStorage.getItem("business_list_search") ? sessionStorage.getItem("business_list_search") : "",
+        start_time: sessionStorage.getItem("business_list_start_time") ? sessionStorage.getItem("business_list_start_time") : "",
+        end_time: sessionStorage.getItem("business_list_end_time") ? sessionStorage.getItem("business_list_end_time") : ""
     };
     //需要展示的筛选功能
     private show_filter: any = {
+        is_type: "domain02",
         is_search: true,
         is_entry_time: true
     };
@@ -129,43 +128,43 @@ export default class business_list extends Vue{
 
     //搜索 重新获取列表数据
     search (val: any) {
-        this.send_data.where.keyword = val;
-        sessionStorage.setItem("business_list_keyword", val);
+        this.send_data.search = val;
+        sessionStorage.setItem("business_list_search", val);
         this.business_list();
     };
 
     //清空搜索内容
     clear_search () {
-        this.send_data.where.keyword = '';
-        sessionStorage.setItem("business_list_keyword", "");
+        this.send_data.search = '';
+        sessionStorage.setItem("business_list_search", "");
         this.business_list();
     };
 
     //筛选时间
     change_time(val: any) {
         var that: any = this;
-        this.send_data.where.stime = val[0] ? that.$moment(val[0]).valueOf() / 1000 : "",
-        this.send_data.where.etime = val[1] ? that.$moment(val[1]).valueOf() / 1000 : "",
-        sessionStorage.setItem("business_list_stime", this.send_data.where.stime);
-        sessionStorage.setItem("business_list_etime", this.send_data.where.etime);
+        this.send_data.start_time = val[0] ? that.$moment(val[0]).valueOf() / 1000 : "",
+        this.send_data.end_time = val[1] ? that.$moment(val[1]).valueOf() / 1000 : "",
+        sessionStorage.setItem("business_list_start_time", this.send_data.start_time);
+        sessionStorage.setItem("business_list_end_time", this.send_data.end_time);
         this.business_list();
     };
 
     //清空时间
     clear_time () {
         var that: any = this;
-        this.send_data.where.stime = "",
-        this.send_data.where.etime = "",
-        sessionStorage.setItem("business_list_stime", this.send_data.where.stime);
-        sessionStorage.setItem("business_list_etime", this.send_data.where.etime);
+        this.send_data.start_time = "",
+        this.send_data.end_time = "",
+        sessionStorage.setItem("business_list_start_time", this.send_data.start_time);
+        sessionStorage.setItem("business_list_end_time", this.send_data.end_time);
         this.business_list();
     };
     
     //改变页码
     change_page(val: any) {
         this.table_data.page.current_page = val;
-        this.send_data.page = val;
-        sessionStorage.setItem("page", val);
+        this.send_data.p = val;
+        sessionStorage.setItem("p", val);
         this.business_list();
     };
 

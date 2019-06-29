@@ -90,6 +90,7 @@ export default class user_list extends Vue{
     };
     //需要展示的筛选功能
     private show_filter: any = {
+        is_type: 'domain01',
         is_search: true,
         is_login_time: true
     };

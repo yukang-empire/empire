@@ -105,6 +105,14 @@ export default class business_details extends Vue{
                 this.base_info.add_time = this.base_info.add_time == 0 ? "" : that.$moment(this.base_info.add_time * 1000).format('YYYY-MM-DD HH:mm:ss');
                 //门店列表
                 this.table_data_store.table.lists = res.result.club_list;
+                var lists = this.table_data_store.table.lists;
+                var length = lists.length;
+                for (var i = 0; i < length; i++) {
+                    //typescript语法严格 不声明会报错
+                    var that: any = this;
+                    //拼接省市区
+                    lists[i].area_ = lists[i].province + lists[i].city + lists[i].area + lists[i].street;
+                };
                 //商品列表
                 this.table_data_goods.table.lists = res.result.goods_list;
             }else {
