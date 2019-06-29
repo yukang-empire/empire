@@ -273,6 +273,7 @@ export default class home extends Vue{
                     border-radius: 8px;
                     min-width: 15%;
                     padding: 15px 20px 15px 15px;
+                    cursor: pointer;
 
                     .icon {
                         width: 3rem;

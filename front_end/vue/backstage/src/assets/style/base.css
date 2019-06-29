@@ -234,6 +234,7 @@ input::-ms-input-placeholder{
 }
 .el-table th {
     text-align: center;
+    color: #333;
 }
 .el-table td {
     text-align: center;

@@ -2,6 +2,7 @@
     <div class="c_header flex_between">
         <div class="flex_center">
             <img src="../../../../assets/imgs/logo.png" alt="logo" class="rotation">
+            <img src="../../../../assets/imgs/logo_text.png" alt="logo_text" class="logo_text">
         </div>
 
         <div class="right">
@@ -70,6 +71,11 @@ export default class c_header extends Vue{
         @-webkit-keyframes rotation{
             from { transform: rotate(0deg);}
             to { transform: rotate(360deg);}
+        }
+
+        .logo_text {
+            width: 70px;
+            margin-left: 13px;
         }
 
         .right {

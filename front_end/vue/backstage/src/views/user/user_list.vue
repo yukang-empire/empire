@@ -58,18 +58,12 @@ export default class user_list extends Vue{
         table: {
             //属于哪个表格
             which: 'user_list',
+            //是否多选
+            checkbox: true,
             //是否固定表头
-            is_height: 760,
+            is_height: 769,
             //表格数据
-            lists: [
-                { user_id: '6', nickname: '康哥', mobile: '18312001212', city: '1111', total_amount: '8', last_login: 1559214576, is_lock: 1 },
-            ],
-            //行开关状态
-            switch: {
-                index: null,
-                ban: null,
-                user_sn: ''
-            },
+            lists: [],
         },
         //页码
         page: {
@@ -79,18 +73,19 @@ export default class user_list extends Vue{
             current_page: 1,
             //每页显示的数量
             size: 10,
+            sizes: [10, 15, 20],
             //总数量
             total: 0,
         }
     };
     //请求列表数据的参数
     private send_data: any = {
-        page: sessionStorage.getItem("page") ? sessionStorage.getItem("page") : 1,
-        size: sessionStorage.getItem("size") ? sessionStorage.getItem("size") : 10,
+        page: sessionStorage.getItem("user_list_page") ? sessionStorage.getItem("user_list_page") : 1,
+        size: sessionStorage.getItem("user_list_size") ? sessionStorage.getItem("user_list_size") : 10,
         where: {
-            keyword: sessionStorage.getItem("keyword") ? sessionStorage.getItem("keyword") : "",
-            stime: sessionStorage.getItem("stime") ? sessionStorage.getItem("stime") : "",
-            etime: sessionStorage.getItem("etime") ? sessionStorage.getItem("etime") : ""
+            keyword: sessionStorage.getItem("user_list_keyword") ? sessionStorage.getItem("user_list_keyword") : "",
+            stime: sessionStorage.getItem("user_list_stime") ? sessionStorage.getItem("user_list_stime") : "",
+            etime: sessionStorage.getItem("user_list_etime") ? sessionStorage.getItem("user_list_etime") : ""
         }
     };
     //需要展示的筛选功能
@@ -129,14 +124,14 @@ export default class user_list extends Vue{
     //搜索 重新获取列表数据
     search (val: any) {
         this.send_data.where.keyword = val;
-        sessionStorage.setItem("keyword", val);
+        sessionStorage.setItem("user_list_keyword", val);
         this.user_list();
     };
 
     //清空搜索内容
     clear_search () {
         this.send_data.where.keyword = '';
-        sessionStorage.setItem("keyword", "");
+        sessionStorage.setItem("user_list_keyword", "");
         this.user_list();
     };
 
@@ -145,8 +140,8 @@ export default class user_list extends Vue{
         var that: any = this;
         this.send_data.where.stime = val[0] ? that.$moment(val[0]).valueOf() / 1000 : "",
         this.send_data.where.etime = val[1] ? that.$moment(val[1]).valueOf() / 1000 : "",
-        sessionStorage.setItem("stime", this.send_data.where.stime);
-        sessionStorage.setItem("etime", this.send_data.where.etime);
+        sessionStorage.setItem("user_list_stime", this.send_data.where.stime);
+        sessionStorage.setItem("user_list_etime", this.send_data.where.etime);
         this.user_list();
     };
 
@@ -155,8 +150,8 @@ export default class user_list extends Vue{
         var that: any = this;
         this.send_data.where.stime = "",
         this.send_data.where.etime = "",
-        sessionStorage.setItem("stime", this.send_data.where.stime);
-        sessionStorage.setItem("etime", this.send_data.where.etime);
+        sessionStorage.setItem("user_list_stime", this.send_data.where.stime);
+        sessionStorage.setItem("user_list_etime", this.send_data.where.etime);
         this.user_list();
     };
     
@@ -172,7 +167,7 @@ export default class user_list extends Vue{
     change_page_size(val: any) {
         this.table_data.page.size = val;
         this.send_data.size = val;
-        sessionStorage.setItem("size", val);
+        sessionStorage.setItem("user_list_size", val);
         this.user_list();
     };
 

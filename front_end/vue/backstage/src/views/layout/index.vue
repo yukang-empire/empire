@@ -41,6 +41,44 @@ export default class layout extends Vue{
     }
 
     @media screen and (min-width: 769px) {
+        
+        .add_btn {
+            margin-top: 6px;
+        }
+
+        /* 基本信息 */
+        .base_info {
+
+            .info {
+
+                ul {
+                    padding-right: 20%;
+
+                    li {
+                        line-height: 30px;
+                        min-height: 90px;
+
+                        p {
+                            font-size: 0.95rem;
+
+                            span {
+                                color: #333;
+                                letter-spacing: 1px;
+                                min-width: 95px;
+                                display: inline-block;
+                                text-align: right;
+                            }
+                        }
+
+                        img {
+                            width: 80px;
+                            margin-left: 15px;
+                        }
+                    }
+                }
+            }
+        }
+
         /* 列表数据过滤 */
         .list_filter {
 
@@ -62,7 +100,7 @@ export default class layout extends Vue{
             color: #999;
             margin: 20px 0;
             font-size: 0.9rem;
-            border-radius: 5px;
+            border-radius: 8px;
             border: 1px solid #ddd;
             padding: 10px 20px 30px 20px;
 
