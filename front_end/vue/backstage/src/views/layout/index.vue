@@ -42,6 +42,59 @@ export default class layout extends Vue{
 
     @media screen and (min-width: 769px) {
         
+
+        /* 裁剪图片 */
+        .cropper {
+            height: 100%;
+            color: #fff;
+            text-align: center;
+            flex-direction: column;
+            background-color: rgba(0, 0, 0, 0.7);
+
+            h2 {
+                font-size: 2rem;
+                letter-spacing: 3px;
+                margin: 50px 0 50px 0;
+            }
+
+            .main {
+                height: 55%;
+                display: flex;
+                justify-content: center;
+
+                .right {
+                    margin-left: 10%;
+                    flex-direction: column;
+                }
+
+                .square {
+                    margin-bottom: 20px;
+                }
+
+                .circle {
+                    width: 250px;
+                    height: 250px;
+                    border-radius: 50%;
+                }
+            }
+            
+            .func_btn {
+                margin: 40px 0;
+
+                .el-button {
+                    margin-right: 10px;
+                }
+            }
+
+            .final {
+                margin-top: 70px;
+
+                button {
+                    margin-right: 20px;
+                }
+            }
+        }
+        
         .add_btn {
             margin-top: 6px;
         }
@@ -54,6 +107,7 @@ export default class layout extends Vue{
             }
             .el-form-item {
                 margin-left: 10%;
+                margin-bottom: 26px;
             }
             .el-button {
                 margin: 30px 50px 0 0;
@@ -61,6 +115,19 @@ export default class layout extends Vue{
             }
             .el-form-item__label {
                 min-width: 100px;
+            }
+            .el-form-item__error {
+                width: 100%;
+                top: 101%;
+            }
+            .el-input {
+                width: 450px;
+            }
+            .el-form-item__content {
+                justify-content: unset;
+            }
+            .btn .el-form-item__content {
+                justify-content: center;
             }
         }
 
