@@ -27,9 +27,9 @@
                     </svg>
                     <span>{{ $store.state.current_route ? $store.state.current_route.meta.title : "列表数据" }}</span>
                 </span>
-                <span class="add_btn">
+                <router-link to="/business/goods/add" tag="span" class="add_btn">
                     <el-button size="medium" type="primary" icon="el-icon-circle-plus-outline">新增商品</el-button>
-                </span>
+                </router-link>
             </p>
             <!-- 表格和页码 -->
             <table_page 
@@ -74,27 +74,29 @@ export default class goods_list extends Vue{
             //是否显示页码
             is_page: true,
             //当前页码
-            current_page: 1,
+            current_page: sessionStorage.getItem("goods_list_p") ? parseInt(sessionStorage.getItem("goods_list_p")) : 1,
             //每页显示的数量
-            size: 10,
+            size: sessionStorage.getItem("goods_list_size") ? parseInt(sessionStorage.getItem("goods_list_size")) : 10,
             sizes: [10, 15, 20],
             //总数量
             total: 0,
         }
     };
+
     //请求列表数据的参数
     private send_data: any = {
-        page: sessionStorage.getItem("goods_list_page") ? sessionStorage.getItem("goods_list_page") : 1,
+        p: sessionStorage.getItem("goods_list_p") ? sessionStorage.getItem("goods_list_p") : 1,
         size: sessionStorage.getItem("goods_list_size") ? sessionStorage.getItem("goods_list_size") : 10,
-        where: {
-            keyword: sessionStorage.getItem("goods_list_keyword") ? sessionStorage.getItem("goods_list_keyword") : "",
-            stime: sessionStorage.getItem("goods_list_stime") ? sessionStorage.getItem("goods_list_stime") : "",
-            etime: sessionStorage.getItem("goods_list_etime") ? sessionStorage.getItem("goods_list_etime") : ""
-        }
+        search: sessionStorage.getItem("goods_list_search") ? sessionStorage.getItem("goods_list_search") : "",
+        start_time: sessionStorage.getItem("goods_list_start_time") ? sessionStorage.getItem("goods_list_start_time") : "",
+        end_time: sessionStorage.getItem("goods_list_end_time") ? sessionStorage.getItem("goods_list_end_time") : ""
     };
+
     //需要展示的筛选功能
     private show_filter: any = {
-        is_search: true
+        is_type: "domain02",
+        is_search: true,
+        placeholder: "请输入商品ID"
     };
 
     mounted () {
@@ -126,43 +128,51 @@ export default class goods_list extends Vue{
 
     //搜索 重新获取列表数据
     search (val: any) {
-        this.send_data.where.keyword = val;
-        sessionStorage.setItem("goods_list_keyword", val);
+        //页码不重置为1的话 有可能请求不到数据
+        this.table_data.page.current_page = 1;
+        this.send_data.p = 1;
+        sessionStorage.setItem("goods_list_p", "1");
+        this.send_data.search = val;
+        sessionStorage.setItem("goods_list_search", val);
         this.goods_list();
     };
 
     //清空搜索内容
     clear_search () {
-        this.send_data.where.keyword = '';
-        sessionStorage.setItem("goods_list_keyword", "");
+        this.send_data.search = '';
+        sessionStorage.setItem("goods_list_search", "");
         this.goods_list();
     };
 
     //筛选时间
     change_time(val: any) {
+        //页码不重置为1的话 有可能请求不到数据
+        this.table_data.page.current_page = 1;
+        this.send_data.p = 1;
+        sessionStorage.setItem("goods_list_p", "1");
         var that: any = this;
-        this.send_data.where.stime = val[0] ? that.$moment(val[0]).valueOf() / 1000 : "",
-        this.send_data.where.etime = val[1] ? that.$moment(val[1]).valueOf() / 1000 : "",
-        sessionStorage.setItem("goods_list_stime", this.send_data.where.stime);
-        sessionStorage.setItem("goods_list_etime", this.send_data.where.etime);
+        this.send_data.start_time = val[0] ? that.$moment(val[0]).valueOf() / 1000 : "",
+        this.send_data.end_time = val[1] ? that.$moment(val[1]).valueOf() / 1000 : "",
+        sessionStorage.setItem("goods_list_start_time", this.send_data.start_time);
+        sessionStorage.setItem("goods_list_end_time", this.send_data.end_time);
         this.goods_list();
     };
 
     //清空时间
     clear_time () {
         var that: any = this;
-        this.send_data.where.stime = "",
-        this.send_data.where.etime = "",
-        sessionStorage.setItem("goods_list_stime", this.send_data.where.stime);
-        sessionStorage.setItem("goods_list_etime", this.send_data.where.etime);
+        this.send_data.start_time = "",
+        this.send_data.end_time = "",
+        sessionStorage.setItem("goods_list_start_time", this.send_data.start_time);
+        sessionStorage.setItem("goods_list_end_time", this.send_data.end_time);
         this.goods_list();
     };
     
     //改变页码
     change_page(val: any) {
         this.table_data.page.current_page = val;
-        this.send_data.page = val;
-        sessionStorage.setItem("page", val);
+        this.send_data.p = val;
+        sessionStorage.setItem("goods_list_p", val);
         this.goods_list();
     };
 
@@ -185,8 +195,6 @@ export default class goods_list extends Vue{
 <style lang="scss">
 
     @media screen and (min-width: 769px) {
-        .goods_list {
-            padding: 0 20px;
-        }
+        
     }
 </style>

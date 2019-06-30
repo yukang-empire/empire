@@ -74,8 +74,10 @@ export default class login extends Vue {
                         //储存账户 方便用户下次登录
                         localStorage.setItem('username', this.ruleForm.username);
                         //登录成功提示
-                        this.$message({ message: '登录成功！', type: "success", duration: 1500 });
                         this.$router.push({ path: '/home' });
+                        setTimeout( () => {
+                            this.$message({ message: '登录成功！', type: "success", duration: 1500 });
+                        }, 300);
                     }else {
                         //登录失败提示
                         this.$message({ message: res.msg, type: "error", duration: 2500 });

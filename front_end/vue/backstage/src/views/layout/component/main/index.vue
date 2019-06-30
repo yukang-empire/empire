@@ -7,7 +7,7 @@
         <!-- 标题 -->
         <c_title />
         <transition name="fade-transform" mode="out-in">
-            <router-view></router-view>
+            <router-view class="main_content"></router-view>
         </transition>
     </div>
 </template>

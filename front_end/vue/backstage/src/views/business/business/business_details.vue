@@ -10,7 +10,7 @@
                 </svg>
                 <span>门店列表</span>
             </p>
-            <table_page :table_data='table_data_store' />
+            <table_page :table_data='table_data_store' @change_state='change_state' />
         </div>
         <!-- 商品列表 -->
         <div class="repeat_div">
@@ -96,10 +96,10 @@ export default class business_details extends Vue{
     };
 
     mounted () {
-        var that: any = this;
         //请求商家的基本信息
         this.$store.dispatch("business_details", { club_id: this.$route.query.club_id}).then( res => {
             console.log("商家详情", res);
+            var that: any = this;
             if (res.code == 0 || res.status == 1) {
                 this.base_info = res.result.club;
                 this.base_info.add_time = this.base_info.add_time == 0 ? "" : that.$moment(this.base_info.add_time * 1000).format('YYYY-MM-DD HH:mm:ss');
@@ -121,6 +121,39 @@ export default class business_details extends Vue{
             };
         });
     };
+
+    //改变状态
+    change_state (index: any, row: any) {
+        var that: any = this;
+        if (row.status == 1) {
+            that.$confirm("确定禁用ID为 " + row.id +  " 的商家？", "提示", { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then( () => {
+                this.$store.dispatch("change_state_user", { userSN: row.user_sn, isLock: '1' }).then( (res: any) => {
+                    if (res.code == 0) {
+                        console.log("改变状态", res);
+                        this.table_data_store.table.lists[index].status = 2;
+                        that.$message({ type: "success", message: "已成功禁用ID为 " + row.id + " 的商家！", duration: 2000 });
+                    }else {
+                        //登录失败提示
+                        this.$message({ message: res.msg, type: "error", duration: 2500 });
+                    };
+                })
+            });
+        }else {
+            that.$confirm("确定开启ID为 " + row.id +  " 的商家？", "提示", { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then( () => {
+                this.$store.dispatch("change_state_user", { userSN: row.user_sn, isLock: '0' }).then( (res: any) => {
+                    if (res.code == 0) {
+                        console.log("改变状态", res);
+                        this.table_data_store.table.lists[index].status = 1;
+                        that.$message({ type: "success", message: "已成功开启ID为 " + row.id + " 的商家！", duration: 2000 });
+                    }else {
+                        //登录失败提示
+                        this.$message({ message: res.msg, type: "error", duration: 2500 });
+                    };
+                })
+            });
+        };
+    };
+
 }
 
 </script>

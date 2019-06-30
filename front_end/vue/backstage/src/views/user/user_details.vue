@@ -91,9 +91,9 @@ export default class user_details extends Vue{
             //是否显示页码
             is_page: true,
             //当前页码
-            current_page: 1,
+            current_page: sessionStorage.getItem("user_order_page") ? parseInt(sessionStorage.getItem("user_order_page")) : 1,
             //每页显示的数量
-            size: 5,
+            size: sessionStorage.getItem("user_order_size") ? parseInt(sessionStorage.getItem("user_order_size")) : 5,
             sizes: [5, 10],
             //总数量
             total: 0,
@@ -118,9 +118,9 @@ export default class user_details extends Vue{
             //是否显示页码
             is_page: true,
             //当前页码
-            current_page: 1,
+            current_page: sessionStorage.getItem("user_recharge_page") ? parseInt(sessionStorage.getItem("user_recharge_page")) : 1,
             //每页显示的数量
-            size: 5,
+            size: sessionStorage.getItem("user_recharge_size") ? parseInt(sessionStorage.getItem("user_recharge_size")) : 5,
             sizes: [5, 10],
             //总数量
             total: 0,

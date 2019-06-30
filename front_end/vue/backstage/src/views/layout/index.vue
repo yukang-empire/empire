@@ -46,6 +46,24 @@ export default class layout extends Vue{
             margin-top: 6px;
         }
 
+        /* 添加 */
+        .add {
+
+            .el-input__inner {
+                width: 450px;
+            }
+            .el-form-item {
+                margin-left: 10%;
+            }
+            .el-button {
+                margin: 30px 50px 0 0;
+                width: 100px;
+            }
+            .el-form-item__label {
+                min-width: 100px;
+            }
+        }
+
         /* 基本信息 */
         .base_info {
 
@@ -85,7 +103,7 @@ export default class layout extends Vue{
             .item {
 
                 .el-input {
-                    width: 250px;
+                    width: 280px;
                 }
 
                 .el-button {
@@ -159,6 +177,10 @@ export default class layout extends Vue{
                     overflow-y: scroll;
                     padding-bottom: 30px;
                     word-break: break-word;
+
+                    .main_content {
+                        padding: 0 20px;
+                    }
                 }
             }
         }

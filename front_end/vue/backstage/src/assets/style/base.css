@@ -168,9 +168,6 @@ input::-ms-input-placeholder{
 /* 全局样式 */
 
 /* element-ui */
-.el-form-item {
-    margin-bottom: 20px;
-}
 .el-form-item__error {
     color: red;
     font-size: 14px;

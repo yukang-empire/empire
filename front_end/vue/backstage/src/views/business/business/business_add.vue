@@ -1,15 +1,16 @@
 <template>
     <div class="business_add">
-        <p>business_add</p>
+        <add />
     </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
+import add from "@/components/add.vue";
 
 @Component({
     components: {
-        
+        add
     }
 })
 

@@ -3,7 +3,7 @@
         <div class="item" v-if="show_filter.is_type == 'domain01' && show_filter.is_search">
             <span>输入关键词：</span>
             <el-input
-                placeholder="请输入要搜索的关键词"
+                placeholder="请输入用户ID、昵称、手机号"
                 v-model="search_input"
                 @clear='clear_search'
                 @keyup.native.enter='search'
@@ -15,7 +15,7 @@
         <div class="item" v-if="show_filter.is_type == 'domain02' && show_filter.is_search">
             <span>输入关键词：</span>
             <el-input
-                placeholder="请输入要搜索的关键词"
+                :placeholder="show_filter.placeholder"
                 v-model="search_input"
                 @clear='clear_search'
                 @keyup.native.enter='search'

@@ -26,9 +26,9 @@
                     </svg>
                     <span>{{ $store.state.current_route ? $store.state.current_route.meta.title : "列表数据" }}</span>
                 </span>
-                <span class="add_btn">
+                <router-link to="/business/add" tag="span" class="add_btn">
                     <el-button size="medium" type="primary" icon="el-icon-circle-plus-outline">新增商家</el-button>
-                </span>
+                </router-link>
             </p>
             <!-- 表格和页码 -->
             <table_page 
@@ -74,9 +74,9 @@ export default class business_list extends Vue{
             //是否显示页码
             is_page: true,
             //当前页码
-            current_page: 1,
+            current_page: sessionStorage.getItem("business_list_p") ? parseInt(sessionStorage.getItem("business_list_p")) : 1,
             //每页显示的数量
-            size: 10,
+            size: sessionStorage.getItem("business_list_size") ? parseInt(sessionStorage.getItem("business_list_size")) : 10,
             sizes: [10, 15, 20],
             //总数量
             total: 0,
@@ -94,7 +94,8 @@ export default class business_list extends Vue{
     private show_filter: any = {
         is_type: "domain02",
         is_search: true,
-        is_entry_time: true
+        placeholder: "请输入企业名称、手机号(全部)",
+        is_entry_time: true,
     };
 
     mounted () {
@@ -128,6 +129,10 @@ export default class business_list extends Vue{
 
     //搜索 重新获取列表数据
     search (val: any) {
+        //页码不重置为1的话 有可能请求不到数据
+        this.table_data.page.current_page = 1;
+        this.send_data.p = 1;
+        sessionStorage.setItem("business_list_p", "1");
         this.send_data.search = val;
         sessionStorage.setItem("business_list_search", val);
         this.business_list();
@@ -142,6 +147,10 @@ export default class business_list extends Vue{
 
     //筛选时间
     change_time(val: any) {
+        //页码不重置为1的话 有可能请求不到数据
+        this.table_data.page.current_page = 1;
+        this.send_data.p = 1;
+        sessionStorage.setItem("business_list_p", "1");
         var that: any = this;
         this.send_data.start_time = val[0] ? that.$moment(val[0]).valueOf() / 1000 : "",
         this.send_data.end_time = val[1] ? that.$moment(val[1]).valueOf() / 1000 : "",
@@ -164,7 +173,7 @@ export default class business_list extends Vue{
     change_page(val: any) {
         this.table_data.page.current_page = val;
         this.send_data.p = val;
-        sessionStorage.setItem("p", val);
+        sessionStorage.setItem("business_list_p", val);
         this.business_list();
     };
 
@@ -179,12 +188,12 @@ export default class business_list extends Vue{
     //改变状态
     change_state (index: any, row: any) {
         var that: any = this;
-        if (row.is_lock == 0) {
+        if (row.status == 1) {
             that.$confirm("确定禁用ID为 " + row.id +  " 的商家？", "提示", { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then( () => {
                 this.$store.dispatch("change_state_user", { userSN: row.user_sn, isLock: '1' }).then( (res: any) => {
                     if (res.code == 0) {
                         console.log("改变状态", res);
-                        this.table_data.table.lists[index].is_lock = 1;
+                        this.table_data.table.lists[index].status = 2;
                         that.$message({ type: "success", message: "已成功禁用ID为 " + row.id + " 的商家！", duration: 2000 });
                     }else {
                         //登录失败提示
@@ -197,7 +206,7 @@ export default class business_list extends Vue{
                 this.$store.dispatch("change_state_user", { userSN: row.user_sn, isLock: '0' }).then( (res: any) => {
                     if (res.code == 0) {
                         console.log("改变状态", res);
-                        this.table_data.table.lists[index].is_lock = 0;
+                        this.table_data.table.lists[index].status = 1;
                         that.$message({ type: "success", message: "已成功开启ID为 " + row.id + " 的商家！", duration: 2000 });
                     }else {
                         //登录失败提示
@@ -219,8 +228,6 @@ export default class business_list extends Vue{
 <style lang="scss">
 
     @media screen and (min-width: 769px) {
-        .business_list {
-            padding: 0 20px;
-        }
+        
     }
 </style>

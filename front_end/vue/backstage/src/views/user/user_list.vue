@@ -70,9 +70,9 @@ export default class user_list extends Vue{
             //是否显示页码
             is_page: true,
             //当前页码
-            current_page: 1,
+            current_page: sessionStorage.getItem("user_list_page") ? parseInt(sessionStorage.getItem("user_list_page")) : 1,
             //每页显示的数量
-            size: 10,
+            size: sessionStorage.getItem("user_list_size") ? parseInt(sessionStorage.getItem("user_list_size")) : 10,
             sizes: [10, 15, 20],
             //总数量
             total: 0,
@@ -114,6 +114,7 @@ export default class user_list extends Vue{
                     var that: any = this;
                     lists[i].last_login = lists[i].last_login == 0 ? "" : that.$moment(lists[i].last_login * 1000).format('YYYY-MM-DD HH:mm:ss');
                 };
+                //总个数
                 this.table_data.page.total = parseInt(res.count);
             }else {
                 //请求失败提示
@@ -124,6 +125,10 @@ export default class user_list extends Vue{
 
     //搜索 重新获取列表数据
     search (val: any) {
+        //页码不重置为1的话 有可能请求不到数据
+        this.send_data.page = 1;
+        this.table_data.page.current_page = 1;
+        sessionStorage.setItem("user_list_page", '1');
         this.send_data.where.keyword = val;
         sessionStorage.setItem("user_list_keyword", val);
         this.user_list();
@@ -138,6 +143,10 @@ export default class user_list extends Vue{
 
     //筛选时间
     change_time(val: any) {
+        //页码不重置为1的话 有可能请求不到数据
+        this.send_data.page = 1;
+        this.table_data.page.current_page = 1;
+        sessionStorage.setItem("user_list_page", '1');
         var that: any = this;
         this.send_data.where.stime = val[0] ? that.$moment(val[0]).valueOf() / 1000 : "",
         this.send_data.where.etime = val[1] ? that.$moment(val[1]).valueOf() / 1000 : "",
@@ -160,7 +169,7 @@ export default class user_list extends Vue{
     change_page(val: any) {
         this.table_data.page.current_page = val;
         this.send_data.page = val;
-        sessionStorage.setItem("page", val);
+        sessionStorage.setItem("user_list_page", val);
         this.user_list();
     };
 
@@ -215,8 +224,6 @@ export default class user_list extends Vue{
 <style lang="scss">
 
     @media screen and (min-width: 769px) {
-        .user_list {
-            padding: 0 20px;
-        }
+        
     }
 </style>
