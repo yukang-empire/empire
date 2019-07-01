@@ -46,51 +46,71 @@ export default class layout extends Vue{
         /* 裁剪图片 */
         .cropper {
             height: 100%;
-            color: #fff;
-            text-align: center;
-            flex-direction: column;
-            background-color: rgba(0, 0, 0, 0.7);
+            color: #333;
+            background-color: rgba(0, 0, 0, 0.6);
 
             h2 {
-                font-size: 2rem;
-                letter-spacing: 3px;
-                margin: 50px 0 50px 0;
+                font-size: 1.6rem;
+                letter-spacing: 2px;
+                margin-bottom: 25px;
             }
 
             .main {
-                height: 55%;
-                display: flex;
-                justify-content: center;
+                flex-direction: column;
+                padding: 30px 0 60px 0;
+                margin: 80px 8% 0 8%;
+                border-radius: 10px;
+                background-color: #f7f7f7;
+                position: relative;
 
-                .right {
-                    margin-left: 10%;
-                    flex-direction: column;
+                &>.icon {
+                    position: absolute;
+                    right: 1px;
+                    top: 10px;
+                    width: 1.3rem;
+                    height: 1.3rem;
+                    color: #ccc;
                 }
 
-                .square {
-                    margin-bottom: 20px;
+                .img {
+                    width: 90%;
+                    height: 450px;
+
+                    .vue-cropper {
+                        width: 60%;
+                        margin-right: 10%;
+                        border-radius: 10px;
+                    }
+                    
+                    .right {
+                        height: 100%;
+                        flex-direction: column;
+                        
+                        .square {
+                            margin-bottom: 15px;
+                        }
+
+                        .circle {
+                            width: 230px;
+                            height: 230px;
+                            border-radius: 50%;
+                        }
+                    }
                 }
 
-                .circle {
-                    width: 250px;
-                    height: 250px;
-                    border-radius: 50%;
+                .func_btn {
+                    margin: 30px 0 10px 0;
+
+                    .el-button {
+                        margin-right: 10px;
+                        margin-top: 10px;
+                    }
                 }
-            }
-            
-            .func_btn {
-                margin: 40px 0;
 
-                .el-button {
-                    margin-right: 10px;
-                }
-            }
-
-            .final {
-                margin-top: 70px;
-
-                button {
-                    margin-right: 20px;
+                .final {
+                    button {
+                        margin-left: 60px;
+                    }
                 }
             }
         }
@@ -128,6 +148,26 @@ export default class layout extends Vue{
             }
             .btn .el-form-item__content {
                 justify-content: center;
+            }
+            .el-textarea {
+                width: 450px;
+            }
+            .el-textarea__inner {
+                padding: 10px 15px;
+            }
+            .el-select {
+
+                &>.el-input {
+                    width: 160px;
+
+                    .el-input__inner {
+                        width: 100%;
+                        text-align: center;
+                    }
+                }
+            }
+            .el-select {
+                margin-right: 20px;
             }
         }
 

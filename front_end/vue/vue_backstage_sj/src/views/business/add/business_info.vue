@@ -279,6 +279,7 @@ export default {
         },
         //实时预览函数
         realTime(data) {
+            console.log("previews", data)
             this.previews = data;
         },
         //放大缩小

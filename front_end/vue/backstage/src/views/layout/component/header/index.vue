@@ -112,11 +112,12 @@ export default class c_header extends Vue{
             margin-top: 8px;
 
             img {
-                width: 55px;
+                width: 70px;
             }
 
             p {
                 margin: 5px 0 10px 0;
+                font-weight: 900;
             }
         }
     }

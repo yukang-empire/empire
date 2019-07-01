@@ -246,6 +246,11 @@ input::-ms-input-placeholder{
     align-items: center;
     justify-content: center;
 }
+.el-time-panel__footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
 
 /* 响应式 */
 @media screen and (min-width: 769px) {
