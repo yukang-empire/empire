@@ -128,13 +128,25 @@ export default class layout extends Vue{
             .el-form-item {
                 margin-left: 10%;
                 margin-bottom: 26px;
+                position: relative;
+                display: flex;
+                align-items: center;
+
+                .bottom_tip {
+                    position: absolute;
+                    left: -87px;
+                    top: 52%;
+                }
+            }
+            .el-form-item.btn {
+                display: block;
             }
             .el-button {
                 margin: 30px 50px 0 0;
                 width: 100px;
             }
             .el-form-item__label {
-                min-width: 100px;
+                min-width: 110px;
             }
             .el-form-item__error {
                 width: 100%;
@@ -145,6 +157,10 @@ export default class layout extends Vue{
             }
             .el-form-item__content {
                 justify-content: unset;
+                flex-wrap: wrap;
+            }
+            #license_img {
+                height: 200px;
             }
             .btn .el-form-item__content {
                 justify-content: center;
@@ -168,6 +184,74 @@ export default class layout extends Vue{
             }
             .el-select {
                 margin-right: 20px;
+            }
+            .el-checkbox {
+                margin-right: 10px;
+            }
+            .el-checkbox.is-bordered+.el-checkbox.is-bordered {
+                margin-left: 0;
+                margin-top: 12px;
+            }
+            .el-checkbox.is-bordered {
+                width: 100px;
+            }
+            .el-upload--picture-card {
+                width: 300px;
+                height: 200px;
+            }
+            .el-upload-list--picture-card .el-upload-list__item {
+                width: 225px;
+                height: 150px;
+            }
+            #store_img {
+                /* height: 150px; */
+
+                .el-upload--picture-card {
+                    width: 225px;
+                    height: 150px;
+                }
+                .el-upload-dragger {
+                    width: 225px;
+                    height: 150px;
+                }
+            }
+            .show_store_imgs {
+                justify-content: unset;
+                flex-wrap: wrap;
+                    
+                li {
+                    margin: 0 12px 12px 0;
+                    cursor: pointer;
+                    position: relative;
+                    border-radius: 10px;
+
+                    img {
+                        width: 225px;
+                        border-radius: 10px;
+                    }
+
+                    .float {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        border-radius: 10px;
+                        background-color: rgba(0, 0, 0, 0.7);
+
+                        .el-icon-delete {
+                            font-size: 2rem;
+                        }
+                    }
+                    
+                }
+            }
+            .el-dialog__body {
+                padding: 20px 30px;
+
+                img {
+                    border-radius: 10px;
+                }
             }
         }
 

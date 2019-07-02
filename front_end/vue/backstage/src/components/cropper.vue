@@ -67,7 +67,11 @@ export default class cropper extends Vue{
 
     //开始裁剪图片
     startCrop() {
-        this.$emit("startCrop");
+        if (this.cropper_data.title == "营业执照裁剪") {
+            this.$emit("startCrop_license");
+        }else {
+            this.$emit("startCrop_store");
+        };
     };
     //实时预览函数
     realTime(data) {
@@ -106,24 +110,38 @@ export default class cropper extends Vue{
             //base 64
             that.$refs.cropper.getCropData((data) => {
                 // console.log(data);
-                var img = that.convertBase64UrlToBlob(data);
+                var img = that.dataURLtoFile(data, "image");
                 // console.log("base64转成file文件", img);
-                that.$emit("com_crop", img, data);
+                that.$emit("com_crop", img, data, this.cropper_data.title);
             });
         };
     };
 
-    // 将base64的图片转换为file文件
-    convertBase64UrlToBlob(urlData) {
-        let bytes = window.atob(urlData.split(',')[1]);//去掉url的头，并转换为byte
-        //处理异常,将ascii码小于0的转换为大于0
-        let ab = new ArrayBuffer(bytes.length);
-        let ia = new Uint8Array(ab);
-        for (var i = 0; i < bytes.length; i++) {
-            ia[i] = bytes.charCodeAt(i);
+    // 将base64的图片转换为File文件
+    dataURLtoFile(dataurl, filename) {
+        var arr = dataurl.split(','),
+        mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]),
+        n = bstr.length,
+        u8arr = new Uint8Array(n);
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
         };
-        return new Blob([ab], { type: 'image/jpeg' });
+        return new File([u8arr], filename, {
+            type: mime
+        });
     };
+    // 将base64的图片转换为Blob文件
+    // convertBase64UrlToBlob(urlData) {
+    //     let bytes = window.atob(urlData.split(',')[1]);//去掉url的头，并转换为byte
+    //     //处理异常,将ascii码小于0的转换为大于0
+    //     let ab = new ArrayBuffer(bytes.length);
+    //     let ia = new Uint8Array(ab);
+    //     for (var i = 0; i < bytes.length; i++) {
+    //         ia[i] = bytes.charCodeAt(i);
+    //     };
+    //     return new Blob([ab], { type: 'image/jpeg' });
+    // };
 }
 
 </script>

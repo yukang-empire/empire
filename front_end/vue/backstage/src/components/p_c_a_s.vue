@@ -60,18 +60,17 @@ export default class p_c_a_s extends Vue{
     mounted () {
         //初始化省
         this.pcas.p = pcas;
-        //刷新页面不丢失
-        if (sessionStorage.getItem('add_business')) {
-            this.form = JSON.parse(sessionStorage.getItem('add_business'));
-        };
     };
     
     //改变省份 筛选市
     change_p () {
         //改变前先清空
         this.form.city = '';
+        this.pcas.c = [];
         this.form.area = '';
+        this.pcas.a = [];
         this.form.street = '';
+        this.pcas.s = [];
         //提取长度出来 提高性能
         var p_length = this.pcas.p.length;
         for (var i = 0; i < p_length; i ++) {
@@ -80,37 +79,37 @@ export default class p_c_a_s extends Vue{
                 this.pcas.c = this.pcas.p[i].children;
             };
         };
-        // this.$emit("change_p", this.form.province);
-        // this.$emit("change_c", this.form.city);
+        this.$emit("change_p", this.form.province);
     };
     //改变市 筛选区
     change_c () {
         this.form.area = '';
+        this.pcas.a = [];
         this.form.street = '';
+        this.pcas.s = [];
         var c_length = this.pcas.c.length;
         for (var i = 0; i < c_length; i ++) {
             if (this.pcas.c[i].name == this.form.city) {
                 this.pcas.a = this.pcas.c[i].children;
             };
         };
-        // this.$emit("change_c", this.form.city);
-        // this.$emit("change_a", this.form.area);
+        this.$emit("change_c", this.form.city);
     };
     //改变区 筛选街道
     change_a () {
         this.form.street = '';
+        this.pcas.s = [];
         var a_length = this.pcas.a.length;
         for (var i = 0; i < a_length; i ++) {
             if (this.pcas.a[i].name == this.form.area) {
                 this.pcas.s = this.pcas.a[i].children;
             };
         };
-        // this.$emit("change_a", this.form.area);
-        // this.$emit("change_s", this.form.street);
+        this.$emit("change_a", this.form.area);
     };
     //选择街道
     change_s () {
-        // this.$emit("change_s", this.form.street);
+        this.$emit("change_s", this.form.street);
     };
 }
 
