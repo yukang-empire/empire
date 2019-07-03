@@ -9,9 +9,14 @@ const store = new Vuex.Store({
     //当前路由
     current_route: null,
     //历史记录的数组汇总
-    history_arr: []
+    history_arr: [],
+    //地图需要的响应式数据
+    map_data: ''
   },
   mutations: {
+    change_map_data (state, data) {
+      state.map_data = data.province + data.city + data.area + data.street + data.address;
+    },
     //进入页面 先发送路由给vuex 存到历史记录数组里 state参数别忘了写上
     get_route (state, route) {
       state.current_route = route;

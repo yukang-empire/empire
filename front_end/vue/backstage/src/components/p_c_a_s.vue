@@ -80,6 +80,7 @@ export default class p_c_a_s extends Vue{
             };
         };
         this.$emit("change_p", this.form.province);
+        this.$store.commit('change_map_data', this.form);
     };
     //改变市 筛选区
     change_c () {
@@ -94,6 +95,7 @@ export default class p_c_a_s extends Vue{
             };
         };
         this.$emit("change_c", this.form.city);
+        this.$store.commit('change_map_data', this.form);
     };
     //改变区 筛选街道
     change_a () {
@@ -106,10 +108,12 @@ export default class p_c_a_s extends Vue{
             };
         };
         this.$emit("change_a", this.form.area);
+        this.$store.commit('change_map_data', this.form);
     };
     //选择街道
     change_s () {
         this.$emit("change_s", this.form.street);
+        this.$store.commit('change_map_data', this.form);
     };
 }
 

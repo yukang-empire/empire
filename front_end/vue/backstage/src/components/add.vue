@@ -67,9 +67,9 @@
                         />
                     </el-form-item>
                     <el-form-item label="详细地址:" prop="address">
-                        <el-input v-model="ruleForm.address" placeholder="请输入详细地址" clearable @change='input_data'></el-input>
+                        <el-input v-model="ruleForm.address" placeholder="请输入详细地址" clearable @change='input_data_address'></el-input>
                     </el-form-item>
-                    <el-form-item label="地图:">
+                    <el-form-item label="地图位置:">
                         <baidu_map />
                     </el-form-item>
                     <el-form-item label="营业时间:" prop="business_time">
@@ -149,6 +149,7 @@ import baidu_map from "@/components/baidu_map.vue";
 })
 
 export default class add extends Vue{
+    //表单数据
     private ruleForm: any = {
         realname: '',
         mobile: '',
@@ -389,6 +390,11 @@ export default class add extends Vue{
     input_data () {
         sessionStorage.setItem('add_business', JSON.stringify(this.ruleForm));
     };
+    //实时记录详情地址
+    input_data_address () {
+        this.$store.commit('change_map_data', this.ruleForm);
+        sessionStorage.setItem('add_business', JSON.stringify(this.ruleForm));
+    };
     //显示删除门店的图标
     enter_store_img (index) {
         this.show_delete_index = index;
@@ -460,6 +466,7 @@ export default class add extends Vue{
     //选择省
     change_p (province) {
         this.ruleForm.province = province;
+        this.ruleForm.address = '';
         //储存起来是为了验证
         sessionStorage.setItem('add_business', JSON.stringify(this.ruleForm));
     };
@@ -583,14 +590,17 @@ export default class add extends Vue{
         let ref: any = this.$refs.ruleForm;
         ref.validate((valid: boolean) => {
             if (valid) {
-                console.log("this.ruleForm", this.ruleForm);
                 this.ruleForm.open_time = !this.ruleForm.open_time ? "08:00" : this.ruleForm.open_time;
                 this.ruleForm.close_time = !this.ruleForm.close_time ? "23:00" : this.ruleForm.close_time;
+                var j_w = JSON.parse(sessionStorage.getItem('j_w'));
+                this.ruleForm.lat = j_w ? j_w.lat : '';
+                this.ruleForm.lng = j_w ? j_w.lng : '';
+                console.log("this.ruleForm", this.ruleForm);
                 sessionStorage.setItem('add_business', JSON.stringify(this.ruleForm));
                 this.is_loading = true;
                 this.$store.dispatch("add_business", this.ruleForm).then( (res: any) => {
                     console.log("新增商家", res);
-                    if (res.code == 0) {
+                    if (res.code == 0 || res.status == 1) {
                         //新增成功提示
                         this.$message({ message: '新增成功！', type: "success", duration: 1500 });
                         this.$router.push({ path: '/business/list' });

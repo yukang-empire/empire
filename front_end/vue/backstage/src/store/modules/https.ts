@@ -124,6 +124,7 @@ const https = {
             });
         },
 
+        
         //获取商家列表
         business_list (state: any, data: any) {
             //domain02接口需要这种数据
@@ -133,6 +134,7 @@ const https = {
             send_data.append("search", data.search);
             send_data.append("start_time", data.start_time);
             send_data.append("end_time", data.end_time);
+            send_data.append("token", sessionStorage.getItem('token'));
             return new Promise((resolve, reject) => {
                 axios.post( state.state.domain02 + "/index.php?m=Api&c=Club&a=master_list", send_data).then( (res: any) => {
                     //返回数据给调起dispatch的那边
@@ -151,6 +153,7 @@ const https = {
             send_data.append("search", data.search);
             send_data.append("start_time", data.start_time);
             send_data.append("end_time", data.end_time);
+            send_data.append("token", sessionStorage.getItem('token'));
             return new Promise((resolve, reject) => {
                 axios.post( state.state.domain02 + "/index.php?m=Api&c=Club&a=club_lists", send_data).then( (res: any) => {
                     //返回数据给调起dispatch的那边
@@ -169,6 +172,7 @@ const https = {
             send_data.append("search", data.search);
             send_data.append("start_time", data.start_time);
             send_data.append("end_time", data.end_time);
+            send_data.append("token", sessionStorage.getItem('token'));
             return new Promise((resolve, reject) => {
                 axios.post( state.state.domain02 + "/index.php?m=Api&c=Club&a=club_goods", send_data).then( (res: any) => {
                     //返回数据给调起dispatch的那边
@@ -183,6 +187,7 @@ const https = {
         business_details (state: any, data: any) {
             var send_data: any = new FormData();
             send_data.append("club_id", data.club_id);
+            send_data.append("token", sessionStorage.getItem('token'));
             return new Promise((resolve, reject) => {
                 axios.post( state.state.domain02 + "/index.php?m=Api&c=Club&a=master_list_info", send_data).then( (res: any) => {
                     //返回数据给调起dispatch的那边
@@ -197,6 +202,7 @@ const https = {
         store_details (state: any, data: any) {
             var send_data: any = new FormData();
             send_data.append("club_id", data.club_id);
+            send_data.append("token", sessionStorage.getItem('token'));
             return new Promise((resolve, reject) => {
                 axios.post( state.state.domain02 + "/index.php?m=Api&c=Club&a=club_lists_info", send_data).then( (res: any) => {
                     //返回数据给调起dispatch的那边
@@ -211,6 +217,7 @@ const https = {
         goods_details (state: any, data: any) {
             var send_data: any = new FormData();
             send_data.append("goods_id", data.goods_id);
+            send_data.append("token", sessionStorage.getItem('token'));
             return new Promise((resolve, reject) => {
                 axios.post( state.state.domain02 + "/index.php?m=Api&c=Club&a=club_goods_info", send_data).then( (res: any) => {
                     //返回数据给调起dispatch的那边
@@ -234,10 +241,8 @@ const https = {
             send_data.append("area", data.area);
             send_data.append("street", data.street);
             send_data.append("address", data.address);
-            // send_data.append("lat", data.lat);
-            // send_data.append("lng", data.lng);
-            send_data.append("lat", "N22°32′43.86″");
-            send_data.append("lng", "E114°03′10.40″");
+            send_data.append("lat", data.lat);
+            send_data.append("lng", data.lng);
             send_data.append("tel", data.tel);
             send_data.append("open_time", data.open_time);
             send_data.append("close_time", data.close_time);
@@ -259,9 +264,11 @@ const https = {
             });
         },
         //获取健身所附加的所有服务
-        get_service (state: any) {
+        get_service (state: any, data: any) {
+            var send_data: any = new FormData();
+            send_data.append("token", sessionStorage.getItem('token'));
             return new Promise((resolve, reject) => {
-                axios.get( state.state.domain02 + "/index.php?m=Api&c=User&a=club_facil").then( (res: any) => {
+                axios.get( state.state.domain02 + "/index.php?m=Api&c=User&a=club_facil", send_data).then( (res: any) => {
                     //返回数据给调起dispatch的那边
                     resolve(res);
                 }).catch( error => {
