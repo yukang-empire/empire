@@ -102,6 +102,8 @@ export default class business_details extends Vue{
             var that: any = this;
             if (res.code == 0 || res.status == 1) {
                 this.base_info = res.result.club;
+                this.base_info.icon = "#iconjibenxinxi";
+                this.base_info.title = "商家基本信息";
                 this.base_info.add_time = this.base_info.add_time == 0 ? "" : that.$moment(this.base_info.add_time * 1000).format('YYYY-MM-DD HH:mm:ss');
                 //门店列表
                 this.table_data_store.table.lists = res.result.club_list;

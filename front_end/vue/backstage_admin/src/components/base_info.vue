@@ -1,30 +1,18 @@
 <template>
     <div class="base_info">
         <div class="repeat_div">
-            <p v-if='base_info_type == "user" || base_info_type == "business"'>
+            <p>
                 <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#iconjibenxinxi"></use>
+                    <use :xlink:href="base_info.icon"></use>
                 </svg>
-                <span>基本信息</span>
-            </p>
-            <p v-if='base_info_type == "store"'>
-                <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#iconshangjia"></use>
-                </svg>
-                <span>门店信息</span>
-            </p>
-            <p v-if='base_info_type == "goods"'>
-                <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#iconshangpin"></use>
-                </svg>
-                <span>商品信息</span>
+                <span>{{ base_info.title }}</span>
             </p>
             <div class="info">
                 <ul class="flex_between" v-if='base_info_type == "user"'>
                     <li><img :src="base_info.head_pic" alt="head_img"></li>
                     <li>
                         <p><span>昵称：</span><i>{{ base_info.nickname }}</i></p>
-                        <p><span>生日：</span><i>{{ base_info.birthday == 0 ? "" : base_info.birthday }}</i></p>
+                        <p><span>生日：</span><i>{{ base_info.birthday }}</i></p>
                         <p><span>地区：</span><i>{{ base_info.province + base_info.city }}</i></p>
                         <p><span>注册时间：</span><i>{{ base_info.reg_time }}</i></p>
                     </li>

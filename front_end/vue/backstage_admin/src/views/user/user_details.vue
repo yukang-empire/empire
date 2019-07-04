@@ -148,8 +148,12 @@ export default class user_details extends Vue{
             console.log("基本信息", res);
             if (res.code == 0) {
                 this.base_info = res.data;
+                this.base_info.icon = "#iconjibenxinxi";
+                this.base_info.title = "用户基本信息";
                 //保存用户user_id, 方便后续请求
                 sessionStorage.setItem('user_id', this.base_info.user_id);
+                //生日
+                this.base_info.birthday = this.base_info.birthday > 0 ? that.$moment(this.base_info.birthday * 1000).format('MM-DD') : "";
                 //性别
                 if (this.base_info.sex == 1) {
                     this.base_info.sex = '男';

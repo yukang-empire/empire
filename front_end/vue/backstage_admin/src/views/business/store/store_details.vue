@@ -65,6 +65,8 @@ export default class store_details extends Vue{
             console.log("门店详情", res);
             if (res.code == 0 || res.status == 1) {
                 this.base_info = res.result.club;
+                this.base_info.icon = "#iconshangjia";
+                this.base_info.title = "门店基本信息";
                 //商品列表
                 this.table_data_goods.table.lists = res.result.goods_list;
             }else {

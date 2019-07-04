@@ -1,6 +1,6 @@
 <template>
-    <div class="store_add">
-        <add :add_data='goods_add_data' @add_submit='add_store' />
+    <div class="goods_add">
+        <add :add_data='goods_add_data' @add_submit='add_goods' />
     </div>
 </template>
 
@@ -14,12 +14,13 @@ import add from "@/components/add.vue";
     }
 })
 
-export default class store_add extends Vue{
+export default class goods_add extends Vue{
     private goods_add_data: any = {
         name: '商品',
         type: 'goods',
         title: '填写商品信息',
-        icon: '#iconshangpin'
+        icon: '#iconshangpin',
+        select_name: '门店'
     };
 
     mounted () {
@@ -27,7 +28,7 @@ export default class store_add extends Vue{
         this.$store.dispatch("get_all_store").then( (res: any) => {
             console.log("所有门店", res);
             if (res.code == 0 || res.status == 1) {
-                sessionStorage.setItem('all_store', res.result);
+                sessionStorage.setItem('all_store', JSON.stringify(res.result));
             }else {
                 //获取失败提示
                 this.$message({ message: res.msg, type: "error", duration: 2500 });
@@ -35,14 +36,15 @@ export default class store_add extends Vue{
         });
     };
 
-    //新增门店
-    add_store (ruleForm) {
+    //新增商品
+    add_goods (ruleForm) {
         this.$store.dispatch("add_business", ruleForm).then( (res: any) => {
-            console.log("新增门店", res);
+            console.log("新增商品", res);
             if (res.code == 0 || res.status == 1) {
+                this.$refs.ruleForm.resetFields();
                 //新增成功提示
                 this.$message({ message: '新增成功！', type: "success", duration: 1500 });
-                this.$router.push({ path: '/business/list' });
+                this.$router.push({ path: '/business/goods/list' });
             }else {
                 //失败提示
                 this.$message({ message: res.msg, type: "error", duration: 2500 });

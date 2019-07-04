@@ -19,7 +19,7 @@ export default class business_add extends Vue{
         name: '商家',
         type: 'business',
         title: '填写商家信息',
-        icon: '#iconzhuceyaoqing'
+        icon: '#iconzhuceyaoqing',
     };
 
     mounted () {
@@ -42,6 +42,7 @@ export default class business_add extends Vue{
         this.$store.dispatch("add_business", ruleForm).then( (res: any) => {
             console.log("新增商家", res);
             if (res.code == 0 || res.status == 1) {
+                this.$refs.ruleForm.resetFields();
                 //新增成功提示
                 this.$message({ message: '新增成功！', type: "success", duration: 1500 });
                 this.$router.push({ path: '/business/list' });

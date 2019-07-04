@@ -41,8 +41,129 @@ export default class layout extends Vue{
     }
 
     @media screen and (min-width: 769px) {
-        
 
+        .copy_table {
+
+            li {
+                margin: 0 0 10px 12px;
+
+                span {
+                    display: inline;
+                    min-width: 85px;
+                    text-align: center;
+                }
+
+                span:last-of-type {
+                    text-align: right;
+                }
+            }
+
+            li:first-of-type {
+                font-weight: 900;
+                color: #333;
+                font-size: 0.95rem;
+
+                span:last-of-type {
+                    text-align: right;
+                }
+            }
+        }
+
+        /* 订单详情 */
+        .order_info {
+
+            .state {
+                margin-left: 20px;
+                display: flex;
+                align-items: center;
+                font-size: 1.1rem;
+                margin-bottom: 10px;
+
+                i {
+                    font-size: 1.5rem;
+                    margin-right: 5px;
+                }
+
+                span {
+                    color: $succ;
+                    font-weight: 900;
+                    margin-left: 3px;
+                }
+            }
+
+            .base {
+
+                li {
+                    width: 85%;
+                    margin:0 0 10px 0;
+                    
+                    p {
+
+                        span:nth-of-type(1) {
+                            color: #333;
+                            min-width: 97px;
+                            display: inline-block;
+                            text-align: right;
+                        }
+
+                        ul {
+                            display: flex;
+                            align-items: center;
+                            flex-wrap: wrap;
+
+                            li {
+                                width: 150px;
+                                margin: 0;
+                                
+                                img {
+                                    width: 100%;
+                                    cursor: pointer;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                li.imgs {
+                    margin: 0;
+
+                    p {
+                        display: flex;
+                        align-items: center;
+                    }
+                }
+            }
+
+            .goods {
+                text-align: right;
+                width: 98%;
+
+                .el-table th, .el-table td {
+                    text-align: right;
+                }
+                
+                p {
+                    margin: 5px 0;
+
+                    span:nth-of-type(1) {
+                        color: #333;
+                        min-width: 97px;
+                        display: inline-block;
+                        text-align: right;
+                    }
+                }
+
+                h3 {
+                    margin: 20px 0 0 0;
+                    font-size: 0.95rem;
+                    color: red;
+                }
+            }
+        }
+        
+        .el-table__empty-block {
+            width: 100% !important;
+        }
         /* 裁剪图片 */
         .cropper {
             height: 100%;
@@ -58,10 +179,11 @@ export default class layout extends Vue{
             .main {
                 flex-direction: column;
                 padding: 30px 0 60px 0;
-                margin: 80px 8% 0 8%;
+                margin: 80px auto 0 auto;
                 border-radius: 10px;
                 background-color: #f7f7f7;
                 position: relative;
+                width: 1100px;
 
                 &>.icon {
                     position: absolute;
@@ -73,12 +195,13 @@ export default class layout extends Vue{
                 }
 
                 .img {
-                    width: 90%;
-                    height: 450px;
+                    width: 1000px;
+                    margin-left: 35px;
+                    height: 480px;
 
                     .vue-cropper {
-                        width: 60%;
-                        margin-right: 10%;
+                        width: 70%;
+                        margin-right: 5%;
                         border-radius: 10px;
                     }
                     
@@ -174,7 +297,7 @@ export default class layout extends Vue{
             .el-select {
 
                 &>.el-input {
-                    width: 160px;
+                    width: 165px;
 
                     .el-input__inner {
                         width: 100%;
@@ -239,8 +362,9 @@ export default class layout extends Vue{
                         border-radius: 10px;
                         background-color: rgba(0, 0, 0, 0.7);
 
-                        .el-icon-delete {
+                        i {
                             font-size: 2rem;
+                            margin: 0 5px;
                         }
                     }
                     
@@ -290,8 +414,10 @@ export default class layout extends Vue{
 
         /* 列表数据过滤 */
         .list_filter {
-
+            flex-wrap: wrap;
+            
             .item {
+                margin: 10px 15px 10px 0;
 
                 .el-input {
                     width: 280px;
@@ -300,6 +426,17 @@ export default class layout extends Vue{
                 .el-button {
                     height: 44px;
                     margin: 0 0 0 15px;
+                }
+
+                .filter_select {
+
+                    .el-input {
+                        width: 110px;
+                    }
+
+                    .el-input--suffix .el-input__inner {
+                        text-align: center;
+                    }
                 }
             }
         }
@@ -311,18 +448,24 @@ export default class layout extends Vue{
             font-size: 0.9rem;
             border-radius: 8px;
             border: 1px solid #ddd;
-            padding: 10px 20px 30px 20px;
+            padding: 10px 20px 20px 20px;
 
             &>p {
                 display: flex;
                 align-items: center;
                 margin-bottom: 20px;
+                font-size: 0.95rem;
+
+                &>span {
+                    display: flex;
+                    align-items: center;
+                }
             }
             
             .icon {
-                width: 1rem;
-                height: 1rem;
-                margin-right: 10px;
+                width: 1.2rem;
+                height: 1.2rem;
+                margin-right: 5px;
             }
         }
 

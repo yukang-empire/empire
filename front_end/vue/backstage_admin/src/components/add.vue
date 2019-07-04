@@ -7,57 +7,80 @@
                 </svg>
                 <span>{{ add_data.title }}</span>
             </p>
-            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
-                <!-- <div v-if="add_data.type == 'goods'">
-
-                </div> -->
+            <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
+                <!-- 新增商家/门店 -->
                 <div v-if="add_data.type == 'business' || add_data.type == 'store'">
-                    <div>
-                        <el-form-item label="所属商家:" prop="belong" v-if="add_data.type == 'store'">
-                            <el-select v-model="ruleForm.belong" filterable placeholder="请选择" @change='belong_change'>
-                                <el-option
-                                    v-for="item in all_business"
-                                    :key="item.id"
-                                    :label="item.name"
-                                    :value="item.id">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="联系人:" prop="realname">
-                            <el-input v-model="ruleForm.realname" :placeholder="'请输入' + add_data.name + '联系人'" clearable maxlength="10" show-word-limit @change='input_data'></el-input>
-                        </el-form-item>
-                        <el-form-item label="手机号码:" prop="mobile">
-                            <el-input v-model="ruleForm.mobile" placeholder="请输入手机号码" clearable maxlength="11" show-word-limit @change='input_data'></el-input>
-                        </el-form-item>
-                        <el-form-item label="密码:" prop="password">
-                            <el-input v-model="ruleForm.password" placeholder="请输入登录密码" show-password clearable @change='input_data'></el-input>
-                        </el-form-item>
-                        <el-form-item label="确认密码:" prop="re_password">
-                            <el-input v-model="ruleForm.re_password" placeholder="请再次输入登录密码" show-password clearable @change='input_data'></el-input>
-                        </el-form-item>
-                        <el-form-item label="营业执照:" prop="image" style="margin-bottom: 56px;" v-if="add_data.type == 'business'">
-                            <el-upload
-                                id="license_img"
-                                action=""
-                                drag
-                                :auto-upload='false'
-                                :show-file-list="false"
-                                :on-change='upload_change_license'>
-                                <img v-if="show_cropper.license" :src="show_cropper.license" class="full_width" alt='license_img'>
-                                <i v-else class="el-icon-plus" style="font-size: 2rem;"></i>
-                            </el-upload>
-                        </el-form-item>
-                        <!-- 裁剪工具cropper -->
-                        <cropper
-                        v-if='license_cropper_data.is_cropper'
-                        :cropper_data='license_cropper_data'
-                        @startCrop='startCrop_license'
-                        @cancel_crop='cancel_crop'
-                        @com_crop='com_crop'
-                        />
-                    </div>
+                    <el-form-item :label="'所属' + add_data.select_name + ':'" prop="belong_business" v-if="add_data.type == 'store'">
+                        <el-select v-model="ruleForm.belong_business" filterable placeholder="请选择" @change='belong_business_change'>
+                            <el-option
+                                v-for="item in all_business"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="联系人:" prop="realname">
+                        <el-input v-model="ruleForm.realname" :placeholder="'请输入' + add_data.name + '联系人'" clearable maxlength="10" show-word-limit @change='input_data'></el-input>
+                    </el-form-item>
+                    <el-form-item label="手机号码:" prop="mobile">
+                        <el-input type='number' v-model="ruleForm.mobile" placeholder="请输入手机号码" clearable maxlength="11" show-word-limit @change='input_data'></el-input>
+                    </el-form-item>
+                    <el-form-item label="密码:" prop="password">
+                        <el-input v-model="ruleForm.password" placeholder="请输入登录密码" show-password clearable @change='input_data'></el-input>
+                    </el-form-item>
+                    <el-form-item label="确认密码:" prop="re_password">
+                        <el-input v-model="ruleForm.re_password" placeholder="请再次输入登录密码" show-password clearable @change='input_data'></el-input>
+                    </el-form-item>
+                    <el-form-item label="营业执照:" prop="image" style="margin-bottom: 56px;" v-if="add_data.type == 'business'">
+                        <el-upload
+                            id="license_img"
+                            action=""
+                            drag
+                            :auto-upload='false'
+                            :show-file-list="false"
+                            :on-change='upload_change_license'>
+                            <img v-if="show_cropper.license" :src="show_cropper.license" class="full_width" alt='license_img'>
+                            <i v-else class="el-icon-plus" style="font-size: 2rem;"></i>
+                        </el-upload>
+                    </el-form-item>
+                    <!-- 裁剪工具cropper -->
+                    <cropper
+                    v-if='license_cropper_data.is_cropper'
+                    :cropper_data='license_cropper_data'
+                    @startCrop='startCrop_license'
+                    @cancel_crop='cancel_crop'
+                    @com_crop='com_crop'
+                    />
+                </div>
+
+                <!-- 新增商品 -->
+                <div v-if='add_data.type == "goods"'>
+                    <el-form-item :label="'所属' + add_data.select_name + ':'" prop="belong_store">
+                        <el-select v-model="ruleForm.belong_store" filterable placeholder="请选择(可搜索)" @change='belong_store_change'>
+                            <el-option
+                                v-for="item in all_store"
+                                :key="item.store_id"
+                                :label="item.club_name"
+                                :value="item.store_id">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="商品名称:" prop="goods_name">
+                        <el-input v-model="ruleForm.goods_name" placeholder="请输入商品名称" clearable maxlength="10" show-word-limit @change='input_data'></el-input>
+                    </el-form-item>
+                    <el-form-item label="销售价格:" prop="sale_price">
+                        <el-input type='number' v-model="ruleForm.sale_price" placeholder="请输入商品的销售价格" clearable maxlength="10" show-word-limit @change='input_data'></el-input>
+                    </el-form-item>
+                    <el-form-item label="结算价格:" prop="cost_price">
+                        <el-input type='number' v-model="ruleForm.cost_price" placeholder="请输入商品的结算价格" clearable maxlength="10" show-word-limit @change='input_data'></el-input>
+                    </el-form-item>
+                    <el-form-item label="购买须知:" prop="buy_know">
+                        <el-input type="textarea" @change='input_data' :autosize="{ minRows: 5, maxRows: 10 }" v-model="ruleForm.buy_know" placeholder="请输入商品购买须知" maxlength="500" show-word-limit @keyup.13.native="add_submit()"></el-input>
+                    </el-form-item>
                 </div>
                 
+                <!-- 新增商家/门店 -->
                 <div v-if="add_data.type == 'business' || add_data.type == 'store'">
                     <p v-if="add_data.type == 'business'" style="margin-bottom: 20px;">
                         <svg class="icon" aria-hidden="true">
@@ -70,7 +93,7 @@
                         <el-input v-model="ruleForm.club_name" placeholder="请输入门店名称" clearable maxlength="32" show-word-limit @change='input_data'></el-input>
                     </el-form-item>
                     <el-form-item label="门店电话:" prop="tel">
-                        <el-input v-model="ruleForm.tel" placeholder="请输入门店电话" clearable @change='input_data'></el-input>
+                        <el-input type='number' v-model="ruleForm.tel" placeholder="请输入门店电话" clearable @change='input_data'></el-input>
                     </el-form-item>
                     <el-form-item label="所在地区:" prop="p_c_a_s">
                         <p_c_a_s
@@ -110,7 +133,10 @@
                             <li class="flex_center" v-for='(item, index) in show_cropper.store' @mouseenter="enter_store_img(index)" @mouseleave="leave_store_img()">
                                 <img :src="item" class="full_width" alt='license_img'>
                                 <transition name="fade">
-                                    <div v-if='show_delete_index == index' class="float flex_center"><i class="el-icon-delete" @click='delete_store_img(index)'></i></div>
+                                    <div v-if='show_delete_index == index' class="float flex_center">
+                                        <i class="el-icon-zoom-in" @click='enlarge_img(index)'></i>
+                                        <i class="el-icon-delete" @click='delete_store_img(index)'></i>
+                                    </div>
                                 </transition>
                             </li>
                             <el-upload
@@ -143,6 +169,11 @@
                     <el-button @click="resetForm()">重置</el-button>
                 </el-form-item>
             </el-form>
+
+            <!-- 图片放大 -->
+            <el-dialog title="查看门店环境图片" :visible.sync="dialog_img.is_enlarge" width="800px" center>
+                <img :src="dialog_img.src" alt="logo">
+            </el-dialog>
         </div>
     </div>
 </template>
@@ -168,7 +199,12 @@ export default class add extends Vue{
     @Prop () private add_data !: any;
     //表单数据
     private ruleForm: any = {
-        belong: '',
+        goods_name: '',
+        sale_price: '',
+        cost_price: '',
+        buy_know: '',
+        belong_business: '',
+        belong_store: '',
         realname: '',
         mobile: '',
         password: '',
@@ -188,6 +224,71 @@ export default class add extends Vue{
         club_facil: sessionStorage.getItem('add_form_data') ? JSON.parse(sessionStorage.getItem('add_form_data')).club_facil : [],
         shop_image: [],
         content: ''
+    };
+
+    //验证规则
+    private rules: object = {
+        goods_name: [
+            { required: true, message: '请输入商品名称', trigger: 'blur' },
+        ],
+        sale_price: [
+            { required: true, message: '请输入商品销售价格', trigger: 'blur' },
+        ],
+        cost_price: [
+            { required: true, message: '请输入商品结算价格', trigger: 'blur' },
+        ],
+        buy_know: [
+            { required: true, message: '请输入商品购买须知', trigger: 'blur' },
+        ],
+        belong_business: [
+            { required: true, message: '请选择所属商家', trigger: 'change' },
+        ],
+        belong_store: [
+            { required: true, message: '请选择所属门店', trigger: 'change' },
+        ],
+        realname: [
+            { required: true, message: '请输入商家联系人', trigger: 'blur' },
+        ],
+        mobile: [
+            { required: true, message: '请输入商家手机号', trigger: 'blur' },
+            { pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[189])\d{8}$/, message: "请输入11位正确格式的手机号码", trigger: "blur" }
+        ],
+        password: [
+            { required: true, message: '请输入登录密码', trigger: 'blur' },
+            { pattern: /^[\w]{6,16}$/, message: "密码只能由数字或字母构成，且长度为6-16位", trigger: "change" }
+        ],
+        re_password: [
+            { required: true, message: '请再次输入登录密码', trigger: 'blur' },
+            { validator: this.re_pass, trigger: "change" }
+        ],
+        image: [
+            { required: true, validator: this.license },
+        ],
+
+        club_name: [
+            { required: true, message: '请输入门店名称', trigger: 'blur' },
+        ],
+        p_c_a_s: [
+            { required: true, validator: this.p_c_a_s },
+        ],
+        address: [
+            { required: true, message: '请输入门店的详细地址', trigger: 'blur' },
+        ],
+        tel: [
+            { required: true, message: '请输入门店电话', trigger: 'blur' },
+        ],
+        business_time: [
+            { required: true, message: '请选择营业时间', trigger: 'blur' },
+        ],
+        club_facil: [
+            { required: true, validator: this.service },
+        ],
+        shop_image: [
+            { required: true, validator: this.store },
+        ],
+        content: [
+            { required: true, message: '请输入门店介绍', trigger: 'blur' },
+        ],
     };
 
     private is_loading: boolean = false;
@@ -255,58 +356,10 @@ export default class add extends Vue{
         };
     };
 
-    //验证规则
-    private rules: object = {
-        belong: [
-            { required: true, message: '请选择所属商家', trigger: 'change' },
-        ],
-        realname: [
-            { required: true, message: '请输入商家联系人', trigger: 'blur' },
-        ],
-        mobile: [
-            { required: true, message: '请输入商家手机号', trigger: 'blur' },
-            { pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[189])\d{8}$/, message: "请输入11位正确格式的手机号码", trigger: "blur" }
-        ],
-        password: [
-            { required: true, message: '请输入登录密码', trigger: 'blur' },
-            { pattern: /^[\w]{6,16}$/, message: "密码只能由数字或字母构成，且长度为6-16位", trigger: "change" }
-        ],
-        re_password: [
-            { required: true, message: '请再次输入登录密码', trigger: 'blur' },
-            { validator: this.re_pass, trigger: "change" }
-        ],
-        image: [
-            { required: true, validator: this.license },
-        ],
-
-        club_name: [
-            { required: true, message: '请输入门店名称', trigger: 'blur' },
-        ],
-        p_c_a_s: [
-            { required: true, validator: this.p_c_a_s },
-        ],
-        address: [
-            { required: true, message: '请输入门店的详细地址', trigger: 'blur' },
-        ],
-        tel: [
-            { required: true, message: '请输入门店电话', trigger: 'blur' },
-        ],
-        business_time: [
-            { required: true, message: '请选择营业时间', trigger: 'blur' },
-        ],
-        club_facil: [
-            { required: true, validator: this.service },
-        ],
-        shop_image: [
-            { required: true, validator: this.store },
-        ],
-        content: [
-            { required: true, message: '请输入门店介绍', trigger: 'blur' },
-        ],
-    };
-
     //所有的商家
-    private all_business: any = [ {id: 1, name: "康大大"} ];
+    private all_business: any = [];
+    //所有的门店
+    private all_store: any = [];
 
     //营业执照裁剪相关数据
     private license_cropper_data: any = {
@@ -316,8 +369,8 @@ export default class add extends Vue{
             fixedBox: true,
             autoCrop: true,
             // 只有自动截图开启 宽度高度才生效
-            autoCropWidth: 300,
-            autoCropHeight: 200,
+            autoCropWidth: 600,
+            autoCropHeight: 400,
             centerBox: true
         },
         //是否开启裁剪
@@ -336,8 +389,8 @@ export default class add extends Vue{
             fixedBox: true,
             autoCrop: true,
             // 只有自动截图开启 宽度高度才生效
-            autoCropWidth: 300,
-            autoCropHeight: 200,
+            autoCropWidth: 600,
+            autoCropHeight: 400,
             centerBox: true
         },
         //是否开启裁剪
@@ -354,10 +407,17 @@ export default class add extends Vue{
         store: [],
     };
 
+    //放大图片
+    private dialog_img: any = {
+        is_enlarge: false,
+        src: ''
+    };
+
     mounted () {
         //获取所有的附加服务
         this.checkbox.all_serves = sessionStorage.getItem('all_serves') ? JSON.parse(sessionStorage.getItem('all_serves')) : [];
-        // this.all_business = sessionStorage.getItem('all_business') ? JSON.parse(sessionStorage.getItem('all_business')) : [ {id: 1, name: "康大大"} ];
+        this.all_business = sessionStorage.getItem('all_business') ? JSON.parse(sessionStorage.getItem('all_business')) : [];
+        this.all_store = sessionStorage.getItem('all_store') ? JSON.parse(sessionStorage.getItem('all_store')) : [];
         if (sessionStorage.getItem('add_form_data')) {
             this.ruleForm = JSON.parse(sessionStorage.getItem('add_form_data'));
         };
@@ -404,7 +464,12 @@ export default class add extends Vue{
     // };
 
     //选择商家
-    belong_change (val) {
+    belong_business_change (val) {
+        this.ruleForm.belong = val;
+        sessionStorage.setItem('add_form_data', JSON.stringify(this.ruleForm));
+    };
+    //选择商家
+    belong_store_change (val) {
         this.ruleForm.belong = val;
         sessionStorage.setItem('add_form_data', JSON.stringify(this.ruleForm));
     };
@@ -425,6 +490,13 @@ export default class add extends Vue{
     //隐藏删除门店的图标
     leave_store_img () {
         this.show_delete_index = null;
+    };
+
+    //放大门店图片
+    enlarge_img (index) {
+        var that: any = this;
+        that.dialog_img.is_enlarge = true;
+        that.dialog_img.src = that.show_cropper.store[index];
     };
 
     //删除门店图片
@@ -639,6 +711,25 @@ export default class add extends Vue{
 <style lang="scss">
 
     @media screen and (min-width: 769px) {
-        
+        .el-dialog--center {
+            border-radius: 15px;
+            
+            .el-dialog__title {
+                letter-spacing: 1px;
+            }
+        }
+
+        .el-dialog--center .el-dialog__body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-bottom: 70px;
+            height: 400px;
+            overflow: hidden;
+
+            img {
+                width: 600px;
+            }
+        }
     }
 </style>

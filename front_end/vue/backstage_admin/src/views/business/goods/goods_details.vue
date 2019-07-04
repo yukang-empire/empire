@@ -26,6 +26,8 @@ export default class goods_details extends Vue{
             console.log("商品详情", res);
             if (res.code == 0 || res.status == 1) {
                 this.base_info = res.result;
+                this.base_info.icon = "#iconshangpin";
+                this.base_info.title = "商品信息";
             }else {
                 //获取失败提示
                 this.$message({ message: res.msg, type: "error", duration: 2500 });

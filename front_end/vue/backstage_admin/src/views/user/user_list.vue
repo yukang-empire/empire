@@ -61,7 +61,7 @@ export default class user_list extends Vue{
             //是否多选
             checkbox: true,
             //是否固定表头
-            is_height: 769,
+            is_height: "auto",
             //表格数据
             lists: [],
         },

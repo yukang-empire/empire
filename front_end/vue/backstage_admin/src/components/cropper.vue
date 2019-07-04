@@ -19,8 +19,8 @@
                 </vue-cropper>
 
                 <!-- 裁剪预览框 -->
-                <div class="right flex_center">
-                    <div class="show-preview square" :style="{'width': cropper_data.previews.w + 'px', 'height': cropper_data.previews.h + 'px',  'overflow': 'hidden'}">
+                <!-- <div class="right">
+                    <div class="show-preview square" :style="{'width': cropper_data.previews.w/2.5 + 'px', 'height': cropper_data.previews.h/2.5 + 'px',  'overflow': 'hidden'}">
                         <div :style="cropper_data.previews.div">
                             <img :src="cropper_data.previews.url" :style="cropper_data.previews.img">
                         </div>
@@ -30,7 +30,7 @@
                             <img :src="cropper_data.previews.url" :style="cropper_data.previews.img">
                         </div>
                     </div>
-                </div>
+                </div> -->
 
             </div>
 

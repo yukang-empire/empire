@@ -62,6 +62,40 @@
             <el-table-column v-if="table_data.table.which=='goods_list'" prop="cost_price" label="商品结算金额" sortable :sort-method='date_sort'></el-table-column>
             <el-table-column v-if="table_data.table.which=='goods_list'" prop="sales_sum" label="销量" sortable :sort-method='date_sort'></el-table-column>
 
+            <!-- 服务订单列表 -->
+            <el-table-column v-if="table_data.table.which=='service_list'" prop="name" label="订单编号" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='service_list'" prop="name" label="用户昵称"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='service_list'" prop="name" label="手机号"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='service_list'" prop="name" label="订单标题"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='service_list'" prop="name" label="订单金额(元)" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='service_list'" prop="name" label="订单状态"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='service_list'" prop="name" label="提交时间" sortable :sort-method='date_sort'></el-table-column>
+
+            <!-- 转让订单列表 -->
+            <el-table-column v-if="table_data.table.which=='transfer_list'" prop="name" label="订单编号" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='transfer_list'" prop="name" label="用户昵称"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='transfer_list'" prop="name" label="手机号"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='transfer_list'" prop="name" label="健身房名称"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='transfer_list'" prop="name" label="酷币价值" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='transfer_list'" prop="name" label="健身卡类型"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='transfer_list'" prop="name" label="订单状态"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='transfer_list'" prop="name" label="提交时间" sortable :sort-method='date_sort'></el-table-column>
+
+            <!-- 领用订单列表 -->
+            <el-table-column v-if="table_data.table.which=='receive_list'" prop="name" label="订单编号" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='receive_list'" prop="name" label="用户昵称"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='receive_list'" prop="name" label="手机号"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='receive_list'" prop="name" label="健身房名称"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='receive_list'" prop="name" label="支付金额" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='receive_list'" prop="name" label="订单状态"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='receive_list'" prop="name" label="提交时间" sortable :sort-method='date_sort'></el-table-column>
+
+             <!-- 上架-私家课 -->
+             <el-table-column v-if="table_data.table.which=='upper_course'" prop="name" label="课程名称"></el-table-column>
+             <el-table-column v-if="table_data.table.which=='upper_course'" prop="name" label="私教费用"></el-table-column>
+             <el-table-column v-if="table_data.table.which=='upper_course'" prop="name" label="结算费用"></el-table-column>
+
+
             <el-table-column label="禁用账户" v-if="table_data.table.which=='user_list'">
                 <template slot-scope="scope">
                     <el-switch v-model="scope.row.is_lock == 0 ? true : false" @change='change_state(scope.$index, scope.row)' active-color="#13ce66" inactive-color="#ccc"> </el-switch>
@@ -80,15 +114,26 @@
                 </template>
             </el-table-column>
 
+            
+
             <el-table-column label="操作" v-if="
                 table_data.table.which=='user_list' ||
                 table_data.table.which=='user_order' ||
                 table_data.table.which=='business_list' ||
                 table_data.table.which=='store_list' ||
-                table_data.table.which=='goods_list'
+                table_data.table.which=='goods_list' ||
+                table_data.table.which=='service_list' ||
+                table_data.table.which=='transfer_list' ||
+                table_data.table.which=='receive_list'
             ">
                 <template slot-scope="scope">
                     <el-button type="text" @click="look_up(scope.row)"  v-if="">查看</el-button>
+                </template>
+            </el-table-column>
+
+            <el-table-column label="操作" v-if="table_data.table.which=='upper_course'">
+                <template slot-scope="scope">
+                    <el-button type="text" @click="edit(scope.row)"  v-if="">编辑</el-button>
                 </template>
             </el-table-column>
 
@@ -136,6 +181,10 @@ export default class table_page extends Vue{
     //查看详情
     look_up (row: any) {
         this.$emit('look_up', row);
+    };
+    //编辑
+    edit (row: any) {
+        this.$emit('edit', row);
     };
     //日期排序
     date_sort (a: any, b: any) {
