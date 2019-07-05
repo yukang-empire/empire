@@ -95,7 +95,8 @@ export default class business_list extends Vue{
         is_type: "domain02",
         is_search: true,
         placeholder: "请输入企业名称、手机号(全部)",
-        is_entry_time: true,
+        show_time: true,
+        time_name: '进驻日期'
     };
 
     mounted () {

@@ -96,7 +96,7 @@ export default class goods_list extends Vue{
     private show_filter: any = {
         is_type: "domain02",
         is_search: true,
-        placeholder: "请输入商品ID"
+        placeholder: "请输入所属门店"
     };
 
     mounted () {

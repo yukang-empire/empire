@@ -29,6 +29,7 @@
 
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
+import axios from '@/assets/api/axios';
 
 @Component({
     components: {
@@ -67,10 +68,14 @@ export default class login extends Vue {
         ref.validate((valid: boolean) => {
             if (valid) {
                 this.is_loading = true;
-                //这里看不懂的可以查看vuex官网说明 https://vuex.vuejs.org/zh/guide/actions.html
-                this.$store.dispatch("login", this.ruleForm).then( (res: any) => {
-                    // console.log("登录数据", res);
+                //登录
+                var send_data = JSON.stringify(this.ruleForm);
+                axios.post("/api/login", send_data).then( (res: any) => {
                     if (res.code == 0) {
+                        //临时存到sessionStorage里
+                        sessionStorage.setItem("token", res.data.token);
+                        sessionStorage.setItem("role", res.data.roles[0].RoleId);
+                        sessionStorage.setItem("role_name", res.data.roles[0].RoleName);
                         //储存账户 方便用户下次登录
                         localStorage.setItem('username', this.ruleForm.username);
                         //登录成功提示
@@ -82,7 +87,6 @@ export default class login extends Vue {
                         //登录失败提示
                         this.$message({ message: res.msg, type: "error", duration: 2500 });
                     };
-                    //取消转圈圈
                     this.is_loading = false;
                 }).catch( error => {
                     console.log("登录error", error.response);

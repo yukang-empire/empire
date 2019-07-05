@@ -20,7 +20,7 @@
                 <span>订单基本信息</span>
             </p>
             <div class="base">
-                <ul>
+                <ul v-if="order_data.type =='service'">
                     <li class="flex_between">
                         <p><span>订单编号：</span><span>{{ order_data.current_state }}</span></p>
                         <p><span>订单状态：</span><span>{{ order_data.current_state }}</span></p>
@@ -30,6 +30,24 @@
                         <p><span>下单时间：</span><span>{{ order_data.current_state }}</span></p>
                         <p><span>付款时间：</span><span>{{ order_data.current_state }}</span></p>
                         <p><span>赠送积分：</span><span>{{ order_data.current_state }}</span></p>
+                    </li>
+                </ul>
+                <ul v-if="order_data.type =='transfer'">
+                    <li class="flex_between">
+                        <p><span>订单编号：</span><span>{{ order_data.current_state }}</span></p>
+                        <p><span>支付方式：</span><span>{{ order_data.current_state }}</span></p>
+                    </li>
+                    <li class="flex_between">
+                        <p><span>提交时间：</span><span>{{ order_data.current_state }}</span></p>
+                        <p><span>审核时间：</span><span>{{ order_data.current_state }}</span></p>
+                        <p><span>领用时间：</span><span>{{ order_data.current_state }}</span></p>
+                    </li>
+                </ul>
+                <ul v-if="order_data.type =='receive'">
+                    <li class="flex_between">
+                        <p><span>订单编号：</span><span>{{ order_data.current_state }}</span></p>
+                        <p><span>领用时间：</span><span>{{ order_data.current_state }}</span></p>
+                        <p><span>支付方式：</span><span>{{ order_data.current_state }}</span></p>
                     </li>
                 </ul>
             </div>
@@ -53,7 +71,7 @@
             </div>
         </div>
 
-        <div class="repeat_div">
+        <div class="repeat_div" v-if="order_data.type =='transfer' || order_data.type =='receive'">
             <p>
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#iconqia"></use>
@@ -84,9 +102,9 @@
                         <p>
                             <span>健身房照片：</span>
                             <ul>
-                                <li @click='enlarge_img(index, src, "健身房照片")'><img src="@/assets/imgs/logo.png" alt="logo"></li>
-                                <li @click='enlarge_img(index, src, "健身房照片")'><img src="@/assets/imgs/logo.png" alt="logo"></li>
-                                <li @click='enlarge_img(index, src, "健身房照片")'><img src="@/assets/imgs/logo.png" alt="logo"></li>
+                                <li @click='enlarge_img(index, src, "健身房照片")' title='点击可放大'><img src="@/assets/imgs/logo.png" alt="logo"></li>
+                                <li @click='enlarge_img(index, src, "健身房照片")' title='点击可放大'><img src="@/assets/imgs/logo.png" alt="logo"></li>
+                                <li @click='enlarge_img(index, src, "健身房照片")' title='点击可放大'><img src="@/assets/imgs/logo.png" alt="logo"></li>
                             </ul>
                         </p>
                     </li>
@@ -94,9 +112,9 @@
                         <p>
                             <span>办卡合同：</span>
                             <ul>
-                                <li @click='enlarge_img(index, src, "办卡合同")'><img src="@/assets/imgs/logo.png" alt="logo"></li>
-                                <li @click='enlarge_img(index, src, "办卡合同")'><img src="@/assets/imgs/logo.png" alt="logo"></li>
-                                <li @click='enlarge_img(index, src, "办卡合同")'><img src="@/assets/imgs/logo.png" alt="logo"></li>
+                                <li @click='enlarge_img(index, src, "办卡合同")' title='点击可放大'><img src="@/assets/imgs/logo.png" alt="logo"></li>
+                                <li @click='enlarge_img(index, src, "办卡合同")' title='点击可放大'><img src="@/assets/imgs/logo.png" alt="logo"></li>
+                                <li @click='enlarge_img(index, src, "办卡合同")' title='点击可放大'><img src="@/assets/imgs/logo.png" alt="logo"></li>
                             </ul>
                         </p>
                     </li>
@@ -109,7 +127,7 @@
             <img :src="dialog_img.src" alt="logo">
         </el-dialog>
 
-        <div class="repeat_div">
+        <div class="repeat_div" v-if="order_data.type =='transfer'">
             <p>
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#iconshenhe1"></use>
@@ -117,13 +135,13 @@
                 <span>平台审核</span>
             </p>
             <div class="add check">
-                <el-form :model="check_data" :rules="rules" ref="check_data">
+                <el-form :model="check_form_data" :rules="check_rules" ref="check_ref">
                     <el-form-item label="审核:" prop="check">
-                        <el-radio v-model="check_data.check" label="1" border @change='check_order'>通过</el-radio>
-                        <el-radio v-model="check_data.check" label="2" border @change='check_order'>不通过</el-radio>
+                        <el-radio v-model="check_form_data.check" label="1" border @change='check_order'>通过</el-radio>
+                        <el-radio v-model="check_form_data.check" label="2" border @change='check_order'>不通过</el-radio>
                     </el-form-item>
                     <el-form-item label="酷币价值:" prop="cool_b_price">
-                        <el-input type='number' v-model="check_data.cool_b_price" placeholder="请输入酷币价值"></el-input>
+                        <el-input type='number' v-model="check_form_data.cool_b_price" placeholder="请输入酷币价值"></el-input>
                     </el-form-item>
                     <el-form-item class="btn">
                         <el-button type="primary" @click="check" :loading="is_loading01">提交审核</el-button>
@@ -132,7 +150,7 @@
             </div>
         </div>
 
-        <div class="repeat_div">
+        <div class="repeat_div" v-if="order_data.type =='transfer'">
             <p>
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#iconshangjia1"></use>
@@ -140,9 +158,9 @@
                 <span>上架市场</span>
             </p>
             <div class="add upper">
-                <el-form :model="check_data" :rules="rules" ref="check_data">
+                <el-form :model="check_form_data" :rules="check_rules" ref="check_ref">
                     <el-form-item label="选择健身房：" prop="select">
-                        <el-select v-model="check_data.select" filterable placeholder="请选择(可搜索)" @change='select_jsf'>
+                        <el-select v-model="check_form_data.select" filterable placeholder="请选择(可搜索)" @change='select_jsf'>
                             <el-option
                                 v-for="item in all_jsf"
                                 :key="item.id"
@@ -153,7 +171,7 @@
                     </el-form-item>
                     <el-form-item label="私教课：" prop="course" class="course">
                         <span class="bottom_tip" @click='add_course'><i class="el-icon-circle-plus"></i></span>
-                        <table_page :table_data='course_data' @edit='edit' />
+                        <table_page :table_data='course_data' @edit='edit_course' />
                     </el-form-item>
                     <el-form-item class="btn">
                         <el-button type="primary" @click="upper" :loading="is_loading02">确定上架</el-button>
@@ -164,15 +182,15 @@
 
         <!-- 新增/编辑私教课 -->
         <el-dialog class='dialog_course' :title="dialog_course.title" :visible.sync="dialog_course.is_dialog" width="700px" center>
-            <el-form :model="check_data" :rules="rules" ref="check_data">
+            <el-form :model="course_form_data" :rules="course_rules" ref="course_ref">
                 <el-form-item label="课程名称:" prop="course_name">
-                    <el-input v-model="check_data.course_name" placeholder="请输入课程名称" clearable maxlength="20" show-word-limit></el-input>
+                    <el-input v-model="course_form_data.course_name" placeholder="请输入课程名称" clearable maxlength="20" show-word-limit></el-input>
                 </el-form-item>
                 <el-form-item label="私教费用:" prop="course_sale_price">
-                    <el-input type='number' v-model="check_data.course_sale_price" placeholder="请输入私教费用"></el-input>
+                    <el-input type='number' v-model="course_form_data.course_sale_price" placeholder="请输入私教费用"></el-input>
                 </el-form-item>
                 <el-form-item label="结算费用:" prop="course_cost_price">
-                    <el-input type='number' v-model="check_data.course_cost_price" placeholder="请输入结算费用"></el-input>
+                    <el-input type='number' v-model="course_form_data.course_cost_price" placeholder="请输入结算费用"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -181,31 +199,47 @@
             </div>
         </el-dialog>
 
-        <div class="repeat_div">
+        <div class="repeat_div" v-if="order_data.type == 'service' || order_data.type == 'receive'">
             <p>
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#iconshangpin"></use>
                 </svg>
-                <span>商品信息</span>
+                <span>{{ order_data.title02 }}</span>
             </p>
             <div class="goods">
                 <ul class="copy_table">
                     <li class="flex_between">
-                        <span>商品编号</span>
+                        <span v-if="order_data.type == 'service'">商品编号</span>
                         <span>商品名称</span>
-                        <span>所属商家</span>
+                        <span v-if="order_data.type == 'service'">所属商家</span>
+                        <span v-if="order_data.type == 'receive'">所属健身房</span>
                         <span>商品金额(元)</span>
+                        <span v-if="order_data.type == 'receive'">结算金额(元)</span>
                     </li>
                     <li class="flex_between">
+                        <span v-if="order_data.type == 'service'">{{ order_data.current_state }}</span>
                         <span>{{ order_data.current_state }}</span>
+                        <span v-if="order_data.type == 'service'">{{ order_data.current_state }}</span>
+                        <span v-if="order_data.type == 'receive'">{{ order_data.current_state }}</span>
                         <span>{{ order_data.current_state }}</span>
-                        <span>{{ order_data.current_state }}</span>
-                        <span>{{ order_data.current_state }}</span>
+                        <span v-if="order_data.type == 'receive'">{{ order_data.current_state }}</span>
                     </li>
                 </ul>
                 <p><span>订单金额：</span><span>¥{{ order_data.current_state }}</span></p>
-                <p><span>优惠券：</span><span>¥{{ order_data.current_state }}</span></p>
+                <p v-if="order_data.type == 'service'"><span>优惠券：</span><span>¥{{ order_data.current_state }}</span></p>
                 <h3><span>实付金额：</span><span>¥{{ order_data.current_state }}</span></h3>
+            </div>
+        </div>
+
+        <div class="repeat_div" v-if="order_data.type =='transfer' || order_data.type =='service'">
+            <p>
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#iconcaozuo"></use>
+                </svg>
+                <span>操作记录</span>
+            </p>
+            <div class="operation">
+                <table_page :table_data='table_data_operation' @change_page="change_page_operation" @change_page_size="change_size_operation" />
             </div>
         </div>
 
@@ -242,17 +276,20 @@ export default class order_info extends Vue{
         this.dialog_course.sure = '确定新增';
     };
     //编辑私教课
-    edit () {
+    edit_course () {
         this.dialog_course.is_dialog = true;
         this.dialog_course.title = '编辑私教课';
         this.dialog_course.sure = '确定修改';
     };
 
     //审核
-    private check_data: any = {
+    private check_form_data: any = {
         check: null,
         cool_b_price: '',
         select: '',
+    };
+    //上架
+    private course_form_data: any = {
         course_name: '',
         course_sale_price: '',
         course_cost_price: '',
@@ -261,14 +298,17 @@ export default class order_info extends Vue{
     private is_loading02: boolean = false;
     private is_loading03: boolean = false;
     private all_jsf: any = [];
-    //验证规则
-    private rules: object = {
+    //验证审核表单规则
+    private check_rules: object = {
         check: [
             { required: true, message: '请审核', trigger: 'change' },
         ],
         select: [
             { required: true, message: '请选择健身房', trigger: 'change' },
         ],
+    };
+    //验证私教课表单规则
+    private course_rules: object = {
         course_name: [
             { required: true, message: '请输入课程名称', trigger: 'change' },
         ],
@@ -304,6 +344,77 @@ export default class order_info extends Vue{
             is_page: false,
         }
     };
+    //操作记录
+    private table_data_operation: any = {
+        //表格
+        table: {
+            //属于哪个表格
+            which: 'operation_log',
+            //是否多选
+            checkbox: true,
+            //是否固定表头
+            is_height: "auto",
+            //表格数据
+            lists: [ {name: '康大大'} ],
+        },
+        //页码
+        page: {
+            //是否显示页码
+            is_page: true,
+            //当前页码
+            current_page: sessionStorage.getItem("operation_log_page") ? parseInt(sessionStorage.getItem("operation_log_page")) : 1,
+            //每页显示的数量
+            size: sessionStorage.getItem("operation_log_size") ? parseInt(sessionStorage.getItem("operation_log_size")) : 5,
+            sizes: [5, 10],
+            //总数量
+            total: 0,
+        }
+    };
+
+    //请求操作记录的参数
+    private operation_log_data: any = {
+        page: sessionStorage.getItem("operation_log_page") ? sessionStorage.getItem("operation_log_page") : 1,
+        size: sessionStorage.getItem("operation_log_size") ? sessionStorage.getItem("operation_log_size") : 5,
+        order_id: ''
+    };
+
+    //获取操作记录
+    get_operation_log () {
+        var that: any = this;
+        this.operation_log_data.order_id = sessionStorage.getItem('order_id');
+        this.$store.dispatch("get_operation_log", this.operation_log_data).then( res => {
+            console.log("操作记录", res);
+            if (res.code == 0 || res.status == 1) {
+                this.operation_log_data.table.lists = res.result;
+                this.operation_log_data.page.total = parseInt(res.count);
+                var lists = this.operation_log_data.table.lists;
+                var length = lists.length;
+                //转换充值时间格式
+                for (var i = 0; i < length; i++) {
+                    lists[i].operation_time = lists[i].operation_time ? that.$moment(lists[i].operation_time * 1000).format('YYYY-MM-DD HH:mm:ss') : "";
+                };
+            }else {
+                //获取失败提示
+                this.$message({ message: res.msg, type: "error", duration: 2500 });
+            };
+        });
+    };
+
+    //改变操作记录页码
+    change_page_operation(val: any) {
+        this.table_data_operation.page.current_page = val;
+        this.operation_log_data.page = val;
+        sessionStorage.setItem("operation_log_page", val);
+        this.get_operation_log();
+    };
+
+    //改变操作记录每页的条数
+    change_size_operation(val: any) {
+        this.table_data_operation.page.size = val;
+        this.operation_log_data.size = val;
+        sessionStorage.setItem("operation_log_size", val);
+        this.get_operation_log();
+    };
 
     mounted () {
         //获取所有的健身房
@@ -321,12 +432,12 @@ export default class order_info extends Vue{
     //新增/编辑私教课
     add_edit (type) {
         //不这样定义any类型 typescript解释器就会报错
-        let ref: any = this.$refs.check_data;
+        let ref: any = this.$refs.course_ref;
         ref.validate((valid: boolean) => {
             if (valid) {
                 this.is_loading03 = true;
                 if (type == '确定新增') {
-                    this.$store.dispatch("add_course", this.check_data).then( (res: any) => {
+                    this.$store.dispatch("add_course", this.course_form_data).then( (res: any) => {
                         console.log("新增私家课", res);
                         if (res.code == 0 || res.status == 1) {
                             //新增成功提示
@@ -338,7 +449,7 @@ export default class order_info extends Vue{
                         this.is_loading01 = false;
                     });
                 }else {
-                    this.$store.dispatch("edit_course", this.check_data).then( (res: any) => {
+                    this.$store.dispatch("edit_course", this.course_form_data).then( (res: any) => {
                         console.log("修改私家课", res);
                         if (res.code == 0 || res.status == 1) {
                             //修改成功提示
@@ -356,27 +467,27 @@ export default class order_info extends Vue{
             };
         });
     };
-    //选择商家
+    //选择健身房
     select_jsf (val) {
-        this.check_data.select = val;
+        this.check_form_data.select = val;
     };
     //是否通过审核
     check_order (val) {
-        this.check_data.check = val;
+        this.check_form_data.check = val;
     };
 
     //审核
     check () {
         //不这样定义any类型 typescript解释器就会报错
-        let ref: any = this.$refs.check_data;
+        let ref: any = this.$refs.check_ref;
         ref.validate((valid: boolean) => {
             if (valid) {
-                if (this.check_data.check == 1 && !this.check_data.cool_b_price) {
+                if (this.check_form_data.check == 1 && !this.check_form_data.cool_b_price) {
                     this.$message({ message: "选择通过, 则需填写酷币价值！", type: 'info', duration: 4000 });
                     return false;
                 }else {
                     this.is_loading01 = true;
-                    this.$store.dispatch("check_transfer_order", this.check_data).then( (res: any) => {
+                    this.$store.dispatch("check_transfer_order", this.check_form_data).then( (res: any) => {
                         console.log("审核转让订单", res);
                         if (res.code == 0 || res.status == 1) {
                             //审核成功提示
@@ -397,11 +508,11 @@ export default class order_info extends Vue{
     //上架
     upper () {
         //不这样定义any类型 typescript解释器就会报错
-        let ref: any = this.$refs.check_data;
+        let ref: any = this.$refs.check_ref;
         ref.validate((valid: boolean) => {
             if (valid) {
                 this.is_loading02 = true;
-                this.$store.dispatch("upper", this.check_data).then( (res: any) => {
+                this.$store.dispatch("upper", this.check_form_data).then( (res: any) => {
                     console.log("上架", res);
                     if (res.code == 0 || res.status == 1) {
                         //上架成功提示
@@ -464,6 +575,11 @@ export default class order_info extends Vue{
                 overflow: hidden;
                 height: 250px;
                 padding-bottom: 0;
+
+                .el-form-item__error {
+                    top: 99%;
+                    left: 12%;
+                }
             }
         }
 
@@ -477,6 +593,11 @@ export default class order_info extends Vue{
 
             .btn {
                 margin-bottom: 5px;
+
+                .el-form-item__content {
+                    justify-content: flex-start;
+                    margin-left: 350px;
+                }
             }
 
             .el-select > .el-input {
@@ -512,6 +633,14 @@ export default class order_info extends Vue{
             .el-button {
                 margin: 0 15px;
             }
+        
+        }
+        .el-form-item {
+            margin-bottom: 26px;
+        }
+
+        .el-dialog__wrapper {
+            right: 75px;
         }
     }
 </style>

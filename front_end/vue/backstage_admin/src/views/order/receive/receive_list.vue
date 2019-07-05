@@ -99,7 +99,8 @@ export default class receive_list extends Vue{
         is_type: "domain02",
         is_search: true,
         placeholder: "请输入用户昵称、手机号(全部)",
-        is_submit_time: true,
+        show_time: true,
+        time_name: '提交时间',
         is_state: true
     };
 

@@ -251,6 +251,9 @@ input::-ms-input-placeholder{
     justify-content: flex-end;
     align-items: center;
 }
+.el-tooltip__popper {
+    padding-right: 6px;
+}
 
 /* 响应式 */
 @media screen and (min-width: 769px) {

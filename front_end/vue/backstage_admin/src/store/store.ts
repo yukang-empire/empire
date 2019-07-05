@@ -2,7 +2,15 @@ import Vue from "vue";
 import Vuex from "vuex";
 Vue.use(Vuex);
 
-import https from "./modules/https";
+//所有模块的数据请求
+import home from "./modules/home";
+import user from "./modules/user";
+import business from "./modules/business";
+import order from "./modules/order";
+import coupon from "./modules/coupon";
+import finance from "./modules/finance";
+import operate from "./modules/operate";
+import set from "./modules/set";
 
 const store = new Vuex.Store({
   state: {
@@ -48,8 +56,15 @@ const store = new Vuex.Store({
     },
   },
   modules: {
-    //所有的数据请求都走这里
-    https
+    //所有的数据请求都在这里
+    home,
+    user,
+    business,
+    order,
+    coupon,
+    finance,
+    operate,
+    set
   }
 });
 export default store;

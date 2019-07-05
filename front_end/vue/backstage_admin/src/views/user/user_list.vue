@@ -92,7 +92,8 @@ export default class user_list extends Vue{
     private show_filter: any = {
         is_type: 'domain01',
         is_search: true,
-        is_login_time: true
+        show_time: true,
+        time_name: '最近登录时间'
     };
 
     mounted () {

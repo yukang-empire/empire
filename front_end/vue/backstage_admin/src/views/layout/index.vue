@@ -420,7 +420,7 @@ export default class layout extends Vue{
                 margin: 10px 15px 10px 0;
 
                 .el-input {
-                    width: 280px;
+                    width: 250px;
                 }
 
                 .el-button {
@@ -496,7 +496,7 @@ export default class layout extends Vue{
                 overflow: hidden;
 
                 .c_aside {
-                    width: 210px;
+                    min-width: 220px;
                     overflow-y: scroll;
                     padding-bottom: 25px;
                     background-color: $aside;

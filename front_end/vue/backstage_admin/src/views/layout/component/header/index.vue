@@ -16,7 +16,10 @@
                     <div slot="content" class="admin_info flex_center">
                         <img src="../../../../assets/imgs/logo.png" alt="logo">
                         <p>{{ role_name }}</p>
-                        <el-button type="text" @click='logout'>退出登录</el-button>
+                        <div class="flex_center">
+                            <el-button type="text" @click='change_password'>修改密码</el-button>
+                            <el-button type="text" @click='logout'>退出登录</el-button>
+                        </div>
                     </div>
                     <el-button>{{ role_name }}</el-button>
                 </el-tooltip>
@@ -40,6 +43,12 @@ export default class c_header extends Vue{
     mounted () {
         
     };
+
+    //修改密码
+    change_password () {
+        this.$router.push({ path: '/set/change_password' });
+    };
+
     //登出
     logout () {
         this.$confirm('确定登出？', '提示', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then(() => {
@@ -105,18 +114,26 @@ export default class c_header extends Vue{
             flex-direction: column;
             background-color: #fbfbfb;
             border: 1px solid #ccc;
-            padding: 20px 50px;
+            padding: 20px 30px;
             box-shadow: 0 4px 8px rgba(10,16,20,.24),0 0 8px rgba(10,16,20,.12);
             border-radius: 5px;
             font-size: 1rem;
-            margin-top: 8px;
+            margin-top: 6px;
+
 
             img {
-                width: 70px;
+                width: 80px;
+                border-radius: 50%;
+            }
+
+            .el-button {
+                letter-spacing: 0;
+                font-size: 0.95rem;
+                margin: 0 10px;
             }
 
             p {
-                margin: 5px 0 10px 0;
+                margin: 5px 0 15px 0;
                 font-weight: 900;
             }
         }

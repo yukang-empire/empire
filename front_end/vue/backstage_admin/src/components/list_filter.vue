@@ -36,8 +36,8 @@
             <el-button type="primary" @click='search' icon="el-icon-search">搜索</el-button>
         </div>
 
-        <div class="item" v-if="show_filter.is_type == 'domain01' && show_filter.is_login_time">
-            <span>最近登录时间：</span>
+        <div class="item" v-if="show_filter.is_type == 'domain01' && show_filter.show_time">
+            <span>{{ show_filter.time_name }}：</span>
             <el-date-picker
                 v-model="select_time"
                 type="datetimerange"
@@ -48,8 +48,8 @@
             </el-date-picker>
         </div>
         
-        <div class="item" v-if="show_filter.is_type == 'domain02' && show_filter.is_entry_time">
-            <span>进驻日期：</span>
+        <div class="item" v-if="show_filter.is_type == 'domain02' && show_filter.show_time">
+            <span>{{ show_filter.time_name }}：</span>
             <el-date-picker
                 v-model="select_time"
                 type="datetimerange"
@@ -59,18 +59,7 @@
                 end-placeholder="结束日期">
             </el-date-picker>
         </div>
-
-        <div class="item" v-if="show_filter.is_type == 'domain02' && show_filter.is_submit_time">
-            <span>提交时间：</span>
-            <el-date-picker
-                v-model="select_time"
-                type="datetimerange"
-                range-separator="至"
-                @change='change_time'
-                start-placeholder="开始日期"
-                end-placeholder="结束日期">
-            </el-date-picker>
-        </div>
+        
     
     </div>
 </template>

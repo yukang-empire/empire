@@ -90,10 +90,29 @@
             <el-table-column v-if="table_data.table.which=='receive_list'" prop="name" label="订单状态"></el-table-column>
             <el-table-column v-if="table_data.table.which=='receive_list'" prop="name" label="提交时间" sortable :sort-method='date_sort'></el-table-column>
 
-             <!-- 上架-私家课 -->
-             <el-table-column v-if="table_data.table.which=='upper_course'" prop="name" label="课程名称"></el-table-column>
-             <el-table-column v-if="table_data.table.which=='upper_course'" prop="name" label="私教费用"></el-table-column>
-             <el-table-column v-if="table_data.table.which=='upper_course'" prop="name" label="结算费用"></el-table-column>
+            <!-- 上架-私家课 -->
+            <el-table-column v-if="table_data.table.which=='upper_course'" prop="name" label="课程名称"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='upper_course'" prop="name" label="私教费用"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='upper_course'" prop="name" label="结算费用"></el-table-column>
+
+            <!-- 订单-操作记录 -->
+            <el-table-column v-if="table_data.table.which=='operation_log'" prop="name" label="操作人"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='operation_log'" prop="name" label="订单状态"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='operation_log'" prop="name" label="付款状态"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='operation_log'" prop="name" label="操作时间"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='operation_log'" prop="name" label="备注"></el-table-column>
+
+            <!-- 提现列表 -->
+            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="序号"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="用户类型"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="申请提现人"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="手机号码"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="提现金额"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="提现账户"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="账户类型"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="申请日期"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="打款日期"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="状态"></el-table-column>
 
 
             <el-table-column label="禁用账户" v-if="table_data.table.which=='user_list'">
@@ -102,11 +121,11 @@
                 </template>
             </el-table-column>
 
-            <el-table-column label="禁用商家" v-if="table_data.table.which=='business_list'">
+            <!-- <el-table-column label="禁用商家" v-if="table_data.table.which=='business_list'">
                 <template slot-scope="scope">
                     <el-switch v-model="scope.row.status == 1 ? true : false" @change='change_state(scope.$index, scope.row)' active-color="#13ce66" inactive-color="#ccc"> </el-switch>
                 </template>
-            </el-table-column>
+            </el-table-column> -->
 
             <el-table-column label="禁用门店" v-if="table_data.table.which=='store_list'">
                 <template slot-scope="scope">
@@ -124,7 +143,8 @@
                 table_data.table.which=='goods_list' ||
                 table_data.table.which=='service_list' ||
                 table_data.table.which=='transfer_list' ||
-                table_data.table.which=='receive_list'
+                table_data.table.which=='receive_list' ||
+                table_data.table.which=='cash_out_list'
             ">
                 <template slot-scope="scope">
                     <el-button type="text" @click="look_up(scope.row)"  v-if="">查看</el-button>

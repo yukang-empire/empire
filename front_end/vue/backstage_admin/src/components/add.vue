@@ -7,16 +7,16 @@
                 </svg>
                 <span>{{ add_data.title }}</span>
             </p>
-            <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
+            <el-form :model="ruleForm" :rules="add_rules" ref="ruleForm">
                 <!-- 新增商家/门店 -->
                 <div v-if="add_data.type == 'business' || add_data.type == 'store'">
-                    <el-form-item :label="'所属' + add_data.select_name + ':'" prop="belong_business" v-if="add_data.type == 'store'">
-                        <el-select v-model="ruleForm.belong_business" filterable placeholder="请选择" @change='belong_business_change'>
+                    <el-form-item :label="'所属' + add_data.select_name + ':'" prop="store_id_02" v-if="add_data.type == 'store'">
+                        <el-select v-model="ruleForm.store_id_02" filterable placeholder="请选择" @change='business_id_change'>
                             <el-option
                                 v-for="item in all_business"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.id">
+                                :key="item.store_id"
+                                :label="item.club_name"
+                                :value="item.store_id">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -56,8 +56,8 @@
 
                 <!-- 新增商品 -->
                 <div v-if='add_data.type == "goods"'>
-                    <el-form-item :label="'所属' + add_data.select_name + ':'" prop="belong_store">
-                        <el-select v-model="ruleForm.belong_store" filterable placeholder="请选择(可搜索)" @change='belong_store_change'>
+                    <el-form-item :label="'所属' + add_data.select_name + ':'" prop="store_id">
+                        <el-select v-model="ruleForm.store_id" filterable placeholder="请选择(可搜索)" @change='store_id_change'>
                             <el-option
                                 v-for="item in all_store"
                                 :key="item.store_id"
@@ -66,17 +66,27 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
+                    <el-form-item label="卡类型:" prop="card_type">
+                        <el-select v-model="ruleForm.card_type" filterable placeholder="请选择卡类型" @change='card_type_change'>
+                            <el-option
+                                v-for="item in all_card_type"
+                                :key="item.card_type"
+                                :label="item.card_name"
+                                :value="item.card_type">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
                     <el-form-item label="商品名称:" prop="goods_name">
                         <el-input v-model="ruleForm.goods_name" placeholder="请输入商品名称" clearable maxlength="10" show-word-limit @change='input_data'></el-input>
                     </el-form-item>
-                    <el-form-item label="销售价格:" prop="sale_price">
-                        <el-input type='number' v-model="ruleForm.sale_price" placeholder="请输入商品的销售价格" clearable maxlength="10" show-word-limit @change='input_data'></el-input>
+                    <el-form-item label="销售价格:" prop="shop_price">
+                        <el-input type='number' v-model="ruleForm.shop_price" placeholder="请输入商品的销售价格" clearable maxlength="10" show-word-limit @change='input_data'></el-input>
                     </el-form-item>
                     <el-form-item label="结算价格:" prop="cost_price">
                         <el-input type='number' v-model="ruleForm.cost_price" placeholder="请输入商品的结算价格" clearable maxlength="10" show-word-limit @change='input_data'></el-input>
                     </el-form-item>
-                    <el-form-item label="购买须知:" prop="buy_know">
-                        <el-input type="textarea" @change='input_data' :autosize="{ minRows: 5, maxRows: 10 }" v-model="ruleForm.buy_know" placeholder="请输入商品购买须知" maxlength="500" show-word-limit @keyup.13.native="add_submit()"></el-input>
+                    <el-form-item label="购买须知:" prop="card_info">
+                        <el-input type="textarea" @change='input_data' :autosize="{ minRows: 5, maxRows: 10 }" v-model="ruleForm.card_info" placeholder="请输入商品购买须知" maxlength="500" show-word-limit @keyup.13.native="add_submit()"></el-input>
                     </el-form-item>
                 </div>
                 
@@ -95,7 +105,7 @@
                     <el-form-item label="门店电话:" prop="tel">
                         <el-input type='number' v-model="ruleForm.tel" placeholder="请输入门店电话" clearable @change='input_data'></el-input>
                     </el-form-item>
-                    <el-form-item label="所在地区:" prop="p_c_a_s">
+                    <el-form-item label="所在地区:" prop="p_c_a_s_rule">
                         <p_c_a_s
                         :form='ruleForm'
                         @change_p="change_p"
@@ -200,11 +210,12 @@ export default class add extends Vue{
     //表单数据
     private ruleForm: any = {
         goods_name: '',
-        sale_price: '',
+        shop_price: '',
         cost_price: '',
-        buy_know: '',
-        belong_business: '',
-        belong_store: '',
+        card_info: '',
+        store_id: '',
+        store_id_02: '',
+        card_type: '',
         realname: '',
         mobile: '',
         password: '',
@@ -226,25 +237,80 @@ export default class add extends Vue{
         content: ''
     };
 
+    //验证再次输入密码
+    private re_pass: any = (rule, value, callback) => {
+        if (sessionStorage.getItem('add_form_data')) { this.ruleForm = JSON.parse(sessionStorage.getItem('add_form_data')) };
+        if (value !== this.ruleForm.password) {
+            callback(new Error('两次输入的密码不一致'));
+        }else {
+            callback();
+        };
+    };
+
+    //验证营业执照
+    private license: any = (rule, value, callback) => {
+        if (sessionStorage.getItem('show_license')) { var show_license = sessionStorage.getItem('show_license') };
+        if (!show_license) {
+            callback(new Error('请上传营业执照'));
+        }else {
+            callback();
+        };
+    };
+
+    //验证门店图片
+    private store: any = (rule, value, callback) => {
+        var length = this.show_cropper.store.length;
+        if (sessionStorage.getItem('show_store')) { length = JSON.parse(sessionStorage.getItem('show_store')).length };
+        if (length <= 0) {
+            callback(new Error('请至少上传一张门店环境图片'));
+        }else {
+            callback();
+        };
+    };
+
+    //验证省市区街道
+    private p_c_a_s_rules: any = (rule, value, callback) => {
+        if (sessionStorage.getItem('add_form_data')) { this.ruleForm = JSON.parse(sessionStorage.getItem('add_form_data')) };
+        if (!this.ruleForm.province || !this.ruleForm.city || !this.ruleForm.area || !this.ruleForm.street) {
+            callback(new Error('请选择完整的地区信息'));
+        }else {
+            callback();
+        };
+    };
+
+    //验证多选服务
+    private service: any = (rule, value, callback) => {
+        var length = 0;
+        if (sessionStorage.getItem('checkbox_checked')) { length = JSON.parse(sessionStorage.getItem('checkbox_checked')).length };
+        if ( length <= 0 ) {
+            callback(new Error('请至少选择一个附加服务'));
+        }else {
+            callback();
+        };
+    };
+
     //验证规则
-    private rules: object = {
+    private add_rules: object = {
         goods_name: [
             { required: true, message: '请输入商品名称', trigger: 'blur' },
         ],
-        sale_price: [
+        shop_price: [
             { required: true, message: '请输入商品销售价格', trigger: 'blur' },
         ],
         cost_price: [
             { required: true, message: '请输入商品结算价格', trigger: 'blur' },
         ],
-        buy_know: [
+        card_info: [
             { required: true, message: '请输入商品购买须知', trigger: 'blur' },
         ],
-        belong_business: [
+        store_id_02: [
             { required: true, message: '请选择所属商家', trigger: 'change' },
         ],
-        belong_store: [
+        store_id: [
             { required: true, message: '请选择所属门店', trigger: 'change' },
+        ],
+        card_type: [
+            { required: true, message: '请选择卡类型', trigger: 'change' },
         ],
         realname: [
             { required: true, message: '请输入商家联系人', trigger: 'blur' },
@@ -268,8 +334,8 @@ export default class add extends Vue{
         club_name: [
             { required: true, message: '请输入门店名称', trigger: 'blur' },
         ],
-        p_c_a_s: [
-            { required: true, validator: this.p_c_a_s },
+        p_c_a_s_rule: [
+            { required: true, validator: this.p_c_a_s_rules },
         ],
         address: [
             { required: true, message: '请输入门店的详细地址', trigger: 'blur' },
@@ -304,62 +370,18 @@ export default class add extends Vue{
         all_serves: [],
     };
     
-    //验证再次输入密码
-    private re_pass: any = (rule, value, callback) => {
-        if (sessionStorage.getItem('add_form_data')) { this.ruleForm = JSON.parse(sessionStorage.getItem('add_form_data')) };
-        if (value !== this.ruleForm.password) {
-            callback(new Error('两次输入的密码不一致'));
-        }else {
-            callback();
-        };
-    };
-
-    //验证营业执照
-    private license: any = (rule, value, callback) => {
-        if (sessionStorage.getItem('show_license')) { var show_license = sessionStorage.getItem('show_license') };
-        if (!show_license) {
-            callback(new Error('请上传营业执照'));
-        }else {
-            callback();
-        };
-    };
-
-    //验证门店图片
-    private store: any = (rule, value, callback) => {
-        var length = this.show_cropper.store.length;
-        if (sessionStorage.getItem('show_store')) { length = JSON.parse(sessionStorage.getItem('show_store')).length };
-        if (length <= 0) {
-            callback(new Error('请至少上传一张门店环境图片'));
-        }else {
-            callback();
-        };
-    };
-
-    //验证省市区街道
-    private p_c_a_s: any = (rule, value, callback) => {
-        if (sessionStorage.getItem('add_form_data')) { this.ruleForm = JSON.parse(sessionStorage.getItem('add_form_data')) };
-        if (!this.ruleForm.province || !this.ruleForm.city || !this.ruleForm.area || !this.ruleForm.street) {
-            callback(new Error('请选择完整的地区信息'));
-        }else {
-            callback();
-        };
-    };
-
-    //验证多选服务
-    private service: any = (rule, value, callback) => {
-        var length = 0;
-        if (sessionStorage.getItem('checkbox_checked')) { length = JSON.parse(sessionStorage.getItem('checkbox_checked')).length };
-        if ( length <= 0 ) {
-            callback(new Error('请至少选择一个附加服务'));
-        }else {
-            callback();
-        };
-    };
-
     //所有的商家
     private all_business: any = [];
     //所有的门店
     private all_store: any = [];
+    //所有的卡类型
+    private all_card_type: any = [
+        { card_type: 1, card_name: "次卡" },
+        { card_type: 3, card_name: "月卡" },
+        { card_type: 4, card_name: "季卡" },
+        { card_type: 5, card_name: "半年卡" },
+        { card_type: 6, card_name: "年卡" },
+    ]
 
     //营业执照裁剪相关数据
     private license_cropper_data: any = {
@@ -415,9 +437,41 @@ export default class add extends Vue{
 
     mounted () {
         //获取所有的附加服务
-        this.checkbox.all_serves = sessionStorage.getItem('all_serves') ? JSON.parse(sessionStorage.getItem('all_serves')) : [];
-        this.all_business = sessionStorage.getItem('all_business') ? JSON.parse(sessionStorage.getItem('all_business')) : [];
-        this.all_store = sessionStorage.getItem('all_store') ? JSON.parse(sessionStorage.getItem('all_store')) : [];
+        if (this.add_data.type == "business" || this.add_data.type == "store") {
+            this.$store.dispatch("get_service").then( (res: any) => {
+                console.log("附加服务", res);
+                if (res.code == 0 || res.status == 1) {
+                    this.checkbox.all_serves = res.result;
+                }else {
+                    //获取失败提示
+                    this.$message({ message: res.msg, type: "error", duration: 2500 });
+                };
+            });
+        };
+        if (this.add_data.type == "store") {
+            //获取所有商家
+            this.$store.dispatch("get_all_business").then( (res: any) => {
+                console.log("所有商家", res);
+                if (res.code == 0 || res.status == 1) {
+                    this.all_business = res.result;
+                }else {
+                    //获取失败提示
+                    this.$message({ message: res.msg, type: "error", duration: 2500 });
+                };
+            });
+        };
+        if (this.add_data.type == "goods") {
+            //获取所有门店
+            this.$store.dispatch("get_all_store").then( (res: any) => {
+                console.log("所有门店", res);
+                if (res.code == 0 || res.status == 1) {
+                    this.all_store = res.result;
+                }else {
+                    //获取失败提示
+                    this.$message({ message: res.msg, type: "error", duration: 2500 });
+                };
+            });
+        };
         if (sessionStorage.getItem('add_form_data')) {
             this.ruleForm = JSON.parse(sessionStorage.getItem('add_form_data'));
         };
@@ -463,14 +517,19 @@ export default class add extends Vue{
     //     return new Blob([ab], { type: 'image/jpeg' });
     // };
 
-    //选择商家
-    belong_business_change (val) {
-        this.ruleForm.belong = val;
+    //选择门店
+    business_id_change (val) {
+        this.ruleForm.store_id_02 = val;
         sessionStorage.setItem('add_form_data', JSON.stringify(this.ruleForm));
     };
-    //选择商家
-    belong_store_change (val) {
-        this.ruleForm.belong = val;
+    //选择门店
+    store_id_change (val) {
+        this.ruleForm.store_id = val;
+        sessionStorage.setItem('add_form_data', JSON.stringify(this.ruleForm));
+    };
+    //选择卡类型
+    card_type_change (val) {
+        this.ruleForm.card_type = val;
         sessionStorage.setItem('add_form_data', JSON.stringify(this.ruleForm));
     };
     //实时记录密码
