@@ -28,7 +28,7 @@
                     <span>{{ $store.state.current_route ? $store.state.current_route.meta.title : "列表数据" }}</span>
                 </span>
                 <span class="add_btn">
-                    <el-button size="medium" type="primary" icon="el-icon-setting">设置提现规则</el-button>
+                    <el-button size="medium" type="primary" icon="el-icon-setting" @click='dialog_cash_out.is_dialog=true'>设置提现规则</el-button>
                 </span>
             </p>
             <!-- 表格和页码 -->
@@ -36,7 +36,6 @@
             :table_data='table_data'
             @change_page='change_page'
             @change_page_size='change_page_size'
-            @change_state='change_state'
             @look_up='look_up'
             />
             <p class="total">合计金额：<span>¥{{ 8888.00 }}元</span></p>
@@ -44,7 +43,7 @@
         </div>
 
         <!-- 设置提现规则 -->
-        <dialog_form />
+        <dialog_form :dialog_data='dialog_cash_out' @sure='set_cash_out_rule' />
     </div>
 </template>
 
@@ -63,6 +62,27 @@ import dialog_form from "@/components/dialog_form.vue";
 })
 
 export default class cash_out_list extends Vue{
+    //设置提现规则
+    private dialog_cash_out: any = {
+        type: 'cash_out',
+        is_dialog: false,
+        title: '设置提现规则',
+        sure_name: '确定设置',
+        //表单数据
+        form_data: {
+            min_all_cash: '',
+            min_cash: '',
+        },
+        //表单规则
+        form_rules: {
+            min_all_cash: [
+                { required: true, message: '请输入最低提现总金额', trigger: 'blur' },
+            ],
+            min_cash: [
+                { required: true, message: '请输入最低提现金额', trigger: 'blur' },
+            ]
+        }
+    };
     //表格、页码数据
     private table_data: any = {
         //表格
@@ -117,7 +137,7 @@ export default class cash_out_list extends Vue{
         this.cash_out_list();
     };
     
-    //请求cash_out_list数据
+    //请求提现列表数据
     cash_out_list () {
         this.$store.dispatch("cash_out_list", this.send_data).then( (res: any) => {
             console.log("商家列表", res);
@@ -135,6 +155,20 @@ export default class cash_out_list extends Vue{
                     lists[i].address = lists[i].province + lists[i].city + lists[i].area;
                 };
                 this.table_data.page.total = parseInt(res.count);
+            }else {
+                //请求失败提示
+                this.$message({ message: res.msg, type: "error", duration: 2500 });
+            };
+        });
+    };
+
+    //设置提现规则
+    set_cash_out_rule (type: any, data: any) {
+        this.$store.dispatch("set_cash_out_rule", data).then( (res: any) => {
+            console.log("设置提现规则", res);
+            if (res.code == 0 || res.status == 1) {
+
+                this.$message({ message: "设置规则成功！", type: "success", duration: 2500 });
             }else {
                 //请求失败提示
                 this.$message({ message: res.msg, type: "error", duration: 2500 });
@@ -209,38 +243,6 @@ export default class cash_out_list extends Vue{
         this.send_data.size = val;
         sessionStorage.setItem("cash_out_list_size", val);
         this.cash_out_list();
-    };
-
-    //改变状态
-    change_state (index: any, row: any) {
-        var that: any = this;
-        if (row.status == 1) {
-            that.$confirm("确定禁用ID为 " + row.id +  " 的商家？", "提示", { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then( () => {
-                this.$store.dispatch("change_state_user", { userSN: row.user_sn, isLock: '1' }).then( (res: any) => {
-                    if (res.code == 0) {
-                        console.log("改变状态", res);
-                        this.table_data.table.lists[index].status = 2;
-                        that.$message({ type: "success", message: "已成功禁用ID为 " + row.id + " 的商家！", duration: 2000 });
-                    }else {
-                        //登录失败提示
-                        this.$message({ message: res.msg, type: "error", duration: 2500 });
-                    };
-                })
-            });
-        }else {
-            that.$confirm("确定开启ID为 " + row.id +  " 的商家？", "提示", { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then( () => {
-                this.$store.dispatch("change_state_user", { userSN: row.user_sn, isLock: '0' }).then( (res: any) => {
-                    if (res.code == 0) {
-                        console.log("改变状态", res);
-                        this.table_data.table.lists[index].status = 1;
-                        that.$message({ type: "success", message: "已成功开启ID为 " + row.id + " 的商家！", duration: 2000 });
-                    }else {
-                        //登录失败提示
-                        this.$message({ message: res.msg, type: "error", duration: 2500 });
-                    };
-                })
-            });
-        };
     };
 
     //查看

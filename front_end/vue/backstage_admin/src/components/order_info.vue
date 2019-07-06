@@ -35,11 +35,10 @@
                 <ul v-if="order_data.type =='transfer'">
                     <li class="flex_between">
                         <p><span>订单编号：</span><span>{{ order_data.current_state }}</span></p>
-                        <p><span>支付方式：</span><span>{{ order_data.current_state }}</span></p>
-                    </li>
-                    <li class="flex_between">
                         <p><span>提交时间：</span><span>{{ order_data.current_state }}</span></p>
                         <p><span>审核时间：</span><span>{{ order_data.current_state }}</span></p>
+                    </li>
+                    <li class="flex_between">
                         <p><span>领用时间：</span><span>{{ order_data.current_state }}</span></p>
                     </li>
                 </ul>
@@ -123,7 +122,7 @@
         </div>
 
         <!-- 图片放大 -->
-        <el-dialog :title="dialog_img.img_name" :visible.sync="dialog_img.is_enlarge" width="900px" center>
+        <el-dialog class="enlarge_img" :title="dialog_img.img_name" :visible.sync="dialog_img.is_enlarge" width="900px" center>
             <img :src="dialog_img.src" alt="logo">
         </el-dialog>
 
@@ -170,7 +169,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item label="私教课：" prop="course" class="course">
-                        <span class="bottom_tip" @click='add_course'><i class="el-icon-circle-plus"></i></span>
+                        <span class="bottom_tip plus" @click='add_course'><i class="el-icon-circle-plus"></i></span>
                         <table_page :table_data='course_data' @edit='edit_course' />
                     </el-form-item>
                     <el-form-item class="btn">
@@ -181,23 +180,7 @@
         </div>
 
         <!-- 新增/编辑私教课 -->
-        <el-dialog class='dialog_course' :title="dialog_course.title" :visible.sync="dialog_course.is_dialog" width="700px" center>
-            <el-form :model="course_form_data" :rules="course_rules" ref="course_ref">
-                <el-form-item label="课程名称:" prop="course_name">
-                    <el-input v-model="course_form_data.course_name" placeholder="请输入课程名称" clearable maxlength="20" show-word-limit></el-input>
-                </el-form-item>
-                <el-form-item label="私教费用:" prop="course_sale_price">
-                    <el-input type='number' v-model="course_form_data.course_sale_price" placeholder="请输入私教费用"></el-input>
-                </el-form-item>
-                <el-form-item label="结算费用:" prop="course_cost_price">
-                    <el-input type='number' v-model="course_form_data.course_cost_price" placeholder="请输入结算费用"></el-input>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialog_course.is_dialog = false">取 消</el-button>
-                <el-button type="primary" @click="add_edit(dialog_course.sure)" :loading="is_loading03">{{ dialog_course.sure }}</el-button>
-            </div>
-        </el-dialog>
+        <dialog_form :dialog_data='dialog_course' @sure='add_edit' />
 
         <div class="repeat_div" v-if="order_data.type == 'service' || order_data.type == 'receive'">
             <p>
@@ -249,10 +232,12 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import table_page from "@/components/table_page.vue";
+import dialog_form from "@/components/dialog_form.vue";
 
 @Component({
     components: {
-        table_page
+        table_page,
+        dialog_form
     }
 })
 
@@ -261,43 +246,92 @@ export default class order_info extends Vue{
 
     //新增/编辑私教课
     private dialog_course: any = {
+        type: 'course',
         is_dialog: false,
         title: '',
-        name: '',
-        sale_price: '',
-        cost_price: '',
-        sure: ''
+        sure_name: '',
+        //表单数据
+        form_data: {
+            course_name: '',
+            course_sale_price: '',
+            course_cost_price: '',
+        },
+        //表单规则
+        form_rules: {
+            course_name: [
+                { required: true, message: '请输入课程名称', trigger: 'blur' },
+            ],
+            course_sale_price: [
+                { required: true, message: '请输入私教费用', trigger: 'blur' },
+            ],
+            course_cost_price: [
+                { required: true, message: '请输入结算费用', trigger: 'blur' },
+            ]
+        }
+    };
+    //放大图片
+    private dialog_img: any = {
+        is_enlarge: false,
+        img_name: '',
+        src: ''
+    };
+
+    //图片放大
+    enlarge_img (index, src, title) {
+        this.dialog_img.is_enlarge = true;
+        this.dialog_img.img_name = title + 1;
+        this.dialog_img.src = require('@/assets/imgs/logo.png');
     };
 
     //新增私教课
     add_course () {
         this.dialog_course.is_dialog = true;
         this.dialog_course.title = '新增私教课';
-        this.dialog_course.sure = '确定新增';
+        this.dialog_course.sure_name = '确定新增';
     };
     //编辑私教课
     edit_course () {
         this.dialog_course.is_dialog = true;
         this.dialog_course.title = '编辑私教课';
-        this.dialog_course.sure = '确定修改';
+        this.dialog_course.sure_name = '确定修改';
     };
 
+    //新增/编辑私教课
+    add_edit (type, data) {
+        if (type == '确定新增') {
+            this.$store.dispatch("add_course", data).then( (res: any) => {
+                console.log("新增私家课", res);
+                if (res.code == 0 || res.status == 1) {
+                    //新增成功提示
+                    this.$message({ message: '新增成功！', type: "success", duration: 1500 });
+                }else {
+                    //失败提示
+                    this.$message({ message: res.msg, type: "error", duration: 2500 });
+                };
+            });
+        }else {
+            this.$store.dispatch("edit_course", data).then( (res: any) => {
+                console.log("修改私家课", res);
+                if (res.code == 0 || res.status == 1) {
+                    //修改成功提示
+                    this.$message({ message: '修改成功！', type: "success", duration: 1500 });
+                }else {
+                    //失败提示
+                    this.$message({ message: res.msg, type: "error", duration: 2500 });
+                };
+            });
+        };
+    };
+
+    private is_loading01: boolean = false;
+    private is_loading02: boolean = false;
+    private all_jsf: any = [];
     //审核
     private check_form_data: any = {
         check: null,
         cool_b_price: '',
         select: '',
     };
-    //上架
-    private course_form_data: any = {
-        course_name: '',
-        course_sale_price: '',
-        course_cost_price: '',
-    };
-    private is_loading01: boolean = false;
-    private is_loading02: boolean = false;
-    private is_loading03: boolean = false;
-    private all_jsf: any = [];
     //验证审核表单规则
     private check_rules: object = {
         check: [
@@ -306,24 +340,6 @@ export default class order_info extends Vue{
         select: [
             { required: true, message: '请选择健身房', trigger: 'change' },
         ],
-    };
-    //验证私教课表单规则
-    private course_rules: object = {
-        course_name: [
-            { required: true, message: '请输入课程名称', trigger: 'change' },
-        ],
-        course_sale_price: [
-            { required: true, message: '请输入私教费用', trigger: 'change' },
-        ],
-        course_cost_price: [
-            { required: true, message: '请输入结算费用', trigger: 'change' },
-        ]
-    };
-    //放大图片
-    private dialog_img: any = {
-        is_enlarge: false,
-        img_name: '',
-        src: ''
     };
     //私家课列表
     private course_data: any = {
@@ -429,48 +445,11 @@ export default class order_info extends Vue{
         });
     };
 
-    //新增/编辑私教课
-    add_edit (type) {
-        //不这样定义any类型 typescript解释器就会报错
-        let ref: any = this.$refs.course_ref;
-        ref.validate((valid: boolean) => {
-            if (valid) {
-                this.is_loading03 = true;
-                if (type == '确定新增') {
-                    this.$store.dispatch("add_course", this.course_form_data).then( (res: any) => {
-                        console.log("新增私家课", res);
-                        if (res.code == 0 || res.status == 1) {
-                            //新增成功提示
-                            this.$message({ message: '新增成功！', type: "success", duration: 1500 });
-                        }else {
-                            //失败提示
-                            this.$message({ message: res.msg, type: "error", duration: 2500 });
-                        };
-                        this.is_loading01 = false;
-                    });
-                }else {
-                    this.$store.dispatch("edit_course", this.course_form_data).then( (res: any) => {
-                        console.log("修改私家课", res);
-                        if (res.code == 0 || res.status == 1) {
-                            //修改成功提示
-                            this.$message({ message: '修改成功！', type: "success", duration: 1500 });
-                        }else {
-                            //失败提示
-                            this.$message({ message: res.msg, type: "error", duration: 2500 });
-                        };
-                        this.is_loading01 = false;
-                    });
-                };
-            } else {
-                this.$message({ message: "请完善带*号的必填信息！", type: 'error', duration: 2500 });
-                return false;
-            };
-        });
-    };
     //选择健身房
     select_jsf (val) {
         this.check_form_data.select = val;
     };
+
     //是否通过审核
     check_order (val) {
         this.check_form_data.check = val;
@@ -530,12 +509,6 @@ export default class order_info extends Vue{
         });
     };
 
-    //图片放大
-    enlarge_img (index, src, title) {
-        this.dialog_img.is_enlarge = true;
-        this.dialog_img.img_name = title + 1;
-        this.dialog_img.src = require('@/assets/imgs/logo.png');
-    };
 }
 
 </script>
@@ -543,45 +516,6 @@ export default class order_info extends Vue{
 <style lang="scss">
 
     @media screen and (min-width: 769px) {
-        .el-dialog--center {
-            border-radius: 15px;
-            
-            .el-dialog__title {
-                letter-spacing: 2px;
-            }
-        }
-
-        .el-dialog--center .el-dialog__body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding-bottom: 50px;
-            height: 500px;
-            overflow-x: hidden;
-            overflow-y: scroll;
-
-            img {
-                width: 700px;
-            }
-
-            .el-form {
-                width: 75%;
-            }
-        }
-
-        .dialog_course {
-
-            .el-dialog--center .el-dialog__body {
-                overflow: hidden;
-                height: 250px;
-                padding-bottom: 0;
-
-                .el-form-item__error {
-                    top: 99%;
-                    left: 12%;
-                }
-            }
-        }
 
         .add {
 
@@ -604,7 +538,7 @@ export default class order_info extends Vue{
                 width: 215px;
             }
 
-            .el-form-item .bottom_tip {
+            .el-form-item .bottom_tip.plus {
                 left: -58px;
                 top: 56%;
 
@@ -614,33 +548,18 @@ export default class order_info extends Vue{
                     cursor: pointer;
                 }
             }
-        }
 
-        .course {
+            .course {
 
-            .el-form-item__content {
-                width: 600px;
+                .el-form-item__content {
+                    width: 600px;
 
-                .table_page {
-                    width: 100%;
+                    .table_page {
+                        width: 100%;
+                    }
                 }
             }
         }
-
-        .el-dialog__footer {
-            padding-bottom: 35px;
-
-            .el-button {
-                margin: 0 15px;
-            }
         
-        }
-        .el-form-item {
-            margin-bottom: 26px;
-        }
-
-        .el-dialog__wrapper {
-            right: 75px;
-        }
     }
 </style>

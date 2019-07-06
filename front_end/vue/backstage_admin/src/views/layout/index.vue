@@ -42,6 +42,20 @@ export default class layout extends Vue{
 
     @media screen and (min-width: 769px) {
 
+        
+        .enlarge_img .el-dialog--center .el-dialog__body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-bottom: 70px;
+            height: 400px;
+            overflow: hidden;
+
+            img {
+                width: 600px;
+            }
+        }
+
         .copy_table {
 
             li {
@@ -406,6 +420,12 @@ export default class layout extends Vue{
                         img {
                             width: 80px;
                             margin-left: 15px;
+                            cursor: pointer;
+                        }
+
+                        img.head_img {
+                            border-radius: 50%;
+                            cursor: auto;
                         }
                     }
                 }

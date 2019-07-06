@@ -190,7 +190,7 @@ export default class store_list extends Vue{
         var that: any = this;
         if (row.status == 1) {
             that.$confirm("确定禁用ID为 " + row.id +  " 的门店？", "提示", { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then( () => {
-                this.$store.dispatch("change_state_user", { club_id: row.id, status: '2' }).then( (res: any) => {
+                this.$store.dispatch("change_state_store", { club_id: row.id, status: '2' }).then( (res: any) => {
                     if (res.code == 0 || res.status == 1) {
                         console.log("改变状态", res);
                         this.table_data.table.lists[index].status = 2;
@@ -203,7 +203,7 @@ export default class store_list extends Vue{
             });
         }else {
             that.$confirm("确定开启ID为 " + row.id +  " 的门店？", "提示", { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then( () => {
-                this.$store.dispatch("change_state_user", { club_id: row.id, status: '1' }).then( (res: any) => {
+                this.$store.dispatch("change_state_store", { club_id: row.id, status: '1' }).then( (res: any) => {
                     if (res.code == 0 || res.status == 1) {
                         console.log("改变状态", res);
                         this.table_data.table.lists[index].status = 1;

@@ -1,19 +1,29 @@
 <template>
-    <el-dialog class='dialog_form dialog_course' :title="dialog_course.title" :visible.sync="dialog_course.is_dialog" width="700px" center>
-        <el-form :model="course_form_data" :rules="course_rules" ref="course_ref">
-            <el-form-item label="课程名称:" prop="course_name">
-                <el-input v-model="course_form_data.course_name" placeholder="请输入课程名称" clearable maxlength="20" show-word-limit></el-input>
-            </el-form-item>
-            <el-form-item label="私教费用:" prop="course_sale_price">
-                <el-input type='number' v-model="course_form_data.course_sale_price" placeholder="请输入私教费用"></el-input>
-            </el-form-item>
-            <el-form-item label="结算费用:" prop="course_cost_price">
-                <el-input type='number' v-model="course_form_data.course_cost_price" placeholder="请输入结算费用"></el-input>
-            </el-form-item>
+    <el-dialog class='dialog_form' :title="dialog_data.title" :visible.sync="dialog_data.is_dialog" width="700px" center>
+        <el-form :model="dialog_data.form_data" :rules="dialog_data.form_rules" ref="dialog_ref">
+            <div v-if="dialog_data.type == 'course'">
+                <el-form-item label="课程名称:" prop="course_name">
+                    <el-input v-model="dialog_data.form_data.course_name" placeholder="请输入课程名称" clearable maxlength="20" show-word-limit></el-input>
+                </el-form-item>
+                <el-form-item label="私教费用:" prop="course_sale_price">
+                    <el-input type='number' v-model="dialog_data.form_data.course_sale_price" placeholder="请输入私教费用"></el-input>
+                </el-form-item>
+                <el-form-item label="结算费用:" prop="course_cost_price">
+                    <el-input type='number' v-model="dialog_data.form_data.course_cost_price" placeholder="请输入结算费用"></el-input>
+                </el-form-item>
+            </div>
+            <div v-if="dialog_data.type == 'cash_out'">
+                <el-form-item label="最低提现总金额:" prop="min_all_cash">
+                    <el-input type="number" v-model="dialog_data.form_data.min_all_cash" placeholder="请输入最低提现总金额" clearable></el-input>
+                </el-form-item>
+                <el-form-item label="最低提现金额:" prop="min_cash">
+                    <el-input type="number" v-model="dialog_data.form_data.min_cash" placeholder="请输入最低提现金额" clearable></el-input>
+                </el-form-item>
+            </div>
         </el-form>
         <div slot="footer" class="dialog-footer">
-            <el-button @click="dialog_course.is_dialog = false">取 消</el-button>
-            <el-button type="primary" @click="add_edit(dialog_course.sure)" :loading="is_loading03">{{ dialog_course.sure }}</el-button>
+            <el-button @click="dialog_data.is_dialog = false">取 消</el-button>
+            <el-button type="primary" @click="sure(dialog_data.sure_name)" :loading="is_loading">{{ dialog_data.sure_name }}</el-button>
         </div>
     </el-dialog>
 </template>
@@ -28,43 +38,25 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 })
 
 export default class dialog_form extends Vue{
-    //新增/编辑私教课
-    private dialog_course: any = {
-        is_dialog: true,
-        title: '',
-        name: '',
-        sale_price: '',
-        cost_price: '',
-        sure: ''
-    };
+    @Prop() private dialog_data !: any;
+    private is_loading: boolean = false;
 
-    //新增私教课
-    add_course () {
-        this.dialog_course.is_dialog = true;
-        this.dialog_course.title = '新增私教课';
-        this.dialog_course.sure = '确定新增';
-    };
-
-    
-    //上架
-    private course_form_data: any = {
-        course_name: '',
-        course_sale_price: '',
-        course_cost_price: '',
-    };
-
-    //验证私教课表单规则
-    private course_rules: object = {
-        course_name: [
-            { required: true, message: '请输入课程名称', trigger: 'change' },
-        ],
-        course_sale_price: [
-            { required: true, message: '请输入私教费用', trigger: 'change' },
-        ],
-        course_cost_price: [
-            { required: true, message: '请输入结算费用', trigger: 'change' },
-        ]
-    };
+    //验证表单
+    sure (type) {
+        let ref: any = this.$refs.dialog_ref;
+        ref.validate((valid: boolean) => {
+            if (valid) {
+                this.is_loading = true;
+                this.$emit("sure", type, this.dialog_data.form_data);
+                setTimeout(() => {
+                    this.is_loading = false;
+                }, 3000);
+            } else {
+                this.$message({ message: "请完善带*号的必填信息！", type: 'error', duration: 2500 });
+                return false;
+            };
+        });
+    }
     
 }
 
@@ -75,17 +67,45 @@ export default class dialog_form extends Vue{
     @media screen and (min-width: 769px) {
 
         .dialog_form {
+            right: 75px;
 
-            .el-dialog--center .el-dialog__body {
-                overflow: hidden;
-                height: 250px;
-                padding-bottom: 0;
+            .el-dialog--center {
 
-                .el-form-item__error {
-                    top: 99%;
-                    left: 12%;
+                .el-dialog__body {
+                    overflow: hidden;
+                    padding: 30px 0 0 0;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    .el-form-item__error {
+                        width: 100%;
+                        top: 99%;
+                    }
+                    
+                    .el-form {
+                        width: 75%;
+                    }
                 }
             }
+
+            .el-form-item__label {
+                min-width: 130px;
+            }
+
+            .el-dialog__footer {
+                padding-bottom: 35px;
+
+                .el-button {
+                    margin: 0 15px;
+                }
+            
+            }
+            .el-form-item {
+                margin-bottom: 26px;
+            }
+            
         }
+
     }
 </style>

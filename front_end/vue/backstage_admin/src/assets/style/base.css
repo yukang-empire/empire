@@ -254,6 +254,12 @@ input::-ms-input-placeholder{
 .el-tooltip__popper {
     padding-right: 6px;
 }
+.el-dialog--center {
+    border-radius: 15px;
+}
+.el-dialog__title {
+    letter-spacing: 1px;
+}
 
 /* 响应式 */
 @media screen and (min-width: 769px) {

@@ -11,7 +11,7 @@
                 <!-- 新增商家/门店 -->
                 <div v-if="add_data.type == 'business' || add_data.type == 'store'">
                     <el-form-item :label="'所属' + add_data.select_name + ':'" prop="store_id_02" v-if="add_data.type == 'store'">
-                        <el-select v-model="ruleForm.store_id_02" filterable placeholder="请选择" @change='business_id_change'>
+                        <el-select v-model="ruleForm.store_id_02" filterable placeholder="请选择(可搜索)" @change='business_id_change'>
                             <el-option
                                 v-for="item in all_business"
                                 :key="item.store_id"
@@ -79,10 +79,10 @@
                     <el-form-item label="商品名称:" prop="goods_name">
                         <el-input v-model="ruleForm.goods_name" placeholder="请输入商品名称" clearable maxlength="10" show-word-limit @change='input_data'></el-input>
                     </el-form-item>
-                    <el-form-item label="销售价格:" prop="shop_price">
+                    <el-form-item label="销售价格(元):" prop="shop_price">
                         <el-input type='number' v-model="ruleForm.shop_price" placeholder="请输入商品的销售价格" clearable maxlength="10" show-word-limit @change='input_data'></el-input>
                     </el-form-item>
-                    <el-form-item label="结算价格:" prop="cost_price">
+                    <el-form-item label="结算价格(元):" prop="cost_price">
                         <el-input type='number' v-model="ruleForm.cost_price" placeholder="请输入商品的结算价格" clearable maxlength="10" show-word-limit @change='input_data'></el-input>
                     </el-form-item>
                     <el-form-item label="购买须知:" prop="card_info">
@@ -181,7 +181,7 @@
             </el-form>
 
             <!-- 图片放大 -->
-            <el-dialog title="查看门店环境图片" :visible.sync="dialog_img.is_enlarge" width="800px" center>
+            <el-dialog class="enlarge_img" title="查看门店环境图片" :visible.sync="dialog_img.is_enlarge" width="800px" center>
                 <img :src="dialog_img.src" alt="logo">
             </el-dialog>
         </div>
@@ -770,25 +770,6 @@ export default class add extends Vue{
 <style lang="scss">
 
     @media screen and (min-width: 769px) {
-        .el-dialog--center {
-            border-radius: 15px;
-            
-            .el-dialog__title {
-                letter-spacing: 1px;
-            }
-        }
-
-        .el-dialog--center .el-dialog__body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding-bottom: 70px;
-            height: 400px;
-            overflow: hidden;
-
-            img {
-                width: 600px;
-            }
-        }
+        
     }
 </style>

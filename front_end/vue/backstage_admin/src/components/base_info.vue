@@ -1,5 +1,9 @@
 <template>
     <div class="base_info">
+        <!-- 图片放大 -->
+        <el-dialog class="enlarge_img" :title="'查看' + base_info.title + '图片'" :visible.sync="dialog_img.is_enlarge" width="800px" center>
+            <img :src="base_info.head_pic" alt="logo">
+        </el-dialog>
         <div class="repeat_div">
             <p>
                 <svg class="icon" aria-hidden="true">
@@ -9,7 +13,7 @@
             </p>
             <div class="info">
                 <ul class="flex_between" v-if='base_info_type == "user"'>
-                    <li><img :src="base_info.head_pic" alt="head_img"></li>
+                    <li><img :class="{head_img: base_info.title == '用户基本信息'}" src="../assets/imgs/logo.png" alt="head_img"></li>
                     <li>
                         <p><span>昵称：</span><i>{{ base_info.nickname }}</i></p>
                         <p><span>生日：</span><i>{{ base_info.birthday }}</i></p>
@@ -56,8 +60,8 @@
                     <li><img :src="base_info.original_img" alt="goods_img"></li>
                     <li>
                         <p><span>商品名称：</span><i>{{ base_info.goods_name }}</i></p>
-                        <p><span>销售价格：</span><i>{{ base_info.shop_price }}</i></p>
-                        <p><span>结算价格：</span><i>{{ base_info.cost_price }}</i></p>
+                        <p><span>销售价格：</span><i>{{ base_info.shop_price }}元</i></p>
+                        <p><span>结算价格：</span><i>{{ base_info.cost_price }}元</i></p>
                     </li>
                     <li>
                         <p><span>销量：</span><i>{{ base_info.sales_sum }}</i></p>
@@ -83,6 +87,10 @@ export default class base_info extends Vue{
     @Prop() private base_info !: any;
     @Prop() private base_info_type !: any;
 
+    //放大图片
+    private dialog_img: any = {
+        is_enlarge: false,
+    };
 }
 
 </script>

@@ -76,7 +76,7 @@
             <el-table-column v-if="table_data.table.which=='transfer_list'" prop="name" label="用户昵称"></el-table-column>
             <el-table-column v-if="table_data.table.which=='transfer_list'" prop="name" label="手机号"></el-table-column>
             <el-table-column v-if="table_data.table.which=='transfer_list'" prop="name" label="健身房名称"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='transfer_list'" prop="name" label="酷币价值" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='transfer_list'" prop="name" label="酷卡价值" sortable :sort-method='date_sort'></el-table-column>
             <el-table-column v-if="table_data.table.which=='transfer_list'" prop="name" label="健身卡类型"></el-table-column>
             <el-table-column v-if="table_data.table.which=='transfer_list'" prop="name" label="订单状态"></el-table-column>
             <el-table-column v-if="table_data.table.which=='transfer_list'" prop="name" label="提交时间" sortable :sort-method='date_sort'></el-table-column>
@@ -99,21 +99,71 @@
             <el-table-column v-if="table_data.table.which=='operation_log'" prop="name" label="操作人"></el-table-column>
             <el-table-column v-if="table_data.table.which=='operation_log'" prop="name" label="订单状态"></el-table-column>
             <el-table-column v-if="table_data.table.which=='operation_log'" prop="name" label="付款状态"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='operation_log'" prop="name" label="操作时间"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='operation_log'" prop="name" label="操作时间" sortable :sort-method='date_sort'></el-table-column>
             <el-table-column v-if="table_data.table.which=='operation_log'" prop="name" label="备注"></el-table-column>
 
             <!-- 提现列表 -->
-            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="序号"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="序号" sortable :sort-method='date_sort'></el-table-column>
             <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="用户类型"></el-table-column>
             <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="申请提现人"></el-table-column>
             <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="手机号码"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="提现金额"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="提现金额" sortable :sort-method='date_sort'></el-table-column>
             <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="提现账户"></el-table-column>
             <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="账户类型"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="申请日期"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="打款日期"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="申请日期" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="打款日期" sortable :sort-method='date_sort'></el-table-column>
             <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="状态"></el-table-column>
 
+            <!-- 财务-服务订单统计 -->
+            <el-table-column v-if="table_data.table.which=='finance_service_list'" prop="name" label="序号"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_service_list'" prop="name" label="日期"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_service_list'" prop="name" label="合计金额"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_service_list'" prop="name" label="订单金额"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_service_list'" prop="name" label="结算金额"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_service_list'" prop="name" label="平台收入"></el-table-column>
+
+            <!-- 财务-服务订单统计-明细 -->
+            <el-table-column v-if="table_data.table.which=='finance_service_details'" prop="name" label="订单编号"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_service_details'" prop="name" label="用户昵称"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_service_details'" prop="name" label="用户手机"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_service_details'" prop="name" label="订单标题"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_service_details'" prop="name" label="订单金额(元)"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_service_details'" prop="name" label="结算金额(元)"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_service_details'" prop="name" label="订单状态"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_service_details'" prop="name" label="提交时间"></el-table-column>
+
+            <!-- 财务-充值订单统计 -->
+            <el-table-column v-if="table_data.table.which=='finance_recharge_list'" prop="name" label="序号"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_recharge_list'" prop="name" label="日期"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_recharge_list'" prop="name" label="合计金额"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_recharge_list'" prop="name" label="充值金额"></el-table-column>
+
+            <!-- 财务-充值订单统计-明细 -->
+            <el-table-column v-if="table_data.table.which=='finance_recharge_details'" prop="name" label="序号"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_recharge_details'" prop="name" label="时间"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_recharge_details'" prop="name" label="用户昵称"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_recharge_details'" prop="name" label="用户手机"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_recharge_details'" prop="name" label="充值方式"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_recharge_details'" prop="name" label="充值酷卡"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_recharge_details'" prop="name" label="赠送酷点"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_recharge_details'" prop="name" label="实付金额"></el-table-column>
+
+            <!-- 财务-通用设置-充值 -->
+            <el-table-column v-if="table_data.table.which=='finance_set_recharge'" prop="name" label="序号"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_set_recharge'" prop="name" label="名称"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_set_recharge'" prop="name" label="总酷卡值"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_set_recharge'" prop="name" label="充值酷卡"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_set_recharge'" prop="name" label="赠送酷卡"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_set_recharge'" prop="name" label="赠送酷点"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_set_recharge'" prop="name" label="售价(元)"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_set_recharge'" prop="name" label="修改日期"></el-table-column>
+
+            <!-- 财务-通用设置-会籍卡 -->
+            <el-table-column v-if="table_data.table.which=='finance_set_card'" prop="name" label="序号"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_set_card'" prop="name" label="名称"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_set_card'" prop="name" label="购买金额"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_set_card'" prop="name" label="赠送酷点"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_set_card'" prop="name" label="修改日期"></el-table-column>
 
             <el-table-column label="禁用账户" v-if="table_data.table.which=='user_list'">
                 <template slot-scope="scope">
@@ -144,14 +194,21 @@
                 table_data.table.which=='service_list' ||
                 table_data.table.which=='transfer_list' ||
                 table_data.table.which=='receive_list' ||
-                table_data.table.which=='cash_out_list'
+                table_data.table.which=='cash_out_list' ||
+                table_data.table.which=='finance_service_list' ||
+                table_data.table.which=='finance_service_details' ||
+                table_data.table.which=='finance_recharge_list'
             ">
                 <template slot-scope="scope">
                     <el-button type="text" @click="look_up(scope.row)"  v-if="">查看</el-button>
                 </template>
             </el-table-column>
 
-            <el-table-column label="操作" v-if="table_data.table.which=='upper_course'">
+            <el-table-column label="操作" v-if="
+                table_data.table.which=='upper_course' ||
+                table_data.table.which=='finance_set_recharge' ||
+                table_data.table.which=='finance_set_card'
+            ">
                 <template slot-scope="scope">
                     <el-button type="text" @click="edit(scope.row)"  v-if="">编辑</el-button>
                 </template>

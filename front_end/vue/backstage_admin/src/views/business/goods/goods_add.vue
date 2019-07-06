@@ -29,7 +29,7 @@ export default class goods_add extends Vue{
 
     //新增商品
     add_goods (ruleForm) {
-        this.$store.dispatch("add_business", ruleForm).then( (res: any) => {
+        this.$store.dispatch("add_goods", ruleForm).then( (res: any) => {
             console.log("新增商品", res);
             if (res.code == 0 || res.status == 1) {
                 sessionStorage.removeItem('add_form_data');

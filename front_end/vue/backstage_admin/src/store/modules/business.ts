@@ -145,7 +145,7 @@ const home =  {
             });
         },
         //新增商品
-        add_business (state: any, data: any) {
+        add_goods (state: any, data: any) {
             var send_data: any = new FormData();
             send_data.append("goods_name", data.goods_name);
             send_data.append("store_id", data.store_id);
@@ -207,7 +207,7 @@ const home =  {
             });
         },
         //禁用/开启门店
-        change_state_user (state: any, data: any) {
+        change_state_store (state: any, data: any) {
             console.log(data)
             var send_data: any = new FormData();
             send_data.append("club_id", data.club_id);
