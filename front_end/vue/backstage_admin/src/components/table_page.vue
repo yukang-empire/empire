@@ -197,20 +197,20 @@
                 table_data.table.which=='cash_out_list' ||
                 table_data.table.which=='finance_service_list' ||
                 table_data.table.which=='finance_service_details' ||
-                table_data.table.which=='finance_recharge_list'
-            ">
-                <template slot-scope="scope">
-                    <el-button type="text" @click="look_up(scope.row)"  v-if="">查看</el-button>
-                </template>
-            </el-table-column>
-
-            <el-table-column label="操作" v-if="
+                table_data.table.which=='finance_recharge_list' ||
                 table_data.table.which=='upper_course' ||
                 table_data.table.which=='finance_set_recharge' ||
                 table_data.table.which=='finance_set_card'
             ">
                 <template slot-scope="scope">
-                    <el-button type="text" @click="edit(scope.row)"  v-if="">编辑</el-button>
+                    <el-button type="text" @click="look_up(scope.row)"  v-if="">查看</el-button>
+                    <el-button v-if="
+                        table_data.table.which=='upper_course' ||
+                        table_data.table.which=='goods_list' ||
+                        table_data.table.which=='store_list' ||
+                        table_data.table.which=='finance_set_recharge' ||
+                        table_data.table.which=='finance_set_card'
+                    " type="text" @click="edit(scope.row)">编辑</el-button>
                 </template>
             </el-table-column>
 

@@ -35,7 +35,7 @@ const business = {
             name: 'business_add',
             component: () => import('@/views/business/business/business_add.vue'),
             meta: {
-                title: '新增商家',
+                title: '新增/编辑商家',
                 hidden: true
             }
         },
@@ -63,7 +63,7 @@ const business = {
             name: 'store_add',
             component: () => import('@/views/business/store/store_add.vue'),
             meta: {
-                title: '新增门店',
+                title: '新增/编辑门店',
                 hidden: true
             }
         },
@@ -91,7 +91,7 @@ const business = {
             name: 'goods_add',
             component: () => import('@/views/business/goods/goods_add.vue'),
             meta: {
-                title: '新增商品',
+                title: '新增/编辑商品',
                 hidden: true
             }
         },

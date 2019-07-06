@@ -27,20 +27,35 @@ export default class goods_add extends Vue{
         
     };
 
-    //新增商品
+    //新增/编辑商品
     add_goods (ruleForm) {
-        this.$store.dispatch("add_goods", ruleForm).then( (res: any) => {
-            console.log("新增商品", res);
-            if (res.code == 0 || res.status == 1) {
-                sessionStorage.removeItem('add_form_data');
-                //新增成功提示
-                this.$message({ message: '新增商品成功！', type: "success", duration: 1500 });
-                this.$router.push({ path: '/business/goods/list' });
-            }else {
-                //失败提示
-                this.$message({ message: res.msg, type: "error", duration: 2500 });
-            };
-        });
+        if (this.$route.query.goods_id) {
+            this.$store.dispatch("edit_goods", ruleForm).then( (res: any) => {
+                console.log("编辑商品", res);
+                if (res.code == 0 || res.status == 1) {
+                    sessionStorage.removeItem('add_form_data');
+                    //编辑成功提示
+                    this.$message({ message: '编辑商品成功！', type: "success", duration: 1500 });
+                    this.$router.push({ path: '/business/goods/list' });
+                }else {
+                    //失败提示
+                    this.$message({ message: res.msg, type: "error", duration: 2500 });
+                };
+            });
+        }else {
+            this.$store.dispatch("add_goods", ruleForm).then( (res: any) => {
+                console.log("新增商品", res);
+                if (res.code == 0 || res.status == 1) {
+                    sessionStorage.removeItem('add_form_data');
+                    //新增成功提示
+                    this.$message({ message: '新增商品成功！', type: "success", duration: 1500 });
+                    this.$router.push({ path: '/business/goods/list' });
+                }else {
+                    //失败提示
+                    this.$message({ message: res.msg, type: "error", duration: 2500 });
+                };
+            });
+        }
     };
     
 }

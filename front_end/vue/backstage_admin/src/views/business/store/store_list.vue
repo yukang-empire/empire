@@ -38,6 +38,7 @@
             @change_page_size='change_page_size'
             @change_state='change_state'
             @look_up='look_up'
+            @edit='edit'
             />
             
         </div>
@@ -215,6 +216,12 @@ export default class store_list extends Vue{
                 });
             });
         };
+    };
+
+    //编辑门店
+    edit (row: any) {
+        sessionStorage.setItem('add_form_data', JSON.stringify(row));
+        this.$router.push({ path: '/business/store/add', query: { store_id: row.id } });
     };
 
     //查看

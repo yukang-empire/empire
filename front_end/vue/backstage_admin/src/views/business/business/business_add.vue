@@ -31,6 +31,8 @@ export default class business_add extends Vue{
         this.$store.dispatch("add_business", ruleForm).then( (res: any) => {
             console.log("新增商家", res);
             if (res.code == 0 || res.status == 1) {
+                sessionStorage.removeItem('show_license');
+                sessionStorage.removeItem('show_store');
                 sessionStorage.removeItem('add_form_data');
                 //新增成功提示
                 this.$message({ message: '新增成功！', type: "success", duration: 1500 });

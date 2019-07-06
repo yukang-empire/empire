@@ -2,7 +2,7 @@
     <div class="base_info">
         <!-- 图片放大 -->
         <el-dialog class="enlarge_img" :title="'查看' + base_info.title + '图片'" :visible.sync="dialog_img.is_enlarge" width="800px" center>
-            <img :src="base_info.head_pic" alt="logo">
+            <img :src="base_info.image" alt="img">
         </el-dialog>
         <div class="repeat_div">
             <p>
@@ -13,7 +13,7 @@
             </p>
             <div class="info">
                 <ul class="flex_between" v-if='base_info_type == "user"'>
-                    <li><img :class="{head_img: base_info.title == '用户基本信息'}" src="../assets/imgs/logo.png" alt="head_img"></li>
+                    <li><img class="head_img" :src="base_info.image" alt="head_img"></li>
                     <li>
                         <p><span>昵称：</span><i>{{ base_info.nickname }}</i></p>
                         <p><span>生日：</span><i>{{ base_info.birthday }}</i></p>
@@ -29,7 +29,7 @@
                 </ul>
 
                 <ul class="flex_between" v-if='base_info_type == "business"'>
-                    <li><img :src="base_info.image" alt="license"></li>
+                    <li><img @click='dialog_img.is_enlarge = true' :src="base_info.image" title="点击放大" alt="license"></li>
                     <li>
                         <p><span>商家名称：</span><i>{{ base_info.club_name }}</i></p>
                         <p><span>商家电话：</span><i>{{ base_info.tel }}</i></p>
@@ -43,7 +43,7 @@
                 </ul>
 
                 <ul class="flex_between" v-if='base_info_type == "store"'>
-                    <li><img :src="base_info.image" alt="store_img"></li>
+                    <li><img @click='dialog_img.is_enlarge = true' :src="base_info.image" title="点击放大" alt="store_img"></li>
                     <li>
                         <p><span>门店名称：</span><i>{{ base_info.club_name }}</i></p>
                         <p><span>门店电话：</span><i>{{ base_info.tel }}</i></p>
@@ -57,7 +57,7 @@
                 </ul>
 
                 <ul class="flex_between" v-if='base_info_type == "goods"'>
-                    <li><img :src="base_info.original_img" alt="goods_img"></li>
+                    <li><img @click='dialog_img.is_enlarge = true' :src="base_info.original_img" title="点击放大" alt="goods_img"></li>
                     <li>
                         <p><span>商品名称：</span><i>{{ base_info.goods_name }}</i></p>
                         <p><span>销售价格：</span><i>{{ base_info.shop_price }}元</i></p>

@@ -10,7 +10,7 @@
             <el-form :model="ruleForm" :rules="add_rules" ref="ruleForm">
                 <!-- 新增商家/门店 -->
                 <div v-if="add_data.type == 'business' || add_data.type == 'store'">
-                    <el-form-item :label="'所属' + add_data.select_name + ':'" prop="store_id_02" v-if="add_data.type == 'store'">
+                    <el-form-item :label="'所属' + add_data.select_name + ':'" prop="store_id_02" v-if="add_data.type == 'store' && !$route.query.store_id">
                         <el-select v-model="ruleForm.store_id_02" filterable placeholder="请选择(可搜索)" @change='business_id_change'>
                             <el-option
                                 v-for="item in all_business"
@@ -26,10 +26,10 @@
                     <el-form-item label="手机号码:" prop="mobile">
                         <el-input type='number' v-model="ruleForm.mobile" placeholder="请输入手机号码" clearable maxlength="11" show-word-limit @change='input_data'></el-input>
                     </el-form-item>
-                    <el-form-item label="密码:" prop="password">
+                    <el-form-item v-if="!$route.query.store_id" label="密码:" prop="password">
                         <el-input v-model="ruleForm.password" placeholder="请输入登录密码" show-password clearable @change='input_data'></el-input>
                     </el-form-item>
-                    <el-form-item label="确认密码:" prop="re_password">
+                    <el-form-item v-if="!$route.query.store_id" label="确认密码:" prop="re_password">
                         <el-input v-model="ruleForm.re_password" placeholder="请再次输入登录密码" show-password clearable @change='input_data'></el-input>
                     </el-form-item>
                     <el-form-item label="营业执照:" prop="image" style="margin-bottom: 56px;" v-if="add_data.type == 'business'">
@@ -115,7 +115,7 @@
                         />
                     </el-form-item>
                     <el-form-item label="详细地址:" prop="address">
-                        <el-input v-model="ruleForm.address" placeholder="请输入详细地址" clearable @change='input_data_address'></el-input>
+                        <el-input v-model="ruleForm.address" placeholder="请输入详细地址" clearable @input='input_data_address'></el-input>
                     </el-form-item>
                     <el-form-item label="地图位置:">
                         <baidu_map />
@@ -175,7 +175,7 @@
                 </div>
 
                 <el-form-item class="btn">
-                    <el-button type="primary" @click="add_submit" :loading="is_loading">提交</el-button>
+                    <el-button type="primary" @click="add_submit()" :loading="is_loading">提交</el-button>
                     <el-button @click="resetForm()">重置</el-button>
                 </el-form-item>
             </el-form>
@@ -234,6 +234,7 @@ export default class add extends Vue{
         close_time: '',
         club_facil: sessionStorage.getItem('add_form_data') ? JSON.parse(sessionStorage.getItem('add_form_data')).club_facil : [],
         shop_image: [],
+        shop_images: [],
         content: ''
     };
 
@@ -435,62 +436,6 @@ export default class add extends Vue{
         src: ''
     };
 
-    mounted () {
-        //获取所有的附加服务
-        if (this.add_data.type == "business" || this.add_data.type == "store") {
-            this.$store.dispatch("get_service").then( (res: any) => {
-                console.log("附加服务", res);
-                if (res.code == 0 || res.status == 1) {
-                    this.checkbox.all_serves = res.result;
-                }else {
-                    //获取失败提示
-                    this.$message({ message: res.msg, type: "error", duration: 2500 });
-                };
-            });
-        };
-        if (this.add_data.type == "store") {
-            //获取所有商家
-            this.$store.dispatch("get_all_business").then( (res: any) => {
-                console.log("所有商家", res);
-                if (res.code == 0 || res.status == 1) {
-                    this.all_business = res.result;
-                }else {
-                    //获取失败提示
-                    this.$message({ message: res.msg, type: "error", duration: 2500 });
-                };
-            });
-        };
-        if (this.add_data.type == "goods") {
-            //获取所有门店
-            this.$store.dispatch("get_all_store").then( (res: any) => {
-                console.log("所有门店", res);
-                if (res.code == 0 || res.status == 1) {
-                    this.all_store = res.result;
-                }else {
-                    //获取失败提示
-                    this.$message({ message: res.msg, type: "error", duration: 2500 });
-                };
-            });
-        };
-        if (sessionStorage.getItem('add_form_data')) {
-            this.ruleForm = JSON.parse(sessionStorage.getItem('add_form_data'));
-        };
-        //保存的营业执照
-        if (sessionStorage.getItem('show_license')) {
-            this.show_cropper.license = sessionStorage.getItem('show_license');
-            this.ruleForm.image = this.dataURLtoFile(this.show_cropper.license, "image");
-        };
-        //保存的门店图片
-        if (sessionStorage.getItem('show_store')) {
-            this.show_cropper.store = JSON.parse(sessionStorage.getItem('show_store'));
-            var length = this.show_cropper.store.length;
-            this.ruleForm.shop_image = [];
-            for (var i = 0; i < length; i++) {
-                this.ruleForm.shop_image.push(this.dataURLtoFile(this.show_cropper.store[i], "shop_image[]"));
-            };
-        };
-    };
-
     // 将base64的图片转换为File文件
     dataURLtoFile(dataurl, filename) {
         var arr = dataurl.split(','),
@@ -517,12 +462,12 @@ export default class add extends Vue{
     //     return new Blob([ab], { type: 'image/jpeg' });
     // };
 
-    //选择门店
+    //新增门店选择商家
     business_id_change (val) {
         this.ruleForm.store_id_02 = val;
         sessionStorage.setItem('add_form_data', JSON.stringify(this.ruleForm));
     };
-    //选择门店
+    //新增商品选择门店
     store_id_change (val) {
         this.ruleForm.store_id = val;
         sessionStorage.setItem('add_form_data', JSON.stringify(this.ruleForm));
@@ -537,7 +482,8 @@ export default class add extends Vue{
         sessionStorage.setItem('add_form_data', JSON.stringify(this.ruleForm));
     };
     //实时记录详情地址
-    input_data_address () {
+    input_data_address (value) {
+        this.ruleForm.address = value;
         this.$store.commit('change_map_data', this.ruleForm);
         sessionStorage.setItem('add_form_data', JSON.stringify(this.ruleForm));
     };
@@ -563,8 +509,17 @@ export default class add extends Vue{
         var that: any = this;
         that.$confirm('确定删除这张门店图片？', '提示', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then(() => {
             that.show_cropper.store.splice(index, 1);
-            that.ruleForm.shop_image.splice(index, 1);
             sessionStorage.setItem('show_store', JSON.stringify(that.show_cropper.store));
+            var length = that.show_cropper.store.length;
+            that.ruleForm.shop_image = [];
+            that.ruleForm.shop_images = [];
+            for (var i = 0; i < length; i++) {
+                if (that.show_cropper.store[i].indexOf('.jpg') != -1 || that.show_cropper.store[i].indexOf('.jpeg') != -1 || that.show_cropper.store[i].indexOf('.png') != -1) {
+                    that.ruleForm.shop_images.push(that.show_cropper.store[i]);
+                }else {
+                    that.ruleForm.shop_image.push(that.dataURLtoFile(that.show_cropper.store[i], "shop_image[]"));
+                };
+            };
         });
     };
 
@@ -588,6 +543,7 @@ export default class add extends Vue{
         ref.validate();
     };
     handleCheckedCitiesChange(value) {
+        
         var that: any = this;
         let checkedCount = value.length;
         this.checkbox.check_all = checkedCount === this.checkbox.all_serves.length;
@@ -605,10 +561,10 @@ export default class add extends Vue{
         var that: any = this;
         if (time) {
             this.ruleForm.business_time = time;
-            this.ruleForm.open_time = that.$moment(time[0]).format('HH:mm');
-            this.ruleForm.close_time = that.$moment(time[1]).format('HH:mm');
+            this.ruleForm.open_time = time[0];
+            this.ruleForm.close_time = time[1];
         }else {
-            this.ruleForm.business_time = '';
+            this.ruleForm.business_time = [];
             this.ruleForm.open_time = '';
             this.ruleForm.close_time = '';
             //验证
@@ -655,13 +611,13 @@ export default class add extends Vue{
             that.ruleForm.city = '';
             that.ruleForm.area = '';
             that.ruleForm.street = '';
-            that.ruleForm.business_time = '';
+            that.ruleForm.business_time = [];
             that.checkbox.checked = [];
             that.ruleForm.club_facil = [];
             that.ruleForm.shop_image = [];
             sessionStorage.removeItem('show_license');
             sessionStorage.removeItem('show_store');
-            sessionStorage.setItem('add_form_data', JSON.stringify(that.ruleForm));
+            sessionStorage.removeItem('add_form_data');
             ref.validate();
         });
     };
@@ -728,8 +684,15 @@ export default class add extends Vue{
             sessionStorage.setItem('show_store', JSON.stringify(that.show_cropper.store));
             that.ruleForm.shop_image.push(img);
             that.store_cropper_data.is_cropper = false;
-            if (that.ruleForm.shop_image.length == 5) {
-                that.$message({ message: '图片数量已达到上限，无法继续上传！', type: "info", duration: 2500 });
+            if (this.$route.query.store_id) {
+                var length = that.ruleForm.shop_images.length + that.ruleForm.shop_image.length;
+                if (length == 5) {
+                    that.$message({ message: '图片数量已达到上限，无法继续上传！', type: "info", duration: 2500 });
+                };
+            }else {
+                if (that.ruleForm.shop_image.length == 5) {
+                    that.$message({ message: '图片数量已达到上限，无法继续上传！', type: "info", duration: 2500 });
+                };
             };
         };
         //验证
@@ -737,18 +700,117 @@ export default class add extends Vue{
         ref.validate();
     };
 
-    //新增商家
+    created () {
+        //获取所有的附加服务
+        if (this.add_data.type == "business" || this.add_data.type == "store") {
+            this.$store.dispatch("get_service").then( (res: any) => {
+                console.log("附加服务", res);
+                if (res.code == 0 || res.status == 1) {
+                    this.checkbox.all_serves = res.result;
+                }else {
+                    //获取失败提示
+                    this.$message({ message: res.msg, type: "error", duration: 2500 });
+                };
+            });
+        };
+        if (this.add_data.type == "store") {
+            //获取所有商家
+            this.$store.dispatch("get_all_business").then( (res: any) => {
+                console.log("所有商家", res);
+                if (res.code == 0 || res.status == 1) {
+                    this.all_business = res.result;
+                }else {
+                    //获取失败提示
+                    this.$message({ message: res.msg, type: "error", duration: 2500 });
+                };
+            });
+        };
+        if (this.add_data.type == "goods") {
+            //获取所有门店
+            this.$store.dispatch("get_all_store").then( (res: any) => {
+                console.log("所有门店", res);
+                if (res.code == 0 || res.status == 1) {
+                    this.all_store = res.result;
+                }else {
+                    //获取失败提示
+                    this.$message({ message: res.msg, type: "error", duration: 2500 });
+                };
+            });
+        };
+
+        if (sessionStorage.getItem('add_form_data')) {
+            this.ruleForm = JSON.parse(sessionStorage.getItem('add_form_data'));
+            if (this.$route.query.store_id) {
+                //解析后端返回的营业时间
+                if (this.ruleForm.open_time.indexOf('-') != -1) {
+                    var time_arr = this.ruleForm.open_time.split('-');
+                    this.ruleForm.open_time = new Date('2019/06/06 ' + time_arr[0]).getTime();
+                    this.ruleForm.close_time = new Date('2019/06/06 ' + time_arr[1]).getTime();
+                    this.ruleForm.business_time = [];
+                    this.ruleForm.business_time.push(this.ruleForm.open_time);
+                    this.ruleForm.business_time.push(this.ruleForm.close_time);
+                };
+                //解析后端返回的附加服务
+                if (!this.ruleForm.club_facil.length) {
+                    var serves_arr = this.ruleForm.club_facil.split(',');
+                    var length01 = serves_arr.length;
+                    this.checkbox.checked = [];
+                    for (var i = 0; i < length01; i++) {
+                        this.checkbox.checked.push(parseInt(serves_arr[i]))
+                    };
+                    this.ruleForm.club_facil = this.checkbox.checked;
+                    sessionStorage.setItem('checkbox_checked', JSON.stringify(this.checkbox.checked));
+                };
+                //解析前端返回的门店图片
+                var length02 = this.ruleForm.shop_image.length;
+                this.show_cropper.store = [];
+                this.ruleForm.shop_images = this.ruleForm.shop_images ? this.ruleForm.shop_images : [];
+                for (var i = 0; i < length02; i++) {
+                    var bool = this.ruleForm.shop_image.length > 0 && (typeof this.ruleForm.shop_image[i] == 'string') && (this.ruleForm.shop_image[i].indexOf('.jpg') != -1 || this.ruleForm.shop_image[i].indexOf('.jpeg') != -1 || this.ruleForm.shop_image[i].indexOf('.png') != -1);
+                    if (bool) {
+                        this.ruleForm.shop_images.push(this.ruleForm.shop_image[i]);
+                        var src = this.$store.state.business.domain02 + this.ruleForm.shop_image[i];
+                        this.show_cropper.store.push(src);
+                        this.ruleForm.shop_image.shift();
+                    };
+                };
+                sessionStorage.setItem('show_store', JSON.stringify(this.show_cropper.store));
+            };
+        };
+
+        //保存的营业执照
+        if (sessionStorage.getItem('show_license')) {
+            this.show_cropper.license = sessionStorage.getItem('show_license');
+            this.ruleForm.image = this.dataURLtoFile(this.show_cropper.license, "image");
+        };
+        //保存的门店图片
+        if (sessionStorage.getItem('show_store')) {
+            this.show_cropper.store = JSON.parse(sessionStorage.getItem('show_store'));
+            var length = this.show_cropper.store.length;
+            this.ruleForm.shop_image = [];
+            this.ruleForm.shop_images = [];
+            for (var i = 0; i < length; i++) {
+                if (this.show_cropper.store[i].indexOf('.jpg') != -1 || this.show_cropper.store[i].indexOf('.jpeg') != -1 || this.show_cropper.store[i].indexOf('.png') != -1) {
+                    this.ruleForm.shop_images.push(this.show_cropper.store[i]);
+                }else {
+                    this.ruleForm.shop_image.push(this.dataURLtoFile(this.show_cropper.store[i], "shop_image[]"));
+                };
+            };
+        };
+    };
+
+    //新增
     add_submit() {
         //不这样定义any类型 typescript解释器就会报错
         let ref: any = this.$refs.ruleForm;
         ref.validate((valid: boolean) => {
             if (valid) {
-                this.ruleForm.open_time = !this.ruleForm.open_time ? "08:00" : this.ruleForm.open_time;
-                this.ruleForm.close_time = !this.ruleForm.close_time ? "23:00" : this.ruleForm.close_time;
+                this.ruleForm.open_time = !this.ruleForm.open_time ? "08:00" : this.$moment(this.ruleForm.open_time).format('HH:mm');
+                this.ruleForm.close_time = !this.ruleForm.close_time ? "23:00" : this.$moment(this.ruleForm.close_time).format('HH:mm');
                 var j_w = JSON.parse(sessionStorage.getItem('j_w'));
                 this.ruleForm.lat = j_w ? j_w.lat : '';
                 this.ruleForm.lng = j_w ? j_w.lng : '';
-                console.log("this.ruleForm", this.ruleForm);
+                console.log("ruleForm", this.ruleForm);
                 sessionStorage.setItem('add_form_data', JSON.stringify(this.ruleForm));
                 this.is_loading = true;
                 this.$emit('add_submit', this.ruleForm);

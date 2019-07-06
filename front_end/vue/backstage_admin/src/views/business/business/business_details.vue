@@ -10,7 +10,7 @@
                 </svg>
                 <span>门店列表</span>
             </p>
-            <table_page :table_data='table_data_store' @change_state='change_state' />
+            <table_page :table_data='table_data_store' @change_state='change_state' @look_up='look_up_store' @edit='edit_store' />
         </div>
         <!-- 商品列表 -->
         <div class="repeat_div">
@@ -20,7 +20,7 @@
                 </svg>
                 <span>商品列表</span>
             </p>
-            <table_page :table_data='table_data_goods' />
+            <table_page :table_data='table_data_goods' @look_up='look_up_goods' @edit='edit_goods' />
         </div>
     </div>
 </template>
@@ -154,6 +154,74 @@ export default class business_details extends Vue{
                 })
             });
         };
+    };
+
+    //编辑门店
+    edit_store (row: any) {
+        console.log(row);
+        sessionStorage.setItem('add_form_data', JSON.stringify(row));
+        this.$router.push({ path: '/business/store/add', query: { store_id: row.id } });
+    };
+    
+    //查看门店
+    look_up_store (row: any) {
+        this.$router.push({ path: '/business/store/list'} );
+    };
+
+    //编辑商品
+    edit_goods (row: any) {
+        if (sessionStorage.getItem('add_form_data')) {
+            var data = JSON.parse(sessionStorage.getItem('add_form_data'));
+            data.club_name = row.club_name;
+            data.cost_price = row.cost_price;
+            data.goods_id = row.goods_id;
+            data.goods_name = row.goods_name;
+            data.original_img = row.original_img;
+            data.sales_sum = row.sales_sum;
+            data.shop_price = row.shop_price;
+            data.store_id = row.store_id;
+            data.card_type = row.card_type;
+            data.card_info = row.card_info;
+        }else {
+            var data = {
+                goods_id: row.goods_id,
+                original_img: row.original_img,
+                goods_name: row.goods_name,
+                sales_sum: row.sales_sum,
+                shop_price: row.shop_price,
+                cost_price: row.cost_price,
+                card_type: row.card_type,
+                store_id: row.store_id,
+                card_info: row.card_info,
+                store_id_02: '',
+                realname: '',
+                mobile: '',
+                password: '',
+                re_password: '',
+                image: '',
+
+                club_name: row.club_name,
+                province: '',
+                city: '',
+                area: '',
+                street: '',
+                address: '',
+                tel: '',
+                business_time: [new Date(2019, 6, 6, 8), new Date(2019, 6, 6, 23)],
+                open_time: '',
+                close_time: '',
+                club_facil: sessionStorage.getItem('add_form_data') ? JSON.parse(sessionStorage.getItem('add_form_data')).club_facil : [],
+                shop_image: [],
+                content: ''
+            };
+        };
+        sessionStorage.setItem('add_form_data', JSON.stringify(data));
+        this.$router.push({ path: '/business/goods/add', query: { goods_id: row.goods_id } });
+    };
+
+    //查看商品
+    look_up_goods (row: any) {
+        this.$router.push({ path: '/business/goods/list'} );
     };
 
 }

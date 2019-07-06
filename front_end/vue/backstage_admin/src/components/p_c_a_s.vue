@@ -47,7 +47,14 @@ import pcas from '@/assets/plugin/pcas.js';
 })
 
 export default class p_c_a_s extends Vue{
-    @Prop () private form !: any;
+
+    //初始化
+    private form: any = {
+        province: '',
+        city: '',
+        area: '',
+        street: ''
+    };
 
     //省-市-区-街道数据
     private pcas: any = {
@@ -60,6 +67,34 @@ export default class p_c_a_s extends Vue{
     mounted () {
         //初始化省
         this.pcas.p = pcas;
+        if (sessionStorage.getItem('add_form_data')) {
+            this.form = JSON.parse(sessionStorage.getItem('add_form_data'));
+        };
+        if (this.form.province) {
+            var p_length = this.pcas.p.length;
+            for (var i = 0; i < p_length; i ++) {
+                //匹配省份
+                if (this.pcas.p[i].name == this.form.province) {
+                    this.pcas.c = this.pcas.p[i].children;
+                };
+            };
+        };
+        if (this.form.city) {
+            var c_length = this.pcas.c.length;
+            for (var i = 0; i < c_length; i ++) {
+                if (this.pcas.c[i].name == this.form.city) {
+                    this.pcas.a = this.pcas.c[i].children;
+                };
+            };
+        };
+        if (this.form.area) {
+            var a_length = this.pcas.a.length;
+            for (var i = 0; i < a_length; i ++) {
+                if (this.pcas.a[i].name == this.form.area) {
+                    this.pcas.s = this.pcas.a[i].children;
+                };
+            };
+        };
     };
     
     //改变省份 筛选市
