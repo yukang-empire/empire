@@ -220,6 +220,7 @@ export default class store_list extends Vue{
 
     //编辑门店
     edit (row: any) {
+        sessionStorage.removeItem('show_store');
         sessionStorage.setItem('add_form_data', JSON.stringify(row));
         this.$router.push({ path: '/business/store/add', query: { store_id: row.id } });
     };

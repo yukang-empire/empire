@@ -158,7 +158,7 @@ export default class business_details extends Vue{
 
     //编辑门店
     edit_store (row: any) {
-        console.log(row);
+        sessionStorage.removeItem('show_store');
         sessionStorage.setItem('add_form_data', JSON.stringify(row));
         this.$router.push({ path: '/business/store/add', query: { store_id: row.id } });
     };

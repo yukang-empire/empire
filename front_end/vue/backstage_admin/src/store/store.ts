@@ -26,7 +26,7 @@ const store = new Vuex.Store({
       state.map_data = data.province + data.city + data.area + data.street + data.address;
     },
     //进入页面 先发送路由给vuex 存到历史记录数组里 state参数别忘了写上
-    get_route (state, route) {
+    get_route (state, route ) {
       state.current_route = route;
       //检查历史记录里是否已经存在这个路由
       //some是遍历数组检查是否有满足条件的一个方法 注入函数和参数 一旦有一个满足条件 就直接返回true

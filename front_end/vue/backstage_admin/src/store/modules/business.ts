@@ -182,6 +182,7 @@ const home =  {
         //编辑门店
         edit_store (state: any, data: any) {
             var send_data: any = new FormData();
+            send_data.append("club_id", data.store_id_02);
             send_data.append("realname", data.realname);
             send_data.append("mobile", data.mobile);
             send_data.append("club_name", data.club_name);
@@ -207,7 +208,7 @@ const home =  {
             send_data.append("content", data.content);
             send_data.append("token", sessionStorage.getItem('token'));
             return new Promise((resolve, reject) => {
-                axios.post( state.state.domain02 + "", send_data).then( (res: any) => {
+                axios.post( state.state.domain02 + "/index.php?m=Api&c=User&a=upmaster_club", send_data).then( (res: any) => {
                     //返回数据给调起dispatch的那边
                     resolve(res);
                 }).catch( error => {

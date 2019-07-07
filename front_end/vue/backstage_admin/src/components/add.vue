@@ -207,6 +207,7 @@ import baidu_map from "@/components/baidu_map.vue";
 
 export default class add extends Vue{
     @Prop () private add_data !: any;
+
     //表单数据
     private ruleForm: any = {
         goods_name: '',
@@ -742,7 +743,7 @@ export default class add extends Vue{
             this.ruleForm = JSON.parse(sessionStorage.getItem('add_form_data'));
             if (this.$route.query.store_id) {
                 //解析后端返回的营业时间
-                if (this.ruleForm.open_time.indexOf('-') != -1) {
+                if (typeof this.ruleForm.open_time == "string" && this.ruleForm.open_time.indexOf('-') != -1) {
                     var time_arr = this.ruleForm.open_time.split('-');
                     this.ruleForm.open_time = new Date('2019/06/06 ' + time_arr[0]).getTime();
                     this.ruleForm.close_time = new Date('2019/06/06 ' + time_arr[1]).getTime();
@@ -751,7 +752,7 @@ export default class add extends Vue{
                     this.ruleForm.business_time.push(this.ruleForm.close_time);
                 };
                 //解析后端返回的附加服务
-                if (!this.ruleForm.club_facil.length) {
+                if (typeof this.ruleForm.club_facil == "string") {
                     var serves_arr = this.ruleForm.club_facil.split(',');
                     var length01 = serves_arr.length;
                     this.checkbox.checked = [];
@@ -760,17 +761,30 @@ export default class add extends Vue{
                     };
                     this.ruleForm.club_facil = this.checkbox.checked;
                     sessionStorage.setItem('checkbox_checked', JSON.stringify(this.checkbox.checked));
+                }else {
+                    this.checkbox.checked = this.ruleForm.club_facil;
                 };
                 //解析前端返回的门店图片
                 var length02 = this.ruleForm.shop_image.length;
-                this.show_cropper.store = [];
+                this.show_cropper.store = sessionStorage.getItem('show_store') ? JSON.parse(sessionStorage.getItem('show_store')) : [];
                 this.ruleForm.shop_images = this.ruleForm.shop_images ? this.ruleForm.shop_images : [];
                 for (var i = 0; i < length02; i++) {
                     var bool = this.ruleForm.shop_image.length > 0 && (typeof this.ruleForm.shop_image[i] == 'string') && (this.ruleForm.shop_image[i].indexOf('.jpg') != -1 || this.ruleForm.shop_image[i].indexOf('.jpeg') != -1 || this.ruleForm.shop_image[i].indexOf('.png') != -1);
                     if (bool) {
                         this.ruleForm.shop_images.push(this.ruleForm.shop_image[i]);
-                        var src = this.$store.state.business.domain02 + this.ruleForm.shop_image[i];
-                        this.show_cropper.store.push(src);
+                        // var src = this.$store.state.business.domain02 + this.ruleForm.shop_image[i];
+                        var src = this.ruleForm.shop_image[i];
+                        if (this.show_cropper.store.length == 0) {
+                            this.show_cropper.store.push(src);
+                        }else {
+                            //如果没有这张图片 才添加
+                            var is_add = this.show_cropper.store.every((item) => {
+                                return item != src;
+                            });
+                            if (is_add) {
+                                this.show_cropper.store.push(src);
+                            };
+                        };
                         this.ruleForm.shop_image.shift();
                     };
                 };
@@ -798,7 +812,7 @@ export default class add extends Vue{
             };
         };
     };
-
+    
     //新增
     add_submit() {
         //不这样定义any类型 typescript解释器就会报错
@@ -810,6 +824,7 @@ export default class add extends Vue{
                 var j_w = JSON.parse(sessionStorage.getItem('j_w'));
                 this.ruleForm.lat = j_w ? j_w.lat : '';
                 this.ruleForm.lng = j_w ? j_w.lng : '';
+                this.ruleForm.store_id_02 = this.$route.query.store_id ? this.$route.query.store_id : '';
                 console.log("ruleForm", this.ruleForm);
                 sessionStorage.setItem('add_form_data', JSON.stringify(this.ruleForm));
                 this.is_loading = true;
