@@ -1,5 +1,5 @@
 <template>
-    <div class="cash_out_list">
+    <div class="finance_order_list">
         <div class="repeat_div">
             <p>
                 <svg class="icon" aria-hidden="true">
@@ -27,9 +27,6 @@
                     </svg>
                     <span>{{ $store.state.current_route ? $store.state.current_route.meta.title : "列表数据" }}</span>
                 </span>
-                <span class="add_btn">
-                    <el-button size="medium" type="primary" icon="el-icon-setting" @click='dialog_cash_out.is_dialog=true'>设置提现规则</el-button>
-                </span>
             </p>
             <!-- 表格和页码 -->
             <table_page 
@@ -38,7 +35,7 @@
             @change_page_size='change_page_size'
             @look_up='look_up'
             />
-            <p class="total">合计金额：<span>¥{{ 8888.00 }}元</span></p>
+            <p class="total">订单收入合计金额：<span>¥{{ 8888.00 }}元</span> &nbsp;&nbsp;&nbsp;&nbsp;平台收入金额：<span>¥{{ 8888.00 }}元</span></p>
             
         </div>
 
@@ -61,7 +58,7 @@ import dialog_form from "@/components/dialog_form.vue";
     }
 })
 
-export default class cash_out_list extends Vue{
+export default class finance_order_list extends Vue{
     //设置提现规则
     private dialog_cash_out: any = {
         type: 'cash_out',
@@ -88,7 +85,7 @@ export default class cash_out_list extends Vue{
         //表格
         table: {
             //属于哪个表格
-            which: 'cash_out_list',
+            which: 'finance_service_list',
             //是否多选
             checkbox: true,
             //是否固定表头
@@ -101,9 +98,9 @@ export default class cash_out_list extends Vue{
             //是否显示页码
             is_page: true,
             //当前页码
-            current_page: sessionStorage.getItem("cash_out_list_p") ? parseInt(sessionStorage.getItem("cash_out_list_p")) : 1,
+            current_page: sessionStorage.getItem("finance_order_list_p") ? parseInt(sessionStorage.getItem("finance_order_list_p")) : 1,
             //每页显示的数量
-            size: sessionStorage.getItem("cash_out_list_size") ? parseInt(sessionStorage.getItem("cash_out_list_size")) : 10,
+            size: sessionStorage.getItem("finance_order_list_size") ? parseInt(sessionStorage.getItem("finance_order_list_size")) : 10,
             sizes: [10, 15, 20],
             //总数量
             total: 0,
@@ -111,35 +108,35 @@ export default class cash_out_list extends Vue{
     };
     //请求列表数据的参数
     private send_data: any = {
-        p: sessionStorage.getItem("cash_out_list_p") ? sessionStorage.getItem("cash_out_list_p") : 1,
-        size: sessionStorage.getItem("cash_out_list_size") ? sessionStorage.getItem("cash_out_list_size") : 10,
-        search: sessionStorage.getItem("cash_out_list_search") ? sessionStorage.getItem("cash_out_list_search") : "",
-        start_time: sessionStorage.getItem("cash_out_list_start_time") ? sessionStorage.getItem("cash_out_list_start_time") : "",
-        end_time: sessionStorage.getItem("cash_out_list_end_time") ? sessionStorage.getItem("cash_out_list_end_time") : "",
+        p: sessionStorage.getItem("finance_order_list_p") ? sessionStorage.getItem("finance_order_list_p") : 1,
+        size: sessionStorage.getItem("finance_order_list_size") ? sessionStorage.getItem("finance_order_list_size") : 10,
+        search: sessionStorage.getItem("finance_order_list_search") ? sessionStorage.getItem("finance_order_list_search") : "",
+        start_time: sessionStorage.getItem("finance_order_list_start_time") ? sessionStorage.getItem("finance_order_list_start_time") : "",
+        end_time: sessionStorage.getItem("finance_order_list_end_time") ? sessionStorage.getItem("finance_order_list_end_time") : "",
         all_state: [
             {state: 0, name: "全部"},
             {state: 1, name: "待打款"},
             {state: 2, name: "已打款"},
         ],
-        current_state: sessionStorage.getItem("cash_out_list_state") ? parseInt(sessionStorage.getItem("cash_out_list_state")) : 0,
+        current_state: sessionStorage.getItem("finance_order_list_state") ? parseInt(sessionStorage.getItem("finance_order_list_state")) : 0,
     };
     //需要展示的筛选功能
     private show_filter: any = {
         is_type: "domain02",
-        is_search: true,
+        is_search: false,
         placeholder: "请输入提现人、手机号(全部)",
         show_time: true,
-        time_name: '申请日期',
-        is_state: true
+        time_name: '日期',
+        is_state: false
     };
 
     mounted () {
-        this.cash_out_list();
+        this.finance_order_list();
     };
     
     //请求提现列表数据
-    cash_out_list () {
-        this.$store.dispatch("cash_out_list", this.send_data).then( (res: any) => {
+    finance_order_list () {
+        this.$store.dispatch("finance_order_list", this.send_data).then( (res: any) => {
             console.log("商家列表", res);
             if (res.code == 0 || res.status == 1) {
                 this.table_data.table.lists = res.result;
@@ -181,10 +178,10 @@ export default class cash_out_list extends Vue{
         //页码不重置为1的话 有可能请求不到数据
         this.table_data.page.current_page = 1;
         this.send_data.p = 1;
-        sessionStorage.setItem("cash_out_list_p", "1");
+        sessionStorage.setItem("finance_order_list_p", "1");
         this.send_data.current_state = val;
-        sessionStorage.setItem("cash_out_list_state", val);
-        this.cash_out_list();
+        sessionStorage.setItem("finance_order_list_state", val);
+        this.finance_order_list();
     };
 
     //搜索
@@ -192,17 +189,17 @@ export default class cash_out_list extends Vue{
         //页码不重置为1的话 有可能请求不到数据
         this.table_data.page.current_page = 1;
         this.send_data.p = 1;
-        sessionStorage.setItem("cash_out_list_p", "1");
+        sessionStorage.setItem("finance_order_list_p", "1");
         this.send_data.search = val;
-        sessionStorage.setItem("cash_out_list_search", val);
-        this.cash_out_list();
+        sessionStorage.setItem("finance_order_list_search", val);
+        this.finance_order_list();
     };
 
     //清空搜索内容
     clear_search () {
         this.send_data.search = '';
-        sessionStorage.setItem("cash_out_list_search", "");
-        this.cash_out_list();
+        sessionStorage.setItem("finance_order_list_search", "");
+        this.finance_order_list();
     };
 
     //筛选时间
@@ -210,13 +207,13 @@ export default class cash_out_list extends Vue{
         //页码不重置为1的话 有可能请求不到数据
         this.table_data.page.current_page = 1;
         this.send_data.p = 1;
-        sessionStorage.setItem("cash_out_list_p", "1");
+        sessionStorage.setItem("finance_order_list_p", "1");
         var that: any = this;
         this.send_data.start_time = val[0] ? that.$moment(val[0]).valueOf() / 1000 : "",
         this.send_data.end_time = val[1] ? that.$moment(val[1]).valueOf() / 1000 : "",
-        sessionStorage.setItem("cash_out_list_start_time", this.send_data.start_time);
-        sessionStorage.setItem("cash_out_list_end_time", this.send_data.end_time);
-        this.cash_out_list();
+        sessionStorage.setItem("finance_order_list_start_time", this.send_data.start_time);
+        sessionStorage.setItem("finance_order_list_end_time", this.send_data.end_time);
+        this.finance_order_list();
     };
 
     //清空时间
@@ -224,30 +221,30 @@ export default class cash_out_list extends Vue{
         var that: any = this;
         this.send_data.start_time = "",
         this.send_data.end_time = "",
-        sessionStorage.setItem("cash_out_list_start_time", this.send_data.start_time);
-        sessionStorage.setItem("cash_out_list_end_time", this.send_data.end_time);
-        this.cash_out_list();
+        sessionStorage.setItem("finance_order_list_start_time", this.send_data.start_time);
+        sessionStorage.setItem("finance_order_list_end_time", this.send_data.end_time);
+        this.finance_order_list();
     };
     
     //改变页码
     change_page(val: any) {
         this.table_data.page.current_page = val;
         this.send_data.p = val;
-        sessionStorage.setItem("cash_out_list_p", val);
-        this.cash_out_list();
+        sessionStorage.setItem("finance_order_list_p", val);
+        this.finance_order_list();
     };
 
     //改变每页的条数
     change_page_size(val: any) {
         this.table_data.page.size = val;
         this.send_data.size = val;
-        sessionStorage.setItem("cash_out_list_size", val);
-        this.cash_out_list();
+        sessionStorage.setItem("finance_order_list_size", val);
+        this.finance_order_list();
     };
 
     //查看
     look_up (row: any) {
-        this.$router.push({ path: '/order/service/details', query: { club_id: row.id } });
+        this.$router.push({ path: '/finance/order/details', query: { club_id: row.id } });
     };
 }
 

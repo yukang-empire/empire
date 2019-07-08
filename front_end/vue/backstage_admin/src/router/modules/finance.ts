@@ -53,7 +53,7 @@ const finance = {
             name: 'finance_order_details',
             component: () => import('@/views/finance/order/order_details.vue'),
             meta: {
-                title: '订单明细',
+                title: '服务订单明细',
                 hidden: true
             }
         },
