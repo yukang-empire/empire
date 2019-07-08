@@ -13,7 +13,7 @@
             </p>
             <div class="info">
                 <ul class="flex_between" v-if='base_info_type == "user"'>
-                    <li><img class="head_img" :src="base_info.image" alt="head_img"></li>
+                    <li><img class="head_img" :src="base_info.head_pic" alt="head_img"></li>
                     <li>
                         <p><span>昵称：</span><i>{{ base_info.nickname }}</i></p>
                         <p><span>生日：</span><i>{{ base_info.birthday }}</i></p>

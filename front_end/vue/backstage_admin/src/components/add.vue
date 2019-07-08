@@ -103,7 +103,7 @@
                         <el-input v-model="ruleForm.club_name" placeholder="请输入门店名称" clearable maxlength="32" show-word-limit @change='input_data'></el-input>
                     </el-form-item>
                     <el-form-item label="门店电话:" prop="tel">
-                        <el-input type='number' v-model="ruleForm.tel" placeholder="请输入门店电话" clearable @change='input_data'></el-input>
+                        <el-input v-model="ruleForm.tel" placeholder="请输入门店电话" clearable @change='input_data'></el-input>
                     </el-form-item>
                     <el-form-item label="所在地区:" prop="p_c_a_s_rule">
                         <p_c_a_s
@@ -774,8 +774,8 @@ export default class add extends Vue{
                     var bool = init_img.length > 0 && (typeof init_img[i] == 'string') && (init_img[i].indexOf('.jpg') != -1 || init_img[i].indexOf('.jpeg') != -1 || init_img[i].indexOf('.png') != -1);
                     if (bool) {
                         this.ruleForm.shop_images.push(init_img[i]);
-                        var src = this.$store.state.business.domain02 + init_img[i];
-                        // var src = init_img[i];
+                        // var src = this.$store.state.business.domain02 + init_img[i];
+                        var src = init_img[i];
                         if (this.show_cropper.store.length == 0) {
                             this.show_cropper.store.push(src);
                         }else {
@@ -791,12 +791,13 @@ export default class add extends Vue{
                 };
                 this.ruleForm.shop_image = [];
                 sessionStorage.setItem('show_store', JSON.stringify(this.show_cropper.store));
+                sessionStorage.setItem('add_form_data', JSON.stringify(this.ruleForm));
             }else {
                 //保存的营业执照
                 this.ruleForm.image = sessionStorage.getItem('show_license') ? this.dataURLtoFile(sessionStorage.getItem('show_license'), "image") : '';
+                this.show_cropper.license = sessionStorage.getItem('show_license') || '';
                 //保存的门店图片
                 this.show_cropper.store = sessionStorage.getItem('show_store') ? JSON.parse(sessionStorage.getItem('show_store')) : [];
-                console.log(this.show_cropper.store);
                 var length = this.show_cropper.store.length;
                 this.ruleForm.shop_image = [];
                 for (var i = 0; i < length; i++) {
@@ -812,8 +813,10 @@ export default class add extends Vue{
         let ref: any = this.$refs.ruleForm;
         ref.validate((valid: boolean) => {
             if (valid) {
-                this.ruleForm.open_time = !this.ruleForm.open_time ? "08:00" : this.$moment(this.ruleForm.open_time).format('HH:mm');
-                this.ruleForm.close_time = !this.ruleForm.close_time ? "23:00" : this.$moment(this.ruleForm.close_time).format('HH:mm');
+                var open_time = this.ruleForm.open_time;
+                var close_time = this.ruleForm.close_time;
+                this.ruleForm.open_time = !open_time ? "08:00" : this.$moment(open_time).format('HH:mm');
+                this.ruleForm.close_time = !close_time ? "23:00" : this.$moment(close_time).format('HH:mm');
                 var j_w = JSON.parse(sessionStorage.getItem('j_w'));
                 this.ruleForm.lat = j_w ? j_w.lat : '';
                 this.ruleForm.lng = j_w ? j_w.lng : '';
