@@ -10,6 +10,8 @@ import store from "./store/store";
 //离线缓存相关
 import "./registerServiceWorker";
 
+Vue.config.productionTip = false;
+
 //element-ui
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
@@ -24,7 +26,13 @@ Vue.prototype.$moment= moment;
 import '@/assets/style/base.css';
 // import '@/assets/style/iconfont.js';
 
-Vue.config.productionTip = false;
+//组件的路由钩子函数
+import { Component } from 'vue-property-decorator';
+Component.registerHooks([
+  'beforeRouteEnter',
+  'beforeRouteLeave',
+  'beforeRouteUpdate',
+]);
 
 new Vue({
   router,

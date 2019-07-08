@@ -26,6 +26,22 @@ export default class business_add extends Vue{
         
     };
 
+    beforeRouteLeave (to: any, from: any, next: () => void): void {
+        if (sessionStorage.getItem('add_form_data')) {
+            this.$confirm("表单数据将会被全部清空，是否继续离开？", "提示", { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then( () => {
+                sessionStorage.removeItem('show_license');
+                sessionStorage.removeItem('show_store');
+                sessionStorage.removeItem('checkbox_checked');
+                sessionStorage.removeItem('add_form_data');
+                next();
+            }).catch(() => {
+                next(false);
+            });
+        }else {
+            next();
+        };
+    };
+
     //新增商家
     add_business (ruleForm) {
         this.$store.dispatch("add_business", ruleForm).then( (res: any) => {

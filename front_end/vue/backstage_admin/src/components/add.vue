@@ -182,7 +182,7 @@
 
             <!-- 图片放大 -->
             <el-dialog class="enlarge_img" title="查看门店环境图片" :visible.sync="dialog_img.is_enlarge" width="800px" center>
-                <img :src="dialog_img.src" alt="logo">
+                <img :src="dialog_img.src" alt="img">
             </el-dialog>
         </div>
     </div>
@@ -207,7 +207,7 @@ import baidu_map from "@/components/baidu_map.vue";
 
 export default class add extends Vue{
     @Prop () private add_data !: any;
-
+    
     //表单数据
     private ruleForm: any = {
         goods_name: '',
@@ -695,6 +695,7 @@ export default class add extends Vue{
                     that.$message({ message: '图片数量已达到上限，无法继续上传！', type: "info", duration: 2500 });
                 };
             };
+            sessionStorage.setItem('add_form_data', JSON.stringify(that.ruleForm));
         };
         //验证
         let ref: any = this.$refs.ruleForm;
@@ -765,15 +766,16 @@ export default class add extends Vue{
                     this.checkbox.checked = this.ruleForm.club_facil;
                 };
                 //解析前端返回的门店图片
-                var length02 = this.ruleForm.shop_image.length;
+                var init_img = this.ruleForm.shop_image;
+                var length02 = init_img.length;
                 this.show_cropper.store = sessionStorage.getItem('show_store') ? JSON.parse(sessionStorage.getItem('show_store')) : [];
                 this.ruleForm.shop_images = this.ruleForm.shop_images ? this.ruleForm.shop_images : [];
                 for (var i = 0; i < length02; i++) {
-                    var bool = this.ruleForm.shop_image.length > 0 && (typeof this.ruleForm.shop_image[i] == 'string') && (this.ruleForm.shop_image[i].indexOf('.jpg') != -1 || this.ruleForm.shop_image[i].indexOf('.jpeg') != -1 || this.ruleForm.shop_image[i].indexOf('.png') != -1);
+                    var bool = init_img.length > 0 && (typeof init_img[i] == 'string') && (init_img[i].indexOf('.jpg') != -1 || init_img[i].indexOf('.jpeg') != -1 || init_img[i].indexOf('.png') != -1);
                     if (bool) {
-                        this.ruleForm.shop_images.push(this.ruleForm.shop_image[i]);
-                        // var src = this.$store.state.business.domain02 + this.ruleForm.shop_image[i];
-                        var src = this.ruleForm.shop_image[i];
+                        this.ruleForm.shop_images.push(init_img[i]);
+                        var src = this.$store.state.business.domain02 + init_img[i];
+                        // var src = init_img[i];
                         if (this.show_cropper.store.length == 0) {
                             this.show_cropper.store.push(src);
                         }else {
@@ -785,34 +787,25 @@ export default class add extends Vue{
                                 this.show_cropper.store.push(src);
                             };
                         };
-                        this.ruleForm.shop_image.shift();
                     };
                 };
+                this.ruleForm.shop_image = [];
                 sessionStorage.setItem('show_store', JSON.stringify(this.show_cropper.store));
-            };
-        };
-
-        //保存的营业执照
-        if (sessionStorage.getItem('show_license')) {
-            this.show_cropper.license = sessionStorage.getItem('show_license');
-            this.ruleForm.image = this.dataURLtoFile(this.show_cropper.license, "image");
-        };
-        //保存的门店图片
-        if (sessionStorage.getItem('show_store')) {
-            this.show_cropper.store = JSON.parse(sessionStorage.getItem('show_store'));
-            var length = this.show_cropper.store.length;
-            this.ruleForm.shop_image = [];
-            this.ruleForm.shop_images = [];
-            for (var i = 0; i < length; i++) {
-                if (this.show_cropper.store[i].indexOf('.jpg') != -1 || this.show_cropper.store[i].indexOf('.jpeg') != -1 || this.show_cropper.store[i].indexOf('.png') != -1) {
-                    this.ruleForm.shop_images.push(this.show_cropper.store[i]);
-                }else {
+            }else {
+                //保存的营业执照
+                this.ruleForm.image = sessionStorage.getItem('show_license') ? this.dataURLtoFile(sessionStorage.getItem('show_license'), "image") : '';
+                //保存的门店图片
+                this.show_cropper.store = sessionStorage.getItem('show_store') ? JSON.parse(sessionStorage.getItem('show_store')) : [];
+                console.log(this.show_cropper.store);
+                var length = this.show_cropper.store.length;
+                this.ruleForm.shop_image = [];
+                for (var i = 0; i < length; i++) {
                     this.ruleForm.shop_image.push(this.dataURLtoFile(this.show_cropper.store[i], "shop_image[]"));
                 };
             };
         };
     };
-    
+
     //新增
     add_submit() {
         //不这样定义any类型 typescript解释器就会报错

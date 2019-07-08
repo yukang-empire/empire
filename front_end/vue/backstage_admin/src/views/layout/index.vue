@@ -320,7 +320,7 @@ export default class layout extends Vue{
                 }
             }
             .el-select {
-                margin-right: 20px;
+                margin: 8px 20px 0px 0;
             }
             .el-checkbox {
                 margin-right: 10px;

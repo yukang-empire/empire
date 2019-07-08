@@ -84,7 +84,6 @@ export default class store_details extends Vue{
             data.cost_price = row.cost_price;
             data.goods_id = row.goods_id;
             data.goods_name = row.goods_name;
-            data.original_img = row.original_img;
             data.sales_sum = row.sales_sum;
             data.shop_price = row.shop_price;
             data.store_id = row.store_id;
@@ -93,7 +92,6 @@ export default class store_details extends Vue{
         }else {
             var data = {
                 goods_id: row.goods_id,
-                original_img: row.original_img,
                 goods_name: row.goods_name,
                 sales_sum: row.sales_sum,
                 shop_price: row.shop_price,
@@ -101,26 +99,7 @@ export default class store_details extends Vue{
                 card_type: row.card_type,
                 store_id: row.store_id,
                 card_info: row.card_info,
-                store_id_02: '',
-                realname: '',
-                mobile: '',
-                password: '',
-                re_password: '',
-                image: '',
-
                 club_name: row.club_name,
-                province: '',
-                city: '',
-                area: '',
-                street: '',
-                address: '',
-                tel: '',
-                business_time: [new Date(2019, 6, 6, 8), new Date(2019, 6, 6, 23)],
-                open_time: '',
-                close_time: '',
-                club_facil: sessionStorage.getItem('add_form_data') ? JSON.parse(sessionStorage.getItem('add_form_data')).club_facil : [],
-                shop_image: [],
-                content: ''
             };
         };
         sessionStorage.setItem('add_form_data', JSON.stringify(data));
@@ -129,7 +108,7 @@ export default class store_details extends Vue{
 
     //查看商品
     look_up_goods (row: any) {
-        this.$router.push({ path: '/business/goods/list'} );
+        this.$router.push({ path: '/business/goods/details', query: { goods_id: row.goods_id } });
     };
 }
 
