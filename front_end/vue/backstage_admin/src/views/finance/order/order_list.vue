@@ -1,5 +1,5 @@
 <template>
-    <div class="finance_order_list">
+    <div class="finance_service_list">
         <div class="repeat_div">
             <p>
                 <svg class="icon" aria-hidden="true">
@@ -15,7 +15,6 @@
             @clear_search="clear_search"
             @change_time='change_time'
             @clear_time="clear_time"
-            @state_change="state_change"
             />
         </div>
 
@@ -35,12 +34,10 @@
             @change_page_size='change_page_size'
             @look_up='look_up'
             />
-            <p class="total">订单收入合计金额：<span>¥{{ 8888.00 }}元</span> &nbsp;&nbsp;&nbsp;&nbsp;平台收入金额：<span>¥{{ 8888.00 }}元</span></p>
+            <p class="total">合计金额：<span>¥{{ 8888.00 }}元</span></p>
             
         </div>
 
-        <!-- 设置提现规则 -->
-        <dialog_form :dialog_data='dialog_cash_out' @sure='set_cash_out_rule' />
     </div>
 </template>
 
@@ -48,38 +45,14 @@
 import { Vue, Component } from "vue-property-decorator";
 import list_filter from "@/components/list_filter.vue";
 import table_page from "@/components/table_page.vue";
-import dialog_form from "@/components/dialog_form.vue";
-
 @Component({
     components: {
         list_filter,
         table_page,
-        dialog_form
     }
 })
 
-export default class finance_order_list extends Vue{
-    //设置提现规则
-    private dialog_cash_out: any = {
-        type: 'cash_out',
-        is_dialog: false,
-        title: '设置提现规则',
-        sure_name: '确定设置',
-        //表单数据
-        form_data: {
-            min_all_cash: '',
-            min_cash: '',
-        },
-        //表单规则
-        form_rules: {
-            min_all_cash: [
-                { required: true, message: '请输入最低提现总金额', trigger: 'blur' },
-            ],
-            min_cash: [
-                { required: true, message: '请输入最低提现金额', trigger: 'blur' },
-            ]
-        }
-    };
+export default class finance_service_list extends Vue{
     //表格、页码数据
     private table_data: any = {
         //表格
@@ -98,9 +71,9 @@ export default class finance_order_list extends Vue{
             //是否显示页码
             is_page: true,
             //当前页码
-            current_page: sessionStorage.getItem("finance_order_list_p") ? parseInt(sessionStorage.getItem("finance_order_list_p")) : 1,
+            current_page: sessionStorage.getItem("finance_service_list_p") ? parseInt(sessionStorage.getItem("finance_service_list_p")) : 1,
             //每页显示的数量
-            size: sessionStorage.getItem("finance_order_list_size") ? parseInt(sessionStorage.getItem("finance_order_list_size")) : 10,
+            size: sessionStorage.getItem("finance_service_list_size") ? parseInt(sessionStorage.getItem("finance_service_list_size")) : 10,
             sizes: [10, 15, 20],
             //总数量
             total: 0,
@@ -108,35 +81,29 @@ export default class finance_order_list extends Vue{
     };
     //请求列表数据的参数
     private send_data: any = {
-        p: sessionStorage.getItem("finance_order_list_p") ? sessionStorage.getItem("finance_order_list_p") : 1,
-        size: sessionStorage.getItem("finance_order_list_size") ? sessionStorage.getItem("finance_order_list_size") : 10,
-        search: sessionStorage.getItem("finance_order_list_search") ? sessionStorage.getItem("finance_order_list_search") : "",
-        start_time: sessionStorage.getItem("finance_order_list_start_time") ? sessionStorage.getItem("finance_order_list_start_time") : "",
-        end_time: sessionStorage.getItem("finance_order_list_end_time") ? sessionStorage.getItem("finance_order_list_end_time") : "",
-        all_state: [
-            {state: 0, name: "全部"},
-            {state: 1, name: "待打款"},
-            {state: 2, name: "已打款"},
-        ],
-        current_state: sessionStorage.getItem("finance_order_list_state") ? parseInt(sessionStorage.getItem("finance_order_list_state")) : 0,
+        p: sessionStorage.getItem("finance_service_list_p") ? sessionStorage.getItem("finance_service_list_p") : 1,
+        size: sessionStorage.getItem("finance_service_list_size") ? sessionStorage.getItem("finance_service_list_size") : 10,
+        search: sessionStorage.getItem("finance_service_list_search") ? sessionStorage.getItem("finance_service_list_search") : "",
+        start_time: sessionStorage.getItem("finance_service_list_start_time") ? sessionStorage.getItem("finance_service_list_start_time") : "",
+        end_time: sessionStorage.getItem("finance_service_list_end_time") ? sessionStorage.getItem("finance_service_list_end_time") : ""
     };
     //需要展示的筛选功能
     private show_filter: any = {
         is_type: "domain02",
         is_search: false,
-        placeholder: "请输入提现人、手机号(全部)",
+        placeholder: "请输入手机号(全部)",
         show_time: true,
         time_name: '日期',
         is_state: false
     };
 
     mounted () {
-        this.finance_order_list();
+        this.finance_service_list();
     };
     
-    //请求提现列表数据
-    finance_order_list () {
-        this.$store.dispatch("finance_order_list", this.send_data).then( (res: any) => {
+    //请求列表数据
+    finance_service_list () {
+        this.$store.dispatch("finance_service_list", this.send_data).then( (res: any) => {
             console.log("商家列表", res);
             if (res.code == 0 || res.status == 1) {
                 this.table_data.table.lists = res.result;
@@ -148,8 +115,6 @@ export default class finance_order_list extends Vue{
                     //typescript语法严格 不声明会报错
                     var that: any = this;
                     lists[i].add_time = lists[i].add_time == 0 ? "" : that.$moment(lists[i].add_time * 1000).format('YYYY-MM-DD HH:mm:ss');
-                    //拼接省市区
-                    lists[i].address = lists[i].province + lists[i].city + lists[i].area;
                 };
                 this.table_data.page.total = parseInt(res.count);
             }else {
@@ -159,47 +124,22 @@ export default class finance_order_list extends Vue{
         });
     };
 
-    //设置提现规则
-    set_cash_out_rule (type: any, data: any) {
-        this.$store.dispatch("set_cash_out_rule", data).then( (res: any) => {
-            console.log("设置提现规则", res);
-            if (res.code == 0 || res.status == 1) {
-
-                this.$message({ message: "设置规则成功！", type: "success", duration: 2500 });
-            }else {
-                //请求失败提示
-                this.$message({ message: res.msg, type: "error", duration: 2500 });
-            };
-        });
-    };
-
-    //改变状态 重新获取列表数据
-    state_change (val) {
-        //页码不重置为1的话 有可能请求不到数据
-        this.table_data.page.current_page = 1;
-        this.send_data.p = 1;
-        sessionStorage.setItem("finance_order_list_p", "1");
-        this.send_data.current_state = val;
-        sessionStorage.setItem("finance_order_list_state", val);
-        this.finance_order_list();
-    };
-
     //搜索
     search (val: any) {
         //页码不重置为1的话 有可能请求不到数据
         this.table_data.page.current_page = 1;
         this.send_data.p = 1;
-        sessionStorage.setItem("finance_order_list_p", "1");
+        sessionStorage.setItem("finance_service_list_p", "1");
         this.send_data.search = val;
-        sessionStorage.setItem("finance_order_list_search", val);
-        this.finance_order_list();
+        sessionStorage.setItem("finance_service_list_search", val);
+        this.finance_service_list();
     };
 
     //清空搜索内容
     clear_search () {
         this.send_data.search = '';
-        sessionStorage.setItem("finance_order_list_search", "");
-        this.finance_order_list();
+        sessionStorage.setItem("finance_service_list_search", "");
+        this.finance_service_list();
     };
 
     //筛选时间
@@ -207,13 +147,13 @@ export default class finance_order_list extends Vue{
         //页码不重置为1的话 有可能请求不到数据
         this.table_data.page.current_page = 1;
         this.send_data.p = 1;
-        sessionStorage.setItem("finance_order_list_p", "1");
+        sessionStorage.setItem("finance_service_list_p", "1");
         var that: any = this;
         this.send_data.start_time = val[0] ? that.$moment(val[0]).valueOf() / 1000 : "",
         this.send_data.end_time = val[1] ? that.$moment(val[1]).valueOf() / 1000 : "",
-        sessionStorage.setItem("finance_order_list_start_time", this.send_data.start_time);
-        sessionStorage.setItem("finance_order_list_end_time", this.send_data.end_time);
-        this.finance_order_list();
+        sessionStorage.setItem("finance_service_list_start_time", this.send_data.start_time);
+        sessionStorage.setItem("finance_service_list_end_time", this.send_data.end_time);
+        this.finance_service_list();
     };
 
     //清空时间
@@ -221,25 +161,25 @@ export default class finance_order_list extends Vue{
         var that: any = this;
         this.send_data.start_time = "",
         this.send_data.end_time = "",
-        sessionStorage.setItem("finance_order_list_start_time", this.send_data.start_time);
-        sessionStorage.setItem("finance_order_list_end_time", this.send_data.end_time);
-        this.finance_order_list();
+        sessionStorage.setItem("finance_service_list_start_time", this.send_data.start_time);
+        sessionStorage.setItem("finance_service_list_end_time", this.send_data.end_time);
+        this.finance_service_list();
     };
     
     //改变页码
     change_page(val: any) {
         this.table_data.page.current_page = val;
         this.send_data.p = val;
-        sessionStorage.setItem("finance_order_list_p", val);
-        this.finance_order_list();
+        sessionStorage.setItem("finance_service_list_p", val);
+        this.finance_service_list();
     };
 
     //改变每页的条数
     change_page_size(val: any) {
         this.table_data.page.size = val;
         this.send_data.size = val;
-        sessionStorage.setItem("finance_order_list_size", val);
-        this.finance_order_list();
+        sessionStorage.setItem("finance_service_list_size", val);
+        this.finance_service_list();
     };
 
     //查看
@@ -253,22 +193,6 @@ export default class finance_order_list extends Vue{
 <style lang="scss">
 
     @media screen and (min-width: 769px) {
-        .repeat_div .total {
-            font-size: 0.95rem;
-            color: #333;
-            margin-bottom: 5px;
-
-            span {
-                color: $succ;
-                font-weight: 900;
-            }
-        }
-
-        .add_btn {
-
-            .el-button {
-                letter-spacing: 1px;
-            }
-        }
+        
     }
 </style>

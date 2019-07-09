@@ -88,10 +88,10 @@ const operate = {
         {
             path: '/operate/help/recycle',
             name: 'help_recycle',
-            component: () => import('@/views/operate/help/recycle_bin.vue'),
+            component: () => import('@/views/operate/recycle_bin/recycle_bin.vue'),
             meta: {
                 title: '回收站',
-                hidden: true
+                hidden: false
             }
         },
         

@@ -33,12 +33,12 @@
   </view>
   <view class='item'>
     <text>公司类型</text>
-    <view class='select'>
       <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
-        <text>{{ array[index] }}</text>
+        <view class='select'>
+            <text>{{ array[index] }}</text>
+          <text class='iconfont icon-you'></text>
+        </view>
       </picker>
-      <text class='iconfont icon-you'></text>
-    </view>
   </view>
 </view>
 
@@ -62,10 +62,11 @@
       根据工商政策，微信需要授权核实您的真实身份！
     </view>
     <view class='phone'>
-      <input placeholder='请输入您的手机号码'></input>
+      <input type='number' bindinput='input_phone' auto-focus placeholder='请输入您的手机号码'></input>
+      <text class='input_tip' wx:if="{{ is_correct }}">请输入正确的手机号码</text>
     </view>
-    <!-- <button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">前往授权</button> -->
-    <button>确定授权</button>
+    <button wx:if="{{ check_phone }}" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">确定授权</button>
+    <button wx:if="{{ !check_phone }}" class='gray'>确定授权</button>
   </view>
 </view>
 

@@ -15,12 +15,14 @@ Page({
     key: 'c11a7386404c0f717216dc0886aadebb',
     is_succ: app.globalData.is_address,
     is_dialog: false,
-    is_dialog02: true,
+    is_dialog02: false,
     input_final: "",
     trade: '',
     is_next: false,
     all_city: ['深圳市', '广州市', '东莞市', '佛山市', '珠海市', '成都市', '南京市', '西安市'],
-    is_inside: true
+    is_inside: true,
+    check_phone: false,
+    is_correct: false
   },
 
   //获取手机号
@@ -29,6 +31,22 @@ Page({
     wx.navigateTo({
       url: '/pages/views/take_name/result/index',
     });
+  },
+  //输入手机号
+  input_phone (e) {
+    //验证手机正则
+    var phone_RE = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[189])\d{8}$/;
+    if (phone_RE.test(e.detail.value)) {
+      this.setData({
+        check_phone: true,
+        is_correct: false
+      });
+    }else {
+      this.setData({
+        check_phone: false,
+        is_correct: true
+      });
+    };
   },
   next () {
     this.setData({

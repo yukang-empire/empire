@@ -16,6 +16,12 @@ Page({
       url: '/pages/views/take_name/rule/index',
     });
   },
+  //调起拨打电话
+  call_phone () {
+    wx.makePhoneCall({
+      phoneNumber: '4000-380-680',
+    });
+  },
   /**
    * 生命周期函数--监听页面加载
    */

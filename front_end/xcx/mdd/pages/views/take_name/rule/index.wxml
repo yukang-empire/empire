@@ -1,2 +1,53 @@
-<!--pages/views/take_name/rule/index.wxml-->
-<text>pages/views/take_name/rule/index.wxml</text>
+<view>
+
+</view>
+
+<view class='main'>
+  <view class='item'>
+    <view class='h2'>公司命名规则</view>
+    <view class='li'>
+      <view class='num'>1</view>
+      <view>深圳+字号+行业+有限公司</view>
+    </view>
+    <view class='li'>
+      <view class='num'>2</view>
+      <view>字号+(深圳)+行业+有限公司</view>
+    </view>
+    <view class='li'>
+      <view class='num'>3</view>
+      <view>字号+行业+(深圳)+有限公司</view>
+    </view>
+  </view>
+
+  <view class='item'>
+    <view class='h2'>字号规则</view>
+    <view class='li'>
+      <view class='num'>1</view>
+      <view style='line-height: 48rpx;'>阿拉伯数字、英文字母、繁体字均不能用，必须使用汉字</view>
+    </view>
+    <view class='li'>
+      <view class='num'>2</view>
+      <view>不可使用知名人士名字作为字号</view>
+    </view>
+    <view class='li'>
+      <view class='num'>3</view>
+      <view>字号里不可包含国家地区</view>
+    </view>
+    <view class='li'>
+      <view class='num'>4</view>
+      <view style='line-height: 48rpx;'>字号不可使用带讽刺、羞辱意味的形容词，如傻B、残废</view>
+    </view>
+    <view class='li'>
+      <view class='num'>5</view>
+      <view>字号不可使用敏感词汇，如XX党</view>
+    </view>
+    <view class='li'>
+      <view class='num'>6</view>
+      <view>字号不可与驰名商标同名，如阿里巴巴</view>
+    </view>
+    <view class='li'>
+      <view class='num'>7</view>
+      <view style='line-height: 48rpx;'>字号不可带行业描述用词，如电子商务、科技</view>
+    </view>
+  </view>
+</view>

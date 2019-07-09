@@ -1,1 +1,45 @@
-/* pages/views/take_name/rule/index.wxss */
+page{
+  background: #eee;
+}
+
+.main {
+  background-color: #fff;
+  margin: 100rpx 35rpx 0 35rpx;
+  padding: 100rpx 30rpx 10rpx 50rpx;
+  border-radius: 20rpx;
+  margin-bottom: 70rpx;
+}
+
+.item {
+  margin-bottom: 60rpx;
+}
+
+.item .h2{
+  font-size: 35rpx;
+  font-weight: 900;
+  margin-bottom: 20rpx;
+}
+
+.item .li {
+  line-height: 65rpx;
+  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+}
+
+.item .li view {
+  width: 100%;
+}
+
+.item .li .num {
+  background-color: #3352f5;
+  width: 40rpx;
+  height: 40rpx;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25rpx;
+  margin-right: 15rpx;
+}

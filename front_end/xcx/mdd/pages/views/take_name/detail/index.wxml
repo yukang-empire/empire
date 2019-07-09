@@ -20,7 +20,7 @@
 
   <view class='contact'>
     <text>心仪名字难到手？让我们帮您抢注</text>
-    <text class='button'>联系工商顾问</text>
+    <text class='button' bindtap='call_phone'>联系工商顾问</text>
   </view>
 
 </view>

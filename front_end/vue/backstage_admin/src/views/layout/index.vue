@@ -42,6 +42,16 @@ export default class layout extends Vue{
 
     @media screen and (min-width: 769px) {
 
+        .repeat_div .total {
+            font-size: 0.95rem;
+            color: #333;
+            margin-bottom: 5px;
+
+            span {
+                color: $succ;
+                font-weight: 900;
+            }
+        }
         
         .enlarge_img .el-dialog--center .el-dialog__body {
             display: flex;

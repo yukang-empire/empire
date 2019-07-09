@@ -116,54 +116,87 @@
 
             <!-- 财务-服务订单统计 -->
             <el-table-column v-if="table_data.table.which=='finance_service_list'" prop="name" label="序号"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='finance_service_list'" prop="name" label="日期"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='finance_service_list'" prop="name" label="合计金额"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='finance_service_list'" prop="name" label="订单金额"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='finance_service_list'" prop="name" label="结算金额"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='finance_service_list'" prop="name" label="平台收入"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_service_list'" prop="name" label="日期" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_service_list'" prop="name" label="合计金额" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_service_list'" prop="name" label="订单金额" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_service_list'" prop="name" label="结算金额" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_service_list'" prop="name" label="平台收入" sortable :sort-method='date_sort'></el-table-column>
 
             <!-- 财务-服务订单统计-明细 -->
             <el-table-column v-if="table_data.table.which=='finance_service_details'" prop="name" label="订单编号"></el-table-column>
             <el-table-column v-if="table_data.table.which=='finance_service_details'" prop="name" label="用户昵称"></el-table-column>
             <el-table-column v-if="table_data.table.which=='finance_service_details'" prop="name" label="用户手机"></el-table-column>
             <el-table-column v-if="table_data.table.which=='finance_service_details'" prop="name" label="订单标题"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='finance_service_details'" prop="name" label="订单金额(元)"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='finance_service_details'" prop="name" label="结算金额(元)"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_service_details'" prop="name" label="订单金额(元)" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_service_details'" prop="name" label="结算金额(元)" sortable :sort-method='date_sort'></el-table-column>
             <el-table-column v-if="table_data.table.which=='finance_service_details'" prop="name" label="订单状态"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='finance_service_details'" prop="name" label="提交时间"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_service_details'" prop="name" label="提交时间" sortable :sort-method='date_sort'></el-table-column>
 
             <!-- 财务-充值订单统计 -->
             <el-table-column v-if="table_data.table.which=='finance_recharge_list'" prop="name" label="序号"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='finance_recharge_list'" prop="name" label="日期"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='finance_recharge_list'" prop="name" label="合计金额"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='finance_recharge_list'" prop="name" label="充值金额"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_recharge_list'" prop="name" label="日期" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_recharge_list'" prop="name" label="合计金额" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_recharge_list'" prop="name" label="充值金额" sortable :sort-method='date_sort'></el-table-column>
 
             <!-- 财务-充值订单统计-明细 -->
             <el-table-column v-if="table_data.table.which=='finance_recharge_details'" prop="name" label="序号"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='finance_recharge_details'" prop="name" label="时间"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_recharge_details'" prop="name" label="时间" sortable :sort-method='date_sort'></el-table-column>
             <el-table-column v-if="table_data.table.which=='finance_recharge_details'" prop="name" label="用户昵称"></el-table-column>
             <el-table-column v-if="table_data.table.which=='finance_recharge_details'" prop="name" label="用户手机"></el-table-column>
             <el-table-column v-if="table_data.table.which=='finance_recharge_details'" prop="name" label="充值方式"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='finance_recharge_details'" prop="name" label="充值酷卡"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='finance_recharge_details'" prop="name" label="赠送酷点"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='finance_recharge_details'" prop="name" label="实付金额"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_recharge_details'" prop="name" label="充值酷卡" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_recharge_details'" prop="name" label="赠送酷点" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_recharge_details'" prop="name" label="实付金额" sortable :sort-method='date_sort'></el-table-column>
 
             <!-- 财务-通用设置-充值 -->
-            <el-table-column v-if="table_data.table.which=='finance_set_recharge'" prop="name" label="序号"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_set_recharge'" prop="name" label="序号" sortable :sort-method='date_sort'></el-table-column>
             <el-table-column v-if="table_data.table.which=='finance_set_recharge'" prop="name" label="名称"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='finance_set_recharge'" prop="name" label="总酷卡值"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='finance_set_recharge'" prop="name" label="充值酷卡"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='finance_set_recharge'" prop="name" label="赠送酷卡"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='finance_set_recharge'" prop="name" label="赠送酷点"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='finance_set_recharge'" prop="name" label="售价(元)"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='finance_set_recharge'" prop="name" label="修改日期"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_set_recharge'" prop="name" label="总酷卡值" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_set_recharge'" prop="name" label="充值酷卡" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_set_recharge'" prop="name" label="赠送酷卡" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_set_recharge'" prop="name" label="赠送酷点" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_set_recharge'" prop="name" label="售价(元)" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_set_recharge'" prop="name" label="修改日期" sortable :sort-method='date_sort'></el-table-column>
 
             <!-- 财务-通用设置-会籍卡 -->
-            <el-table-column v-if="table_data.table.which=='finance_set_card'" prop="name" label="序号"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_set_card'" prop="name" label="序号" sortable :sort-method='date_sort'></el-table-column>
             <el-table-column v-if="table_data.table.which=='finance_set_card'" prop="name" label="名称"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='finance_set_card'" prop="name" label="购买金额"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='finance_set_card'" prop="name" label="赠送酷点"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='finance_set_card'" prop="name" label="修改日期"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_set_card'" prop="name" label="购买金额" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_set_card'" prop="name" label="赠送酷点" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='finance_set_card'" prop="name" label="修改日期" sortable :sort-method='date_sort'></el-table-column>
+
+            <!-- 协议列表 -->
+            <el-table-column v-if="table_data.table.which=='agreement_list'" prop="name" label="标题"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='agreement_list'" prop="name" label="内容"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='agreement_list'" prop="name" label="编辑人"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='agreement_list'" prop="name" label="编辑时间"></el-table-column>
+
+            <!-- 帮助中心列表 -->
+            <el-table-column v-if="table_data.table.which=='help_list'" prop="name" label="标题"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='help_list'" prop="name" label="位置"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='help_list'" prop="name" label="内容"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='help_list'" prop="name" label="上传人"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='help_list'" prop="name" label="上传时间"></el-table-column>
+
+            <!-- 回收站 -->
+            <el-table-column v-if="table_data.table.which=='recycle_bin_list'" prop="name" label="标题"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='recycle_bin_list'" prop="name" label="列表图"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='recycle_bin_list'" prop="name" label="描述"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='recycle_bin_list'" prop="name" label="上传人"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='recycle_bin_list'" prop="name" label="上传时间"></el-table-column>
+
+            <!-- 文章列表 -->
+            <el-table-column v-if="table_data.table.which=='article_list'" prop="name" label="标题"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='article_list'" prop="name" label="内容"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='article_list'" prop="name" label="编辑人"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='article_list'" prop="name" label="编辑时间"></el-table-column>
+
+            <!-- 轮播图列表 -->
+            <el-table-column v-if="table_data.table.which=='carousel_list'" prop="name" label="轮播图名称"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='carousel_list'" prop="name" label="缩略图"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='carousel_list'" prop="name" label="位置"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='carousel_list'" prop="name" label="上传人"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='carousel_list'" prop="name" label="上传时间"></el-table-column>
 
             <el-table-column label="禁用账户" v-if="table_data.table.which=='user_list'">
                 <template slot-scope="scope">
@@ -171,46 +204,57 @@
                 </template>
             </el-table-column>
 
-            <!-- <el-table-column label="禁用商家" v-if="table_data.table.which=='business_list'">
-                <template slot-scope="scope">
-                    <el-switch v-model="scope.row.status == 1 ? true : false" @change='change_state(scope.$index, scope.row)' active-color="#13ce66" inactive-color="#ccc"> </el-switch>
-                </template>
-            </el-table-column> -->
-
             <el-table-column label="禁用门店" v-if="table_data.table.which=='store_list'">
                 <template slot-scope="scope">
                     <el-switch v-model="scope.row.status == 1 ? true : false" @change='change_state(scope.$index, scope.row)' active-color="#13ce66" inactive-color="#ccc"> </el-switch>
                 </template>
             </el-table-column>
 
-            
-
             <el-table-column label="操作" v-if="
-                table_data.table.which=='user_list' ||
-                table_data.table.which=='user_order' ||
-                table_data.table.which=='business_list' ||
-                table_data.table.which=='store_list' ||
-                table_data.table.which=='goods_list' ||
-                table_data.table.which=='service_list' ||
-                table_data.table.which=='transfer_list' ||
-                table_data.table.which=='receive_list' ||
-                table_data.table.which=='cash_out_list' ||
-                table_data.table.which=='finance_service_list' ||
-                table_data.table.which=='finance_service_details' ||
-                table_data.table.which=='finance_recharge_list' ||
-                table_data.table.which=='upper_course' ||
-                table_data.table.which=='finance_set_recharge' ||
-                table_data.table.which=='finance_set_card'
+                table_data.table.which == 'user_list' ||
+                table_data.table.which == 'user_order' ||
+                table_data.table.which == 'business_list' ||
+                table_data.table.which == 'store_list' ||
+                table_data.table.which == 'goods_list' ||
+                table_data.table.which == 'service_list' ||
+                table_data.table.which == 'transfer_list' ||
+                table_data.table.which == 'receive_list' ||
+                table_data.table.which == 'cash_out_list' ||
+                table_data.table.which == 'finance_service_list' ||
+                table_data.table.which == 'finance_service_details' ||
+                table_data.table.which == 'finance_recharge_list' ||
+                table_data.table.which == 'upper_course' ||
+                table_data.table.which == 'finance_set_recharge' ||
+                table_data.table.which == 'finance_set_card' ||
+                table_data.table.which == 'agreement_list' ||
+                table_data.table.which == 'help_list' ||
+                table_data.table.which == 'article_list' ||
+                table_data.table.which == 'recycle_bin_list' ||
+                table_data.table.which == 'carousel_list'
             ">
                 <template slot-scope="scope">
-                    <el-button type="text" @click="look_up(scope.row)"  v-if="">查看</el-button>
                     <el-button v-if="
-                        table_data.table.which=='upper_course' ||
-                        table_data.table.which=='goods_list' ||
-                        table_data.table.which=='store_list' ||
-                        table_data.table.which=='finance_set_recharge' ||
-                        table_data.table.which=='finance_set_card'
+                        table_data.table.which != 'finance_set_recharge' &&
+                        table_data.table.which != 'finance_set_card' &&
+                        table_data.table.which != 'agreement_list' &&
+                        table_data.table.which != 'help_list' &&
+                        table_data.table.which != 'recycle_bin_list' &&
+                        table_data.table.which != 'carousel_list'
+                    " type="text" @click="look_up(scope.row)">查看</el-button>
+                    <el-button v-if="
+                        table_data.table.which == 'upper_course' ||
+                        table_data.table.which == 'goods_list' ||
+                        table_data.table.which == 'store_list' ||
+                        table_data.table.which == 'finance_set_recharge' ||
+                        table_data.table.which == 'finance_set_card' ||
+                        table_data.table.which == 'agreement_list' ||
+                        table_data.table.which == 'help_list' ||
+                        table_data.table.which == 'article_list' ||
+                        table_data.table.which == 'carousel_list'
                     " type="text" @click="edit(scope.row)">编辑</el-button>
+                    <el-button type="text" @click="add_recycle_bin(scope.row)"  v-if="table_data.table.which == 'help_list'">加入回收站</el-button>
+                    <el-button type="text" @click="recovery(scope.row)"  v-if="table_data.table.which == 'recycle_bin_list'">恢复</el-button>
+                    <el-button type="text" @click="complete_delete(scope.row)"  v-if="table_data.table.which == 'recycle_bin_list'">彻底删除</el-button>
                 </template>
             </el-table-column>
 

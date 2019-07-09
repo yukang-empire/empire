@@ -36,13 +36,17 @@ view {
   background-color: #f7f7f7;
 }
 .dialog02 .content{
-  height: 560rpx;
+  height: 565rpx;
   text-align: center;
   padding-top: 60rpx;
+  margin-top:-300rpx;
 }
 .dialog02 .iconfont {
   font-size: 120rpx;
   color: #f76260;
+}
+.dialog02 .phone {
+  height: 60px;
 }
 .dialog02 .phone input {
   border: 1px solid #ddd;
@@ -73,8 +77,11 @@ view {
   width: 80%;
   background-color: #3352f5;
   color: #fff;
-  margin-top: 50rpx;
+  margin-top: 22rpx;
   border-radius: 50rpx;
+}
+.dialog .content .gray {
+  background-color: #ccc;
 }
 
 /* 收藏 */
@@ -162,4 +169,12 @@ view {
 .btn .replace {
   color: #fff;
   background-color: #2954f9;
+}
+
+/* input提示语 */
+.input_tip {
+  color: red;
+  font-size: 25rpx;
+  margin-top: 5rpx;
+  margin-bottom: -10rpx;
 }

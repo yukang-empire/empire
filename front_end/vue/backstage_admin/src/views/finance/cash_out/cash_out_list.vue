@@ -256,17 +256,7 @@ export default class cash_out_list extends Vue{
 <style lang="scss">
 
     @media screen and (min-width: 769px) {
-        .repeat_div .total {
-            font-size: 0.95rem;
-            color: #333;
-            margin-bottom: 5px;
-
-            span {
-                color: $succ;
-                font-weight: 900;
-            }
-        }
-
+        
         .add_btn {
 
             .el-button {

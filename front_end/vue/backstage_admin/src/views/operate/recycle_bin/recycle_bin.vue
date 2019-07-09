@@ -1,5 +1,5 @@
 <template>
-    <div class="finance_recharge_details">
+    <div class="recycle_bin_list">
         <div class="repeat_div">
             <p>
                 <svg class="icon" aria-hidden="true">
@@ -44,20 +44,21 @@
 import { Vue, Component } from "vue-property-decorator";
 import list_filter from "@/components/list_filter.vue";
 import table_page from "@/components/table_page.vue";
+
 @Component({
     components: {
         list_filter,
-        table_page,
+        table_page
     }
 })
 
-export default class finance_recharge_details extends Vue{
+export default class recycle_bin_list extends Vue{
     //表格、页码数据
     private table_data: any = {
         //表格
         table: {
             //属于哪个表格
-            which: 'finance_recharge_details',
+            which: 'recycle_bin_list',
             //是否多选
             checkbox: true,
             //是否固定表头
@@ -70,9 +71,9 @@ export default class finance_recharge_details extends Vue{
             //是否显示页码
             is_page: true,
             //当前页码
-            current_page: sessionStorage.getItem("finance_recharge_details_p") ? parseInt(sessionStorage.getItem("finance_recharge_details_p")) : 1,
+            current_page: sessionStorage.getItem("recycle_bin_list_p") ? parseInt(sessionStorage.getItem("recycle_bin_list_p")) : 1,
             //每页显示的数量
-            size: sessionStorage.getItem("finance_recharge_details_size") ? parseInt(sessionStorage.getItem("finance_recharge_details_size")) : 10,
+            size: sessionStorage.getItem("recycle_bin_list_size") ? parseInt(sessionStorage.getItem("recycle_bin_list_size")) : 10,
             sizes: [10, 15, 20],
             //总数量
             total: 0,
@@ -80,29 +81,29 @@ export default class finance_recharge_details extends Vue{
     };
     //请求列表数据的参数
     private send_data: any = {
-        p: sessionStorage.getItem("finance_recharge_details_p") ? sessionStorage.getItem("finance_recharge_details_p") : 1,
-        size: sessionStorage.getItem("finance_recharge_details_size") ? sessionStorage.getItem("finance_recharge_details_size") : 10,
-        search: sessionStorage.getItem("finance_recharge_details_search") ? sessionStorage.getItem("finance_recharge_details_search") : "",
-        start_time: sessionStorage.getItem("finance_recharge_details_start_time") ? sessionStorage.getItem("finance_recharge_details_start_time") : "",
-        end_time: sessionStorage.getItem("finance_recharge_details_end_time") ? sessionStorage.getItem("finance_recharge_details_end_time") : ""
+        p: sessionStorage.getItem("recycle_bin_list_p") ? sessionStorage.getItem("recycle_bin_list_p") : 1,
+        size: sessionStorage.getItem("recycle_bin_list_size") ? sessionStorage.getItem("recycle_bin_list_size") : 10,
+        search: sessionStorage.getItem("recycle_bin_list_search") ? sessionStorage.getItem("recycle_bin_list_search") : "",
+        start_time: sessionStorage.getItem("recycle_bin_list_start_time") ? sessionStorage.getItem("recycle_bin_list_start_time") : "",
+        end_time: sessionStorage.getItem("recycle_bin_list_end_time") ? sessionStorage.getItem("recycle_bin_list_end_time") : "",
     };
     //需要展示的筛选功能
     private show_filter: any = {
         is_type: "domain02",
         is_search: true,
-        placeholder: "请输入用户名、手机号(全部)",
-        show_time: false,
-        time_name: '日期',
+        placeholder: "请输入标题",
+        show_time: true,
+        time_name: '上传时间',
         is_state: false
     };
 
     mounted () {
-        this.finance_recharge_details();
+        this.recycle_bin_list();
     };
     
-    //请求列表数据
-    finance_recharge_details () {
-        this.$store.dispatch("finance_recharge_details", this.send_data).then( (res: any) => {
+    //请求提现列表数据
+    recycle_bin_list () {
+        this.$store.dispatch("recycle_bin_list", this.send_data).then( (res: any) => {
             console.log("商家列表", res);
             if (res.code == 0 || res.status == 1) {
                 this.table_data.table.lists = res.result;
@@ -114,6 +115,8 @@ export default class finance_recharge_details extends Vue{
                     //typescript语法严格 不声明会报错
                     var that: any = this;
                     lists[i].add_time = lists[i].add_time == 0 ? "" : that.$moment(lists[i].add_time * 1000).format('YYYY-MM-DD HH:mm:ss');
+                    //拼接省市区
+                    lists[i].address = lists[i].province + lists[i].city + lists[i].area;
                 };
                 this.table_data.page.total = parseInt(res.count);
             }else {
@@ -123,22 +126,27 @@ export default class finance_recharge_details extends Vue{
         });
     };
 
+    //新增
+    add_help () {
+
+    };
+
     //搜索
     search (val: any) {
         //页码不重置为1的话 有可能请求不到数据
         this.table_data.page.current_page = 1;
         this.send_data.p = 1;
-        sessionStorage.setItem("finance_recharge_details_p", "1");
+        sessionStorage.setItem("recycle_bin_list_p", "1");
         this.send_data.search = val;
-        sessionStorage.setItem("finance_recharge_details_search", val);
-        this.finance_recharge_details();
+        sessionStorage.setItem("recycle_bin_list_search", val);
+        this.recycle_bin_list();
     };
 
     //清空搜索内容
     clear_search () {
         this.send_data.search = '';
-        sessionStorage.setItem("finance_recharge_details_search", "");
-        this.finance_recharge_details();
+        sessionStorage.setItem("recycle_bin_list_search", "");
+        this.recycle_bin_list();
     };
 
     //筛选时间
@@ -146,13 +154,13 @@ export default class finance_recharge_details extends Vue{
         //页码不重置为1的话 有可能请求不到数据
         this.table_data.page.current_page = 1;
         this.send_data.p = 1;
-        sessionStorage.setItem("finance_recharge_details_p", "1");
+        sessionStorage.setItem("recycle_bin_list_p", "1");
         var that: any = this;
         this.send_data.start_time = val[0] ? that.$moment(val[0]).valueOf() / 1000 : "",
         this.send_data.end_time = val[1] ? that.$moment(val[1]).valueOf() / 1000 : "",
-        sessionStorage.setItem("finance_recharge_details_start_time", this.send_data.start_time);
-        sessionStorage.setItem("finance_recharge_details_end_time", this.send_data.end_time);
-        this.finance_recharge_details();
+        sessionStorage.setItem("recycle_bin_list_start_time", this.send_data.start_time);
+        sessionStorage.setItem("recycle_bin_list_end_time", this.send_data.end_time);
+        this.recycle_bin_list();
     };
 
     //清空时间
@@ -160,30 +168,30 @@ export default class finance_recharge_details extends Vue{
         var that: any = this;
         this.send_data.start_time = "",
         this.send_data.end_time = "",
-        sessionStorage.setItem("finance_recharge_details_start_time", this.send_data.start_time);
-        sessionStorage.setItem("finance_recharge_details_end_time", this.send_data.end_time);
-        this.finance_recharge_details();
+        sessionStorage.setItem("recycle_bin_list_start_time", this.send_data.start_time);
+        sessionStorage.setItem("recycle_bin_list_end_time", this.send_data.end_time);
+        this.recycle_bin_list();
     };
     
     //改变页码
     change_page(val: any) {
         this.table_data.page.current_page = val;
         this.send_data.p = val;
-        sessionStorage.setItem("finance_recharge_details_p", val);
-        this.finance_recharge_details();
+        sessionStorage.setItem("recycle_bin_list_p", val);
+        this.recycle_bin_list();
     };
 
     //改变每页的条数
     change_page_size(val: any) {
         this.table_data.page.size = val;
         this.send_data.size = val;
-        sessionStorage.setItem("finance_recharge_details_size", val);
-        this.finance_recharge_details();
+        sessionStorage.setItem("recycle_bin_list_size", val);
+        this.recycle_bin_list();
     };
 
     //查看
     look_up (row: any) {
-        this.$router.push({ path: '/finance/recharge/details', query: { club_id: row.id } });
+        this.$router.push({ path: '/order/service/details', query: { club_id: row.id } });
     };
 }
 
@@ -193,5 +201,11 @@ export default class finance_recharge_details extends Vue{
 
     @media screen and (min-width: 769px) {
         
+        .add_btn {
+
+            .el-button {
+                letter-spacing: 1px;
+            }
+        }
     }
 </style>
