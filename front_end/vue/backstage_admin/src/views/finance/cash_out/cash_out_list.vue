@@ -130,7 +130,8 @@ export default class cash_out_list extends Vue{
         placeholder: "请输入提现人、手机号(全部)",
         show_time: true,
         time_name: '申请日期',
-        is_state: true
+        is_state: true,
+        state_name: '选择订单状态'
     };
 
     mounted () {

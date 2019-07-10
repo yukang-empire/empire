@@ -20,7 +20,11 @@ export default class service_details extends Vue{
         current_state: '已确定',
         title01: '买家信息',
         title02: '商品信息',
-    }
+    };
+
+    mounted () {
+        
+    };
 }
 
 </script>

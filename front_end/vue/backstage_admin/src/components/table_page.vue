@@ -63,23 +63,23 @@
             <el-table-column v-if="table_data.table.which=='goods_list'" prop="sales_sum" label="销量" sortable :sort-method='date_sort'></el-table-column>
 
             <!-- 服务订单列表 -->
-            <el-table-column v-if="table_data.table.which=='service_list'" prop="name" label="订单编号" sortable :sort-method='date_sort'></el-table-column>
-            <el-table-column v-if="table_data.table.which=='service_list'" prop="name" label="用户昵称"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='service_list'" prop="name" label="手机号"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='service_list'" prop="name" label="订单标题"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='service_list'" prop="name" label="订单金额(元)" sortable :sort-method='date_sort'></el-table-column>
-            <el-table-column v-if="table_data.table.which=='service_list'" prop="name" label="订单状态"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='service_list'" prop="name" label="提交时间" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='service_list'" prop="order_sn" label="订单编号" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='service_list'" prop="club_name" label="用户昵称"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='service_list'" prop="mobile" label="手机号"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='service_list'" prop="goods_name" label="订单标题"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='service_list'" prop="goods_price" label="订单金额(元)" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='service_list'" prop="status" label="订单状态"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='service_list'" prop="create_time" label="提交时间" sortable :sort-method='date_sort'></el-table-column>
 
             <!-- 转让订单列表 -->
-            <el-table-column v-if="table_data.table.which=='transfer_list'" prop="name" label="订单编号" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='transfer_list'" prop="order_sn" label="订单编号" sortable :sort-method='date_sort'></el-table-column>
             <el-table-column v-if="table_data.table.which=='transfer_list'" prop="name" label="用户昵称"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='transfer_list'" prop="name" label="手机号"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='transfer_list'" prop="name" label="健身房名称"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='transfer_list'" prop="name" label="酷卡价值" sortable :sort-method='date_sort'></el-table-column>
-            <el-table-column v-if="table_data.table.which=='transfer_list'" prop="name" label="健身卡类型"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='transfer_list'" prop="name" label="订单状态"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='transfer_list'" prop="name" label="提交时间" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='transfer_list'" prop="mobile" label="手机号"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='transfer_list'" prop="club_name" label="健身房名称"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='transfer_list'" prop="price" label="酷卡价值" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='transfer_list'" prop="card_type" label="健身卡类型"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='transfer_list'" prop="status" label="订单状态"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='transfer_list'" prop="add_time" label="提交时间" sortable :sort-method='date_sort'></el-table-column>
 
             <!-- 领用订单列表 -->
             <el-table-column v-if="table_data.table.which=='receive_list'" prop="name" label="订单编号" sortable :sort-method='date_sort'></el-table-column>
@@ -198,6 +198,39 @@
             <el-table-column v-if="table_data.table.which=='carousel_list'" prop="name" label="上传人"></el-table-column>
             <el-table-column v-if="table_data.table.which=='carousel_list'" prop="name" label="上传时间"></el-table-column>
 
+            <!-- 优惠券列表 -->
+            <el-table-column v-if="table_data.table.which=='coupon_list'" prop="name" label="优惠券标题"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='coupon_list'" prop="name" label="金额(元)"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='coupon_list'" prop="name" label="获得方式"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='coupon_list'" prop="name" label="状态"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='coupon_list'" prop="name" label="截止时间"></el-table-column>
+
+            <!-- 角色管理 -->
+            <el-table-column v-if="table_data.table.which=='role_list'" prop="name" label="角色名称"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='role_list'" prop="name" label="描述"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='role_list'" prop="name" label="员工数量"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='role_list'" prop="name" label="添加时间"></el-table-column>
+
+            <!-- 员工管理 -->
+            <el-table-column v-if="table_data.table.which=='staff_list'" prop="name" label="工号"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='staff_list'" prop="name" label="姓名"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='staff_list'" prop="name" label="手机"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='staff_list'" prop="name" label="角色"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='staff_list'" prop="name" label="添加时间"></el-table-column>
+
+            <!-- 操作日志 -->
+            <el-table-column v-if="table_data.table.which=='log_list'" prop="name" label="操作人"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='log_list'" prop="name" label="操作模块"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='log_list'" prop="name" label="操作内容"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='log_list'" prop="name" label="操作时间"></el-table-column>
+
+            
+            <el-table-column label="状态" v-if="table_data.table.which == 'staff_list'">
+                <template slot-scope="scope">
+                    <el-switch v-model="scope.row.is_lock ? true : false" @change='change_state(scope.$index, scope.row)' active-color="#13ce66" inactive-color="#ccc"> </el-switch>
+                </template>
+            </el-table-column>
+
             <el-table-column label="禁用账户" v-if="table_data.table.which=='user_list'">
                 <template slot-scope="scope">
                     <el-switch v-model="scope.row.is_lock == 0 ? true : false" @change='change_state(scope.$index, scope.row)' active-color="#13ce66" inactive-color="#ccc"> </el-switch>
@@ -230,7 +263,10 @@
                 table_data.table.which == 'help_list' ||
                 table_data.table.which == 'article_list' ||
                 table_data.table.which == 'recycle_bin_list' ||
-                table_data.table.which == 'carousel_list'
+                table_data.table.which == 'carousel_list' ||
+                table_data.table.which == 'coupon_list' ||
+                table_data.table.which == 'role_list' ||
+                table_data.table.which == 'staff_list'
             ">
                 <template slot-scope="scope">
                     <el-button v-if="
@@ -239,7 +275,11 @@
                         table_data.table.which != 'agreement_list' &&
                         table_data.table.which != 'help_list' &&
                         table_data.table.which != 'recycle_bin_list' &&
-                        table_data.table.which != 'carousel_list'
+                        table_data.table.which != 'carousel_list' &&
+                        table_data.table.which != 'article_list' &&
+                        table_data.table.which != 'coupon_list' &&
+                        table_data.table.which != 'role_list' &&
+                        table_data.table.which != 'staff_list'
                     " type="text" @click="look_up(scope.row)">查看</el-button>
                     <el-button v-if="
                         table_data.table.which == 'upper_course' ||
@@ -250,10 +290,18 @@
                         table_data.table.which == 'agreement_list' ||
                         table_data.table.which == 'help_list' ||
                         table_data.table.which == 'article_list' ||
-                        table_data.table.which == 'carousel_list'
+                        table_data.table.which == 'carousel_list' ||
+                        table_data.table.which == 'coupon_list' ||
+                        table_data.table.which == 'role_list' ||
+                        table_data.table.which == 'staff_list'
                     " type="text" @click="edit(scope.row)">编辑</el-button>
                     <el-button type="text" @click="add_recycle_bin(scope.row)"  v-if="table_data.table.which == 'help_list'">加入回收站</el-button>
                     <el-button type="text" @click="recovery(scope.row)"  v-if="table_data.table.which == 'recycle_bin_list'">恢复</el-button>
+                    <el-button type="text" @click="delete(scope.row)"  v-if="
+                        table_data.table.which == 'coupon_list' ||
+                        table_data.table.which == 'role_list' ||
+                        table_data.table.which == 'staff_list'
+                    ">删除</el-button>
                     <el-button type="text" @click="complete_delete(scope.row)"  v-if="table_data.table.which == 'recycle_bin_list'">彻底删除</el-button>
                 </template>
             </el-table-column>

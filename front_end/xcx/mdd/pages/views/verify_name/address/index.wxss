@@ -1,0 +1,37 @@
+.item {
+  font-size: 30rpx;
+}
+.item:last-of-type {
+  margin-top: 30rpx;
+}
+.item .title {
+  color: #999;
+  background-color: #eee;
+  padding: 30rpx 25rpx;
+  width: 100%;
+  display: block;
+}
+.item .title .iconfont {
+  margin-left: 10rpx;
+  color: #2954f9;
+}
+.item .li view{
+  font-size: 35rpx;
+  padding-left: 25rpx;
+  padding: 30rpx 0 0 25rpx;
+}
+.item .li02 view {
+  padding: 30rpx 25rpx 30rpx 25rpx;
+}
+.item .li02 {
+  border-bottom: 1px solid #ddd;
+}
+.item .li02:last-of-type {
+  margin-bottom: 80rpx;
+}
+.item .li text {
+  display: block;
+  color: #2954f9;
+  margin-top: 10rpx;
+  padding-left: 25rpx;
+}

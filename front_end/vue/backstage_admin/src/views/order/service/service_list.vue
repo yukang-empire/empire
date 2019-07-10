@@ -102,7 +102,8 @@ export default class service_list extends Vue{
         placeholder: "请输入用户昵称、手机号(全部)",
         show_time: true,
         time_name: '提交时间',
-        is_state: true
+        is_state: true,
+        state_name: '选择订单状态'
     };
 
     mounted () {
@@ -122,9 +123,8 @@ export default class service_list extends Vue{
                 for (var i = 0; i < length; i++) {
                     //typescript语法严格 不声明会报错
                     var that: any = this;
-                    lists[i].add_time = lists[i].add_time == 0 ? "" : that.$moment(lists[i].add_time * 1000).format('YYYY-MM-DD HH:mm:ss');
-                    //拼接省市区
-                    lists[i].address = lists[i].province + lists[i].city + lists[i].area;
+                    lists[i].create_time = lists[i].create_time == 0 ? "" : that.$moment(lists[i].create_time * 1000).format('YYYY-MM-DD HH:mm:ss');
+                    lists[i].status = lists[i].status == 1 ? '未使用' : '已使用';
                 };
                 this.table_data.page.total = parseInt(res.count);
             }else {
@@ -237,7 +237,7 @@ export default class service_list extends Vue{
 
     //查看
     look_up (row: any) {
-        this.$router.push({ path: '/order/service/details', query: { club_id: row.id } });
+        this.$router.push({ path: '/order/service/details', query: { card_id: row.id } });
     };
 }
 

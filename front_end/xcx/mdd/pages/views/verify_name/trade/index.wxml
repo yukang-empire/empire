@@ -1,0 +1,52 @@
+<view class='search'>
+  <view class='top'>
+    <icon type="search" />
+    <input placeholder='如：商务服务' search value='{{ input_content }}' bindinput="search"></input>
+  </view>
+  <view class='ul' wx:if="{{ is_result }}">
+    <text class='li' wx:for="{{ search_result }}" wx:key="{{ item }}" data-trade='{{ item }}' bindtap='select_trade'>{{ item }}</text>
+  </view>
+</view>
+
+<view class='item'>
+  <view class='h3'>服务类</view>
+  <view class='ul'>
+    <text class='li' wx:for="{{ trade[0] }}" wx:key="{{ item }}" data-trade='{{ item }}' bindtap='select_trade'>{{ item }}</text>
+  </view>
+</view>
+<view class='item'>
+  <view class='h3'>咨询类</view>
+  <view class='ul'>
+    <text class='li' wx:for="{{ trade[1] }}" wx:key="{{ item }}" data-trade='{{ item }}' bindtap='select_trade'>{{ item }}</text>
+  </view>
+</view>
+<view class='item'>
+  <view class='h3'>商贸类</view>
+  <view class='ul'>
+    <text class='li' wx:for="{{ trade[2] }}" wx:key="{{ item }}" data-trade='{{ item }}' bindtap='select_trade'>{{ item }}</text>
+  </view>
+</view>
+<view class='item'>
+  <view class='h3'>科技类</view>
+  <view class='ul'>
+    <text class='li' wx:for="{{ trade[3] }}" wx:key="{{ item }}" data-trade='{{ item }}' bindtap='select_trade'>{{ item }}</text>
+  </view>
+</view>
+<view class='item'>
+  <view class='h3'>跨五大行实业类</view>
+  <view class='ul'>
+    <text class='li' wx:for="{{ trade[4] }}" wx:key="{{ item }}" data-trade='{{ item }}' bindtap='select_trade'>{{ item }}</text>
+  </view>
+</view>
+<view class='item'>
+  <view class='h3'>工程类</view>
+  <view class='ul'>
+    <text class='li' wx:for="{{ trade[5] }}" wx:key="{{ item }}" data-trade='{{ item }}' bindtap='select_trade'>{{ item }}</text>
+  </view>
+</view>
+<view class='item'>
+  <view class='h3'>租赁与安装类</view>
+  <view class='ul'>
+    <text class='li' wx:for="{{ trade[6] }}" wx:key="{{ item }}" data-trade='{{ item }}' bindtap='select_trade'>{{ item }}</text>
+  </view>
+</view>

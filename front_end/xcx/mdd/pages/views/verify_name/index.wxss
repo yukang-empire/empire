@@ -1,1 +1,27 @@
-/* pages/views/verify_name/index.wxss */
+
+.header {
+  background-color: #2954f9;
+  color: #fff;
+  padding: 10rpx 0 30rpx 40rpx;
+}
+.footer {
+  position: relative;
+  margin-top: 50rpx;
+}
+.footer .content {
+  background-color: #f7f7f7;
+  padding: 0 20rpx;
+  color: #666;
+}
+.footer .content .home {
+  padding-right: 25rpx;
+  margin-right: 25rpx;
+  border-right: 1px solid #ddd;
+}
+.footer .line {
+  width: 90%;
+  height: 1px;
+  background-color: #ddd;
+  position: absolute;
+  z-index: -1;
+}

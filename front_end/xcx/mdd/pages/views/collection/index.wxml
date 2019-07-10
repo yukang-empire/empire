@@ -1,0 +1,14 @@
+
+<view class='ul'>
+  <view class='li'>
+    <text>深圳<text class='strong'>易站通</text>企业服务有限公司</text>
+    <text class='check' bindtap='check'>立即检测</text>
+  </view>
+  
+</view>
+
+<!-- <view class='btn'>
+  <view class='again' bindtap='rename'>重新起名</view>
+  <view class='check' bindtap='check_name'>试试核名</view>
+  <view class='replace' bindtap='change_new'>换一批</view>
+</view> -->

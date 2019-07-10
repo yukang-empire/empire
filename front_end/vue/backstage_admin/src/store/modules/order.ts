@@ -17,7 +17,22 @@ const home =  {
             send_data.append("end_time", data.end_time);
             send_data.append("token", sessionStorage.getItem('token'));
             return new Promise((resolve, reject) => {
-                axios.post( state.state.domain02 + "", send_data).then( (res: any) => {
+                axios.post( state.state.domain02 + "/index.php?m=Api&c=Club&a=card_order", send_data).then( (res: any) => {
+                    //返回数据给调起dispatch的那边
+                    resolve(res);
+                }).catch( error => {
+                    //返回error给调起dispatch的那边
+                    reject(error);
+                });
+            });
+        },
+        //获取服务订单列表详情
+        service_details (state: any, data: any) {
+            var send_data: any = new FormData();
+            send_data.append("card_id", data.card_id);
+            send_data.append("token", sessionStorage.getItem('token'));
+            return new Promise((resolve, reject) => {
+                axios.post( state.state.domain02 + "/index.php?m=Api&c=Club&a=card_order_info", send_data).then( (res: any) => {
                     //返回数据给调起dispatch的那边
                     resolve(res);
                 }).catch( error => {
@@ -36,7 +51,7 @@ const home =  {
             send_data.append("end_time", data.end_time);
             send_data.append("token", sessionStorage.getItem('token'));
             return new Promise((resolve, reject) => {
-                axios.post( state.state.domain02 + "", send_data).then( (res: any) => {
+                axios.post( state.state.domain02 + "/index.php?m=Api&c=Club&a=card_out_order", send_data).then( (res: any) => {
                     //返回数据给调起dispatch的那边
                     resolve(res);
                 }).catch( error => {

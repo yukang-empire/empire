@@ -25,6 +25,12 @@ Page({
     is_correct: false
   },
 
+  my_collection () {
+    wx.redirectTo({
+      url: '/pages/views/collection/index',
+    });
+  },
+
   //获取手机号
   getPhoneNumber(e) {
     console.log(e);
@@ -138,6 +144,11 @@ Page({
   select_trade() {
     wx.navigateTo({
       url: '/pages/views/take_name/trade/index',
+    })
+  },
+  check_name () {
+    wx.redirectTo({
+      url: '/pages/views/verify_name/index',
     })
   },
   //获取定位

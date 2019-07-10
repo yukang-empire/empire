@@ -54,6 +54,72 @@
                     />
                 </div>
 
+                <!-- 修改密码 -->
+                <div v-if='add_data.type == "change_password"'>
+                    <el-form-item label="员工姓名:" prop="staff_name">
+                        <el-input v-model="ruleForm.staff_name" placeholder="请输入员工姓名" clearable maxlength="10" show-word-limit @change='input_data'></el-input>
+                    </el-form-item>
+                    <el-form-item label="工号:" prop="staff_num">
+                        <el-input v-model="ruleForm.staff_num" placeholder="请输入员工工号" clearable maxlength="20" show-word-limit @change='input_data'></el-input>
+                    </el-form-item>
+                    <el-form-item label="原密码:" prop="origin_password">
+                        <el-input v-model="ruleForm.password" placeholder="请输入原密码" show-password clearable @change='input_data'></el-input>
+                    </el-form-item>
+                    <el-form-item label="新密码:" prop="password">
+                        <el-input v-model="ruleForm.password" placeholder="请输入新密码" show-password clearable @change='input_data'></el-input>
+                    </el-form-item>
+                    <el-form-item label="确认新密码:" prop="re_password">
+                        <el-input v-model="ruleForm.re_password" placeholder="请再次输入新密码" show-password clearable @change='input_data'></el-input>
+                    </el-form-item>
+                </div>
+
+                <!-- 新增优惠券 -->
+                <div v-if='add_data.type == "coupon"'>
+                    <el-form-item label="优惠券标题:" prop="coupon_name">
+                        <el-input v-model="ruleForm.coupon_name" placeholder="请输入优惠券标题" clearable maxlength="20" show-word-limit @change='input_data'></el-input>
+                    </el-form-item>
+                    <el-form-item label="优惠券描述:" prop="coupon_describe">
+                        <el-input v-model="ruleForm.coupon_describe" placeholder="请输入优惠券描述" clearable maxlength="30" show-word-limit @change='input_data'></el-input>
+                    </el-form-item>
+                    <el-form-item label="是否上架:" prop="coupon_upper">
+                        <el-switch v-model="ruleForm.coupon_upper" active-color="#13ce66" inactive-color="#ccc" @change='input_data'> </el-switch>
+                    </el-form-item>
+                    <el-form-item label="优惠金额:" prop="coupon_price">
+                        ¥ &nbsp;<el-input v-model="ruleForm.coupon_price" placeholder="请输入优惠券可抵扣的金额" clearable @change='input_data'></el-input>
+                    </el-form-item>
+                    <el-form-item label="使用门槛:" prop="coupon_threshold">
+                        ¥ &nbsp;<el-input v-model="ruleForm.coupon_threshold" placeholder="请输入优惠券使用门槛，无门槛请填0" clearable @change='input_data'></el-input>
+                    </el-form-item>
+                    <el-form-item label="截止时间:" prop="coupon_time">
+                        <el-date-picker
+                            is-range
+                            type="datetimerange"
+                            v-model="ruleForm.coupon_time"
+                            range-separator="至"
+                            start-placeholder="开始时间"
+                            end-placeholder="截止时间"
+                            @change='coupon_time'
+                            placeholder="选择时间范围">
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="使用范围:" prop="coupon_range">
+                        <el-checkbox :indeterminate="checkbox.isIndeterminate" v-model="checkbox.check_all" @change="handleCheckAllChange_coupon">全选</el-checkbox>
+                        <el-checkbox-group v-model="checkbox.checked" @change="handleCheckedCitiesChange_coupon">
+                            <el-checkbox v-for="item in checkbox.all_range" :label="item.id" :key="item.id" border>{{ item.name }}</el-checkbox>
+                        </el-checkbox-group>
+                    </el-form-item>
+                    <el-form-item label="获得方式:" prop="coupon_get_way">
+                        <el-select v-model="ruleForm.coupon_get_way" filterable placeholder="请选择获得方式" @change='coupon_get_way_change'>
+                            <el-option
+                                v-for="item in all_get_way"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                </div>
+
                 <!-- 新增商品 -->
                 <div v-if='add_data.type == "goods"'>
                     <el-form-item :label="'所属' + add_data.select_name + ':'" prop="store_id">
@@ -210,6 +276,23 @@ export default class add extends Vue{
     
     //表单数据
     private ruleForm: any = {
+        //修改密码
+        staff_name: '',
+        staff_num: '',
+        origin_password: '',
+
+        //新增优惠券
+        coupon_name: '',
+        coupon_describe: '',
+        coupon_upper: false,
+        coupon_price: '',
+        coupon_threshold: '',
+        coupon_time: '',
+        coupon_range: '',
+        coupon_get_way: [],
+        coupon_time: [],
+
+        //新增商品
         goods_name: '',
         shop_price: '',
         cost_price: '',
@@ -217,6 +300,8 @@ export default class add extends Vue{
         store_id: '',
         store_id_02: '',
         card_type: '',
+
+        //新增商家/门店
         realname: '',
         mobile: '',
         password: '',
@@ -293,6 +378,34 @@ export default class add extends Vue{
 
     //验证规则
     private add_rules: object = {
+
+        staff_name: [
+            { required: true, message: '请输入员工姓名', trigger: 'blur' },
+        ],
+        staff_num: [
+            { required: true, message: '请输入员工工号', trigger: 'blur' },
+        ],
+        origin_password: [
+            { required: true, message: '请输入原密码', trigger: 'blur' },
+            { pattern: /^[\w]{6,16}$/, message: "密码只能由数字或字母构成，且长度为6-16位", trigger: "change" }
+        ],
+
+        coupon_name: [
+            { required: true, message: '请输入优惠券标题', trigger: 'blur' },
+        ],
+        coupon_price: [
+            { required: true, message: '请输入优惠券可抵扣的金额', trigger: 'blur' },
+        ],
+        coupon_threshold: [
+            { required: true, message: '请输入优惠券的使用门槛，无门槛请填0', trigger: 'blur' },
+        ],
+        coupon_range: [
+            { required: true, message: '请选择优惠券的使用范围', trigger: 'change' },
+        ],
+        coupon_get_way: [
+            { required: true, message: '请选择优惠券的获得方式', trigger: 'change' },
+        ],
+
         goods_name: [
             { required: true, message: '请输入商品名称', trigger: 'blur' },
         ],
@@ -322,11 +435,11 @@ export default class add extends Vue{
             { pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[189])\d{8}$/, message: "请输入11位正确格式的手机号码", trigger: "blur" }
         ],
         password: [
-            { required: true, message: '请输入登录密码', trigger: 'blur' },
+            { required: true, message: '请输入密码', trigger: 'blur' },
             { pattern: /^[\w]{6,16}$/, message: "密码只能由数字或字母构成，且长度为6-16位", trigger: "change" }
         ],
         re_password: [
-            { required: true, message: '请再次输入登录密码', trigger: 'blur' },
+            { required: true, message: '请再次输入密码', trigger: 'blur' },
             { validator: this.re_pass, trigger: "change" }
         ],
         image: [
@@ -366,16 +479,21 @@ export default class add extends Vue{
     private checkbox: any = {
         //全选
         check_all: false,
+        //已选择的附加服务
         checked: sessionStorage.getItem('checkbox_checked') ? JSON.parse(sessionStorage.getItem('checkbox_checked')) : [],
         isIndeterminate: true,
         //健身会所提供的服务
         all_serves: [],
+        //所有的优惠券获得方式
+        all_range: [ { id: 1, name: "注册" }, { id: 2, name: '其他' } ]
     };
     
     //所有的商家
     private all_business: any = [];
     //所有的门店
     private all_store: any = [];
+    //所有的优惠券获得方式
+    private all_get_way: any = [ { id: 1, name: "注册" }, { id: 2, name: '其他' } ];
     //所有的卡类型
     private all_card_type: any = [
         { card_type: 1, card_name: "次卡" },
@@ -473,6 +591,11 @@ export default class add extends Vue{
         this.ruleForm.store_id = val;
         sessionStorage.setItem('add_form_data', JSON.stringify(this.ruleForm));
     };
+    //新增优惠券选择获得方式
+    coupon_get_way_change (val) {
+        this.ruleForm.coupon_get_way = val;
+        sessionStorage.setItem('add_form_data', JSON.stringify(this.ruleForm));
+    };
     //选择卡类型
     card_type_change (val) {
         this.ruleForm.card_type = val;
@@ -543,13 +666,46 @@ export default class add extends Vue{
         let ref: any = that.$refs.ruleForm;
         ref.validate();
     };
+
+    //全选相关
+    handleCheckAllChange_coupon(val) {
+        var that: any = this;
+        if (val) {
+            this.ruleForm.coupon_range = [];
+            for (var i = 0; i < this.checkbox.all_range.length; i++) {
+                this.ruleForm.coupon_range.push(this.checkbox.all_range[i].id);
+            };
+        }else {
+            this.ruleForm.coupon_range = [];
+        };
+        this.checkbox.checked = this.ruleForm.coupon_range;
+        this.checkbox.isIndeterminate = false;
+        sessionStorage.setItem('checkbox_checked', JSON.stringify(this.checkbox.checked));
+        sessionStorage.setItem('add_form_data', JSON.stringify(this.ruleForm));
+        //验证
+        let ref: any = that.$refs.ruleForm;
+        ref.validate();
+    };
+
     handleCheckedCitiesChange(value) {
-        
         var that: any = this;
         let checkedCount = value.length;
         this.checkbox.check_all = checkedCount === this.checkbox.all_serves.length;
         this.checkbox.isIndeterminate = checkedCount > 0 && checkedCount < this.checkbox.all_serves.length;
         this.ruleForm.club_facil = value;
+        sessionStorage.setItem('checkbox_checked', JSON.stringify(this.checkbox.checked));
+        sessionStorage.setItem('add_form_data', JSON.stringify(this.ruleForm));
+        //验证
+        let ref: any = that.$refs.ruleForm;
+        ref.validate();
+    };
+
+    handleCheckedCitiesChange_coupon(value) {
+        var that: any = this;
+        let checkedCount = value.length;
+        this.checkbox.check_all = checkedCount === this.checkbox.all_range.length;
+        this.checkbox.isIndeterminate = checkedCount > 0 && checkedCount < this.checkbox.all_range.length;
+        this.ruleForm.coupon_range = value;
         sessionStorage.setItem('checkbox_checked', JSON.stringify(this.checkbox.checked));
         sessionStorage.setItem('add_form_data', JSON.stringify(this.ruleForm));
         //验证
@@ -573,6 +729,24 @@ export default class add extends Vue{
             ref.validate();
         };
     };
+
+    //选择优惠券的截至时间
+    coupon_time (time) {
+        var that: any = this;
+        if (time) {
+            this.ruleForm.coupon_time = time;
+            this.ruleForm.open_time = time[0];
+            this.ruleForm.close_time = time[1];
+        }else {
+            this.ruleForm.coupon_time = [];
+            this.ruleForm.open_time = '';
+            this.ruleForm.close_time = '';
+            //验证
+            let ref: any = that.$refs.ruleForm;
+            ref.validate();
+        };
+    };
+
     //选择省
     change_p (province) {
         this.ruleForm.province = province;
@@ -613,6 +787,7 @@ export default class add extends Vue{
             that.ruleForm.area = '';
             that.ruleForm.street = '';
             that.ruleForm.business_time = [];
+            that.ruleForm.coupon_time = [];
             that.checkbox.checked = [];
             that.ruleForm.club_facil = [];
             that.ruleForm.shop_image = [];

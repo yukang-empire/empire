@@ -1,10 +1,22 @@
 <template>
     <div class="list_filter flex_between">
         <div class="item" v-if="show_filter.is_type == 'domain02' && show_filter.is_state">
-            <span>选择订单状态：</span>
-            <el-select v-model="current_state" filterable placeholder="选择订单状态" @change='state_change' class="filter_select">
+            <span>{{ show_filter.state_name }}：</span>
+            <el-select v-model="current_state" filterable placeholder="请选择" @change='state_change' class="filter_select">
                 <el-option
                     v-for="item in all_state"
+                    :key="item.state"
+                    :label="item.name"
+                    :value="item.state">
+                </el-option>
+            </el-select>
+        </div>
+
+        <div class="item" v-if="show_filter.is_type == 'domain02' && show_filter.is_state && show_filter.name == 'staff'">
+            <span>{{ show_filter.state_name02 }}：</span>
+            <el-select v-model="current_state_02" filterable placeholder="请选择" @change='state_02_change' class="filter_select">
+                <el-option
+                    v-for="item in all_state_02"
                     :key="item.state"
                     :label="item.name"
                     :value="item.state">
@@ -80,8 +92,10 @@ export default class list_filter extends Vue{
     private search_input: string = "";
     private select_time: any = "";
     private current_state: any = "全部";
+    private current_state_02: any = "";
     //所有的订单状态
     private all_state: any = [];
+    private all_state_02: any = [];
 
     //初始化数据
     mounted () {
@@ -106,6 +120,10 @@ export default class list_filter extends Vue{
     //选择订单状态
     state_change () {
         this.$emit("state_change", this.current_state);
+    };
+
+    state_02_change () {
+        this.$emit("state_change", this.current_state_02);
     };
 
     //搜索 重新获取列表数据

@@ -9,7 +9,7 @@
   margin-top: 50rpx;
 }
 .footer .content {
-  background-color: #fff;
+  background-color: #f7f7f7;
   padding: 0 20rpx;
   color: #666;
 }

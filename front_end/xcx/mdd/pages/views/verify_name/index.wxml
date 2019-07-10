@@ -1,2 +1,83 @@
-<!--pages/views/verify_name/index.wxml-->
-<text>pages/views/verify_name/index.wxml</text>
+<view class='header'>
+  <view class='collect' bindtap='my_collection'>
+    <text class='iconfont icon-xingxing'></text>
+    <text>我的收藏</text>
+  </view>
+</view>
+
+<view class='form'>
+  <view class='item'>
+    <text>地区</text>
+    <view class='select' bindtap='select_address'>
+      <text wx:if="{{ is_succ && is_inside }}">{{ city }}</text>
+      <text style='color: #ccc;' wx:if="{{ !is_succ }}">{{ city }}</text>
+      <text style='color: #ccc;' wx:if="{{ is_succ && !is_inside }}">{{ city }}</text>
+      <text class='iconfont icon-you'></text>
+    </view>
+  </view>
+  <view class='item'>
+    <text bindtap='look_font'>企业字号包含的字<text class='iconfont icon-wenhao'></text></text>
+    <view class='select' bindtap='select_word'>
+      <text class='placeholder' wx:if="{{ input_final == '请输入您希望字号中包含的字' }}">{{ input_final }}</text>
+      <text class='placeholder' style='color: #333;' wx:if="{{ input_final != '请输入您希望字号中包含的字' }}">{{ input_final }}</text>
+      <text class='iconfont icon-you'></text>
+    </view>
+  </view>
+  <view class='item'>
+    <text>行业类型</text>
+    <view class='select' bindtap='select_trade'>
+      <text class='placeholder' wx:if="{{ trade == '请选择行业' }}">{{ trade }}</text>
+      <text class='placeholder' style='color: #333;' wx:if="{{ trade != '请选择行业' }}">{{ trade }}</text>
+      <text class='iconfont icon-you'></text>
+    </view>
+  </view>
+  <view class='item'>
+    <text>公司类型</text>
+      <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
+        <view class='select'>
+            <text>{{ array[index] }}</text>
+          <text class='iconfont icon-you'></text>
+        </view>
+      </picker>
+  </view>
+</view>
+
+<!-- 自定义模态框 -->
+<view class='dialog' wx:if="{{ is_dialog }}">
+  <view class='content'>
+    <view class='h2'>什么是企业字号？</view>
+    <view class='h3'>例如：易站通企业服务有限公司</view>
+    <view>字号为：易站通</view>
+    <view class='span'>
+      您输入的中文字号不得含有阿拉伯数字、英文字母、繁体字、国家名称、国家机关名称、部队番号以及其他不符合公序良俗，有伤社会道德、风俗习惯，带有歧视性语言的文字，否则会被复审退回哦！
+    </view>
+    <button bindtap='hidden_dialog'>确定</button>
+  </view>
+</view>
+
+<view class='dialog dialog02' wx:if="{{ is_dialog02 }}">
+  <view class='content'>
+    <view><text class='iconfont icon-gantanhao-copy'></text></view>
+    <view class='span'>
+      根据工商政策，微信需要授权核实您的真实身份！
+    </view>
+    <view class='phone'>
+      <input type='number' bindinput='input_phone' auto-focus placeholder='请输入您的手机号码'></input>
+      <text class='input_tip' wx:if="{{ is_correct }}">请输入正确的手机号码</text>
+    </view>
+    <button wx:if="{{ check_phone }}" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">确定授权</button>
+    <button wx:if="{{ !check_phone }}" class='gray'>确定授权</button>
+  </view>
+</view>
+
+<view class='next'>
+  <button class='flex' wx:if="{{ !is_next }}">下一步</button>
+  <button class='flex' wx:if="{{ is_next }}" style='background-color: #3352f5;' bindtap='next'>下一步</button>
+</view>
+<view class='footer flex'>
+  <view class='content'>
+    <text class='home'>返回首页</text>
+    <text bindtap='give_name'>在线起名</text>
+  </view>
+  <view class='line'></view>
+</view>

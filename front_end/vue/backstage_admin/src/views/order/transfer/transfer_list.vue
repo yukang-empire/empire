@@ -106,7 +106,8 @@ export default class transfer_list extends Vue{
         placeholder: "请输入用户昵称、手机号(全部)",
         show_time: true,
         time_name: '提交时间',
-        is_state: true
+        is_state: true,
+        state_name: '选择订单状态'
     };
 
     mounted () {
@@ -127,8 +128,32 @@ export default class transfer_list extends Vue{
                     //typescript语法严格 不声明会报错
                     var that: any = this;
                     lists[i].add_time = lists[i].add_time == 0 ? "" : that.$moment(lists[i].add_time * 1000).format('YYYY-MM-DD HH:mm:ss');
-                    //拼接省市区
-                    lists[i].address = lists[i].province + lists[i].city + lists[i].area;
+                    switch (lists[i].status) {
+                        case 0: 
+                            lists[i].status = '审核中';
+                            break;
+                        case 1: 
+                            lists[i].status = '通过审核';
+                            break;
+                        case 2: 
+                            lists[i].status = '已确认';
+                            break;
+                        case 3: 
+                            lists[i].status = '已取消';
+                            break;
+                        case 4: 
+                            lists[i].status = '审核未通过';
+                            break;
+                        case 5: 
+                            lists[i].status = '已上架';
+                            break;
+                        case 6: 
+                            lists[i].status = '待核销';
+                            break;
+                        case 7: 
+                            lists[i].status = '已核销';
+                            break;
+                    };
                 };
                 this.table_data.page.total = parseInt(res.count);
             }else {

@@ -1,0 +1,17 @@
+<view class='item'>
+  <text class='title'>当前定位<text class='iconfont icon-ccgl-dizhichaxun-4'></text></text>
+  <view class='li' wx:if="{{ is_address }}">
+    <view>{{ city }}</view>
+    <text wx:if="{{ !is_kaifang }}">该城市还未开放,请选择下列开放城市</text>
+  </view>
+  <view class='li' wx:if="{{ !is_address }}">
+    <text style="color: #ccc;margin-top: 30rpx">授权获取地理位置信息失败！</text>
+  </view>
+</view>
+
+<view class='item'>
+  <text class='title'>开放城市</text>
+  <view class='li li02' wx:for="{{ all_city }}" wx:key='index' data-city='{{ item }}' bindtap='selectCity'>
+    <view>{{ item }}</view>
+  </view>
+</view>

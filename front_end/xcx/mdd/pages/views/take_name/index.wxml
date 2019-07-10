@@ -1,5 +1,5 @@
 <view class='header'>
-  <view class='collect'>
+  <view class='collect' bindtap='my_collection'>
     <text class='iconfont icon-xingxing'></text>
     <text>我的收藏</text>
   </view>
@@ -77,7 +77,7 @@
 <view class='footer flex'>
   <view class='content'>
     <text class='home'>返回首页</text>
-    <text>在线核名</text>
+    <text bindtap='check_name'>在线核名</text>
   </view>
   <view class='line'></view>
 </view>

@@ -8,7 +8,7 @@
                 <span>订单当前状态</span>
             </p>
             <p class="state">
-                <i class="el-icon-warning"></i>订单<span>{{ order_data.current_state }}</span>
+                <i class="el-icon-warning"></i>订单<span>{{ show_order_data.current_state }}</span>
             </p>
         </div>
 
@@ -22,31 +22,31 @@
             <div class="base">
                 <ul v-if="order_data.type =='service'">
                     <li class="flex_between">
-                        <p><span>订单编号：</span><span>{{ order_data.current_state }}</span></p>
-                        <p><span>订单状态：</span><span>{{ order_data.current_state }}</span></p>
-                        <p><span>支付方式：</span><span>{{ order_data.current_state }}</span></p>
+                        <p><span>订单编号：</span><span>{{ show_order_data.current_state }}</span></p>
+                        <p><span>订单状态：</span><span>{{ show_order_data.current_state }}</span></p>
+                        <p><span>支付方式：</span><span>{{ show_order_data.current_state }}</span></p>
                     </li>
                     <li class="flex_between">
-                        <p><span>下单时间：</span><span>{{ order_data.current_state }}</span></p>
-                        <p><span>付款时间：</span><span>{{ order_data.current_state }}</span></p>
-                        <p><span>赠送积分：</span><span>{{ order_data.current_state }}</span></p>
+                        <p><span>下单时间：</span><span>{{ show_order_data.current_state }}</span></p>
+                        <p><span>付款时间：</span><span>{{ show_order_data.current_state }}</span></p>
+                        <p><span>赠送积分：</span><span>{{ show_order_data.current_state }}</span></p>
                     </li>
                 </ul>
                 <ul v-if="order_data.type =='transfer'">
                     <li class="flex_between">
-                        <p><span>订单编号：</span><span>{{ order_data.current_state }}</span></p>
-                        <p><span>提交时间：</span><span>{{ order_data.current_state }}</span></p>
-                        <p><span>审核时间：</span><span>{{ order_data.current_state }}</span></p>
+                        <p><span>订单编号：</span><span>{{ show_order_data.current_state }}</span></p>
+                        <p><span>提交时间：</span><span>{{ show_order_data.current_state }}</span></p>
+                        <p><span>审核时间：</span><span>{{ show_order_data.current_state }}</span></p>
                     </li>
                     <li class="flex_between">
-                        <p><span>领用时间：</span><span>{{ order_data.current_state }}</span></p>
+                        <p><span>领用时间：</span><span>{{ show_order_data.current_state }}</span></p>
                     </li>
                 </ul>
                 <ul v-if="order_data.type =='receive'">
                     <li class="flex_between">
-                        <p><span>订单编号：</span><span>{{ order_data.current_state }}</span></p>
-                        <p><span>领用时间：</span><span>{{ order_data.current_state }}</span></p>
-                        <p><span>支付方式：</span><span>{{ order_data.current_state }}</span></p>
+                        <p><span>订单编号：</span><span>{{ show_order_data.current_state }}</span></p>
+                        <p><span>领用时间：</span><span>{{ show_order_data.current_state }}</span></p>
+                        <p><span>支付方式：</span><span>{{ show_order_data.current_state }}</span></p>
                     </li>
                 </ul>
             </div>
@@ -57,14 +57,14 @@
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#iconjibenxinxi"></use>
                 </svg>
-                <span>{{ order_data.title01 }}</span>
+                <span>{{ show_order_data.title01 }}</span>
             </p>
             <div class="base">
                 <ul>
                     <li class="flex_between">
-                        <p><span>用户昵称：</span><span>{{ order_data.current_state }}</span></p>
-                        <p><span>用户手机：</span><span>{{ order_data.current_state }}</span></p>
-                        <p><span>用户地区：</span><span>{{ order_data.current_state }}</span></p>
+                        <p><span>用户昵称：</span><span>{{ show_order_data.current_state }}</span></p>
+                        <p><span>用户手机：</span><span>{{ show_order_data.current_state }}</span></p>
+                        <p><span>用户地区：</span><span>{{ show_order_data.current_state }}</span></p>
                     </li>
                 </ul>
             </div>
@@ -80,22 +80,22 @@
             <div class="base card">
                 <ul>
                     <li class="flex_between">
-                        <p><span>健身房名称：</span><span>{{ order_data.current_state }}</span></p>
-                        <p><span>健身房地址：</span><span>{{ order_data.current_state }}</span></p>
-                        <p><span>健身房电话：</span><span>{{ order_data.current_state }}</span></p>
+                        <p><span>健身房名称：</span><span>{{ show_order_data.current_state }}</span></p>
+                        <p><span>健身房地址：</span><span>{{ show_order_data.current_state }}</span></p>
+                        <p><span>健身房电话：</span><span>{{ show_order_data.current_state }}</span></p>
                     </li>
                     <li class="flex_between">
-                        <p><span>健身卡类别：</span><span>{{ order_data.current_state }}</span></p>
-                        <p><span>办卡费用：</span><span>{{ order_data.current_state }}</span></p>
-                        <p><span>办卡时间：</span><span>{{ order_data.current_state }}</span></p>
+                        <p><span>健身卡类别：</span><span>{{ show_order_data.current_state }}</span></p>
+                        <p><span>办卡费用：</span><span>{{ show_order_data.current_state }}</span></p>
+                        <p><span>办卡时间：</span><span>{{ show_order_data.current_state }}</span></p>
                     </li>
                     <li class="flex_between">
-                        <p><span>持卡人姓名：</span><span>{{ order_data.current_state }}</span></p>
-                        <p><span>持卡人手机：</span><span>{{ order_data.current_state }}</span></p>
-                        <p><span>剩余可用：</span><span>{{ order_data.current_state }}</span></p>
+                        <p><span>持卡人姓名：</span><span>{{ show_order_data.current_state }}</span></p>
+                        <p><span>持卡人手机：</span><span>{{ show_order_data.current_state }}</span></p>
+                        <p><span>剩余可用：</span><span>{{ show_order_data.current_state }}</span></p>
                     </li>
                     <li class="flex_between">
-                        <p><span>到期时间：</span><span>{{ order_data.current_state }}</span></p>
+                        <p><span>到期时间：</span><span>{{ show_order_data.current_state }}</span></p>
                     </li>
                     <li class="imgs flex_between">
                         <p>
@@ -187,7 +187,7 @@
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#iconshangpin"></use>
                 </svg>
-                <span>{{ order_data.title02 }}</span>
+                <span>{{ show_order_data.title02 }}</span>
             </p>
             <div class="goods">
                 <ul class="copy_table">
@@ -200,17 +200,17 @@
                         <span v-if="order_data.type == 'receive'">结算金额(元)</span>
                     </li>
                     <li class="flex_between">
-                        <span v-if="order_data.type == 'service'">{{ order_data.current_state }}</span>
-                        <span>{{ order_data.current_state }}</span>
-                        <span v-if="order_data.type == 'service'">{{ order_data.current_state }}</span>
-                        <span v-if="order_data.type == 'receive'">{{ order_data.current_state }}</span>
-                        <span>{{ order_data.current_state }}</span>
-                        <span v-if="order_data.type == 'receive'">{{ order_data.current_state }}</span>
+                        <span v-if="order_data.type == 'service'">{{ show_order_data.current_state }}</span>
+                        <span>{{ show_order_data.current_state }}</span>
+                        <span v-if="order_data.type == 'service'">{{ show_order_data.current_state }}</span>
+                        <span v-if="order_data.type == 'receive'">{{ show_order_data.current_state }}</span>
+                        <span>{{ show_order_data.current_state }}</span>
+                        <span v-if="order_data.type == 'receive'">{{ show_order_data.current_state }}</span>
                     </li>
                 </ul>
-                <p><span>订单金额：</span><span>¥{{ order_data.current_state }}</span></p>
-                <p v-if="order_data.type == 'service'"><span>优惠券：</span><span>¥{{ order_data.current_state }}</span></p>
-                <h3><span>实付金额：</span><span>¥{{ order_data.current_state }}</span></h3>
+                <p><span>订单金额：</span><span>¥{{ show_order_data.current_state }}</span></p>
+                <p v-if="order_data.type == 'service'"><span>优惠券：</span><span>¥{{ show_order_data.current_state }}</span></p>
+                <h3><span>实付金额：</span><span>¥{{ show_order_data.current_state }}</span></h3>
             </div>
         </div>
 
@@ -243,6 +243,8 @@ import dialog_form from "@/components/dialog_form.vue";
 
 export default class order_info extends Vue{
     @Prop() private order_data !: any;
+
+    private show_order_data: any = {};
 
     //新增/编辑私教课
     private dialog_course: any = {
@@ -443,6 +445,19 @@ export default class order_info extends Vue{
                 this.$message({ message: res.msg, type: "error", duration: 2500 });
             };
         });
+
+        //获取服务订单详情
+        if (this.order_data.type == 'service') {
+            this.$store.dispatch("service_details", { card_id: this.$route.query.card_id }).then( (res: any) => {
+                console.log("服务订单详情", res);
+                if (res.code == 0 || res.status == 1) {
+                    this.show_order_data = res.result;
+                }else {
+                    //请求失败提示
+                    this.$message({ message: res.msg, type: "error", duration: 2500 });
+                };
+            });
+        }
     };
 
     //选择健身房
