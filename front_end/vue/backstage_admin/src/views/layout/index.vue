@@ -57,12 +57,17 @@ export default class layout extends Vue{
             display: flex;
             justify-content: center;
             align-items: center;
-            padding-bottom: 70px;
+            padding-bottom: 30px;
             height: 400px;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            position: relative;
 
             img {
                 width: 600px;
+                position: absolute;
+                top: 50px;
+                padding-bottom: 50px;
             }
         }
 
@@ -138,6 +143,7 @@ export default class layout extends Vue{
                             li {
                                 width: 150px;
                                 margin: 0;
+                                margin-right: 30px;
                                 
                                 img {
                                     width: 100%;

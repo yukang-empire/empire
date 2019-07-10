@@ -117,7 +117,7 @@ export default class transfer_list extends Vue{
     //请求transfer_list数据
     transfer_list () {
         this.$store.dispatch("transfer_list", this.send_data).then( (res: any) => {
-            console.log("商家列表", res);
+            console.log("转让订单列表", res);
             if (res.code == 0 || res.status == 1) {
                 this.table_data.table.lists = res.result;
                 //提取长度出来 提高for循环性能
@@ -266,7 +266,7 @@ export default class transfer_list extends Vue{
 
     //查看
     look_up (row: any) {
-        this.$router.push({ path: '/order/transfer/details', query: { club_id: row.id } });
+        this.$router.push({ path: '/order/transfer/details', query: { out_id: row.id } });
     };
 }
 
