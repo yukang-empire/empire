@@ -103,16 +103,16 @@
             <el-table-column v-if="table_data.table.which=='operation_log'" prop="name" label="备注"></el-table-column>
 
             <!-- 提现列表 -->
-            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="序号" sortable :sort-method='date_sort'></el-table-column>
-            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="用户类型"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="申请提现人"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="手机号码"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="提现金额" sortable :sort-method='date_sort'></el-table-column>
-            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="提现账户"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="账户类型"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="申请日期" sortable :sort-method='date_sort'></el-table-column>
-            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="打款日期" sortable :sort-method='date_sort'></el-table-column>
-            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="name" label="状态"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="id" label="ID" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="bank_type" label="卡类型"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="bank_people" label="申请提现人"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="mobile" label="手机号码"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="money" label="提现金额" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="bankcard" label="提现账户"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="openbank" label="账户类型"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="add_time" label="申请日期" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="up_time" label="打款日期" sortable :sort-method='date_sort'></el-table-column>
+            <el-table-column v-if="table_data.table.which=='cash_out_list'" prop="status" label="状态"></el-table-column>
 
             <!-- 财务-服务订单统计 -->
             <el-table-column v-if="table_data.table.which=='finance_service_list'" prop="name" label="序号"></el-table-column>
@@ -206,23 +206,23 @@
             <el-table-column v-if="table_data.table.which=='coupon_list'" prop="name" label="截止时间"></el-table-column>
 
             <!-- 角色管理 -->
-            <el-table-column v-if="table_data.table.which=='role_list'" prop="name" label="角色名称"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='role_list'" prop="name" label="描述"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='role_list'" prop="RoleName" label="角色名称"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='role_list'" prop="Content" label="描述"></el-table-column>
             <el-table-column v-if="table_data.table.which=='role_list'" prop="name" label="员工数量"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='role_list'" prop="name" label="添加时间"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='role_list'" prop="createtime" label="添加时间"></el-table-column>
 
             <!-- 员工管理 -->
-            <el-table-column v-if="table_data.table.which=='staff_list'" prop="name" label="工号"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='staff_list'" prop="name" label="姓名"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='staff_list'" prop="name" label="手机"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='staff_list'" prop="name" label="角色"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='staff_list'" prop="name" label="添加时间"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='staff_list'" prop="id" label="工号"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='staff_list'" prop="username" label="姓名"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='staff_list'" prop="phone" label="手机"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='staff_list'" prop="roleID" label="角色"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='staff_list'" prop="createtime" label="添加时间"></el-table-column>
 
             <!-- 操作日志 -->
-            <el-table-column v-if="table_data.table.which=='log_list'" prop="name" label="操作人"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='log_list'" prop="name" label="操作模块"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='log_list'" prop="name" label="操作内容"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='log_list'" prop="name" label="操作时间"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='log_list'" prop="log_ip" label="操作IP"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='log_list'" prop="log_type" label="操作模块"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='log_list'" prop="log_info" label="操作内容"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='log_list'" prop="log_time" label="操作时间"></el-table-column>
 
             
             <el-table-column label="状态" v-if="table_data.table.which == 'staff_list'">
@@ -303,6 +303,7 @@
                         table_data.table.which == 'staff_list'
                     ">删除</el-button>
                     <el-button type="text" @click="complete_delete(scope.row)"  v-if="table_data.table.which == 'recycle_bin_list'">彻底删除</el-button>
+                    <el-button type="text" @click="check_cash_out(scope.row)"  v-if="table_data.table.which == 'cash_out_list' && scope.row.status == '已申请'">审核</el-button>
                 </template>
             </el-table-column>
 
@@ -359,6 +360,10 @@ export default class table_page extends Vue{
     date_sort (a: any, b: any) {
         return a - b;
     };
+    //审核提现
+    check_cash_out (row: any) {
+        this.$emit('check_cash_out', row);
+    }
 }
 
 </script>

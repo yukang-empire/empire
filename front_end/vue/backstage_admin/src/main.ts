@@ -22,6 +22,10 @@ import moment from 'moment';
 moment.locale('zh-cn');
 Vue.prototype.$moment= moment;
 
+//导出excel
+import JsonExcel from 'vue-json-excel';
+Vue.component('downloadExcel', JsonExcel);
+
 //基础样式、阿里图标
 import '@/assets/style/base.css';
 // import '@/assets/style/iconfont.js';

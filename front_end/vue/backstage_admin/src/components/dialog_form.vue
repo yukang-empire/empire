@@ -19,6 +19,9 @@
                 <el-form-item label="最低提现金额:" prop="min_cash">
                     <el-input type="number" v-model="dialog_data.form_data.min_cash" placeholder="请输入最低提现金额" clearable></el-input>
                 </el-form-item>
+                <el-form-item label="每日提现次数上限:" prop="max_order">
+                    <el-input type="number" v-model="dialog_data.form_data.max_order" placeholder="请输入每日提现次数上限" clearable></el-input>
+                </el-form-item>
             </div>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -90,7 +93,7 @@ export default class dialog_form extends Vue{
             }
 
             .el-form-item__label {
-                min-width: 130px;
+                min-width: 140px;
             }
 
             .el-dialog__footer {

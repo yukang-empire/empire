@@ -73,6 +73,64 @@
                     </el-form-item>
                 </div>
 
+                <!-- 新增员工 -->
+                <div v-if='add_data.type == "staff"'>
+                    <el-form-item label="员工姓名:" prop="staff_name">
+                        <el-input v-model="ruleForm.staff_name" placeholder="请输入员工姓名" clearable maxlength="10" show-word-limit @change='input_data'></el-input>
+                    </el-form-item>
+                    <el-form-item label="工号:" prop="staff_num">
+                        <el-input v-model="ruleForm.staff_num" placeholder="请输入员工工号" clearable maxlength="20" show-word-limit @change='input_data'></el-input>
+                    </el-form-item>
+                    <el-form-item label="密码:" prop="password">
+                        <el-input v-model="ruleForm.password" placeholder="请输入原密码" show-password clearable @change='input_data'></el-input>
+                    </el-form-item>
+                    <el-form-item label="状态:" prop="staff_state">
+                        <el-switch v-model="ruleForm.staff_state" active-color="#13ce66" inactive-color="#ccc"> </el-switch>
+                    </el-form-item>
+                    <el-form-item label="角色:" prop="staff_role">
+                        <el-select v-model="ruleForm.staff_role" filterable placeholder="请选择权限角色" @change='staff_role_change'>
+                            <el-option
+                                v-for="item in staff_roles"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                </div>
+                
+                    
+                <!-- 新增员工 -->
+                <div v-if='add_data.type == "staff"'>
+                    <el-form-item label="手机号码:" prop="staff_phone">
+                        <el-input v-model="ruleForm.staff_phone" placeholder="请输入员工手机号码" clearable maxlength="11" show-word-limit @change='input_data'></el-input>
+                    </el-form-item>
+                    <el-form-item label="头像:" prop="image" style="margin-bottom: 56px;">
+                        <el-upload
+                            id="license_img"
+                            action=""
+                            drag
+                            :auto-upload='false'
+                            :show-file-list="false"
+                            :on-change='upload_change_license'>
+                            <img v-if="show_cropper.license" :src="show_cropper.license" class="full_width" alt='license_img'>
+                            <i v-else class="el-icon-plus" style="font-size: 2rem;"></i>
+                        </el-upload>
+                    </el-form-item>
+                    <!-- 裁剪工具cropper -->
+                    <cropper
+                    v-if='license_cropper_data.is_cropper'
+                    :cropper_data='license_cropper_data'
+                    @startCrop='startCrop_license'
+                    @cancel_crop='cancel_crop'
+                    @com_crop='com_crop'
+                    />
+                    <el-form-item label="简介:" prop="content">
+                        <el-input type="textarea" @change='input_data' :autosize="{ minRows: 5, maxRows: 10 }" v-model="ruleForm.content" placeholder="请输入门店介绍" maxlength="500" show-word-limit @keyup.13.native="add_submit()"></el-input>
+                    </el-form-item>
+                </div>
+                    
+
                 <!-- 新增优惠券 -->
                 <div v-if='add_data.type == "coupon"'>
                     <el-form-item label="优惠券标题:" prop="coupon_name">
@@ -157,52 +215,58 @@
                 </div>
                 
                 <!-- 新增商家/门店 -->
-                <div v-if="add_data.type == 'business' || add_data.type == 'store'">
-                    <p v-if="add_data.type == 'business'" style="margin-bottom: 20px;">
+                <div v-if="
+                    add_data.type == 'business' ||
+                    add_data.type == 'store'
+                ">
+                    <p v-if="add_data.type == 'business' || add_data.type == 'staff'" style="margin-bottom: 20px;">
                         <svg class="icon" aria-hidden="true">
                             <use xlink:href="#iconruzhuchenggongdapx"></use>
                         </svg>
                         <span>填写门店信息</span>
                     </p>
-    
-                    <el-form-item label="门店名称:" prop="club_name">
-                        <el-input v-model="ruleForm.club_name" placeholder="请输入门店名称" clearable maxlength="32" show-word-limit @change='input_data'></el-input>
-                    </el-form-item>
-                    <el-form-item label="门店电话:" prop="tel">
-                        <el-input v-model="ruleForm.tel" placeholder="请输入门店电话" clearable @change='input_data'></el-input>
-                    </el-form-item>
-                    <el-form-item label="所在地区:" prop="p_c_a_s_rule">
-                        <p_c_a_s
-                        :form='ruleForm'
-                        @change_p="change_p"
-                        @change_c="change_c"
-                        @change_a='change_a'
-                        @change_s="change_s"
-                        />
-                    </el-form-item>
-                    <el-form-item label="详细地址:" prop="address">
-                        <el-input v-model="ruleForm.address" placeholder="请输入详细地址" clearable @input='input_data_address'></el-input>
-                    </el-form-item>
-                    <el-form-item label="地图位置:">
-                        <baidu_map />
-                    </el-form-item>
-                    <el-form-item label="营业时间:" prop="business_time">
-                        <el-time-picker
-                            is-range
-                            v-model="ruleForm.business_time"
-                            range-separator="至"
-                            start-placeholder="开始时间"
-                            end-placeholder="结束时间"
-                            @change='business_time'
-                            placeholder="选择时间范围">
-                        </el-time-picker>
-                    </el-form-item>
-                    <el-form-item label="附加服务:" prop="club_facil">
-                        <el-checkbox :indeterminate="checkbox.isIndeterminate" v-model="checkbox.check_all" @change="handleCheckAllChange">全选</el-checkbox>
-                        <el-checkbox-group v-model="checkbox.checked" @change="handleCheckedCitiesChange">
-                            <el-checkbox v-for="item in checkbox.all_serves" :label="item.id" :key="item.id" border>{{ item.name }}</el-checkbox>
-                        </el-checkbox-group>
-                    </el-form-item>
+                    
+                    <div v-if="add_data.type == 'business' || add_data.type == 'store'">
+                        <el-form-item label="门店名称:" prop="club_name">
+                            <el-input v-model="ruleForm.club_name" placeholder="请输入门店名称" clearable maxlength="32" show-word-limit @change='input_data'></el-input>
+                        </el-form-item>
+                        <el-form-item label="门店电话:" prop="tel">
+                            <el-input v-model="ruleForm.tel" placeholder="请输入门店电话" clearable @change='input_data'></el-input>
+                        </el-form-item>
+                        <el-form-item label="所在地区:" prop="p_c_a_s_rule">
+                            <p_c_a_s
+                            :form='ruleForm'
+                            @change_p="change_p"
+                            @change_c="change_c"
+                            @change_a='change_a'
+                            @change_s="change_s"
+                            />
+                        </el-form-item>
+                        <el-form-item label="详细地址:" prop="address">
+                            <el-input v-model="ruleForm.address" placeholder="请输入详细地址" clearable @input='input_data_address'></el-input>
+                        </el-form-item>
+                        <el-form-item label="地图位置:">
+                            <baidu_map />
+                        </el-form-item>
+                        <el-form-item label="营业时间:" prop="business_time">
+                            <el-time-picker
+                                is-range
+                                v-model="ruleForm.business_time"
+                                range-separator="至"
+                                start-placeholder="开始时间"
+                                end-placeholder="结束时间"
+                                @change='business_time'
+                                placeholder="选择时间范围">
+                            </el-time-picker>
+                        </el-form-item>
+                        <el-form-item label="附加服务:" prop="club_facil">
+                            <el-checkbox :indeterminate="checkbox.isIndeterminate" v-model="checkbox.check_all" @change="handleCheckAllChange">全选</el-checkbox>
+                            <el-checkbox-group v-model="checkbox.checked" @change="handleCheckedCitiesChange">
+                                <el-checkbox v-for="item in checkbox.all_serves" :label="item.id" :key="item.id" border>{{ item.name }}</el-checkbox>
+                            </el-checkbox-group>
+                        </el-form-item>
+                    </div>
+
                     <el-form-item label="门店环境照片:" prop="shop_image">
                         <span class="bottom_tip">(至多5张)</span>
                         <ul class="show_store_imgs flex_center">
@@ -281,6 +345,10 @@ export default class add extends Vue{
         staff_num: '',
         origin_password: '',
 
+        //新增员工
+        staff_state: '',
+        staff_role: '',
+
         //新增优惠券
         coupon_name: '',
         coupon_describe: '',
@@ -323,7 +391,9 @@ export default class add extends Vue{
         shop_images: [],
         content: ''
     };
-
+    //角色集合
+    private staff_roles: any = [];
+    
     //验证再次输入密码
     private re_pass: any = (rule, value, callback) => {
         if (sessionStorage.getItem('add_form_data')) { this.ruleForm = JSON.parse(sessionStorage.getItem('add_form_data')) };

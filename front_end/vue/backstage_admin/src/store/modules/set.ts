@@ -9,15 +9,9 @@ const home =  {
     actions: {
         //角色列表
         role_list (state: any, data: any) {
-            var send_data: any = new FormData();
-            send_data.append("p", data.p);
-            send_data.append("size", data.size);
-            send_data.append("search", data.search);
-            send_data.append("start_time", data.start_time);
-            send_data.append("end_time", data.end_time);
-            send_data.append("token", sessionStorage.getItem('token'));
+            var send_data = JSON.stringify(data);
             return new Promise((resolve, reject) => {
-                axios.post( state.state.domain02 + "", send_data).then( (res: any) => {
+                axios.post( "/api/getRoleList", send_data).then( (res: any) => {
                     //返回数据给调起dispatch的那边
                     resolve(res);
                 }).catch( error => {
@@ -28,15 +22,9 @@ const home =  {
         },
         //员工列表
         staff_list (state: any, data: any) {
-            var send_data: any = new FormData();
-            send_data.append("p", data.p);
-            send_data.append("size", data.size);
-            send_data.append("search", data.search);
-            send_data.append("start_time", data.start_time);
-            send_data.append("end_time", data.end_time);
-            send_data.append("token", sessionStorage.getItem('token'));
+            var send_data = JSON.stringify(data);
             return new Promise((resolve, reject) => {
-                axios.post( state.state.domain02 + "", send_data).then( (res: any) => {
+                axios.post( "/api/getUsers", send_data).then( (res: any) => {
                     //返回数据给调起dispatch的那边
                     resolve(res);
                 }).catch( error => {
@@ -47,15 +35,9 @@ const home =  {
         },
         //日志列表
         log_list (state: any, data: any) {
-            var send_data: any = new FormData();
-            send_data.append("p", data.p);
-            send_data.append("size", data.size);
-            send_data.append("search", data.search);
-            send_data.append("start_time", data.start_time);
-            send_data.append("end_time", data.end_time);
-            send_data.append("token", sessionStorage.getItem('token'));
+            var send_data = JSON.stringify(data);
             return new Promise((resolve, reject) => {
-                axios.post( state.state.domain02 + "", send_data).then( (res: any) => {
+                axios.post( "/api/getUserLog", send_data).then( (res: any) => {
                     //返回数据给调起dispatch的那边
                     resolve(res);
                 }).catch( error => {
@@ -66,11 +48,9 @@ const home =  {
         },
         //修改密码
         change_password (state: any, data: any) {
-            var send_data: any = new FormData();
-            send_data.append("p", data.p);
-            send_data.append("token", sessionStorage.getItem('token'));
+            var send_data = JSON.stringify(data);
             return new Promise((resolve, reject) => {
-                axios.post( state.state.domain02 + "", send_data).then( (res: any) => {
+                axios.post( "/api/getUserLog", send_data).then( (res: any) => {
                     //返回数据给调起dispatch的那边
                     resolve(res);
                 }).catch( error => {

@@ -9,7 +9,6 @@ const user =  {
     actions: {
         //获取用户列表
         user_list (state: any, data: any) {
-            console.log(data);
             var send_data = JSON.stringify(data);
             return new Promise((resolve, reject) => {
                 axios.post("/api/getUserList", send_data).then( (res: any) => {

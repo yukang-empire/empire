@@ -12,6 +12,7 @@ class Board extends React.Component {
   render () {
     let yellow = 'yellow';
     let chess = [];
+    //for循环 检测到
     for (let i = 0; i < 3; i++) {
       let winner = JSON.parse(sessionStorage.getItem('winner')) || [];
       let btn = [];
@@ -38,6 +39,7 @@ class Board extends React.Component {
 
     return (
       <div>
+        {/* 棋盘格子 */}
         <div className='status'>{this.props.status}</div>
         {chess}
       </div>
@@ -81,6 +83,7 @@ class app extends React.Component {
     };
   };
 
+  //点击棋盘
   handleClick (i) {
     const history = this.state.history.slice(0, this.state.step_num + 1);
     const current = history[history.length - 1];

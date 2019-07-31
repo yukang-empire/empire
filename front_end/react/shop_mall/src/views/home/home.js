@@ -25,7 +25,7 @@ const App = React.createClass({
     switch (this.state.route) {
       case '/about': Child = About; break;
       case '/inbox': Child = Inbox; break;
-      default:      Child = Home;
+      default: Child = Home;
     }
 
     return (

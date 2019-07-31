@@ -19,7 +19,9 @@ const store = new Vuex.Store({
     //历史记录的数组汇总
     history_arr: [],
     //地图需要的响应式数据
-    map_data: ''
+    map_data: '',
+    //提现excel表格
+    cash_out_excel: []
   },
   mutations: {
     change_map_data (state, data) {
@@ -52,8 +54,12 @@ const store = new Vuex.Store({
     },
     //删除某个历史记录tag
     del_tag (state, index) {
-        state.history_arr.splice(index, 1);
+      state.history_arr.splice(index, 1);
     },
+    //修改excel表格数据
+    change_cash_out_excel (state, data) {
+      state.cash_out_excel = JSON.parse(data);
+    }
   },
   modules: {
     //所有的数据请求都在这里

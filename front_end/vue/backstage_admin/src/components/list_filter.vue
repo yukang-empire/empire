@@ -1,10 +1,22 @@
 <template>
     <div class="list_filter flex_between">
+        <div class="item" v-if="show_filter.is_type == 'domain01' && show_filter.is_state">
+            <span>{{ show_filter.state_name }}：</span>
+            <el-select v-model="current_state" filterable placeholder="请选择" clearable @clear='clear_select' @change='state_change' class="filter_select">
+                <el-option
+                    v-for="item in show_filter.all_state"
+                    :key="item.state"
+                    :label="item.name"
+                    :value="item.state">
+                </el-option>
+            </el-select>
+        </div>
+
         <div class="item" v-if="show_filter.is_type == 'domain02' && show_filter.is_state">
             <span>{{ show_filter.state_name }}：</span>
-            <el-select v-model="current_state" filterable placeholder="请选择" @change='state_change' class="filter_select">
+            <el-select v-model="current_state" filterable placeholder="请选择" clearable @clear='clear_select' @change='state_change' class="filter_select">
                 <el-option
-                    v-for="item in all_state"
+                    v-for="item in show_filter.all_state"
                     :key="item.state"
                     :label="item.name"
                     :value="item.state">
@@ -14,26 +26,14 @@
 
         <div class="item" v-if="show_filter.is_type == 'domain02' && show_filter.is_state && show_filter.name == 'staff'">
             <span>{{ show_filter.state_name02 }}：</span>
-            <el-select v-model="current_state_02" filterable placeholder="请选择" @change='state_02_change' class="filter_select">
+            <el-select v-model="current_state_02" filterable placeholder="请选择" clearable @clear='clear_02_select' @change='state_02_change' class="filter_select">
                 <el-option
-                    v-for="item in all_state_02"
+                    v-for="item in show_filter.all_state_02"
                     :key="item.state"
                     :label="item.name"
                     :value="item.state">
                 </el-option>
             </el-select>
-        </div>
-
-        <div class="item" v-if="show_filter.is_type == 'domain01' && show_filter.is_search">
-            <span>输入关键词：</span>
-            <el-input
-                placeholder="请输入用户ID、昵称、手机号"
-                v-model="search_input"
-                @clear='clear_search'
-                @keyup.native.enter='search'
-                clearable>
-            </el-input>
-            <el-button type="primary" @click='search' icon="el-icon-search">搜索</el-button>
         </div>
         
         <div class="item" v-if="show_filter.is_type == 'domain02' && show_filter.is_search">
@@ -71,7 +71,18 @@
                 end-placeholder="结束日期">
             </el-date-picker>
         </div>
-        
+
+        <div class="item" v-if="show_filter.is_type == 'domain01' && show_filter.is_search">
+            <span>输入关键词：</span>
+            <el-input
+                :placeholder="show_filter.placeholder"
+                v-model="search_input"
+                @clear='clear_search'
+                @keyup.native.enter='search'
+                clearable>
+            </el-input>
+            <el-button type="primary" @click='search' icon="el-icon-search">搜索</el-button>
+        </div>
     
     </div>
 </template>
@@ -93,9 +104,7 @@ export default class list_filter extends Vue{
     private select_time: any = "";
     private current_state: any = "全部";
     private current_state_02: any = "";
-    //所有的订单状态
-    private all_state: any = [];
-    private all_state_02: any = [];
+    private current_state_03: any = "";
 
     //初始化数据
     mounted () {
@@ -105,16 +114,14 @@ export default class list_filter extends Vue{
         if (this.show_filter.is_type == "domain01") {
             time_arr.push(new Date(parseInt(this.send_data.where.stime) * 1000));
             time_arr.push(new Date(parseInt(this.send_data.where.etime) * 1000));
-            this.select_time = time_arr;
             this.search_input = this.send_data.where.keyword;
         }else {
             time_arr.push(new Date(parseInt(this.send_data.start_time) * 1000));
             time_arr.push(new Date(parseInt(this.send_data.end_time) * 1000));
-            this.select_time = time_arr;
             this.search_input = this.send_data.search;
-            this.all_state = this.send_data.all_state;
-            this.current_state = this.send_data.current_state;
         };
+        this.select_time = time_arr;
+        this.current_state = this.send_data.current_state;
     };
 
     //选择订单状态
@@ -123,7 +130,7 @@ export default class list_filter extends Vue{
     };
 
     state_02_change () {
-        this.$emit("state_change", this.current_state_02);
+        this.$emit("state_change_02", this.current_state_02);
     };
 
     //搜索 重新获取列表数据
@@ -134,6 +141,11 @@ export default class list_filter extends Vue{
     //清空搜索内容
     clear_search () {
         this.$emit("clear_search");
+    };
+
+    //清空下拉选择
+    clear_select () {
+        this.$emit("clear_select");
     };
 
     //筛选时间

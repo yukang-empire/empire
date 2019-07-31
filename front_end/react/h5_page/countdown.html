@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>神武新区"古灵精怪"倒计时</title>
+	<style>
+		* {
+			padding: 0;
+			margin: 0;
+		}
+		body {
+			color: #446ec5;
+			align-items: center;
+		}
+		.logo {
+			width: 200px;
+			margin-bottom: 10px;
+		}
+		header {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+			padding: 15px 0 0 0;
+		}
+		#countdown {
+			text-align: center;
+			margin: 30px 0;
+			font-size: 2rem;
+			font-weight: 900;
+		}
+		footer {
+			color: #e54aa9;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+			font-weight: 900;
+		}
+		footer img{
+			width: 250px;
+			margin-top: 10px;
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<img class="logo" src="logo.png" alt="logo">
+		<h3>新区"古灵精怪"开区倒计时</h3>
+	</header>
+	<article>
+		<div id="countdown"></div>
+	</article>
+
+	<footer>
+		<p>欢迎小伙伴们加微信群(目前逼近70人)</p>
+		<img src="QR.jpg" alt="QR">
+	</footer>
+
+	<script type="text/javascript">
+		window.onload = clock;
+		function clock(){
+		var today=new Date(),//当前时间
+			h=today.getHours(),
+			m=today.getMinutes(),
+			s=today.getSeconds();
+		var stopTime=new Date("Jul 26 2019 12:00:00"),//结束时间
+			stopH=stopTime.getHours(),
+			stopM=stopTime.getMinutes(),
+			stopS=stopTime.getSeconds();
+		var shenyu=stopTime.getTime()-today.getTime(),//倒计时毫秒数
+			shengyuD=parseInt(shenyu/(60*60*24*1000)),//转换为天
+			D=parseInt(shenyu)-parseInt(shengyuD*60*60*24*1000),//除去天的毫秒数
+			shengyuH=parseInt(D/(60*60*1000)),//除去天的毫秒数转换成小时
+			H=D-shengyuH*60*60*1000,//除去天、小时的毫秒数
+			shengyuM=parseInt(H/(60*1000)),//除去天的毫秒数转换成分钟
+		M=H-shengyuM*60*1000;//除去天、小时、分的毫秒数
+		S=parseInt((shenyu-shengyuD*60*60*24*1000-shengyuH*60*60*1000-shengyuM*60*1000)/1000);//除去天、小时、分的毫秒数转化为秒
+		document.getElementById("countdown").innerHTML=(shengyuH+" 小时 "+shengyuM+" 分 "+S+" 秒"+"<br>");
+		setTimeout(clock,1000);
+		}
+	</script>
+</body>
+</html>
