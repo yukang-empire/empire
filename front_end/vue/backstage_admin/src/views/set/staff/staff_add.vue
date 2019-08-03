@@ -1,6 +1,6 @@
 <template>
     <div class="staff_add">
-        <add :add_data='staff_add_data' @add_submit='add_business' />
+        <add :add_data='staff_add_data' @add_submit='add_staff' />
     </div>
 </template>
 

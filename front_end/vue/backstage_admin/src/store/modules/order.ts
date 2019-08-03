@@ -109,11 +109,17 @@ const home =  {
             });
         },
         //新增私家课
-        add_course (state: any) {
+        add_course (state: any, data: any) {
             var send_data: any = new FormData();
+            send_data.append("out_id", data.out_id);
+            send_data.append("club_id", data.club_id);
+            send_data.append("tax_num", data.tax_num);
+            send_data.append("price", data.price);
+            send_data.append("cost_price", data.cost_price);
+            send_data.append("tax_id", data.tax_id);
             send_data.append("token", sessionStorage.getItem('token'));
             return new Promise((resolve, reject) => {
-                axios.post( state.state.domain02 + "", send_data).then( (res: any) => {
+                axios.post( state.state.domain02 + "/index.php?m=Api&c=Club&a=up_club_tax", send_data).then( (res: any) => {
                     //返回数据给调起dispatch的那边
                     resolve(res);
                 }).catch( error => {
@@ -139,9 +145,15 @@ const home =  {
         //上架订单
         upper (state: any) {
             var send_data: any = new FormData();
+            send_data.append("out_id", data.out_id);
+            send_data.append("club_id", data.club_id);
+            send_data.append("tax_num", data.tax_num);
+            send_data.append("price", data.price);
+            send_data.append("cost_price", data.cost_price);
+            send_data.append("tax_id", data.tax_id);
             send_data.append("token", sessionStorage.getItem('token'));
             return new Promise((resolve, reject) => {
-                axios.post( state.state.domain02 + "", send_data).then( (res: any) => {
+                axios.post( state.state.domain02 + "/index.php?m=Api&c=Club&a=up_club_tax", send_data).then( (res: any) => {
                     //返回数据给调起dispatch的那边
                     resolve(res);
                 }).catch( error => {
@@ -153,9 +165,12 @@ const home =  {
         //审核转让订单
         check_transfer_order (state: any, data: any) {
             var send_data: any = new FormData();
+            send_data.append("out_id", data.out_id);
+            send_data.append("status", data.status);
+            send_data.append("price", data.price);
             send_data.append("token", sessionStorage.getItem('token'));
             return new Promise((resolve, reject) => {
-                axios.post( state.state.domain02 + "", send_data).then( (res: any) => {
+                axios.post( state.state.domain02 + "/index.php?m=Api&c=Club&a=upcard_status", send_data).then( (res: any) => {
                     //返回数据给调起dispatch的那边
                     resolve(res);
                 }).catch( error => {
@@ -169,7 +184,7 @@ const home =  {
             var send_data: any = new FormData();
             send_data.append("token", sessionStorage.getItem('token'));
             return new Promise((resolve, reject) => {
-                axios.post( state.state.domain02 + "", send_data).then( (res: any) => {
+                axios.post( state.state.domain02 + "/index.php?m=Api&c=Club&a=clubid_list", send_data).then( (res: any) => {
                     //返回数据给调起dispatch的那边
                     resolve(res);
                 }).catch( error => {

@@ -59,6 +59,18 @@
                 end-placeholder="结束日期">
             </el-date-picker>
         </div>
+
+        <div class="item" v-if="show_filter.is_type == 'domain01' && show_filter.show_time_02">
+            <span>{{ show_filter.time_name }}：</span>
+            <el-date-picker
+                v-model="select_time"
+                type="daterange"
+                range-separator="至"
+                @change='change_time'
+                start-placeholder="开始日期"
+                end-placeholder="结束日期">
+            </el-date-picker>
+        </div>
         
         <div class="item" v-if="show_filter.is_type == 'domain02' && show_filter.show_time">
             <span>{{ show_filter.time_name }}：</span>

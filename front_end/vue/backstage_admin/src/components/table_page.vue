@@ -91,9 +91,9 @@
             <el-table-column v-if="table_data.table.which=='receive_list'" prop="name" label="提交时间" sortable :sort-method='date_sort'></el-table-column>
 
             <!-- 上架-私家课 -->
-            <el-table-column v-if="table_data.table.which=='upper_course'" prop="name" label="课程名称"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='upper_course'" prop="name" label="私教费用"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='upper_course'" prop="name" label="结算费用"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='upper_course'" prop="tax_num" label="课程节数"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='upper_course'" prop="price" label="私教费用"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='upper_course'" prop="cost_price" label="结算费用"></el-table-column>
 
             <!-- 订单-操作记录 -->
             <el-table-column v-if="table_data.table.which=='operation_log'" prop="name" label="操作人"></el-table-column>
@@ -279,7 +279,8 @@
                         table_data.table.which != 'article_list' &&
                         table_data.table.which != 'coupon_list' &&
                         table_data.table.which != 'role_list' &&
-                        table_data.table.which != 'staff_list'
+                        table_data.table.which != 'staff_list' &&
+                        table_data.table.which != 'upper_course'
                     " type="text" @click="look_up(scope.row)">查看</el-button>
                     <el-button v-if="
                         table_data.table.which == 'upper_course' ||

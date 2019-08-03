@@ -126,7 +126,7 @@
             <img :src="dialog_img.src" alt="logo">
         </el-dialog>
 
-        <div class="repeat_div" v-if="order_data.type =='transfer'">
+        <div class="repeat_div" v-if="order_data.type =='transfer' && show_order_data.status == '审核中'">
             <p>
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#iconshenhe1"></use>
@@ -135,21 +135,21 @@
             </p>
             <div class="add check">
                 <el-form :model="check_form_data" :rules="check_rules" ref="check_ref">
-                    <el-form-item label="审核:" prop="check">
-                        <el-radio v-model="check_form_data.check" label="1" border @change='check_order'>通过</el-radio>
-                        <el-radio v-model="check_form_data.check" label="2" border @change='check_order'>不通过</el-radio>
+                    <el-form-item label="审核:" prop="status">
+                        <el-radio v-model="check_form_data.status" label="1" border @change='check_order'>通过</el-radio>
+                        <el-radio v-model="check_form_data.status" label="2" border @change='check_order'>不通过</el-radio>
                     </el-form-item>
-                    <el-form-item label="酷币价值:" prop="cool_b_price">
-                        <el-input type='number' v-model="check_form_data.cool_b_price" placeholder="请输入酷币价值"></el-input>
+                    <el-form-item label="酷币价值:" prop="price">
+                        <el-input type='number' v-model="check_form_data.price" placeholder="请输入酷币价值"></el-input>
                     </el-form-item>
                     <el-form-item class="btn">
-                        <el-button type="primary" @click="check" :loading="is_loading01">提交审核</el-button>
+                        <el-button type="primary" @click="check_transfer_order" :loading="is_loading01">提交审核</el-button>
                     </el-form-item>
                 </el-form>
             </div>
         </div>
 
-        <div class="repeat_div" v-if="order_data.type =='transfer'">
+        <div class="repeat_div" v-if="order_data.type =='transfer' && (show_order_data.status == '已确认' || show_order_data.status == '已上架' )">
             <p>
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#iconshangjia1"></use>
@@ -157,14 +157,14 @@
                 <span>上架市场</span>
             </p>
             <div class="add upper">
-                <el-form :model="check_form_data" :rules="check_rules" ref="check_ref">
+                <el-form :model="check_form_data" :rules="check_rules" ref="upper_ref">
                     <el-form-item label="选择健身房：" prop="select">
                         <el-select v-model="check_form_data.select" filterable placeholder="请选择(可搜索)" @change='select_jsf'>
                             <el-option
                                 v-for="item in all_jsf"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.id">
+                                :key="item.club_id"
+                                :label="item.club_name"
+                                :value="item.club_id">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -172,9 +172,9 @@
                         <span class="bottom_tip plus" @click='add_course'><i class="el-icon-circle-plus"></i></span>
                         <table_page :table_data='course_data' @edit='edit_course' />
                     </el-form-item>
-                    <el-form-item class="btn">
+                    <!-- <el-form-item class="btn">
                         <el-button type="primary" @click="upper" :loading="is_loading02">确定上架</el-button>
-                    </el-form-item>
+                    </el-form-item> -->
                 </el-form>
             </div>
         </div>
@@ -256,19 +256,19 @@ export default class order_info extends Vue{
         sure_name: '',
         //表单数据
         form_data: {
-            course_name: '',
-            course_sale_price: '',
-            course_cost_price: '',
+            tax_num: '',
+            price: '',
+            cost_price: ''
         },
         //表单规则
         form_rules: {
-            course_name: [
-                { required: true, message: '请输入课程名称', trigger: 'blur' },
+            tax_num: [
+                { required: true, message: '请输入课程节数', trigger: 'blur' },
             ],
-            course_sale_price: [
+            price: [
                 { required: true, message: '请输入私教费用', trigger: 'blur' },
             ],
-            course_cost_price: [
+            cost_price: [
                 { required: true, message: '请输入结算费用', trigger: 'blur' },
             ]
         }
@@ -280,7 +280,87 @@ export default class order_info extends Vue{
         src: ''
     };
 
-    mounted () {
+    //图片放大
+    enlarge_img (index, src, title) {
+        this.dialog_img.is_enlarge = true;
+        this.dialog_img.img_name = title + (index + 1);
+        this.dialog_img.src = this.$store.state.order.domain02 + src;
+    };
+
+
+    private is_loading01: boolean = false;
+    private is_loading02: boolean = false;
+    private all_jsf: any = [];
+    //审核
+    private check_form_data: any = {
+        status: null,
+        price: '',
+        select: '',
+    };
+    //验证审核表单规则
+    private check_rules: object = {
+        status: [
+            { required: true, message: '请审核', trigger: 'change' },
+        ],
+        select: [
+            { required: true, message: '请选择健身房', trigger: 'change' },
+        ],
+    };
+    //私家课列表
+    private course_data: any = {
+        //表格
+        table: {
+            //属于哪个表格
+            which: 'upper_course',
+            //是否多选
+            checkbox: false,
+            //是否固定表头
+            is_height: "auto",
+            //表格数据
+            lists: [],
+        },
+        //页码
+        page: {
+            //是否显示页码
+            is_page: false,
+        }
+    };
+    //操作记录
+    private table_data_operation: any = {
+        //表格
+        table: {
+            //属于哪个表格
+            which: 'operation_log',
+            //是否多选
+            checkbox: true,
+            //是否固定表头
+            is_height: "auto",
+            //表格数据
+            lists: [ {name: '康大大'} ],
+        },
+        //页码
+        page: {
+            //是否显示页码
+            is_page: true,
+            //当前页码
+            current_page: sessionStorage.getItem("operation_log_page") ? parseInt(sessionStorage.getItem("operation_log_page")) : 1,
+            //每页显示的数量
+            size: sessionStorage.getItem("operation_log_size") ? parseInt(sessionStorage.getItem("operation_log_size")) : 5,
+            sizes: [5, 10],
+            //总数量
+            total: 0,
+        }
+    };
+
+    //请求操作记录的参数
+    private operation_log_data: any = {
+        page: sessionStorage.getItem("operation_log_page") ? sessionStorage.getItem("operation_log_page") : 1,
+        size: sessionStorage.getItem("operation_log_size") ? sessionStorage.getItem("operation_log_size") : 5,
+        order_id: ''
+    };
+
+    
+    created () {
         //获取所有的健身房
         this.$store.dispatch("all_jsf").then( (res: any) => {
             console.log("所有健身房", res);
@@ -294,7 +374,7 @@ export default class order_info extends Vue{
 
         //获取服务订单详情
         if (this.order_data.type == 'service') {
-            this.$store.dispatch("service_details", { card_id: this.$route.query.card_id }).then( (res: any) => {
+            this.$store.dispatch("service_details", { out_id: this.$route.query.out_id }).then( (res: any) => {
                 console.log("服务订单详情", res);
                 if (res.code == 0 || res.status == 1) {
                     this.show_order_data = res.result;
@@ -344,6 +424,7 @@ export default class order_info extends Vue{
                     this.show_order_data.end_time = this.show_order_data.end_time > 0 ? this.$moment(this.show_order_data.end_time * 1000).format('YYYY-MM-DD HH:mm:ss') : "";
                     this.show_order_data.add_time = this.show_order_data.add_time > 0 ? this.$moment(this.show_order_data.add_time * 1000).format('YYYY-MM-DD HH:mm:ss') : "";
                     this.show_order_data.up_time = this.show_order_data.up_time > 0 ? this.$moment(this.show_order_data.up_time * 1000).format('YYYY-MM-DD HH:mm:ss') : "";
+                    this.course_data.table.lists = this.show_order_data.tax_list;
                 }else {
                     //请求失败提示
                     this.$message({ message: res.msg, type: "error", duration: 2500 });
@@ -352,123 +433,6 @@ export default class order_info extends Vue{
         };
     };
 
-    //图片放大
-    enlarge_img (index, src, title) {
-        this.dialog_img.is_enlarge = true;
-        this.dialog_img.img_name = title + (index + 1);
-        this.dialog_img.src = this.$store.state.order.domain02 + src;
-    };
-
-    //新增私教课
-    add_course () {
-        this.dialog_course.is_dialog = true;
-        this.dialog_course.title = '新增私教课';
-        this.dialog_course.sure_name = '确定新增';
-    };
-    //编辑私教课
-    edit_course () {
-        this.dialog_course.is_dialog = true;
-        this.dialog_course.title = '编辑私教课';
-        this.dialog_course.sure_name = '确定修改';
-    };
-
-    //新增/编辑私教课
-    add_edit (type, data) {
-        if (type == '确定新增') {
-            this.$store.dispatch("add_course", data).then( (res: any) => {
-                console.log("新增私家课", res);
-                if (res.code == 0 || res.status == 1) {
-                    //新增成功提示
-                    this.$message({ message: '新增成功！', type: "success", duration: 1500 });
-                }else {
-                    //失败提示
-                    this.$message({ message: res.msg, type: "error", duration: 2500 });
-                };
-            });
-        }else {
-            this.$store.dispatch("edit_course", data).then( (res: any) => {
-                console.log("修改私家课", res);
-                if (res.code == 0 || res.status == 1) {
-                    //修改成功提示
-                    this.$message({ message: '修改成功！', type: "success", duration: 1500 });
-                }else {
-                    //失败提示
-                    this.$message({ message: res.msg, type: "error", duration: 2500 });
-                };
-            });
-        };
-    };
-
-    private is_loading01: boolean = false;
-    private is_loading02: boolean = false;
-    private all_jsf: any = [];
-    //审核
-    private check_form_data: any = {
-        check: null,
-        cool_b_price: '',
-        select: '',
-    };
-    //验证审核表单规则
-    private check_rules: object = {
-        check: [
-            { required: true, message: '请审核', trigger: 'change' },
-        ],
-        select: [
-            { required: true, message: '请选择健身房', trigger: 'change' },
-        ],
-    };
-    //私家课列表
-    private course_data: any = {
-        //表格
-        table: {
-            //属于哪个表格
-            which: 'upper_course',
-            //是否多选
-            checkbox: false,
-            //是否固定表头
-            is_height: "auto",
-            //表格数据
-            lists: [ {name: '康大大'} ],
-        },
-        //页码
-        page: {
-            //是否显示页码
-            is_page: false,
-        }
-    };
-    //操作记录
-    private table_data_operation: any = {
-        //表格
-        table: {
-            //属于哪个表格
-            which: 'operation_log',
-            //是否多选
-            checkbox: true,
-            //是否固定表头
-            is_height: "auto",
-            //表格数据
-            lists: [ {name: '康大大'} ],
-        },
-        //页码
-        page: {
-            //是否显示页码
-            is_page: true,
-            //当前页码
-            current_page: sessionStorage.getItem("operation_log_page") ? parseInt(sessionStorage.getItem("operation_log_page")) : 1,
-            //每页显示的数量
-            size: sessionStorage.getItem("operation_log_size") ? parseInt(sessionStorage.getItem("operation_log_size")) : 5,
-            sizes: [5, 10],
-            //总数量
-            total: 0,
-        }
-    };
-
-    //请求操作记录的参数
-    private operation_log_data: any = {
-        page: sessionStorage.getItem("operation_log_page") ? sessionStorage.getItem("operation_log_page") : 1,
-        size: sessionStorage.getItem("operation_log_size") ? sessionStorage.getItem("operation_log_size") : 5,
-        order_id: ''
-    };
 
     //获取操作记录
     get_operation_log () {
@@ -515,25 +479,27 @@ export default class order_info extends Vue{
 
     //是否通过审核
     check_order (val) {
-        this.check_form_data.check = val;
+        this.check_form_data.status = val;
     };
 
     //审核
-    check () {
+    check_transfer_order () {
         //不这样定义any类型 typescript解释器就会报错
         let ref: any = this.$refs.check_ref;
         ref.validate((valid: boolean) => {
             if (valid) {
-                if (this.check_form_data.check == 1 && !this.check_form_data.cool_b_price) {
+                if (this.check_form_data.status == 1 && !this.check_form_data.price) {
                     this.$message({ message: "选择通过, 则需填写酷币价值！", type: 'info', duration: 4000 });
                     return false;
                 }else {
                     this.is_loading01 = true;
+                    this.check_form_data.out_id = this.$route.query.out_id;
                     this.$store.dispatch("check_transfer_order", this.check_form_data).then( (res: any) => {
                         console.log("审核转让订单", res);
                         if (res.code == 0 || res.status == 1) {
                             //审核成功提示
                             this.$message({ message: '审核成功！', type: "success", duration: 1500 });
+                            this.$router.push({ path: '/order/transfer/list' });
                         }else {
                             //失败提示
                             this.$message({ message: res.msg, type: "error", duration: 2500 });
@@ -547,28 +513,81 @@ export default class order_info extends Vue{
             };
         });
     };
-    //上架
-    upper () {
+
+    
+    //新增私教课
+    add_course () {
         //不这样定义any类型 typescript解释器就会报错
-        let ref: any = this.$refs.check_ref;
+        let ref: any = this.$refs.upper_ref;
         ref.validate((valid: boolean) => {
             if (valid) {
-                this.is_loading02 = true;
-                this.$store.dispatch("upper", this.check_form_data).then( (res: any) => {
-                    console.log("上架", res);
-                    if (res.code == 0 || res.status == 1) {
-                        //上架成功提示
-                        this.$message({ message: '上架成功！', type: "success", duration: 1500 });
-                    }else {
-                        //失败提示
-                        this.$message({ message: res.msg, type: "error", duration: 2500 });
-                    };
-                    this.is_loading02 = false;
-                });
+                this.dialog_course.is_dialog = true;
+                this.dialog_course.title = '新增私教课';
+                this.dialog_course.sure_name = '确定新增';
             } else {
                 this.$message({ message: "请完善带*号的必填信息！", type: 'error', duration: 2500 });
                 return false;
             };
+        });
+    };
+    //编辑私教课
+    edit_course (row) {
+        console.log(row);
+        this.dialog_course.form_data.tax_num = row.tax_num;
+        this.dialog_course.form_data.price = row.price;
+        this.dialog_course.form_data.cost_price = row.cost_price;
+        this.dialog_course.is_dialog = true;
+        this.dialog_course.title = '编辑私教课';
+        this.dialog_course.sure_name = '确定修改';
+    };
+
+    //新增/编辑私教课
+    add_edit (type, data) {
+        data.club_id = this.check_form_data.select;
+        data.out_id = this.$route.query.out_id;
+        console.log('新增/编辑私教课', data);
+        if (type == '确定新增') {
+            data.tax_id = '';
+            this.$store.dispatch("add_course", data).then( (res: any) => {
+                console.log("新增私家课", res);
+                if (res.code == 0 || res.status == 1) {
+                    this.dialog_course.is_dialog = false;
+                    //新增成功提示
+                    this.$message({ message: '新增成功！', type: "success", duration: 1500 });
+                    this.$router.go(0);
+                }else {
+                    //失败提示
+                    this.$message({ message: res.msg, type: "error", duration: 2500 });
+                };
+            });
+        }else {
+            this.$store.dispatch("edit_course", data).then( (res: any) => {
+                console.log("修改私家课", res);
+                if (res.code == 0 || res.status == 1) {
+                    //修改成功提示
+                    this.$message({ message: '修改成功！', type: "success", duration: 1500 });
+                }else {
+                    //失败提示
+                    this.$message({ message: res.msg, type: "error", duration: 2500 });
+                };
+            });
+        };
+        
+    };
+
+    //上架
+    upper () {
+        this.is_loading02 = true;
+        this.$store.dispatch("upper", this.check_form_data).then( (res: any) => {
+            console.log("上架", res);
+            if (res.code == 0 || res.status == 1) {
+                //上架成功提示
+                this.$message({ message: '上架成功！', type: "success", duration: 1500 });
+            }else {
+                //失败提示
+                this.$message({ message: res.msg, type: "error", duration: 2500 });
+            };
+            this.is_loading02 = false;
         });
     };
 

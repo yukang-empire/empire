@@ -20,7 +20,7 @@ export default class transfer_details extends Vue{
         current_state: '已确定',
         title01: '用户信息',
         title02: '商品信息',
-    }
+    };
 }
 
 </script>

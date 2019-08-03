@@ -95,7 +95,7 @@ export default class cash_out_list extends Vue{
         "打款日期": "up_time",
         "状态": "status",
     };
-    get json_data(): any {   // 计算属性的get
+    get json_data(): any {
         return this.$store.state.cash_out_excel || [];
     };
     private json_meta: any = [
@@ -174,7 +174,8 @@ export default class cash_out_list extends Vue{
         is_type: "domain01",
         is_search: true,
         placeholder: "请输入手机号(全部)",
-        show_time: true,
+        // show_time: true,
+        show_time_02: true,
         time_name: '申请日期',
         is_state: true,
         state_name: '选择订单状态',
@@ -295,8 +296,11 @@ export default class cash_out_list extends Vue{
         this.table_data.page.current_page = 1;
         sessionStorage.setItem("cash_out_list_page", '1');
         var that: any = this;
-        this.send_data.where.stime = val[0] ? that.$moment(val[0]).valueOf() / 1000 : "",
-        this.send_data.where.etime = val[1] ? that.$moment(val[1]).valueOf() / 1000 : "",
+        this.send_data.where.stime = val[0] ? that.$moment(val[0]).valueOf() / 1000 : "";
+        this.send_data.where.etime = val[1] ? that.$moment(val[1]).valueOf() / 1000 : "";
+        if (this.send_data.where.stime === this.send_data.where.etime) {
+            this.send_data.where.etime = this.send_data.where.stime + 24 * 3600;
+        };
         sessionStorage.setItem("cash_out_list_stime", this.send_data.where.stime);
         sessionStorage.setItem("cash_out_list_etime", this.send_data.where.etime);
         this.cash_out_list();

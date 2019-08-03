@@ -102,10 +102,16 @@
                     
                 <!-- 新增员工 -->
                 <div v-if='add_data.type == "staff"'>
+                    <p v-if="add_data.type == 'business' || add_data.type == 'staff'" style="margin-bottom: 20px;">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#iconqita"></use>
+                        </svg>
+                        <span>其他信息</span>
+                    </p>
                     <el-form-item label="手机号码:" prop="staff_phone">
                         <el-input v-model="ruleForm.staff_phone" placeholder="请输入员工手机号码" clearable maxlength="11" show-word-limit @change='input_data'></el-input>
                     </el-form-item>
-                    <el-form-item label="头像:" prop="image" style="margin-bottom: 56px;">
+                    <el-form-item label="头像:" prop="staff_image" style="margin-bottom: 56px;">
                         <el-upload
                             id="license_img"
                             action=""
@@ -125,7 +131,7 @@
                     @cancel_crop='cancel_crop'
                     @com_crop='com_crop'
                     />
-                    <el-form-item label="简介:" prop="content">
+                    <el-form-item label="简介:" prop="staff_content">
                         <el-input type="textarea" @change='input_data' :autosize="{ minRows: 5, maxRows: 10 }" v-model="ruleForm.content" placeholder="请输入门店介绍" maxlength="500" show-word-limit @keyup.13.native="add_submit()"></el-input>
                     </el-form-item>
                 </div>
@@ -1050,6 +1056,10 @@ export default class add extends Vue{
                 };
             };
         };
+    };
+
+    staff_role_change () {
+
     };
 
     //新增

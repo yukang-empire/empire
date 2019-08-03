@@ -2,14 +2,14 @@
     <el-dialog class='dialog_form' :title="dialog_data.title" :visible.sync="dialog_data.is_dialog" width="700px" center>
         <el-form :model="dialog_data.form_data" :rules="dialog_data.form_rules" ref="dialog_ref">
             <div v-if="dialog_data.type == 'course'">
-                <el-form-item label="课程名称:" prop="course_name">
-                    <el-input v-model="dialog_data.form_data.course_name" placeholder="请输入课程名称" clearable maxlength="20" show-word-limit></el-input>
+                <el-form-item label="课程节数:" prop="tax_num">
+                    <el-input v-model="dialog_data.form_data.tax_num" placeholder="请输入课程名称" clearable maxlength="20" show-word-limit></el-input>
                 </el-form-item>
-                <el-form-item label="私教费用:" prop="course_sale_price">
-                    <el-input type='number' v-model="dialog_data.form_data.course_sale_price" placeholder="请输入私教费用"></el-input>
+                <el-form-item label="私教费用:" prop="price">
+                    <el-input type='number' v-model="dialog_data.form_data.price" placeholder="请输入私教费用"></el-input>
                 </el-form-item>
-                <el-form-item label="结算费用:" prop="course_cost_price">
-                    <el-input type='number' v-model="dialog_data.form_data.course_cost_price" placeholder="请输入结算费用"></el-input>
+                <el-form-item label="结算费用:" prop="cost_price">
+                    <el-input type='number' v-model="dialog_data.form_data.cost_price" placeholder="请输入结算费用"></el-input>
                 </el-form-item>
             </div>
             <div v-if="dialog_data.type == 'cash_out'">
