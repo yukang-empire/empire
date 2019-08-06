@@ -33,6 +33,7 @@
                         class = "export-excel-wrapper"
                         :data = "json_data"
                         :fields = "json_fields"
+                        :fetch = "export_excel"
                         name = "今日提现申请表.xls">
                         <!-- 上面可以自定义自己的样式，还可以引用其他组件button -->
                         <el-button size="medium" type="primary" icon="el-icon-document">导出Excel</el-button>
@@ -63,6 +64,7 @@ import { Vue, Component } from "vue-property-decorator";
 import list_filter from "@/components/list_filter.vue";
 import table_page from "@/components/table_page.vue";
 import dialog_form from "@/components/dialog_form.vue";
+import axios from '@/assets/api/axios';
 
 @Component({
     components: {
@@ -153,7 +155,7 @@ export default class cash_out_list extends Vue{
             current_page: sessionStorage.getItem("cash_out_list_page") ? parseInt(sessionStorage.getItem("cash_out_list_page")) : 1,
             //每页显示的数量
             size: sessionStorage.getItem("cash_out_list_size") ? parseInt(sessionStorage.getItem("cash_out_list_size")) : 10,
-            sizes: [10, 15, 20],
+            sizes: [10, 20],
             //总数量
             total: 0,
         }
@@ -186,12 +188,56 @@ export default class cash_out_list extends Vue{
         ]
     };
 
+    private excel_data: any = [];
+
     mounted () {
         this.cash_out_list();
+    };
+
+    //必须要异步async
+    async export_excel () {
+        this.send_data.is_export = true;
+        var data = JSON.stringify(this.send_data);
+        const response = await axios.post('/api/userTransfer', data).then( (res: any) => {
+            var lists = res.data;
+            var length = lists.length;
+            //转换时间戳
+            for (var i = 0; i < length; i++) {
+                //typescript语法严格 不声明会报错
+                var that: any = this;
+                lists[i].add_time = lists[i].add_time == 0 ? "" : that.$moment(lists[i].add_time * 1000).format('YYYY-MM-DD HH:mm:ss');
+                lists[i].up_time = lists[i].up_time == 0 ? "" : that.$moment(lists[i].up_time * 1000).format('YYYY-MM-DD HH:mm:ss');
+                //状态
+                if (lists[i].status == 1) {
+                    lists[i].status = '已申请';
+                }else if (lists[i].status == 2) {
+                    lists[i].status = '提现成功';
+                }else if (lists[i].status == 3) {
+                    lists[i].status = '提现失败';
+                }else {
+                    lists[i].status = '';
+                };
+                //类型
+                if (lists[i].bank_type == 1) {
+                    lists[i].bank_type = '银行卡';
+                }else if (lists[i].bank_type == 2) {
+                    lists[i].bank_type = '微信';
+                }else if (lists[i].bank_type == 3) {
+                    lists[i].bank_type = '支付宝';
+                }else {
+                    lists[i].bank_type = '';
+                };
+            };
+            return lists;
+        }).catch( error => {
+            console.log(error);
+        });
+        return response;
     };
     
     //请求提现列表数据
     cash_out_list () {
+        this.send_data.is_export = false;
         this.$store.dispatch("cash_out_list", this.send_data).then( (res: any) => {
             console.log("提现列表", res);
             if (res.code == 0) {
@@ -230,8 +276,6 @@ export default class cash_out_list extends Vue{
                 this.table_data.page.total = parseInt(res.count);
                 this.cashSum = res.data.cashSum;
                 this.$store.commit('change_cash_out_excel', JSON.stringify(this.table_data.table.lists));
-                console.log(this.$store.state.cash_out_excel);
-
             }else {
                 //请求失败提示
                 this.$message({ message: res.msg, type: "error", duration: 2500 });

@@ -30,6 +30,7 @@ export default class staff_add extends Vue{
         if (sessionStorage.getItem('add_form_data')) {
             this.$confirm("表单数据将会被全部清空，是否继续离开？", "提示", { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then( () => {
                 sessionStorage.removeItem('show_license');
+                sessionStorage.removeItem('head');
                 sessionStorage.removeItem('show_store');
                 sessionStorage.removeItem('checkbox_checked');
                 sessionStorage.removeItem('add_form_data');
@@ -42,12 +43,13 @@ export default class staff_add extends Vue{
         };
     };
 
-    //新增商家
+    //新增员工
     add_staff (ruleForm) {
         this.$store.dispatch("add_staff", ruleForm).then( (res: any) => {
-            console.log("新增商家", res);
+            console.log("新增员工", res);
             if (res.code == 0 || res.status == 1) {
                 sessionStorage.removeItem('show_license');
+                sessionStorage.removeItem('head');
                 sessionStorage.removeItem('show_store');
                 sessionStorage.removeItem('add_form_data');
                 //新增成功提示

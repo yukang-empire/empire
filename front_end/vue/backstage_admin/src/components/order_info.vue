@@ -336,7 +336,7 @@ export default class order_info extends Vue{
             //是否固定表头
             is_height: "auto",
             //表格数据
-            lists: [ {name: '康大大'} ],
+            lists: [],
         },
         //页码
         page: {
@@ -425,6 +425,7 @@ export default class order_info extends Vue{
                     this.show_order_data.add_time = this.show_order_data.add_time > 0 ? this.$moment(this.show_order_data.add_time * 1000).format('YYYY-MM-DD HH:mm:ss') : "";
                     this.show_order_data.up_time = this.show_order_data.up_time > 0 ? this.$moment(this.show_order_data.up_time * 1000).format('YYYY-MM-DD HH:mm:ss') : "";
                     this.course_data.table.lists = this.show_order_data.tax_list;
+                    this.check_form_data.select = this.show_order_data.tax_list[0].club_id ? this.show_order_data.tax_list[0].club_id : '';
                 }else {
                     //请求失败提示
                     this.$message({ message: res.msg, type: "error", duration: 2500 });
@@ -532,13 +533,21 @@ export default class order_info extends Vue{
     };
     //编辑私教课
     edit_course (row) {
-        console.log(row);
-        this.dialog_course.form_data.tax_num = row.tax_num;
-        this.dialog_course.form_data.price = row.price;
-        this.dialog_course.form_data.cost_price = row.cost_price;
-        this.dialog_course.is_dialog = true;
-        this.dialog_course.title = '编辑私教课';
-        this.dialog_course.sure_name = '确定修改';
+        //不这样定义any类型 typescript解释器就会报错
+        let ref: any = this.$refs.upper_ref;
+        ref.validate((valid: boolean) => {
+            if (valid) {
+                this.dialog_course.form_data.tax_num = row.tax_num;
+                this.dialog_course.form_data.price = row.price;
+                this.dialog_course.form_data.cost_price = row.cost_price;
+                this.dialog_course.is_dialog = true;
+                this.dialog_course.title = '编辑私教课';
+                this.dialog_course.sure_name = '确定修改';
+            } else {
+                this.$message({ message: "请完善带*号的必填信息！", type: 'error', duration: 2500 });
+                return false;
+            };
+        });
     };
 
     //新增/编辑私教课
@@ -554,18 +563,25 @@ export default class order_info extends Vue{
                     this.dialog_course.is_dialog = false;
                     //新增成功提示
                     this.$message({ message: '新增成功！', type: "success", duration: 1500 });
-                    this.$router.go(0);
+                    setTimeout(() => {
+                        this.$router.go(0);
+                    }, 500);
                 }else {
                     //失败提示
                     this.$message({ message: res.msg, type: "error", duration: 2500 });
                 };
             });
         }else {
+            data.tax_id = this.show_order_data.tax_list[0].id;
             this.$store.dispatch("edit_course", data).then( (res: any) => {
                 console.log("修改私家课", res);
                 if (res.code == 0 || res.status == 1) {
+                    this.dialog_course.is_dialog = false;
                     //修改成功提示
                     this.$message({ message: '修改成功！', type: "success", duration: 1500 });
+                    setTimeout(() => {
+                        this.$router.go(0);
+                    }, 500);
                 }else {
                     //失败提示
                     this.$message({ message: res.msg, type: "error", duration: 2500 });

@@ -75,11 +75,11 @@
 
                 <!-- 新增员工 -->
                 <div v-if='add_data.type == "staff"'>
-                    <el-form-item label="员工姓名:" prop="staff_name">
-                        <el-input v-model="ruleForm.staff_name" placeholder="请输入员工姓名" clearable maxlength="10" show-word-limit @change='input_data'></el-input>
+                    <el-form-item label="员工姓名:" prop="username">
+                        <el-input v-model="ruleForm.username" placeholder="请输入员工姓名" clearable maxlength="10" show-word-limit @change='input_data'></el-input>
                     </el-form-item>
-                    <el-form-item label="工号:" prop="staff_num">
-                        <el-input v-model="ruleForm.staff_num" placeholder="请输入员工工号" clearable maxlength="20" show-word-limit @change='input_data'></el-input>
+                    <el-form-item label="工号:" prop="workid">
+                        <el-input v-model="ruleForm.workid" placeholder="请输入员工工号" clearable maxlength="20" show-word-limit @change='input_data'></el-input>
                     </el-form-item>
                     <el-form-item label="密码:" prop="password">
                         <el-input v-model="ruleForm.password" placeholder="请输入原密码" show-password clearable @change='input_data'></el-input>
@@ -87,8 +87,8 @@
                     <el-form-item label="状态:" prop="staff_state">
                         <el-switch v-model="ruleForm.staff_state" active-color="#13ce66" inactive-color="#ccc"> </el-switch>
                     </el-form-item>
-                    <el-form-item label="角色:" prop="staff_role">
-                        <el-select v-model="ruleForm.staff_role" filterable placeholder="请选择权限角色" @change='staff_role_change'>
+                    <el-form-item label="角色:" prop="roleID">
+                        <el-select v-model="ruleForm.roleID" filterable placeholder="请选择权限角色" @change='roleID_change'>
                             <el-option
                                 v-for="item in staff_roles"
                                 :key="item.id"
@@ -108,10 +108,10 @@
                         </svg>
                         <span>其他信息</span>
                     </p>
-                    <el-form-item label="手机号码:" prop="staff_phone">
-                        <el-input v-model="ruleForm.staff_phone" placeholder="请输入员工手机号码" clearable maxlength="11" show-word-limit @change='input_data'></el-input>
+                    <el-form-item label="手机号码:" prop="phone">
+                        <el-input v-model="ruleForm.phone" placeholder="请输入员工手机号码" clearable maxlength="11" show-word-limit @change='input_data'></el-input>
                     </el-form-item>
-                    <el-form-item label="头像:" prop="staff_image" style="margin-bottom: 56px;">
+                    <el-form-item label="头像:" prop="head" style="margin-bottom: 56px;">
                         <el-upload
                             id="license_img"
                             action=""
@@ -119,7 +119,7 @@
                             :auto-upload='false'
                             :show-file-list="false"
                             :on-change='upload_change_license'>
-                            <img v-if="show_cropper.license" :src="show_cropper.license" class="full_width" alt='license_img'>
+                            <img v-if="show_cropper.head" :src="show_cropper.head" class="full_width" alt='license_img'>
                             <i v-else class="el-icon-plus" style="font-size: 2rem;"></i>
                         </el-upload>
                     </el-form-item>
@@ -347,13 +347,16 @@ export default class add extends Vue{
     //表单数据
     private ruleForm: any = {
         //修改密码
-        staff_name: '',
-        staff_num: '',
+        username: '',
+        workid: '',
         origin_password: '',
 
         //新增员工
         staff_state: '',
-        staff_role: '',
+        roleID: '',
+        phone: '',
+        head : '',
+        staff_content: '',
 
         //新增优惠券
         coupon_name: '',
@@ -458,9 +461,18 @@ export default class add extends Vue{
         staff_name: [
             { required: true, message: '请输入员工姓名', trigger: 'blur' },
         ],
+        username: [
+            { required: true, message: '请输入员工姓名', trigger: 'blur' },
+        ],
         staff_num: [
             { required: true, message: '请输入员工工号', trigger: 'blur' },
         ],
+        workid: [
+            { required: true, message: '请输入员工工号', trigger: 'blur' },
+        ],
+        // roleID: [
+        //     { required: true, message: '请输入员工角色权限', trigger: 'blur' },
+        // ],
         origin_password: [
             { required: true, message: '请输入原密码', trigger: 'blur' },
             { pattern: /^[\w]{6,16}$/, message: "密码只能由数字或字母构成，且长度为6-16位", trigger: "change" }
@@ -623,6 +635,7 @@ export default class add extends Vue{
     private show_cropper: any = {
         license: '',
         store: [],
+        head: ''
     };
 
     //放大图片
@@ -857,6 +870,7 @@ export default class add extends Vue{
             let ref: any = that.$refs.ruleForm;
             ref.resetFields();
             that.show_cropper.license = '';
+            that.show_cropper.head = '';
             that.show_cropper.store = [];
             that.ruleForm.province = '';
             that.ruleForm.city = '';
@@ -868,6 +882,7 @@ export default class add extends Vue{
             that.ruleForm.club_facil = [];
             that.ruleForm.shop_image = [];
             sessionStorage.removeItem('show_license');
+            sessionStorage.removeItem('head');
             sessionStorage.removeItem('show_store');
             sessionStorage.removeItem('add_form_data');
             ref.validate();
@@ -928,7 +943,9 @@ export default class add extends Vue{
         var that: any = this;
         if (title == "营业执照裁剪") {
             that.show_cropper.license = data;
+            that.show_cropper.head = data;
             sessionStorage.setItem('show_license', data);
+            sessionStorage.setItem('head', data);
             that.ruleForm.image = img;
             that.license_cropper_data.is_cropper = false;
         }else {
@@ -1046,7 +1063,9 @@ export default class add extends Vue{
             }else {
                 //保存的营业执照
                 this.ruleForm.image = sessionStorage.getItem('show_license') ? this.dataURLtoFile(sessionStorage.getItem('show_license'), "image") : '';
+                this.ruleForm.head = sessionStorage.getItem('head') ? this.dataURLtoFile(sessionStorage.getItem('head'), "image") : '';
                 this.show_cropper.license = sessionStorage.getItem('show_license') || '';
+                this.show_cropper.head = sessionStorage.getItem('head') || '';
                 //保存的门店图片
                 this.show_cropper.store = sessionStorage.getItem('show_store') ? JSON.parse(sessionStorage.getItem('show_store')) : [];
                 var length = this.show_cropper.store.length;
@@ -1058,7 +1077,7 @@ export default class add extends Vue{
         };
     };
 
-    staff_role_change () {
+    roleID_change () {
 
     };
 
@@ -1068,6 +1087,8 @@ export default class add extends Vue{
         let ref: any = this.$refs.ruleForm;
         ref.validate((valid: boolean) => {
             if (valid) {
+                //新增员工的状态
+                this.ruleForm.staff_state = this.ruleForm.staff_state ? this.ruleForm.staff_state : true;
                 var open_time = this.ruleForm.open_time;
                 var close_time = this.ruleForm.close_time;
                 this.ruleForm.open_time = !open_time ? "08:00" : this.$moment(open_time).format('HH:mm');
