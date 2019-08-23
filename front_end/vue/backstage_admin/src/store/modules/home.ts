@@ -1,5 +1,8 @@
 
 import axios from '../../assets/api/axios';
+import { Message } from 'element-ui';
+
+const arr_power = sessionStorage.getItem('Permission') ? sessionStorage.getItem('Permission').split(',') : [];
 
 const home =  {
     state: {

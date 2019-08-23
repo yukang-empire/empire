@@ -15,10 +15,10 @@
                                 <use xlink:href="#iconzhuceyaoqing"></use>
                             </svg>
                         </div>
-                        <div>
+                        <router-link tag="div" to="/user/list">
                             <p>今日注册</p>
                             <b>{{ home_data.regUser }}</b>
-                        </div>
+                        </router-link>
                     </li>
                     <li class="flex_center" style="background-color: #ff9999;">
                         <div>
@@ -54,6 +54,36 @@
                         </div>
                     </li>
                 </ul>
+                <ul class="flex_between" style="margin-top: 30px;">
+                    <li class="flex_center" style="background-color: #00a9cc;">
+                        <div>
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#iconshuliang"></use>
+                            </svg>
+                        </div>
+                        <div>
+                            <p>开通会籍数</p>
+                            <b>{{ home_data.distribut.distribut }}</b>
+                        </div>
+                    </li>
+                    <li class="flex_center" style="background-color: #9e9e9e;">
+                        <div>
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#iconshouruliushui"></use>
+                            </svg>
+                        </div>
+                        <div>
+                            <p>会籍收入</p>
+                            <b>¥ {{ home_data.distribut.day_order.total_amount }}</b>
+                        </div>
+                    </li>
+                    <li class="flex_center" style="background-color: transparent">
+                        
+                    </li>
+                    <li class="flex_center" style="background-color: transparent">
+                        
+                    </li>
+                </ul>
             </div>
         </div>
 
@@ -72,10 +102,10 @@
                                 <use xlink:href="#icon3tixian"></use>
                             </svg>
                         </div>
-                        <div>
+                        <router-link tag="div" to="/finance/cash_out">
                             <b>{{ home_data.store_withdrawals }}</b>
                             <p>提现申请</p>
-                        </div>
+                        </router-link>
                     </li>
                     <li class="flex_center">
                         <div class="flex_center" style="background-color: #ff9999;">
@@ -83,10 +113,10 @@
                                 <use xlink:href="#iconqia"></use>
                             </svg>
                         </div>
-                        <div>
+                        <router-link tag="div" to="/order/transfer/list">
                             <b>{{ home_data.card_out }}</b>
                             <p>转让卡待审</p>
-                        </div>
+                        </router-link>
                     </li>
                     <li class="flex_center">
                         <div class="flex_center" style="background-color: #a47bd0;">
@@ -137,6 +167,13 @@ export default class home extends Vue{
         day_order: {
             num: 0,
             total_amount: 0
+        },
+        distribut: {
+            day_order: {
+                num: '',
+                total_amount: ''
+            }, 
+            distribut: ''
         },
         store_withdrawals: 0,
         card_out: 0,

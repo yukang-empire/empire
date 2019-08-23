@@ -36,6 +36,7 @@
             @change_state='change_state'
             @look_up='look_up'
             @state_change="state_change"
+            @down_course='down_course'
             />
             
         </div>
@@ -88,16 +89,7 @@ export default class transfer_list extends Vue{
         search: sessionStorage.getItem("transfer_list_search") ? sessionStorage.getItem("transfer_list_search") : "",
         start_time: sessionStorage.getItem("transfer_list_start_time") ? sessionStorage.getItem("transfer_list_start_time") : "",
         end_time: sessionStorage.getItem("transfer_list_end_time") ? sessionStorage.getItem("transfer_list_end_time") : "",
-        all_state: [
-            {state: 0, name: "全部"},
-            {state: 1, name: "待审核"},
-            {state: 2, name: "待确认"},
-            {state: 3, name: "未上架"},
-            {state: 4, name: "已上架"},
-            {state: 5, name: "已完成"},
-            {state: 6, name: "已取消"}
-        ],
-        current_state: sessionStorage.getItem("transfer_list_state") ? parseInt(sessionStorage.getItem("transfer_list_state")) : 0,
+        order_status: sessionStorage.getItem("transfer_list_state") ? parseInt(sessionStorage.getItem("transfer_list_state")) : 0,
     };
     //需要展示的筛选功能
     private show_filter: any = {
@@ -107,7 +99,15 @@ export default class transfer_list extends Vue{
         show_time: true,
         time_name: '提交时间',
         is_state: true,
-        state_name: '选择订单状态'
+        state_name: '选择订单状态',
+        all_state: [
+            {state: 0, name: "全部"},
+            {state: 1, name: "待审核"},
+            {state: 2, name: "已审核"},
+            {state: 3, name: "已确定"},
+            {state: 4, name: "审核失败"},
+            {state: 5, name: "已取消"},
+        ],
     };
 
     mounted () {
@@ -154,6 +154,23 @@ export default class transfer_list extends Vue{
                             lists[i].status = '已核销';
                             break;
                     };
+                    switch (lists[i].card_status) {
+                        case 0: 
+                            lists[i].card_status = '未上架';
+                            break;
+                        case 1: 
+                            lists[i].card_status = '已上架';
+                            break;
+                        case 2: 
+                            lists[i].card_status = '已出售';
+                            break;
+                        case 3: 
+                            lists[i].card_status = '已上架';
+                            break;
+                        case 4: 
+                            lists[i].card_status = '已下架';
+                            break;
+                    };
                 };
                 this.table_data.page.total = parseInt(res.count);
             }else {
@@ -169,7 +186,7 @@ export default class transfer_list extends Vue{
         this.table_data.page.current_page = 1;
         this.send_data.p = 1;
         sessionStorage.setItem("transfer_list_p", "1");
-        this.send_data.current_state = val;
+        this.send_data.order_status = val;
         sessionStorage.setItem("transfer_list_state", val);
         this.transfer_list();
     };
@@ -268,6 +285,42 @@ export default class transfer_list extends Vue{
     look_up (row: any) {
         this.$router.push({ path: '/order/transfer/details', query: { out_id: row.id } });
     };
+
+    //下架私教课
+    down_course (row: any) {
+        var that = this;
+        if (row.card_status == '已上架') {
+            that.$confirm("确定下架订单编号为 " + row.order_sn +  " 的订单？", "提示", { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then( () => {
+                this.$store.dispatch("down_course", { id: row.id, is_sale: '2' }).then( (res: any) => {
+                    if (res.status == 1) {
+                        console.log("下架私教课", res);
+                        that.$message({ type: "success", message: "已成功下架订单编号为 " + row.id + " 的订单！", duration: 2000 });
+                        setTimeout(() => {
+                            that.$router.go(0);
+                        }, 500);
+                    }else {
+                        //登录失败提示
+                        this.$message({ message: res.msg, type: "error", duration: 2500 });
+                    };
+                })
+            });
+        }else {
+            that.$confirm("确定上架订单编号为 " + row.order_sn +  " 的订单？", "提示", { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then( () => {
+                this.$store.dispatch("down_course", { id: row.id, is_sale: '1' }).then( (res: any) => {
+                    if (res.status == 1) {
+                        console.log("上架私教课", res);
+                        that.$message({ type: "success", message: "已成功上架订单编号为 " + row.id + " 的订单！", duration: 2000 });
+                        setTimeout(() => {
+                            that.$router.go(0);
+                        }, 500);
+                    }else {
+                        //登录失败提示
+                        this.$message({ message: res.msg, type: "error", duration: 2500 });
+                    };
+                })
+            });
+        };
+    }
 }
 
 </script>

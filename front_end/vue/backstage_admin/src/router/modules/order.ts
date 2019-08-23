@@ -9,7 +9,7 @@ const order = {
         title: '订单管理',
         icon: '#icondingdan1',
         hidden: false,
-        roles: ['1']
+        roles: '20007'
     },
     children: [
         {
@@ -18,7 +18,8 @@ const order = {
             component: () => import('@/views/order/service/service_list.vue'),
             meta: {
                 title: '服务订单',
-                hidden: false
+                hidden: false,
+                roles: '20021'
             }
         },
         {
@@ -37,7 +38,8 @@ const order = {
             component: () => import('@/views/order/transfer/transfer_list.vue'),
             meta: {
                 title: '转让订单',
-                hidden: false
+                hidden: false,
+                roles: '20024'
             }
         },
         {
@@ -56,7 +58,8 @@ const order = {
             component: () => import('@/views/order/receive/receive_list.vue'),
             meta: {
                 title: '领用订单',
-                hidden: false
+                hidden: false,
+                roles: '20031'
             }
         },
         {

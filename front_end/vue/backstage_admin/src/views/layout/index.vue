@@ -123,10 +123,12 @@ export default class layout extends Vue{
             .base {
 
                 li {
-                    width: 85%;
+                    width: 95%;
                     margin:0 0 10px 0;
                     
                     p {
+
+                        min-width: 380px;
 
                         span:nth-of-type(1) {
                             color: #333;

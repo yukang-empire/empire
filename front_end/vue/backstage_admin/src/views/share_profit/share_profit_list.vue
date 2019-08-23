@@ -1,5 +1,41 @@
 <template>
-    <div class="receive_list">
+    <div class="share_profit_list">
+
+        <div class="repeat_div">
+            <p>
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon48"></use>
+                </svg>
+                <span>分润情况</span>
+            </p>
+            <div class="profit">
+                <ul class="flex_between">
+                    <li class="flex_center" style="background-color: #8693f3;">
+                        <div>
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icontable-16"></use>
+                            </svg>
+                        </div>
+                        <div>
+                            <p>已分润期数</p>
+                            <b>18</b>
+                        </div>
+                    </li>
+                    <li class="flex_center" style="background-color: #ff9999;">
+                        <div>
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#iconyuezhan"></use>
+                            </svg>
+                        </div>
+                        <div>
+                            <p>已分润金额</p>
+                            <b>¥ 2330.00</b>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
         <div class="repeat_div">
             <p>
                 <svg class="icon" aria-hidden="true">
@@ -15,7 +51,6 @@
             @clear_search="clear_search"
             @change_time='change_time'
             @clear_time="clear_time"
-            @state_change="state_change"
             />
         </div>
 
@@ -27,6 +62,9 @@
                     </svg>
                     <span>{{ $store.state.current_route ? $store.state.current_route.meta.title : "列表数据" }}</span>
                 </span>
+                <router-link to="/share_profit/add" tag="span" class="add_btn">
+                    <el-button size="medium" type="primary" icon="el-icon-circle-plus-outline">新增分润</el-button>
+                </router-link>
             </p>
             <!-- 表格和页码 -->
             <table_page 
@@ -53,28 +91,28 @@ import table_page from "@/components/table_page.vue";
     }
 })
 
-export default class receive_list extends Vue{
+export default class share_profit_list extends Vue{
     //表格、页码数据
     private table_data: any = {
         //表格
         table: {
             //属于哪个表格
-            which: 'receive_list',
+            which: 'share_profit_list',
             //是否多选
             checkbox: true,
             //是否固定表头
             is_height: "auto",
             //表格数据
-            lists: [ {name: '康大大'} ],
+            lists: [{num: '康大大'}],
         },
         //页码
         page: {
             //是否显示页码
             is_page: true,
             //当前页码
-            current_page: sessionStorage.getItem("receive_list_p") ? parseInt(sessionStorage.getItem("receive_list_p")) : 1,
+            current_page: sessionStorage.getItem("share_profit_list_p") ? parseInt(sessionStorage.getItem("share_profit_list_p")) : 1,
             //每页显示的数量
-            size: sessionStorage.getItem("receive_list_size") ? parseInt(sessionStorage.getItem("receive_list_size")) : 10,
+            size: sessionStorage.getItem("share_profit_list_size") ? parseInt(sessionStorage.getItem("share_profit_list_size")) : 10,
             sizes: [10, 15, 20],
             //总数量
             total: 0,
@@ -82,36 +120,34 @@ export default class receive_list extends Vue{
     };
     //请求列表数据的参数
     private send_data: any = {
-        p: sessionStorage.getItem("receive_list_p") ? sessionStorage.getItem("receive_list_p") : 1,
-        size: sessionStorage.getItem("receive_list_size") ? sessionStorage.getItem("receive_list_size") : 10,
-        search: sessionStorage.getItem("receive_list_search") ? sessionStorage.getItem("receive_list_search") : "",
-        start_time: sessionStorage.getItem("receive_list_start_time") ? sessionStorage.getItem("receive_list_start_time") : "",
-        end_time: sessionStorage.getItem("receive_list_end_time") ? sessionStorage.getItem("receive_list_end_time") : "",
-        order_status: sessionStorage.getItem("receive_list_state") ? parseInt(sessionStorage.getItem("receive_list_state")) : 0,
+        p: sessionStorage.getItem("share_profit_list_p") ? sessionStorage.getItem("share_profit_list_p") : 1,
+        size: sessionStorage.getItem("share_profit_list_size") ? sessionStorage.getItem("share_profit_list_size") : 10,
+        search: sessionStorage.getItem("share_profit_list_search") ? sessionStorage.getItem("share_profit_list_search") : "",
+        start_time: sessionStorage.getItem("share_profit_list_start_time") ? sessionStorage.getItem("share_profit_list_start_time") : "",
+        end_time: sessionStorage.getItem("share_profit_list_end_time") ? sessionStorage.getItem("share_profit_list_end_time") : ""
     };
     //需要展示的筛选功能
     private show_filter: any = {
         is_type: "domain02",
         is_search: true,
-        placeholder: "请输入用户昵称、手机号(全部)",
+        placeholder: "请输入关键词",
         show_time: true,
-        time_name: '提交时间',
+        time_name: '申请日期',
         is_state: true,
-        state_name: '选择订单状态',
         all_state: [
-            {state: 0, name: "全部"},
-            {state: 1, name: "已支付"},
-            {state: 2, name: "已核销"}
-        ],
+            {state: 1, name: '全部'},
+            {state: 2, name: '待分润'},
+            {state: 3, name: '已分润'},
+        ]
     };
 
     mounted () {
-        this.receive_list();
+        this.share_profit_list();
     };
     
-    //请求receive_list数据
-    receive_list () {
-        this.$store.dispatch("receive_list", this.send_data).then( (res: any) => {
+    //请求share_profit_list数据
+    share_profit_list () {
+        this.$store.dispatch("share_profit_list", this.send_data).then( (res: any) => {
             console.log("商家列表", res);
             if (res.code == 0 || res.status == 1) {
                 this.table_data.table.lists = res.result;
@@ -125,20 +161,6 @@ export default class receive_list extends Vue{
                     lists[i].add_time = lists[i].add_time == 0 ? "" : that.$moment(lists[i].add_time * 1000).format('YYYY-MM-DD HH:mm:ss');
                     //拼接省市区
                     lists[i].address = lists[i].province + lists[i].city + lists[i].area;
-                    switch (lists[i].pay_status) {
-                        case 0: 
-                            lists[i].pay_status = '未支付';
-                            break;
-                        case 1: 
-                            lists[i].pay_status = '已支付';
-                            break;
-                        case 2: 
-                            lists[i].pay_status = '已核销';
-                            break;
-                        case 3: 
-                            lists[i].pay_status = '已取消';
-                            break;
-                    };
                 };
                 this.table_data.page.total = parseInt(res.count);
             }else {
@@ -148,33 +170,22 @@ export default class receive_list extends Vue{
         });
     };
 
-    //改变状态 重新获取列表数据
-    state_change (val) {
-        //页码不重置为1的话 有可能请求不到数据
-        this.table_data.page.current_page = 1;
-        this.send_data.p = 1;
-        sessionStorage.setItem("receive_list_p", "1");
-        this.send_data.order_status = val;
-        sessionStorage.setItem("receive_list_state", val);
-        this.receive_list();
-    };
-
-    //搜索
+    //搜索 重新获取列表数据
     search (val: any) {
         //页码不重置为1的话 有可能请求不到数据
         this.table_data.page.current_page = 1;
         this.send_data.p = 1;
-        sessionStorage.setItem("receive_list_p", "1");
+        sessionStorage.setItem("share_profit_list_p", "1");
         this.send_data.search = val;
-        sessionStorage.setItem("receive_list_search", val);
-        this.receive_list();
+        sessionStorage.setItem("share_profit_list_search", val);
+        this.share_profit_list();
     };
 
     //清空搜索内容
     clear_search () {
         this.send_data.search = '';
-        sessionStorage.setItem("receive_list_search", "");
-        this.receive_list();
+        sessionStorage.setItem("share_profit_list_search", "");
+        this.share_profit_list();
     };
 
     //筛选时间
@@ -182,13 +193,13 @@ export default class receive_list extends Vue{
         //页码不重置为1的话 有可能请求不到数据
         this.table_data.page.current_page = 1;
         this.send_data.p = 1;
-        sessionStorage.setItem("receive_list_p", "1");
+        sessionStorage.setItem("share_profit_list_p", "1");
         var that: any = this;
         this.send_data.start_time = val[0] ? that.$moment(val[0]).valueOf() / 1000 : "",
         this.send_data.end_time = val[1] ? that.$moment(val[1]).valueOf() / 1000 : "",
-        sessionStorage.setItem("receive_list_start_time", this.send_data.start_time);
-        sessionStorage.setItem("receive_list_end_time", this.send_data.end_time);
-        this.receive_list();
+        sessionStorage.setItem("share_profit_list_start_time", this.send_data.start_time);
+        sessionStorage.setItem("share_profit_list_end_time", this.send_data.end_time);
+        this.share_profit_list();
     };
 
     //清空时间
@@ -196,25 +207,25 @@ export default class receive_list extends Vue{
         var that: any = this;
         this.send_data.start_time = "",
         this.send_data.end_time = "",
-        sessionStorage.setItem("receive_list_start_time", this.send_data.start_time);
-        sessionStorage.setItem("receive_list_end_time", this.send_data.end_time);
-        this.receive_list();
+        sessionStorage.setItem("share_profit_list_start_time", this.send_data.start_time);
+        sessionStorage.setItem("share_profit_list_end_time", this.send_data.end_time);
+        this.share_profit_list();
     };
     
     //改变页码
     change_page(val: any) {
         this.table_data.page.current_page = val;
         this.send_data.p = val;
-        sessionStorage.setItem("receive_list_p", val);
-        this.receive_list();
+        sessionStorage.setItem("share_profit_list_p", val);
+        this.share_profit_list();
     };
 
     //改变每页的条数
     change_page_size(val: any) {
         this.table_data.page.size = val;
         this.send_data.size = val;
-        sessionStorage.setItem("receive_list_size", val);
-        this.receive_list();
+        sessionStorage.setItem("share_profit_list_size", val);
+        this.share_profit_list();
     };
 
     //改变状态
@@ -251,7 +262,7 @@ export default class receive_list extends Vue{
 
     //查看
     look_up (row: any) {
-        this.$router.push({ path: '/order/receive/details', query: { order_id: row.order_id } });
+        this.$router.push({ path: '/share_profit/details', query: { club_id: row.id } });
     };
 }
 
@@ -260,6 +271,42 @@ export default class receive_list extends Vue{
 <style lang="scss">
 
     @media screen and (min-width: 769px) {
-        
+        .profit {
+            color: #fff;
+
+            .flex_between {
+                justify-content: space-around;
+            }
+
+            li {
+                border-radius: 8px;
+                min-width: 15%;
+                padding: 15px 20px 15px 15px;
+                cursor: pointer;
+
+                .icon {
+                    width: 3rem;
+                    height: 3rem;
+                    margin-right: 15px;
+                }
+
+                &>div:nth-of-type(2) {
+                    text-align: center;
+                }
+
+                p {
+                    margin-bottom: 0;
+                }
+
+                b {
+                    font-size: 1.5rem;
+                    white-space: nowrap;
+                }
+            }
+            
+            li.flex_center {
+                justify-content: unset;
+            }
+        }
     }
 </style>

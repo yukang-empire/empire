@@ -25,7 +25,7 @@
                     </template>
                     
                     <li v-for="(item01, index) in item.children">
-                        <el-menu-item :index="item01.path" v-if="(!item01.children || (item01.children.length < 2)) && !item01.meta.hidden">
+                        <el-menu-item :index="item01.path" v-if="(!item01.children || (item01.children.length < 2)) && !item01.meta.hidden && (arr_power.includes(item01.meta.roles))">
                             {{ item01.meta.title }}
                         </el-menu-item>
         
@@ -58,12 +58,12 @@ import { Vue, Component, Watch } from "vue-property-decorator";
 
 export default class c_aside extends Vue{
     private routers: any = {
-        all: [],
-        //普通用户都能看的
-        user: [],
         //最终展示的路由页面
         show: [],
     };
+
+    //此账号的所有权限
+    private arr_power: any = sessionStorage.getItem('Permission').split(',') || [];
 
     // 计算属性的get
     get current_route(): string {
@@ -80,27 +80,11 @@ export default class c_aside extends Vue{
         //筛选权限路由
         var tem_router: any = this.$router
         var routers: any = tem_router.options.routes;
+
         for (var i = 0; i < routers.length; i++) {
-            if (routers[i].meta && !routers[i].meta.hidden) {
-                this.routers.all.push(routers[i]);
-                this.routers.user.push(routers[i]);
-                //遍历meta里的roles 进行筛选
-                if (routers[i].meta.roles) {
-                    var roles = routers[i].meta.roles;
-                    for (var j = 0; j < roles.length; j++) {
-                        if (roles[j] == '1') {
-                            //删掉需要权限才能看的
-                            this.routers.user.pop(routers[i]);
-                        };
-                    };
-                };
+            if (routers[i].meta && !routers[i].meta.hidden && this.arr_power.includes(routers[i].meta.roles)) {
+                this.routers.show.push(routers[i]);
             };
-        };
-        var role = sessionStorage.getItem('role') ? sessionStorage.getItem('role') : '';
-        if (role == '1') {
-            this.routers.show = this.routers.all;
-        }else {
-            this.routers.show = this.routers.user;
         };
         console.log('自身权限能查看到的所有路由页面',this.routers.show);
     };

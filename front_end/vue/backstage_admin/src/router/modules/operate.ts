@@ -9,7 +9,7 @@ const operate = {
         title: '运营管理',
         icon: '#iconzhidingfanwei',
         hidden: false,
-        roles: ['1']
+        roles: '20002'
     },
     children: [
         {
@@ -55,7 +55,8 @@ const operate = {
             component: () => import('@/views/operate/carousel/carousel_list.vue'),
             meta: {
                 title: '轮播图列表',
-                hidden: false
+                hidden: false,
+                roles: '20048'
             }
         },
         {

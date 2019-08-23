@@ -38,6 +38,8 @@
             @change_page_size='change_page_size'
             @change_state='change_state'
             @look_up='look_up'
+            @delete_='delete_role'
+            @edit='edit_role'
             />
             
         </div>
@@ -111,34 +113,6 @@ export default class role_list extends Vue{
             console.log("角色列表", res);
             if (res.code == 0) {
                 this.table_data.table.lists = res.data;
-                //提取长度出来 提高for循环性能
-                var lists = this.table_data.table.lists;
-                var length = lists.length;
-                //转换时间戳
-                for (var i = 0; i < length; i++) {
-                    //typescript语法严格 不声明会报错
-                    var that: any = this;
-                    lists[i].log_time = lists[i].log_time == 0 ? "" : that.$moment(lists[i].log_time * 1000).format('YYYY-MM-DD HH:mm:ss');
-                    switch (lists[i].log_type) {
-                        case '0': 
-                            lists[i].log_type = '默认';
-                            break;
-                        case '1': 
-                            lists[i].log_type = '操作店铺';
-                            break;
-                        case '2': 
-                            lists[i].log_type = '审核活动';
-                            break;
-                        case '3':
-                            lists[i].log_type = '处理投诉';
-                            break;
-                        case '4': 
-                            lists[i].log_type = '其他';
-                            break;
-                        default: 
-                            lists[i].log_type = '其他';
-                    };
-                };
                 //总个数
                 this.table_data.page.total = parseInt(res.count);
             }else {
@@ -241,6 +215,32 @@ export default class role_list extends Vue{
     //查看
     look_up (row: any) {
         this.$router.push({ path: '/user/details', query: { id: row.user_id } });
+    };
+
+    //删除角色
+    delete_role (row) {
+        var that = this;
+        this.$confirm("确定删除角色名为 " + row.RoleName +  " 的角色？", "提示", { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then( () => {
+            that.$store.dispatch("del_role", { RoleId: row.RoleId }).then( (res: any) => {
+                if (res.code == 0) {
+                    console.log("删除角色", res);
+                    that.$message({ type: "success", message: "已成功删除角色名为 " + row.RoleName + " 的角色！", duration: 2000 });
+                    setTimeout(() => {
+                        that.$router.go(0);
+                    }, 500);
+                }else {
+                    //登录失败提示
+                    that.$message({ message: res.msg, type: "error", duration: 2500 });
+                };
+            })
+        });
+    };
+
+    //修改角色
+    edit_role (row: any) {
+        console.log(row);
+        sessionStorage.setItem('add_form_data', JSON.stringify(row));
+        this.$router.push({ path: '/set/role/add', query: { RoleId: row.RoleId } });
     };
 }
 

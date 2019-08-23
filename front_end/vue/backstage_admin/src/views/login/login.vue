@@ -5,7 +5,7 @@
             <h2>轻酷运营总后台-登录</h2>
         </header>
 
-        <article>
+        <article class="flex_center">
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
                 <el-form-item prop="username">
                     <svg class="icon" aria-hidden="true">
@@ -71,11 +71,13 @@ export default class login extends Vue {
                 //登录
                 var send_data = JSON.stringify(this.ruleForm);
                 axios.post("/api/login", send_data).then( (res: any) => {
+                    sessionStorage.setItem('login_success', JSON.stringify(res));
                     if (res.code == 0) {
                         //临时存到sessionStorage里
                         sessionStorage.setItem("token", res.data.token);
                         sessionStorage.setItem("role", res.data.roles[0].RoleId);
-                        sessionStorage.setItem("role_name", res.data.roles[0].RoleName);
+                        sessionStorage.setItem("role_name", res.data.user.username);
+                        sessionStorage.setItem("Permission", res.data.roles[0].Permission);
                         //储存账户 方便用户下次登录
                         localStorage.setItem('username', this.ruleForm.username);
                         //登录成功提示

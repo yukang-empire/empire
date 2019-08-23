@@ -1,5 +1,8 @@
 
 import axios from '../../assets/api/axios';
+import { Message } from 'element-ui';
+
+const arr_power = sessionStorage.getItem('Permission') ? sessionStorage.getItem('Permission').split(',') : [];
 
 const home =  {
     state: {
@@ -220,15 +223,9 @@ const home =  {
         },
         //轮播图列表
         carousel_list (state: any, data: any) {
-            var send_data: any = new FormData();
-            send_data.append("p", data.p);
-            send_data.append("size", data.size);
-            send_data.append("search", data.search);
-            send_data.append("start_time", data.start_time);
-            send_data.append("end_time", data.end_time);
-            send_data.append("token", sessionStorage.getItem('token'));
+            var send_data = JSON.stringify(data);
             return new Promise((resolve, reject) => {
-                axios.post( state.state.domain02 + "", send_data).then( (res: any) => {
+                axios.post("/ad/getAdList", send_data).then( (res: any) => {
                     //返回数据给调起dispatch的那边
                     resolve(res);
                 }).catch( error => {
@@ -239,11 +236,16 @@ const home =  {
         },
         //新增轮播图
         add_carousel (state: any, data: any) {
-            var send_data: any = new FormData();
-            send_data.append("p", data.p);
-            send_data.append("token", sessionStorage.getItem('token'));
+            var send_data_before = {};
+            send_data_before.pid = data.carousel_local;
+            send_data_before.ad_name = data.carousel_name;
+            send_data_before.ad_link = data.carousel_link;
+            send_data_before.ad_code = data.head;
+            send_data_before.orderby = data.carousel_num;
+            send_data_before.enabled = data.carousel_state ? 1 : 0;
+            var send_data = JSON.stringify(send_data_before);
             return new Promise((resolve, reject) => {
-                axios.post( state.state.domain02 + "", send_data).then( (res: any) => {
+                axios.post("/ad/addAd", send_data).then( (res: any) => {
                     //返回数据给调起dispatch的那边
                     resolve(res);
                 }).catch( error => {
@@ -267,7 +269,6 @@ const home =  {
                 });
             });
         },
-
     }
 };
 

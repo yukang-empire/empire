@@ -56,6 +56,7 @@ export default class c_header extends Vue{
             sessionStorage.removeItem('token');
             sessionStorage.removeItem('role');
             sessionStorage.removeItem('role_name');
+            sessionStorage.removeItem('Permission');
             this.$message({ type: 'success', message: '登出成功！请重新登录！', duration: 1500 });
             this.$router.push({ path: '/login' });
         });

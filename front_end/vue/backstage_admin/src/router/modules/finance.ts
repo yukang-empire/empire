@@ -9,7 +9,7 @@ const finance = {
         title: '财务管理',
         icon: '#iconcaiwu',
         hidden: false,
-        roles: ['2']
+        roles: '20005'
     },
     children: [
         {
@@ -18,7 +18,8 @@ const finance = {
             component: () => import('@/views/finance/cash_out/cash_out_list.vue'),
             meta: {
                 title: '提现管理',
-                hidden: false
+                hidden: false,
+                roles: '20032'
             }
         },
         {

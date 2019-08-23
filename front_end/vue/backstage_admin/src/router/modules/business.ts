@@ -9,7 +9,7 @@ const business = {
         title: '商家管理',
         icon: '#iconshangjia',
         hidden: false,
-        roles: ['1']
+        roles: '20004'
     },
     children: [
         {
@@ -18,7 +18,8 @@ const business = {
             component: () => import('@/views/business/business/business_list.vue'),
             meta: {
                 title: '商家列表',
-                hidden: false
+                hidden: false,
+                roles: '20013'
             }
         },
         {
@@ -46,7 +47,8 @@ const business = {
             component: () => import('@/views/business/store/store_list.vue'),
             meta: {
                 title: '门店列表',
-                hidden: false
+                hidden: false,
+                roles: '20015'
             }
         },
         {
@@ -74,7 +76,8 @@ const business = {
             component: () => import('@/views/business/goods/goods_list.vue'),
             meta: {
                 title: '商品列表',
-                hidden: false
+                hidden: false,
+                roles: '20020'
             }
         },
         {

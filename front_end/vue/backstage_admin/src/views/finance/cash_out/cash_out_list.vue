@@ -49,6 +49,7 @@
             @change_page_size='change_page_size'
             @look_up='look_up'
             @check_cash_out='check_cash_out'
+            @check_cash_no='check_cash_no'
             />
             <p class="total">合计金额：<span>¥{{ cashSum }}元</span></p>
             
@@ -93,12 +94,13 @@ export default class cash_out_list extends Vue{
         "提现金额": "money",
         "提现账户": "bankcard",
         "账户类型": "openbank",
+        "流水号": "order_id",
         "申请日期": "add_time",
         "打款日期": "up_time",
         "状态": "status",
     };
     get json_data(): any {
-        return this.$store.state.cash_out_excel || [];
+        return [];
     };
     private json_meta: any = [
         [
@@ -185,6 +187,7 @@ export default class cash_out_list extends Vue{
             {state: 1, name: '已申请'},
             {state: 2, name: '提现成功'},
             {state: 3, name: '提现失败'},
+            {state: 4, name: '提现驳回'},
         ]
     };
 
@@ -196,43 +199,51 @@ export default class cash_out_list extends Vue{
 
     //必须要异步async
     async export_excel () {
-        this.send_data.is_export = true;
-        var data = JSON.stringify(this.send_data);
-        const response = await axios.post('/api/userTransfer', data).then( (res: any) => {
-            var lists = res.data;
-            var length = lists.length;
-            //转换时间戳
-            for (var i = 0; i < length; i++) {
-                //typescript语法严格 不声明会报错
-                var that: any = this;
-                lists[i].add_time = lists[i].add_time == 0 ? "" : that.$moment(lists[i].add_time * 1000).format('YYYY-MM-DD HH:mm:ss');
-                lists[i].up_time = lists[i].up_time == 0 ? "" : that.$moment(lists[i].up_time * 1000).format('YYYY-MM-DD HH:mm:ss');
-                //状态
-                if (lists[i].status == 1) {
-                    lists[i].status = '已申请';
-                }else if (lists[i].status == 2) {
-                    lists[i].status = '提现成功';
-                }else if (lists[i].status == 3) {
-                    lists[i].status = '提现失败';
-                }else {
-                    lists[i].status = '';
+        var arr_power = sessionStorage.getItem('Permission').split(',') || [];
+        if (arr_power.includes('20035')) {
+            this.send_data.is_export = true;
+            var data = JSON.stringify(this.send_data);
+            const response = await axios.post('/api/userTransfer', data).then( (res: any) => {
+                var lists = res.data;
+                var length = lists.length;
+                //转换时间戳
+                for (var i = 0; i < length; i++) {
+                    //typescript语法严格 不声明会报错
+                    var that: any = this;
+                    lists[i].add_time = lists[i].add_time == 0 ? "" : that.$moment(lists[i].add_time * 1000).format('YYYY-MM-DD HH:mm:ss');
+                    lists[i].up_time = lists[i].up_time == 0 ? "" : that.$moment(lists[i].up_time * 1000).format('YYYY-MM-DD HH:mm:ss');
+                    //状态
+                    if (lists[i].status == 1) {
+                        lists[i].status = '已申请';
+                    }else if (lists[i].status == 2) {
+                        lists[i].status = '提现成功';
+                    }else if (lists[i].status == 3) {
+                        lists[i].status = '提现失败';
+                    }else if (lists[i].status == 4) {
+                        lists[i].status = '提现被驳回';
+                    }else {
+                        lists[i].status = '';
+                    };
+                    //类型
+                    if (lists[i].bank_type == 1) {
+                        lists[i].bank_type = '银行卡';
+                    }else if (lists[i].bank_type == 2) {
+                        lists[i].bank_type = '微信';
+                    }else if (lists[i].bank_type == 3) {
+                        lists[i].bank_type = '支付宝';
+                    }else {
+                        lists[i].bank_type = '';
+                    };
+                    lists[i].order_id = "`" + lists[i].order_id;
                 };
-                //类型
-                if (lists[i].bank_type == 1) {
-                    lists[i].bank_type = '银行卡';
-                }else if (lists[i].bank_type == 2) {
-                    lists[i].bank_type = '微信';
-                }else if (lists[i].bank_type == 3) {
-                    lists[i].bank_type = '支付宝';
-                }else {
-                    lists[i].bank_type = '';
-                };
-            };
-            return lists;
-        }).catch( error => {
-            console.log(error);
-        });
-        return response;
+                return lists;
+            }).catch( error => {
+                console.log(error);
+            });
+            return response;
+        }else {
+            this.$message({ message: '对不起！您没有导出此内容的权限！', type: "error", duration: 2500 });
+        };
     };
     
     //请求提现列表数据
@@ -251,6 +262,7 @@ export default class cash_out_list extends Vue{
                     var that: any = this;
                     lists[i].add_time = lists[i].add_time == 0 ? "" : that.$moment(lists[i].add_time * 1000).format('YYYY-MM-DD HH:mm:ss');
                     lists[i].up_time = lists[i].up_time == 0 ? "" : that.$moment(lists[i].up_time * 1000).format('YYYY-MM-DD HH:mm:ss');
+                    lists[i].note = lists[i].note == 0 ? '' : lists[i].note;
                     //状态
                     if (lists[i].status == 1) {
                         lists[i].status = '已申请';
@@ -258,6 +270,8 @@ export default class cash_out_list extends Vue{
                         lists[i].status = '提现成功';
                     }else if (lists[i].status == 3) {
                         lists[i].status = '提现失败';
+                    }else if (lists[i].status == 4) {
+                        lists[i].status = '提现被驳回';
                     }else {
                         lists[i].status = '';
                     };
@@ -382,8 +396,8 @@ export default class cash_out_list extends Vue{
     };
     //审核
     check_cash_out (row: any) {
-        console.log(row);
-        this.$confirm("确定通过由 " + row.bank_people + " 发起的" + row.money + "元提现申请吗？", "提示", { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then( () => {
+        row.bank_people = row.bank_people ? row.bank_people : '(没有名字)';
+        this.$confirm("确定通过 " + row.bank_people + " 发起的" + row.money + "元提现申请吗？", "提示", { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then( () => {
             this.$store.dispatch("cash_out_pass", { user_id: row.user_id, cash_sn: row.cash_sn }).then( (res: any) => {
                 if (res.status == 0) {
                     console.log("提现通过", res);
@@ -392,6 +406,36 @@ export default class cash_out_list extends Vue{
                 }else {
                     //登录失败提示
                     this.$message({ message: res.msg, type: "error", duration: 2500 });
+                };
+            })
+        });
+    };
+    //驳回
+    check_cash_no (row: any) {
+        var that = this;
+        console.log(row);
+        row.bank_people = row.bank_people ? row.bank_people : '(没有名字)';
+        // this.$confirm("确定驳回 " + row.bank_people + " 发起的" + row.money + "元提现申请吗？", "提示", { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then( () => {
+        //     this.$store.dispatch("check_cash_no", { user_id: row.user_id, cash_sn: row.cash_sn }).then( (res: any) => {
+        //         if (res.status == 0) {
+        //             console.log("提现驳回", res);
+        //             this.$message({ message: res.msg, type: "success", duration: 2500 });
+        //             this.cash_out_list();
+        //         }else {
+        //             //登录失败提示
+        //             this.$message({ message: res.msg, type: "error", duration: 2500 });
+        //         };
+        //     })
+        // });
+        this.$prompt('请输入驳回理由', '提现驳回', { confirmButtonText: '确定', cancelButtonText: '取消' }).then(({ value }) => {
+            that.$store.dispatch("check_cash_no", { user_id: row.user_id, cash_sn: row.cash_sn, note: value }).then( (res: any) => {
+                if (res.status == 0) {
+                    console.log("提现驳回", res);
+                    that.$message({ message: res.msg, type: "success", duration: 2500 });
+                    that.cash_out_list();
+                }else {
+                    //登录失败提示
+                    that.$message({ message: res.msg, type: "error", duration: 2500 });
                 };
             })
         });

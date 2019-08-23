@@ -15,6 +15,8 @@
             @clear_search="clear_search"
             @change_time='change_time'
             @clear_time="clear_time"
+            @clear_time_register='clear_time_register'
+            @change_time_register='change_time_register'
             />
             
         </div>
@@ -85,7 +87,9 @@ export default class user_list extends Vue{
         where: {
             keyword: sessionStorage.getItem("user_list_keyword") ? sessionStorage.getItem("user_list_keyword") : "",
             stime: sessionStorage.getItem("user_list_stime") ? sessionStorage.getItem("user_list_stime") : "",
-            etime: sessionStorage.getItem("user_list_etime") ? sessionStorage.getItem("user_list_etime") : ""
+            etime: sessionStorage.getItem("user_list_etime") ? sessionStorage.getItem("user_list_etime") : "",
+            reg_stime: sessionStorage.getItem("user_list_reg_stime") ? sessionStorage.getItem("user_list_reg_stime") : "",
+            reg_etime: sessionStorage.getItem("user_list_reg_etime") ? sessionStorage.getItem("user_list_reg_etime") : "",
         }
     };
     //需要展示的筛选功能
@@ -93,7 +97,9 @@ export default class user_list extends Vue{
         is_type: 'domain01',
         is_search: true,
         show_time: true,
-        time_name: '最近登录时间'
+        time_name: '最近登录时间',
+        time_name_register: '注册时间',
+        show_time_register: true
     };
 
     mounted () {
@@ -114,6 +120,23 @@ export default class user_list extends Vue{
                     //typescript语法严格 不声明会报错
                     var that: any = this;
                     lists[i].last_login = lists[i].last_login == 0 ? "" : that.$moment(lists[i].last_login * 1000).format('YYYY-MM-DD HH:mm:ss');
+                    switch (lists[i].distribut_level) {
+                        case '0': 
+                            lists[i].distribut_level = '未开通';
+                            break;
+                        case '1': 
+                            lists[i].distribut_level = '银卡';
+                            break;
+                        case '2': 
+                            lists[i].distribut_level = '金卡';
+                            break;
+                        case '3': 
+                            lists[i].distribut_level = '城市合伙人';
+                            break;
+                        case '4': 
+                            lists[i].distribut_level = '商家';
+                            break;
+                    };
                 };
                 //总个数
                 this.table_data.page.total = parseInt(res.count);
@@ -156,6 +179,20 @@ export default class user_list extends Vue{
         this.user_list();
     };
 
+    //筛选注册时间
+    change_time_register(val: any) {
+        //页码不重置为1的话 有可能请求不到数据
+        this.send_data.page = 1;
+        this.table_data.page.current_page = 1;
+        sessionStorage.setItem("user_list_page", '1');
+        var that: any = this;
+        this.send_data.where.reg_stime = val[0] ? that.$moment(val[0]).valueOf() / 1000 : "",
+        this.send_data.where.reg_etime = val[1] ? that.$moment(val[1]).valueOf() / 1000 : "",
+        sessionStorage.setItem("user_list_reg_stime", this.send_data.where.reg_stime);
+        sessionStorage.setItem("user_list_reg_etime", this.send_data.where.reg_etime);
+        this.user_list();
+    };
+
     //清空时间
     clear_time () {
         var that: any = this;
@@ -163,6 +200,16 @@ export default class user_list extends Vue{
         this.send_data.where.etime = "",
         sessionStorage.setItem("user_list_stime", this.send_data.where.stime);
         sessionStorage.setItem("user_list_etime", this.send_data.where.etime);
+        this.user_list();
+    };
+
+    //清空时间
+    clear_time_register () {
+        var that: any = this;
+        this.send_data.where.reg_stime = "",
+        this.send_data.where.reg_etime = "",
+        sessionStorage.setItem("user_list_reg_stime", this.send_data.where.etime);
+        sessionStorage.setItem("user_list_reg_etime", this.send_data.where.etime);
         this.user_list();
     };
     

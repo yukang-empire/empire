@@ -27,17 +27,19 @@
                     </svg>
                     <span>{{ $store.state.current_route ? $store.state.current_route.meta.title : "列表数据" }}</span>
                 </span>
-                <router-link to="/set/staff/add" tag="span" class="add_btn">
+                <span @click='add_staff' class="add_btn">
                     <el-button size="medium" type="primary" icon="el-icon-circle-plus-outline">新增员工</el-button>
-                </router-link>
+                </span>
             </p>
             <!-- 表格和页码 -->
-            <table_page 
+            <table_page
             :table_data='table_data'
             @change_page='change_page'
             @change_page_size='change_page_size'
             @change_state='change_state'
             @look_up='look_up'
+            @edit='edit_staff'
+            @delete_='delete_'
             />
             
         </div>
@@ -242,6 +244,37 @@ export default class staff_list extends Vue{
     look_up (row: any) {
         this.$router.push({ path: '/user/details', query: { id: row.user_id } });
     };
+
+    //新增员工
+    add_staff () {
+        sessionStorage.removeItem('add_form_data');
+        this.$router.push({ path: '/set/staff/add' });
+    };
+
+    //编辑员工
+    edit_staff (row: any) {
+        sessionStorage.setItem('add_form_data', JSON.stringify(row));
+        this.$router.push({ path: '/set/staff/add', query: { id: row.id } });
+    };
+    
+    //删除员工
+    delete_ (row: any) {
+        var that = this;
+        that.$confirm("确定删除工号为 " + row.id +  " 的员工？", "提示", { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then( () => {
+            this.$store.dispatch("del_staff", { userid: row.id }).then( (res: any) => {
+                if (res.code == 0) {
+                    console.log("删除员工", res);
+                    that.$message({ type: "success", message: "已成功删除工号为 " + row.id + " 的员工！", duration: 2000 });
+                    setTimeout(() => {
+                        this.$router.go(0);
+                    }, 500);
+                }else {
+                    //登录失败提示
+                    this.$message({ message: res.msg, type: "error", duration: 2500 });
+                };
+            })
+        });
+    }
 }
 
 </script>

@@ -7,7 +7,8 @@ const home = {
     meta: {
         title: "首页",
         icon: "#iconshouye1",
-        hidden: false
+        hidden: false,
+        roles: '20009'
     },
     children: [
         {

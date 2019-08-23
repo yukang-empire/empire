@@ -9,7 +9,7 @@ const user = {
         title: '用户管理',
         icon: '#iconyonghu1',
         hidden: false,
-        roles: ['1']
+        roles: '20003'
     },
     children: [
         {
@@ -18,7 +18,8 @@ const user = {
             component: () => import('@/views/user/user_list.vue'),
             meta: {
                 title: '用户列表',
-                hidden: false
+                hidden: false,
+                roles: '20003'
             } 
         },
         {

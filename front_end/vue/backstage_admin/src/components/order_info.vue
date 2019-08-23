@@ -7,8 +7,11 @@
                 </svg>
                 <span>订单当前状态</span>
             </p>
-            <p class="state">
+            <p class="state" v-if="order_data.type =='service' || order_data.type =='transfer'">
                 <i class="el-icon-warning"></i>订单<span>{{ show_order_data.status }}</span>
+            </p>
+            <p class="state" v-if="order_data.type =='receive'">
+                <i class="el-icon-warning"></i>订单<span>{{ show_order_data.pay_status }}</span>
             </p>
         </div>
 
@@ -44,9 +47,9 @@
                 </ul>
                 <ul v-if="order_data.type =='receive'">
                     <li class="flex_between">
-                        <p><span>订单编号：</span><span>{{ show_order_data.current_state }}</span></p>
-                        <p><span>领用时间：</span><span>{{ show_order_data.current_state }}</span></p>
-                        <p><span>支付方式：</span><span>{{ show_order_data.current_state }}</span></p>
+                        <p><span>订单编号：</span><span>{{ show_order_data.order_sn }}</span></p>
+                        <p><span>领用时间：</span><span>{{ show_order_data.add_time }}</span></p>
+                        <p><span>支付方式：</span><span>{{ show_order_data.pay_name }}</span></p>
                     </li>
                 </ul>
             </div>
@@ -62,35 +65,43 @@
             <div class="base">
                 <ul>
                     <li class="flex_between">
-                        <p><span>用户昵称：</span><span>{{ show_order_data.nickname }}</span></p>
-                        <p><span>用户手机：</span><span>{{ show_order_data.mobile }}</span></p>
-                        <p><span>用户地区：</span><span>{{ show_order_data.province + show_order_data.city + show_order_data.district || show_order_data.club_area }}</span></p>
+                        <p><span>用户昵称：</span><span>{{ show_order_data.name }}</span></p>
+                        <p><span>用户手机：</span><span>{{ show_order_data.umobile }}</span></p>
+                        <p v-if="order_data.type =='transfer' || order_data.type =='service'"><span>用户地区：</span><span>{{ show_order_data.province + show_order_data.city + show_order_data.district || show_order_data.club_area }}</span></p>
+                        <p v-if="order_data.type =='receive'"><span>用户地区：</span><span>{{ show_order_data.uprovince + show_order_data.ucity + show_order_data.udistrict }}</span></p>
                     </li>
                 </ul>
             </div>
         </div>
 
         <div class="repeat_div" v-if="order_data.type =='transfer' || order_data.type =='receive'">
-            <p>
-                <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#iconqia"></use>
-                </svg>
-                <span>健身卡信息</span>
+            <p class="flex_between">
+                <span>
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#iconqia"></use>
+                    </svg>
+                    <span>健身卡信息</span>
+                </span>
+                <span class="add_btn" @click='dialog_card.is_dialog = true'>
+                    <el-button size="medium" type="primary" icon="el-icon-edit">修改</el-button>
+                </span>
             </p>
             <div class="base card">
                 <ul>
                     <li class="flex_between">
                         <p><span>健身房名称：</span><span>{{ show_order_data.club_name }}</span></p>
-                        <p><span>健身房地址：</span><span>{{ show_order_data.club_area }}</span></p>
+                        <p v-if="order_data.type =='transfer'"><span>健身房地址：</span><span>{{ show_order_data.club_area }}</span></p>
+                        <p v-if="order_data.type =='receive'"><span>健身房地址：</span><span>{{ show_order_data.province + show_order_data.city + show_order_data.area + show_order_data.address }}</span></p>
                         <p><span>健身房电话：</span><span>{{ show_order_data.tel }}</span></p>
                     </li>
                     <li class="flex_between">
                         <p><span>健身卡类别：</span><span>{{ show_order_data.card_type }}</span></p>
-                        <p><span>办卡费用：</span><span>{{ show_order_data.card_price }}</span></p>
+                        <p v-if="order_data.type =='transfer'"><span>办卡费用：</span><span>{{ show_order_data.card_price }}</span></p>
+                        <p v-if="order_data.type =='receive'"><span>办卡费用：</span><span>{{ show_order_data.account }}</span></p>
                         <p><span>办卡时间：</span><span>{{ show_order_data.creat_time }}</span></p>
                     </li>
                     <li class="flex_between">
-                        <p><span>持卡人姓名：</span><span>{{ show_order_data.nickname }}</span></p>
+                        <p><span>持卡人姓名：</span><span>{{ show_order_data.name }}</span></p>
                         <p><span>持卡人手机：</span><span>{{ show_order_data.mobile }}</span></p>
                         <p><span>剩余可用：</span><span>{{ show_order_data.ex_day }}</span></p>
                     </li>
@@ -99,9 +110,15 @@
                     </li>
                     <li class="imgs flex_between">
                         <p>
-                            <span>健身房照片：</span>
-                            <ul>
+                            <span v-if="order_data.type =='transfer'">健身房照片：</span>
+                            <span v-if="order_data.type =='receive'">领用卡照片：</span>
+                            <ul v-if="order_data.type =='transfer'">
                                 <li v-for='(item, index) in show_order_data.club_image' @click='enlarge_img(index, item, "健身房照片")' title='点击可放大'>
+                                    <img :src="$store.state.order.domain02 + item" alt="logo">
+                                </li>
+                            </ul>
+                            <ul v-if="order_data.type =='receive'">
+                                <li v-for='(item, index) in show_order_data.club_image' @click='enlarge_img(index, item, "领用卡照片")' title='点击可放大'>
                                     <img :src="$store.state.order.domain02 + item" alt="logo">
                                 </li>
                             </ul>
@@ -120,6 +137,9 @@
                 </ul>
             </div>
         </div>
+
+        <!-- 编辑健身卡 -->
+        <dialog_form :dialog_data='dialog_card' @sure='edit_card' />
 
         <!-- 图片放大 -->
         <el-dialog class="enlarge_img" :title="dialog_img.img_name" :visible.sync="dialog_img.is_enlarge" width="900px" center>
@@ -159,7 +179,7 @@
             <div class="add upper">
                 <el-form :model="check_form_data" :rules="check_rules" ref="upper_ref">
                     <el-form-item label="选择健身房：" prop="select">
-                        <el-select v-model="check_form_data.select" filterable placeholder="请选择(可搜索)" @change='select_jsf'>
+                        <el-select v-model="check_form_data.select" filterable clearable placeholder="请选择(可搜索)" @change='select_jsf'>
                             <el-option
                                 v-for="item in all_jsf"
                                 :key="item.club_id"
@@ -175,6 +195,9 @@
                     <!-- <el-form-item class="btn">
                         <el-button type="primary" @click="upper" :loading="is_loading02">确定上架</el-button>
                     </el-form-item> -->
+                    <el-form-item label="购买须知:" prop="note">
+                        <el-input type="textarea" :autosize="{ minRows: 5, maxRows: 10 }" v-model="check_form_data.note" placeholder="请输入转让卡的购买须知" maxlength="500" show-word-limit></el-input>
+                    </el-form-item>
                 </el-form>
             </div>
         </div>
@@ -273,6 +296,56 @@ export default class order_info extends Vue{
             ]
         }
     };
+
+    //编辑健身卡
+    private dialog_card: any = {
+        type: 'card',
+        is_dialog: false,
+        title: '修改健身卡信息',
+        sure_name: '确定修改',
+        //表单数据
+        form_data: {
+            
+        },
+        all_type: [
+            {type: 1, name: '次卡'},
+            {type: 2, name: '月卡'},
+            {type: 3, name: '季卡'},
+            {type: 4, name: '半年卡'},
+            {type: 5, name: '年卡'},
+        ],
+        //表单规则
+        form_rules: {
+            club_name: [
+                { required: true, message: '请输入健身房名称', trigger: 'blur' },
+            ],
+            club_area: [
+                { required: true, message: '请输入健身房地址', trigger: 'blur' },
+            ],
+            tel: [
+                { required: true, message: '请输入健身房电话', trigger: 'blur' },
+            ],
+            card_type: [
+                { required: true, message: '请选择健身卡类型', trigger: 'blur' },
+            ],
+            card_price: [
+                { required: true, message: '请输入办卡费用', trigger: 'blur' },
+            ],
+            creat_time: [
+                { required: true, message: '请选择办卡时间', trigger: 'blur' },
+            ],
+            name: [
+                { required: true, message: '请输入持卡人姓名', trigger: 'blur' },
+            ],
+            mobile: [
+                { required: true, message: '请输入持卡人手机号', trigger: 'blur' },
+            ],
+            end_time: [
+                { required: true, message: '请选择到期时间', trigger: 'blur' },
+            ],
+        }
+    };
+
     //放大图片
     private dialog_img: any = {
         is_enlarge: false,
@@ -296,6 +369,7 @@ export default class order_info extends Vue{
         status: null,
         price: '',
         select: '',
+        note: ''
     };
     //验证审核表单规则
     private check_rules: object = {
@@ -361,20 +435,27 @@ export default class order_info extends Vue{
 
     
     created () {
-        //获取所有的健身房
-        this.$store.dispatch("all_jsf").then( (res: any) => {
-            console.log("所有健身房", res);
-            if (res.code == 0 || res.status == 1) {
-                this.all_jsf = res.result;
-            }else {
-                //失败提示
-                this.$message({ message: res.msg, type: "error", duration: 2500 });
-            };
-        });
+
+        //获取领用订单详情
+        if (this.order_data.type == 'receive') {
+            this.$store.dispatch("receive_details", { order_id: this.$route.query.order_id }).then( (res: any) => {
+                console.log("领用订单详情", res);
+                if (res.code == 0 || res.status == 1) {
+                    this.show_order_data = res.result;
+                    this.show_order_data.pay_status = this.show_order_data.pay_status == 1 ? '已支付' : '已核销';
+                    this.show_order_data.add_time = this.show_order_data.add_time > 0 ? this.$moment(this.show_order_data.add_time * 1000).format('YYYY-MM-DD HH:mm:ss') : "";
+                    this.show_order_data.creat_time = this.show_order_data.creat_time > 0 ? this.$moment(this.show_order_data.creat_time * 1000).format('YYYY-MM-DD HH:mm:ss') : "";
+                    this.show_order_data.end_time = this.show_order_data.end_time > 0 ? this.$moment(this.show_order_data.end_time * 1000).format('YYYY-MM-DD HH:mm:ss') : "";
+                }else {
+                    //请求失败提示
+                    this.$message({ message: res.msg, type: "error", duration: 2500 });
+                };
+            });
+        };
 
         //获取服务订单详情
         if (this.order_data.type == 'service') {
-            this.$store.dispatch("service_details", { out_id: this.$route.query.out_id }).then( (res: any) => {
+            this.$store.dispatch("service_details", { card_id: this.$route.query.card_id }).then( (res: any) => {
                 console.log("服务订单详情", res);
                 if (res.code == 0 || res.status == 1) {
                     this.show_order_data = res.result;
@@ -388,12 +469,28 @@ export default class order_info extends Vue{
             });
         };
 
+        //获取所有的健身房
+        if (this.order_data.type == 'transfer') {
+            this.$store.dispatch("all_jsf").then( (res: any) => {
+                console.log("所有健身房", res);
+                if (res.code == 0 || res.status == 1) {
+                    this.all_jsf = res.result;
+                }else {
+                    //失败提示
+                    this.$message({ message: res.msg, type: "error", duration: 2500 });
+                };
+            });
+        };
+
         //获取转让订单详情
         if (this.order_data.type == 'transfer') {
             this.$store.dispatch("transfer_details", { out_id: this.$route.query.out_id }).then( (res: any) => {
                 console.log("转让订单详情", res);
                 if (res.code == 0 || res.status == 1) {
-                    this.show_order_data = res.result;
+                    this.show_order_data = JSON.parse(JSON.stringify(res.result));
+                    this.dialog_card.form_data = JSON.parse(JSON.stringify(this.show_order_data));
+                    this.dialog_card.form_data.creat_time = this.dialog_card.form_data.creat_time > 0 ? this.$moment(this.dialog_card.form_data.creat_time * 1000).format('YYYY-MM-DD HH:mm:ss') : "";
+                    this.dialog_card.form_data.end_time = this.dialog_card.form_data.end_time > 0 ? this.$moment(this.dialog_card.form_data.end_time * 1000).format('YYYY-MM-DD HH:mm:ss') : "";
                     switch (this.show_order_data.status) {
                         case 0: 
                             this.show_order_data.status = '审核中';
@@ -426,6 +523,8 @@ export default class order_info extends Vue{
                     this.show_order_data.up_time = this.show_order_data.up_time > 0 ? this.$moment(this.show_order_data.up_time * 1000).format('YYYY-MM-DD HH:mm:ss') : "";
                     this.course_data.table.lists = this.show_order_data.tax_list;
                     this.check_form_data.select = this.show_order_data.tax_list[0].club_id ? this.show_order_data.tax_list[0].club_id : '';
+                    this.check_form_data.note = this.show_order_data.note;
+                    
                 }else {
                     //请求失败提示
                     this.$message({ message: res.msg, type: "error", duration: 2500 });
@@ -554,6 +653,7 @@ export default class order_info extends Vue{
     add_edit (type, data) {
         data.club_id = this.check_form_data.select;
         data.out_id = this.$route.query.out_id;
+        data.note = this.check_form_data.note;
         console.log('新增/编辑私教课', data);
         if (type == '确定新增') {
             data.tax_id = '';
@@ -589,6 +689,45 @@ export default class order_info extends Vue{
             });
         };
         
+    };
+
+    //编辑健身卡
+    edit_card (type, data) {
+        var send_data = JSON.parse(JSON.stringify(data));
+        switch (send_data.card_type) {
+            case '次卡': 
+                send_data.card_type = 1;
+                break;
+            case '月卡': 
+                send_data.card_type = 2;
+                break;
+            case '季卡': 
+                send_data.card_type = 3;
+                break;
+            case '半年卡': 
+                send_data.card_type = 4;
+                break;
+            case '年卡': 
+                send_data.card_type = 5;
+                break;
+        };
+        send_data.creat_time = this.$moment(send_data.creat_time).valueOf() / 1000;
+        send_data.end_time = this.$moment(send_data.end_time).valueOf() / 1000;
+        send_data.out_id = this.$route.query.out_id;
+        this.$store.dispatch("edit_card", send_data).then( (res: any) => {
+            console.log("编辑健身卡", res);
+            if (res.code == 0 || res.status == 1) {
+                this.dialog_course.is_dialog = false;
+                //修改成功提示
+                this.$message({ message: '修改成功！', type: "success", duration: 1500 });
+                setTimeout(() => {
+                    this.$router.go(0);
+                }, 500);
+            }else {
+                //失败提示
+                this.$message({ message: res.msg, type: "error", duration: 2500 });
+            };
+        });
     };
 
     //上架

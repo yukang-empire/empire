@@ -9,7 +9,7 @@ const set = {
         title: '设置',
         icon: '#iconshezhi',
         hidden: false,
-        roles: ['1']
+        roles: '20001'
     },
     children: [
         {
@@ -18,7 +18,8 @@ const set = {
             component: () => import('@/views/set/role/role_list.vue'),
             meta: {
                 title: '角色列表',
-                hidden: false
+                hidden: false,
+                roles: '20037'
             }
         },
         {
@@ -36,7 +37,8 @@ const set = {
             component: () => import('@/views/set/staff/staff_list.vue'),
             meta: {
                 title: '员工列表',
-                hidden: false
+                hidden: false,
+                roles: '20041'
             }
         },
 
@@ -55,7 +57,8 @@ const set = {
             component: () => import('@/views/set/change_password.vue'),
             meta: {
                 title: '修改密码',
-                hidden: false
+                hidden: false,
+                roles: '20046'
             }
         },
         {
@@ -64,7 +67,8 @@ const set = {
             component: () => import('@/views/set/log_list.vue'),
             meta: {
                 title: '操作日志',
-                hidden: false
+                hidden: false,
+                roles: '20047'
             }
         },
         

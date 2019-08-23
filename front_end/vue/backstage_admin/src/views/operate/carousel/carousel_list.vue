@@ -15,7 +15,12 @@
             @clear_search="clear_search"
             @change_time='change_time'
             @clear_time="clear_time"
+            @clear_time_register='clear_time_register'
+            @change_time_register='change_time_register'
+            @state_change='change_type'
+            @clear_select='clear_type'
             />
+            
         </div>
 
         <div class="repeat_div">
@@ -26,20 +31,20 @@
                     </svg>
                     <span>{{ $store.state.current_route ? $store.state.current_route.meta.title : "列表数据" }}</span>
                 </span>
-                <span class="add_btn">
-                    <el-button size="medium" type="primary" icon="el-icon-circle-plus-outline" @click='add_help'>新增</el-button>
-                </span>
+                <router-link to="/operate/carousel/add" tag="span" class="add_btn">
+                    <el-button size="medium" type="primary" icon="el-icon-circle-plus-outline">新增轮播图</el-button>
+                </router-link>
             </p>
             <!-- 表格和页码 -->
             <table_page 
             :table_data='table_data'
             @change_page='change_page'
             @change_page_size='change_page_size'
+            @change_state='change_state'
             @look_up='look_up'
             />
             
         </div>
-
     </div>
 </template>
 
@@ -67,14 +72,14 @@ export default class carousel_list extends Vue{
             //是否固定表头
             is_height: "auto",
             //表格数据
-            lists: [ {name: '康大大'} ],
+            lists: [],
         },
         //页码
         page: {
             //是否显示页码
             is_page: true,
             //当前页码
-            current_page: sessionStorage.getItem("carousel_list_p") ? parseInt(sessionStorage.getItem("carousel_list_p")) : 1,
+            current_page: sessionStorage.getItem("carousel_list_page") ? parseInt(sessionStorage.getItem("carousel_list_page")) : 1,
             //每页显示的数量
             size: sessionStorage.getItem("carousel_list_size") ? parseInt(sessionStorage.getItem("carousel_list_size")) : 10,
             sizes: [10, 15, 20],
@@ -84,32 +89,41 @@ export default class carousel_list extends Vue{
     };
     //请求列表数据的参数
     private send_data: any = {
-        p: sessionStorage.getItem("carousel_list_p") ? sessionStorage.getItem("carousel_list_p") : 1,
+        page: sessionStorage.getItem("carousel_list_page") ? sessionStorage.getItem("carousel_list_page") : 1,
         size: sessionStorage.getItem("carousel_list_size") ? sessionStorage.getItem("carousel_list_size") : 10,
-        search: sessionStorage.getItem("carousel_list_search") ? sessionStorage.getItem("carousel_list_search") : "",
-        start_time: sessionStorage.getItem("carousel_list_start_time") ? sessionStorage.getItem("carousel_list_start_time") : "",
-        end_time: sessionStorage.getItem("carousel_list_end_time") ? sessionStorage.getItem("carousel_list_end_time") : "",
+        where: {
+            keyword: sessionStorage.getItem("carousel_list_keyword") ? sessionStorage.getItem("carousel_list_keyword") : "",
+            stime: sessionStorage.getItem("carousel_list_stime") ? sessionStorage.getItem("carousel_list_stime") : "",
+            etime: sessionStorage.getItem("carousel_list_etime") ? sessionStorage.getItem("carousel_list_etime") : "",
+            pid: sessionStorage.getItem("carousel_list_pid") ? sessionStorage.getItem("carousel_list_pid") : "",
+        }
     };
     //需要展示的筛选功能
     private show_filter: any = {
-        is_type: "domain02",
+        is_type: 'domain01',
         is_search: true,
-        placeholder: "请输入轮播图标题",
         show_time: true,
         time_name: '上传时间',
-        is_state: false
+        state_name: '轮播图位置',
+        is_state: true,
+        all_state: [
+            {state: '1', name: 'APP首页banner'},
+            {state: '2', name: '开屏页图片'},
+            {state: '3', name: '商城首页'},
+            {state: '4', name: '淘卡首页'},
+        ]
     };
 
     mounted () {
         this.carousel_list();
     };
     
-    //请求提现列表数据
+    //请求carousel_list数据
     carousel_list () {
         this.$store.dispatch("carousel_list", this.send_data).then( (res: any) => {
-            console.log("商家列表", res);
-            if (res.code == 0 || res.status == 1) {
-                this.table_data.table.lists = res.result;
+            console.log("轮播图列表", res);
+            if (res.code == 0) {
+                this.table_data.table.lists = res.data;
                 //提取长度出来 提高for循环性能
                 var lists = this.table_data.table.lists;
                 var length = lists.length;
@@ -117,10 +131,23 @@ export default class carousel_list extends Vue{
                 for (var i = 0; i < length; i++) {
                     //typescript语法严格 不声明会报错
                     var that: any = this;
-                    lists[i].add_time = lists[i].add_time == 0 ? "" : that.$moment(lists[i].add_time * 1000).format('YYYY-MM-DD HH:mm:ss');
-                    //拼接省市区
-                    lists[i].address = lists[i].province + lists[i].city + lists[i].area;
+                    lists[i].start_time = lists[i].start_time == 0 ? "" : that.$moment(lists[i].start_time * 1000).format('YYYY-MM-DD HH:mm:ss');
+                    switch (lists[i].pid) {
+                        case '1': 
+                            lists[i].pid = '首页banner';
+                            break;
+                        case '2': 
+                            lists[i].pid = '开屏页图片';
+                            break;
+                        case '3': 
+                            lists[i].pid = '地图页广告图';
+                            break;
+                        case '4': 
+                            lists[i].pid = '转让卡广告图';
+                            break;
+                    };
                 };
+                //总个数
                 this.table_data.page.total = parseInt(res.count);
             }else {
                 //请求失败提示
@@ -129,58 +156,95 @@ export default class carousel_list extends Vue{
         });
     };
 
-    //新增
-    add_help () {
-
-    };
-
-    //搜索
+    //搜索 重新获取列表数据
     search (val: any) {
         //页码不重置为1的话 有可能请求不到数据
+        this.send_data.page = 1;
         this.table_data.page.current_page = 1;
-        this.send_data.p = 1;
-        sessionStorage.setItem("carousel_list_p", "1");
-        this.send_data.search = val;
-        sessionStorage.setItem("carousel_list_search", val);
+        sessionStorage.setItem("carousel_list_page", '1');
+        this.send_data.where.keyword = val;
+        sessionStorage.setItem("carousel_list_keyword", val);
         this.carousel_list();
     };
 
     //清空搜索内容
     clear_search () {
-        this.send_data.search = '';
-        sessionStorage.setItem("carousel_list_search", "");
+        this.send_data.where.keyword = '';
+        sessionStorage.setItem("carousel_list_keyword", "");
+        this.carousel_list();
+    };
+
+    //选择类型
+    change_type (val) {
+        //页码不重置为1的话 有可能请求不到数据
+        this.send_data.page = 1;
+        this.table_data.page.current_page = 1;
+        sessionStorage.setItem("carousel_list_page", '1');
+        this.send_data.where.pid = val;
+        sessionStorage.setItem("carousel_list_pid", val);
+        this.carousel_list();
+    };
+
+    //清空类型
+    clear_type () {
+        this.send_data.where.pid = '';
+        sessionStorage.setItem("carousel_list_pid", '');
         this.carousel_list();
     };
 
     //筛选时间
     change_time(val: any) {
         //页码不重置为1的话 有可能请求不到数据
+        this.send_data.page = 1;
         this.table_data.page.current_page = 1;
-        this.send_data.p = 1;
-        sessionStorage.setItem("carousel_list_p", "1");
+        sessionStorage.setItem("carousel_list_page", '1');
         var that: any = this;
-        this.send_data.start_time = val[0] ? that.$moment(val[0]).valueOf() / 1000 : "",
-        this.send_data.end_time = val[1] ? that.$moment(val[1]).valueOf() / 1000 : "",
-        sessionStorage.setItem("carousel_list_start_time", this.send_data.start_time);
-        sessionStorage.setItem("carousel_list_end_time", this.send_data.end_time);
+        this.send_data.where.stime = val[0] ? that.$moment(val[0]).valueOf() / 1000 : "",
+        this.send_data.where.etime = val[1] ? that.$moment(val[1]).valueOf() / 1000 : "",
+        sessionStorage.setItem("carousel_list_stime", this.send_data.where.stime);
+        sessionStorage.setItem("carousel_list_etime", this.send_data.where.etime);
+        this.carousel_list();
+    };
+
+    //筛选注册时间
+    change_time_register(val: any) {
+        //页码不重置为1的话 有可能请求不到数据
+        this.send_data.page = 1;
+        this.table_data.page.current_page = 1;
+        sessionStorage.setItem("carousel_list_page", '1');
+        var that: any = this;
+        this.send_data.where.reg_stime = val[0] ? that.$moment(val[0]).valueOf() / 1000 : "",
+        this.send_data.where.reg_etime = val[1] ? that.$moment(val[1]).valueOf() / 1000 : "",
+        sessionStorage.setItem("carousel_list_reg_stime", this.send_data.where.reg_stime);
+        sessionStorage.setItem("carousel_list_reg_etime", this.send_data.where.reg_etime);
         this.carousel_list();
     };
 
     //清空时间
     clear_time () {
         var that: any = this;
-        this.send_data.start_time = "",
-        this.send_data.end_time = "",
-        sessionStorage.setItem("carousel_list_start_time", this.send_data.start_time);
-        sessionStorage.setItem("carousel_list_end_time", this.send_data.end_time);
+        this.send_data.where.stime = "",
+        this.send_data.where.etime = "",
+        sessionStorage.setItem("carousel_list_stime", this.send_data.where.stime);
+        sessionStorage.setItem("carousel_list_etime", this.send_data.where.etime);
+        this.carousel_list();
+    };
+
+    //清空时间
+    clear_time_register () {
+        var that: any = this;
+        this.send_data.where.reg_stime = "",
+        this.send_data.where.reg_etime = "",
+        sessionStorage.setItem("carousel_list_reg_stime", this.send_data.where.etime);
+        sessionStorage.setItem("carousel_list_reg_etime", this.send_data.where.etime);
         this.carousel_list();
     };
     
     //改变页码
     change_page(val: any) {
         this.table_data.page.current_page = val;
-        this.send_data.p = val;
-        sessionStorage.setItem("carousel_list_p", val);
+        this.send_data.page = val;
+        sessionStorage.setItem("carousel_list_page", val);
         this.carousel_list();
     };
 
@@ -192,9 +256,41 @@ export default class carousel_list extends Vue{
         this.carousel_list();
     };
 
+    //改变状态
+    change_state (index: any, row: any) {
+        var that: any = this;
+        if (row.is_lock == 0) {
+            that.$confirm("确定禁用ID为 " + row.user_id +  " 的账户？", "提示", { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then( () => {
+                this.$store.dispatch("change_state_user", { userSN: row.user_sn, isLock: '1' }).then( (res: any) => {
+                    if (res.code == 0) {
+                        console.log("改变状态", res);
+                        this.table_data.table.lists[index].is_lock = 1;
+                        that.$message({ type: "success", message: "已成功禁用ID为 " + row.user_id + " 的账户！", duration: 2000 });
+                    }else {
+                        //登录失败提示
+                        this.$message({ message: res.msg, type: "error", duration: 2500 });
+                    };
+                })
+            });
+        }else {
+            that.$confirm("确定开启ID为 " + row.user_id +  " 的账户？", "提示", { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then( () => {
+                this.$store.dispatch("change_state_user", { userSN: row.user_sn, isLock: '0' }).then( (res: any) => {
+                    if (res.code == 0) {
+                        console.log("改变状态", res);
+                        this.table_data.table.lists[index].is_lock = 0;
+                        that.$message({ type: "success", message: "已成功开启ID为 " + row.user_id + " 的账户！", duration: 2000 });
+                    }else {
+                        //登录失败提示
+                        this.$message({ message: res.msg, type: "error", duration: 2500 });
+                    };
+                })
+            });
+        };
+    };
+
     //查看
     look_up (row: any) {
-        this.$router.push({ path: '/order/service/details', query: { club_id: row.id } });
+        this.$router.push({ path: '/user/details', query: { id: row.user_id } });
     };
 }
 
@@ -204,11 +300,5 @@ export default class carousel_list extends Vue{
 
     @media screen and (min-width: 769px) {
         
-        .add_btn {
-
-            .el-button {
-                letter-spacing: 1px;
-            }
-        }
     }
 </style>

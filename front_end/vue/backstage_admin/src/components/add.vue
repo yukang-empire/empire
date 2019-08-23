@@ -91,9 +91,9 @@
                         <el-select v-model="ruleForm.roleID" filterable placeholder="请选择权限角色" @change='roleID_change'>
                             <el-option
                                 v-for="item in staff_roles"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.id">
+                                :key="item.RoleId"
+                                :label="item.RoleName"
+                                :value="item.RoleId">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -113,27 +113,71 @@
                     </el-form-item>
                     <el-form-item label="头像:" prop="head" style="margin-bottom: 56px;">
                         <el-upload
-                            id="license_img"
+                            id="head_img"
                             action=""
                             drag
                             :auto-upload='false'
                             :show-file-list="false"
-                            :on-change='upload_change_license'>
-                            <img v-if="show_cropper.head" :src="show_cropper.head" class="full_width" alt='license_img'>
+                            :on-change='upload_change_head'>
+                            <img v-if="show_cropper.head" :src="show_cropper.head" class="full_width staff_head" alt='license_img'>
                             <i v-else class="el-icon-plus" style="font-size: 2rem;"></i>
                         </el-upload>
                     </el-form-item>
                     <!-- 裁剪工具cropper -->
                     <cropper
-                    v-if='license_cropper_data.is_cropper'
-                    :cropper_data='license_cropper_data'
-                    @startCrop='startCrop_license'
+                    v-if='head_cropper_data.is_cropper'
+                    :cropper_data='head_cropper_data'
+                    @startCrop='startCrop_head'
                     @cancel_crop='cancel_crop'
-                    @com_crop='com_crop'
+                    @com_crop='com_crop_staff'
                     />
                     <el-form-item label="简介:" prop="staff_content">
-                        <el-input type="textarea" @change='input_data' :autosize="{ minRows: 5, maxRows: 10 }" v-model="ruleForm.content" placeholder="请输入门店介绍" maxlength="500" show-word-limit @keyup.13.native="add_submit()"></el-input>
+                        <el-input type="textarea" @change='input_data' :autosize="{ minRows: 5, maxRows: 10 }" v-model="ruleForm.staff_content" placeholder="请输入门店介绍" maxlength="500" show-word-limit @keyup.13.native="add_submit()"></el-input>
                     </el-form-item>
+                </div>
+
+                <!-- 新增分润 -->
+                <div v-if='add_data.type == "share_profit"'>
+                    <el-form-item label="期数:" prop="share_profit_num">
+                        <el-input v-model="ruleForm.share_profit_num" placeholder="请输入期数"></el-input>
+                    </el-form-item>
+                    <el-form-item label="分润金额:" prop="share_profit_price">
+                        <el-input v-model="ruleForm.share_profit_price" placeholder="请输入分润金额"></el-input>
+                    </el-form-item>
+                    <el-form-item label="分润时间:" prop="share_profit_time">
+                        <el-date-picker
+                            type="datetime"
+                            v-model="ruleForm.share_profit_time"
+                            @change='change_share_profit_time'
+                            placeholder="选择分润开始时间">
+                        </el-date-picker>
+                    </el-form-item>
+                </div>
+
+                <!-- 新增角色 -->
+                <div v-if='add_data.type == "role"'>
+                    <el-form-item label="角色名称:" prop="RoleName">
+                        <el-input v-model="ruleForm.RoleName" placeholder="请输入角色名" clearable maxlength="10" show-word-limit @change='input_data'></el-input>
+                    </el-form-item>
+                    <el-form-item label="描述:" prop="note">
+                        <el-input type="textarea" @change='input_data' :autosize="{ minRows: 5, maxRows: 10 }" v-model="ruleForm.note" placeholder="请输入角色描述" maxlength="500" show-word-limit @keyup.13.native="add_submit()"></el-input>
+                    </el-form-item>
+                </div>
+
+                <!-- 新增角色 -->
+                <div v-if='add_data.type == "role"'>
+                    <p style="margin-bottom: 20px;">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#iconquanxian"></use>
+                        </svg>
+                        <span>权限信息</span>
+                    </p>
+                    <checkbox_modules :data='checkbox_home' :checked_option='checkbox_home_already' @click_all='click_all_home' @click_option='click_option_home'></checkbox_modules>
+                    <checkbox_modules :data='checkbox_user' :checked_option='checkbox_user_already' @click_all='click_all_user' @click_option='click_option_user'></checkbox_modules>
+                    <checkbox_modules :data='checkbox_business' :checked_option='checkbox_business_already' @click_all='click_all_business' @click_option='click_option_business'></checkbox_modules>
+                    <checkbox_modules :data='checkbox_order' :checked_option='checkbox_order_already' @click_all='click_all_order' @click_option='click_option_order'></checkbox_modules>
+                    <checkbox_modules :data='checkbox_finance' :checked_option='checkbox_finance_already' @click_all='click_all_finance' @click_option='click_option_finance'></checkbox_modules>
+                    <checkbox_modules :data='checkbox_set' :checked_option='checkbox_set_already' @click_all='click_all_set' @click_option='click_option_set'></checkbox_modules>
                 </div>
                     
 
@@ -181,6 +225,52 @@
                                 :value="item.id">
                             </el-option>
                         </el-select>
+                    </el-form-item>
+                </div>
+
+                <!-- 新增轮播图 -->
+                <div v-if='add_data.type == "carousel"'>
+                    <el-form-item label="轮播图名称:" prop="carousel_name">
+                        <el-input v-model="ruleForm.carousel_name" placeholder="请输入轮播图名称" clearable maxlength="11" show-word-limit @change='input_data'></el-input>
+                    </el-form-item>
+                    <el-form-item label="轮播图:" prop="head">
+                        <el-upload
+                            id="carousel_img"
+                            action=""
+                            drag
+                            :auto-upload='false'
+                            :show-file-list="false"
+                            :on-change='upload_change_head'>
+                            <img v-if="show_cropper.head" :src="show_cropper.head" class="full_width staff_head" alt='license_img'>
+                            <i v-else class="el-icon-plus" style="font-size: 2rem;"></i>
+                        </el-upload>
+                    </el-form-item>
+                    <!-- 裁剪工具cropper -->
+                    <cropper
+                    v-if='carousel_cropper_data.is_cropper'
+                    :cropper_data='carousel_cropper_data'
+                    @startCrop='startCrop_head'
+                    @cancel_crop='cancel_crop'
+                    @com_crop='com_crop_staff'
+                    />
+                    <el-form-item label="轮播图位置:" prop="carousel_local">
+                        <el-select v-model="ruleForm.carousel_local" filterable placeholder="请选择轮播图位置" @change='card_type_change'>
+                            <el-option
+                                v-for="item in carousel_locals"
+                                :key="item.state"
+                                :label="item.name"
+                                :value="item.state">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="轮播图状态:" prop="carousel_state">
+                        <el-switch v-model="ruleForm.carousel_state" active-color="#13ce66" inactive-color="#ccc"> </el-switch>
+                    </el-form-item>
+                    <el-form-item label="轮播图链接:" prop="carousel_link">
+                        <el-input v-model="ruleForm.carousel_link" placeholder="请输入轮播图携带的链接" clearable @change='input_data'></el-input>
+                    </el-form-item>
+                    <el-form-item label="排序号:" prop="carousel_num">
+                        <el-input v-model="ruleForm.carousel_num" placeholder="数字越大越靠前" clearable @change='input_data'></el-input>
                     </el-form-item>
                 </div>
 
@@ -332,12 +422,16 @@ import cropper from "@/components/cropper.vue";
 import p_c_a_s from "@/components/p_c_a_s.vue";
 //百度地图
 import baidu_map from "@/components/baidu_map.vue";
+import axios from '@/assets/api/axios';
+//多选
+import checkbox_modules from '@/components/checkbox.vue';
 
 @Component({
     components: {
         cropper,
         p_c_a_s,
-        baidu_map
+        baidu_map,
+        checkbox_modules
     }
 })
 
@@ -346,17 +440,36 @@ export default class add extends Vue{
     
     //表单数据
     private ruleForm: any = {
+
+        //轮播图
+        carousel_name: '',
+        carousel_local: '',
+        carousel_state: true,
+        carousel_link: '',
+        carousel_num: '',
+
         //修改密码
         username: '',
         workid: '',
         origin_password: '',
 
+        //新增角色
+        RoleName: '',
+        Permission: '',
+        DbPermission: '',
+        note: '',
+
         //新增员工
         staff_state: '',
         roleID: '',
         phone: '',
-        head : '',
         staff_content: '',
+        head: '',
+
+        //新增分润
+        share_profit_num: '',
+        share_profit_price: '',
+        share_profit_time: '',
 
         //新增优惠券
         coupon_name: '',
@@ -402,7 +515,7 @@ export default class add extends Vue{
     };
     //角色集合
     private staff_roles: any = [];
-    
+
     //验证再次输入密码
     private re_pass: any = (rule, value, callback) => {
         if (sessionStorage.getItem('add_form_data')) { this.ruleForm = JSON.parse(sessionStorage.getItem('add_form_data')) };
@@ -455,8 +568,24 @@ export default class add extends Vue{
         };
     };
 
+    //轮播图的位置
+    private carousel_locals: any = [
+        {state: '1', name: 'APP首页banner'},
+        {state: '2', name: '开屏页图片'},
+        {state: '3', name: '商城首页'},
+        {state: '4', name: '淘卡首页'},
+    ];
+
     //验证规则
     private add_rules: object = {
+
+        //轮播图
+        carousel_name: [
+            { required: true, message: '请输入轮播图名称', trigger: 'blur' },
+        ],
+        carousel_local: [
+            { required: true, message: '请输入选择轮播图位置', trigger: 'change' },
+        ],
 
         staff_name: [
             { required: true, message: '请输入员工姓名', trigger: 'blur' },
@@ -575,6 +704,19 @@ export default class add extends Vue{
         //所有的优惠券获得方式
         all_range: [ { id: 1, name: "注册" }, { id: 2, name: '其他' } ]
     };
+
+    //角色权限全选相关-首页
+    private role_home: any = {
+        //全选
+        check_all: false,
+        //已选择的附加服务
+        checked: sessionStorage.getItem('checkbox_checked') ? JSON.parse(sessionStorage.getItem('checkbox_checked')) : [],
+        isIndeterminate: true,
+        //健身会所提供的服务
+        all_role_home: [
+            {}
+        ]
+    };
     
     //所有的商家
     private all_business: any = [];
@@ -611,6 +753,48 @@ export default class add extends Vue{
         title: "营业执照裁剪"
     };
 
+    //头像裁剪相关数据
+    private head_cropper_data: any = {
+        //裁剪参数
+        option: {
+            img: '',
+            fixedBox: true,
+            autoCrop: true,
+            // 只有自动截图开启 宽度高度才生效
+            autoCropWidth: 200,
+            autoCropHeight: 200,
+            centerBox: true
+        },
+        is_previews: true,
+        //是否开启裁剪
+        is_cropper: false,
+        //裁剪预览框
+        previews: {},
+        //标题
+        title: "头像裁剪"
+    };
+
+    //轮播图裁剪数据
+    private carousel_cropper_data: any = {
+        //裁剪参数
+        option: {
+            img: '',
+            fixedBox: true,
+            autoCrop: true,
+            // 只有自动截图开启 宽度高度才生效
+            autoCropWidth: 750,
+            autoCropHeight: 300,
+            centerBox: true
+        },
+        is_previews: false,
+        //是否开启裁剪
+        is_cropper: false,
+        //裁剪预览框
+        previews: {},
+        //标题
+        title: "轮播图裁剪"
+    };
+
     //门店图片裁剪相关数据
     private store_cropper_data: any = {
         //裁剪参数
@@ -642,6 +826,208 @@ export default class add extends Vue{
     private dialog_img: any = {
         is_enlarge: false,
         src: ''
+    };
+
+    
+    //多选模块数据
+    private checkbox_home: any = {
+        name: '首页',
+        options: [
+            {id: 20009, name: '查看首页数据',},
+        ]
+    };
+    private checkbox_home_already: any = [
+        {id: 20009, name: '查看首页数据'}
+    ];
+    private checkbox_user: any = {
+        name: '用户管理',
+        options: [
+            {id: 20003, name: '查看用户列表'},
+            {id: 20011, name: '查看用户详情'},
+            {id: 20012, name: '禁用用户'}
+        ]
+    };
+    private checkbox_user_already: any = [
+        {id: 20003, name: '查看用户列表'},
+        {id: 20011, name: '查看用户详情'},
+        {id: 20012, name: '禁用用户'}
+    ];
+    private checkbox_business: any = {
+        name: '商家管理',
+        options: [
+            {id: 20004, name: '展示商家管理'},
+            {id: 20013, name: '查看商家列表'},
+            {id: 20014, name: '新增商家'},
+            {id: 20015, name: '查看门店列表'},
+            {id: 20016, name: '新增门店'},
+            {id: 20017, name: '编辑门店'},
+            {id: 20023, name: '禁用/开启门店'},
+            {id: 20020, name: '查看商品列表'},
+            {id: 20019, name: '新增商品'},
+            {id: 20018, name: '编辑商品'},
+        ]
+    };
+    
+    private checkbox_business_already: any = {
+        name: '商家管理',
+        options: [
+            {id: 20004, name: '展示商家管理'},
+            {id: 20013, name: '查看商家列表'},
+            {id: 20014, name: '新增商家'},
+            {id: 20015, name: '查看门店列表'},
+            {id: 20016, name: '新增门店'},
+            {id: 20017, name: '编辑门店'},
+            {id: 20023, name: '禁用/开启门店'},
+            {id: 20020, name: '查看商品列表'},
+            {id: 20019, name: '新增商品'},
+            {id: 20018, name: '编辑商品'},
+        ]
+    };
+    private checkbox_order: any = {
+        name: '订单管理',
+        options: [
+            {id: 20007, name: '展示订单管理'},
+            {id: 20024, name: '查看转让订单列表'},
+            {id: 20025, name: '查看转让订单详情'},
+            {id: 20026, name: '修改健身卡信息'},
+            {id: 20027, name: '审核转让订单'},
+            {id: 20028, name: '新增私教课'},
+            {id: 20029, name: '上架私教课'},
+            {id: 20030, name: '下架私教课'},
+            {id: 20031, name: '查看领用订单列表'},
+            {id: 20021, name: '查看服务订单列表'},
+            {id: 20022, name: '查看服务订单详情'},
+        ]
+    };
+    
+    private checkbox_order_already: any = {
+        name: '订单管理',
+        options: [
+            {id: 20007, name: '展示订单管理'},
+            {id: 20024, name: '查看转让订单列表'},
+            {id: 20025, name: '查看转让订单详情'},
+            {id: 20026, name: '修改健身卡信息'},
+            {id: 20027, name: '审核转让订单'},
+            {id: 20028, name: '新增私教课'},
+            {id: 20029, name: '上架私教课'},
+            {id: 20030, name: '下架私教课'},
+            {id: 20031, name: '查看领用订单列表'},
+            {id: 20021, name: '查看服务订单列表'},
+            {id: 20022, name: '查看服务订单详情'},
+        ]
+    };
+    private checkbox_finance: any = {
+        name: '财务管理',
+        options: [
+            {id: 20005, name: '展示财务管理'},
+            {id: 20032, name: '查看提现列表'},
+            {id: 20036, name: '查看提现详情'},
+            {id: 20033, name: '审核提现/驳回'},
+            {id: 20034, name: '设置提现规则'},
+            {id: 20035, name: '导出提现excel列表'},
+        ]
+    };
+    
+    private checkbox_finance_already: any = {
+        name: '财务管理',
+        options: [
+            {id: 20005, name: '展示财务管理'},
+            {id: 20032, name: '查看提现列表'},
+            {id: 20036, name: '查看提现详情'},
+            {id: 20033, name: '审核提现'},
+            {id: 20034, name: '设置提现规则'},
+            {id: 20035, name: '导出提现excel列表'},
+        ]
+    };
+    private checkbox_set: any = {
+        name: '设置',
+        options: [
+            {id: 20001, name: '展示设置'},
+            {id: 20037, name: '查看角色列表'},
+            {id: 20038, name: '新增角色'},
+            {id: 20039, name: '修改角色'},
+            {id: 20040, name: '删除角色'},
+            {id: 20041, name: '查看员工列表'},
+            {id: 20042, name: '新增员工'},
+            {id: 20043, name: '编辑员工'},
+            {id: 20044, name: '删除员工'},
+            {id: 20045, name: '禁用员工'},
+            {id: 20046, name: '修改员工密码'},
+        ]
+    };
+    
+    private checkbox_set_already: any = {
+        name: '设置',
+        options: [
+            {id: 20001, name: '展示设置'},
+            {id: 20037, name: '查看角色列表'},
+            {id: 20038, name: '新增角色'},
+            {id: 20039, name: '修改角色'},
+            {id: 20040, name: '删除角色'},
+            {id: 20041, name: '查看员工列表'},
+            {id: 20042, name: '新增员工'},
+            {id: 20043, name: '编辑员工'},
+            {id: 20044, name: '删除员工'},
+            {id: 20045, name: '禁用员工'},
+            {id: 20046, name: '修改员工密码'},
+        ]
+    };
+    
+    private final_power: any = [];
+
+    screen_checkbox (val, vals) {
+        for (var i = 0; i < vals.length; i++) {
+            if (this.final_power.includes(vals[i].id)) {
+                var index = this.final_power.indexOf(vals[i].id);
+                this.final_power.splice(index, 1);
+            };
+        };
+
+        var arr = val || [];
+        for (var i = 0; i < arr.length; i++) {
+            if (!this.final_power.includes(arr[i])) {
+                this.final_power.push(arr[i]);
+            };
+        };
+        console.log('选择的权限集合', this.final_power);
+    };
+
+    //权限全选
+    click_all_home (val) {
+        this.screen_checkbox(val, this.checkbox_home.options);
+    };
+    click_option_home (val) {
+        this.screen_checkbox(val, this.checkbox_home.options);
+    };
+    click_all_user (val) {
+        this.screen_checkbox(val, this.checkbox_user.options);
+    };
+    click_option_user (val) {
+        this.screen_checkbox(val, this.checkbox_user.options);
+    };
+    click_all_business (val) {
+        this.screen_checkbox(val, this.checkbox_business.options);
+    };
+    click_option_business (val) {
+        this.screen_checkbox(val, this.checkbox_business.options);
+    };
+    click_all_order (val) {
+        this.screen_checkbox(val, this.checkbox_order.options);
+    };
+    click_option_order (val) {
+        this.screen_checkbox(val, this.checkbox_order.options);
+    };
+    click_all_finance (val) {
+        this.screen_checkbox(val, this.checkbox_finance.options);
+    };
+    click_option_finance (val) {
+        this.screen_checkbox(val, this.checkbox_finance.options);
+    };
+    click_all_set (val) {
+        this.screen_checkbox(val, this.checkbox_set.options);
+    };
+    click_option_set (val) {
+        this.screen_checkbox(val, this.checkbox_set.options);
     };
 
     // 将base64的图片转换为File文件
@@ -756,7 +1142,7 @@ export default class add extends Vue{
         ref.validate();
     };
 
-    //全选相关
+    //全选相关-优惠券
     handleCheckAllChange_coupon(val) {
         var that: any = this;
         if (val) {
@@ -836,6 +1222,11 @@ export default class add extends Vue{
         };
     };
 
+    //选择分润开始的时间
+    change_share_profit_time (time) {
+        console.log(time);
+    };
+
     //选择省
     change_p (province) {
         this.ruleForm.province = province;
@@ -906,6 +1297,24 @@ export default class add extends Vue{
         };
     };
 
+    //上传头像
+    upload_change_head(file) {
+        var that: any = this;
+        var isJPG = file.raw.type === 'image/jpeg' || file.raw.type === 'image/jpg';
+        var isLt1M = file.size / 1024 / 1024 < 1;
+        if (!isJPG) {
+            this.$message({ message: "上传的图片只能是 jpg/jpeg 格式!", type: "error", duration: 2500 });
+        };
+        if (!isLt1M) {
+            this.$message({ message: "上传的图片大小不能超过 1MB!", type: "error", duration: 2500 });
+        };
+        if (isJPG && isLt1M) {
+            that.head_cropper_data.option.img = URL.createObjectURL(file.raw);
+            that.carousel_cropper_data.option.img = URL.createObjectURL(file.raw);
+            that.startCrop_head();
+        };
+    };
+
     //上传门店图片
     upload_change_store (file) {
         var that: any = this;
@@ -928,6 +1337,11 @@ export default class add extends Vue{
         var that: any = this;
         that.license_cropper_data.is_cropper = true;
     };
+    startCrop_head() {
+        var that: any = this;
+        that.head_cropper_data.is_cropper = true;
+        that.carousel_cropper_data.is_cropper = true;
+    };
     startCrop_store() {
         var that: any = this;
         that.store_cropper_data.is_cropper = true;
@@ -936,6 +1350,8 @@ export default class add extends Vue{
     cancel_crop () {
         var that: any = this;
         that.license_cropper_data.is_cropper = false;
+        that.head_cropper_data.is_cropper = false;
+        that.carousel_cropper_data.is_cropper = false;
         that.store_cropper_data.is_cropper = false;
     };
     //完成裁剪
@@ -943,9 +1359,7 @@ export default class add extends Vue{
         var that: any = this;
         if (title == "营业执照裁剪") {
             that.show_cropper.license = data;
-            that.show_cropper.head = data;
             sessionStorage.setItem('show_license', data);
-            sessionStorage.setItem('head', data);
             that.ruleForm.image = img;
             that.license_cropper_data.is_cropper = false;
         }else {
@@ -970,6 +1384,25 @@ export default class add extends Vue{
         ref.validate();
     };
 
+    //完成头像裁剪
+    com_crop_staff (img, data) {
+        var that: any = this;
+        var send_data: any = new FormData();
+        send_data.append("pic", img);
+        axios.post( "/api/uppic", send_data).then( (res: any) => {
+            console.log('上传图片', res);
+            that.show_cropper.head = res.data.pic;
+            sessionStorage.setItem('head', res.data.pic);
+            that.ruleForm.head = res.data.pic;
+            that.head_cropper_data.is_cropper = false;
+            that.carousel_cropper_data.is_cropper = false;
+            sessionStorage.setItem('add_form_data', JSON.stringify(that.ruleForm));
+        }).catch( error => {
+            //返回error给调起dispatch的那边
+            console.log(error);
+        });
+    };
+
     created () {
         //获取所有的附加服务
         if (this.add_data.type == "business" || this.add_data.type == "store") {
@@ -989,6 +1422,19 @@ export default class add extends Vue{
                 console.log("所有商家", res);
                 if (res.code == 0 || res.status == 1) {
                     this.all_business = res.result;
+                }else {
+                    //获取失败提示
+                    this.$message({ message: res.msg, type: "error", duration: 2500 });
+                };
+            });
+        };
+        //获取所有角色权限
+        if (this.add_data.type == "staff") {
+            var send_data = { page : 1, size: 20 };
+            this.$store.dispatch("role_list", send_data).then( (res: any) => {
+                console.log("角色权限", res);
+                if (res.code == 0 || res.status == 1) {
+                    this.staff_roles = res.data;
                 }else {
                     //获取失败提示
                     this.$message({ message: res.msg, type: "error", duration: 2500 });
@@ -1063,7 +1509,7 @@ export default class add extends Vue{
             }else {
                 //保存的营业执照
                 this.ruleForm.image = sessionStorage.getItem('show_license') ? this.dataURLtoFile(sessionStorage.getItem('show_license'), "image") : '';
-                this.ruleForm.head = sessionStorage.getItem('head') ? this.dataURLtoFile(sessionStorage.getItem('head'), "image") : '';
+                this.ruleForm.head = sessionStorage.getItem('head') ? sessionStorage.getItem('head') : '';
                 this.show_cropper.license = sessionStorage.getItem('show_license') || '';
                 this.show_cropper.head = sessionStorage.getItem('head') || '';
                 //保存的门店图片
@@ -1100,6 +1546,8 @@ export default class add extends Vue{
                 console.log("ruleForm", this.ruleForm);
                 sessionStorage.setItem('add_form_data', JSON.stringify(this.ruleForm));
                 this.is_loading = true;
+                //新增角色的权限集合
+                this.ruleForm.Permission = this.final_power.join(",");
                 this.$emit('add_submit', this.ruleForm);
                 //取消转圈圈
                 setTimeout(() => {
@@ -1119,6 +1567,33 @@ export default class add extends Vue{
 <style lang="scss">
 
     @media screen and (min-width: 769px) {
-        
+        .staff_head {
+            border-radius: 50%;
+        }
+        #head_img .el-upload-dragger {
+            width: 200px;
+            height: 200px;
+        }
+        #carousel_img {
+            width: 375px;
+            height: 150px;
+        }
+        #carousel_img .el-upload-dragger {
+            width: 375px;
+            height: 150px;
+        }
+        #carousel_img .staff_head {
+            border-radius: 0;
+        }
+        .add .el-form-item__content {
+            line-height: 56px;
+        }
+        .add .el-checkbox {
+            margin-right: 20px;
+        }
+        .add .el-checkbox.is-bordered {
+            width: 175px;
+            text-align: center;
+        }
     }
 </style>

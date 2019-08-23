@@ -3,13 +3,13 @@
         <el-form :model="dialog_data.form_data" :rules="dialog_data.form_rules" ref="dialog_ref">
             <div v-if="dialog_data.type == 'course'">
                 <el-form-item label="课程节数:" prop="tax_num">
-                    <el-input v-model="dialog_data.form_data.tax_num" placeholder="请输入课程名称" clearable maxlength="20" show-word-limit></el-input>
+                    <el-input v-model="dialog_data.form_data.tax_num" placeholder="请输入课程节数" clearable maxlength="20" show-word-limit @input='limit_input'></el-input>
                 </el-form-item>
                 <el-form-item label="私教费用:" prop="price">
-                    <el-input type='number' v-model="dialog_data.form_data.price" placeholder="请输入私教费用"></el-input>
+                    <el-input type='number' v-model="dialog_data.form_data.price" placeholder="请输入私教总费用"></el-input>
                 </el-form-item>
                 <el-form-item label="结算费用:" prop="cost_price">
-                    <el-input type='number' v-model="dialog_data.form_data.cost_price" placeholder="请输入结算费用"></el-input>
+                    <el-input type='number' v-model="dialog_data.form_data.cost_price" placeholder="请输入结算总费用"></el-input>
                 </el-form-item>
             </div>
             <div v-if="dialog_data.type == 'cash_out'">
@@ -21,6 +21,52 @@
                 </el-form-item>
                 <el-form-item label="每日提现次数上限:" prop="max_order">
                     <el-input type="number" v-model="dialog_data.form_data.max_order" placeholder="请输入每日提现次数上限" clearable></el-input>
+                </el-form-item>
+            </div>
+            <div v-if="dialog_data.type == 'card'" id="card">
+                <el-form-item label="健身房名称:" prop="club_name">
+                    <el-input v-model="dialog_data.form_data.club_name" placeholder="请输入健身房名称" clearable></el-input>
+                </el-form-item>
+                <el-form-item label="健身房名称:" prop="club_area">
+                    <el-input v-model="dialog_data.form_data.club_area" placeholder="请输入健身房地址" clearable></el-input>
+                </el-form-item>
+                <el-form-item label="健身房名称:" prop="tel">
+                    <el-input v-model="dialog_data.form_data.tel" placeholder="请输入健身房电话" clearable></el-input>
+                </el-form-item>
+                <el-form-item label="请选择健身卡类型:" prop="card_type" class="card_type">
+                    <el-select v-model="dialog_data.form_data.card_type" filterable placeholder="请选择类型" clearable @change='type_change' class="filter_select">
+                        <el-option
+                            v-for="item in dialog_data.all_type"
+                            :key="item.type"
+                            :label="item.name"
+                            :value="item.type">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="办卡费用:" prop="card_price">
+                    <el-input v-model="dialog_data.form_data.card_price" placeholder="请输入办卡费用" clearable></el-input>
+                </el-form-item>
+                <el-form-item label="办卡时间:" prop="creat_time">
+                    <el-date-picker
+                        v-model="dialog_data.form_data.creat_time"
+                        type="datetime"
+                        @change='card_creat_time'
+                        placeholder="请选择办卡时间">
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item label="持卡人姓名:" prop="name">
+                    <el-input v-model="dialog_data.form_data.name" placeholder="请输入持卡人姓名" clearable></el-input>
+                </el-form-item>
+                <el-form-item label="持卡人手机号:" prop="mobile">
+                    <el-input v-model="dialog_data.form_data.mobile" placeholder="请输入持卡人手机号" clearable></el-input>
+                </el-form-item>
+                <el-form-item label="到期时间:" prop="end_time">
+                    <el-date-picker
+                        v-model="dialog_data.form_data.end_time"
+                        type="datetime"
+                        @change='card_end_time'
+                        placeholder="请选择到期时间">
+                    </el-date-picker>
                 </el-form-item>
             </div>
         </el-form>
@@ -59,7 +105,27 @@ export default class dialog_form extends Vue{
                 return false;
             };
         });
-    }
+    };
+
+    //改变健身卡的类型
+    type_change (val) {
+        console.log(val);
+        this.dialog_data.form_data.card_type = val;
+    };
+    //改变健身卡的时间
+    card_creat_time (val) {
+        // this.dialog_data.form_data.creat_time = val.getTime() / 1000;
+        this.dialog_data.form_data.creat_time = val;
+    };
+    card_end_time (val) {
+        // this.dialog_data.form_data.end_time = val.getTime() / 1000;
+        this.dialog_data.form_data.end_time = val;
+    };
+
+    //不允许输入中文
+    limit_input () {
+        this.dialog_data.form_data.tax_num = this.dialog_data.form_data.tax_num.replace(/[^\d]/g, '');
+    };
     
 }
 
@@ -110,5 +176,23 @@ export default class dialog_form extends Vue{
             
         }
 
+        #card {
+            height: 500px;
+            overflow-y: scroll;
+            padding-right: 30px;
+            margin-left: 19px;
+            width: 93%;
+        }
+
+        .el-form-item__content {
+            justify-content: unset;
+        }
+
+        .card_type .el-select {
+            width: 100%;
+        }
+        .el-date-editor.el-input {
+            width: 100%;
+        }
     }
 </style>

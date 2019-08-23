@@ -1,6 +1,6 @@
 <template>
-    <div class="carousel_add">
-        <add :add_data='carousel_add_data' @add_submit='add_carousel' />
+    <div class="share_profit_add">
+        <add :add_data='share_profit_add_data' @add_submit='add_business' />
     </div>
 </template>
 
@@ -14,12 +14,12 @@ import add from "@/components/add.vue";
     }
 })
 
-export default class carousel_add extends Vue{
-    private carousel_add_data: any = {
-        name: '轮播图',
-        type: 'carousel',
-        title: '填写轮播图信息',
-        icon: '#iconlunbotu',
+export default class share_profit_add extends Vue{
+    private share_profit_add_data: any = {
+        name: '分润',
+        type: 'share_profit',
+        title: '填写分润信息',
+        icon: '#icon3',
     };
 
     mounted () {
@@ -42,15 +42,17 @@ export default class carousel_add extends Vue{
         };
     };
 
-    //新增轮播图
-    add_carousel (ruleForm) {
-        this.$store.dispatch("add_carousel", ruleForm).then( (res: any) => {
-            console.log("新增轮播图", res);
+    //新增分润信息
+    add_business (ruleForm) {
+        this.$store.dispatch("add_business", ruleForm).then( (res: any) => {
+            console.log("新增分润信息", res);
             if (res.code == 0 || res.status == 1) {
+                sessionStorage.removeItem('show_license');
+                sessionStorage.removeItem('show_store');
                 sessionStorage.removeItem('add_form_data');
                 //新增成功提示
                 this.$message({ message: '新增成功！', type: "success", duration: 1500 });
-                this.$router.push({ path: '/operate/carousel/list' });
+                this.$router.push({ path: '/business/list' });
             }else {
                 //失败提示
                 this.$message({ message: res.msg, type: "error", duration: 2500 });

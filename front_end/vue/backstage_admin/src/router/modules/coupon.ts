@@ -9,7 +9,7 @@ const coupon = {
         title: '优惠券管理',
         icon: '#iconyouhuiquan',
         hidden: false,
-        roles: ['1']
+        roles: '20006'
     },
     children: [
         {

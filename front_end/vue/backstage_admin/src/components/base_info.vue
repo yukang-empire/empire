@@ -12,6 +12,16 @@
                 <span>{{ base_info.title }}</span>
             </p>
             <div class="info">
+
+                <ul class="flex_between" v-if='base_info_type == "share_profit"'>
+                    <li style="margin-left: 50px;">
+                        <p><span>期数：</span><i>01</i></p>
+                        <p><span>分润时间：</span><i>2019-8-12</i></p>
+                        <p><span>分润金额：</span><i>888</i></p>
+                        <p><span>状态：</span><i>已分润</i></p>
+                    </li>
+                </ul>
+
                 <ul class="flex_between" v-if='base_info_type == "user"'>
                     <li><img class="head_img" :src="base_info.head_pic" alt="head_img"></li>
                     <li>

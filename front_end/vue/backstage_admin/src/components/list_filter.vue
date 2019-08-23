@@ -48,6 +48,18 @@
             <el-button type="primary" @click='search' icon="el-icon-search">搜索</el-button>
         </div>
 
+        <div class="item" v-if="show_filter.is_type == 'domain01' && show_filter.show_time_register">
+            <span>{{ show_filter.time_name_register }}：</span>
+            <el-date-picker
+                v-model="select_time_register"
+                type="daterange"
+                range-separator="至"
+                @change='change_time_register'
+                start-placeholder="开始日期"
+                end-placeholder="结束日期">
+            </el-date-picker>
+        </div>
+
         <div class="item" v-if="show_filter.is_type == 'domain01' && show_filter.show_time">
             <span>{{ show_filter.time_name }}：</span>
             <el-date-picker
@@ -114,6 +126,7 @@ export default class list_filter extends Vue{
     
     private search_input: string = "";
     private select_time: any = "";
+    private select_time_register: any = "";
     private current_state: any = "全部";
     private current_state_02: any = "";
     private current_state_03: any = "";
@@ -123,9 +136,12 @@ export default class list_filter extends Vue{
         console.log("send_data", this.send_data);
         var that: any = this;
         var time_arr: any = [];
+        var time_arr_register: any = [];
         if (this.show_filter.is_type == "domain01") {
             time_arr.push(new Date(parseInt(this.send_data.where.stime) * 1000));
             time_arr.push(new Date(parseInt(this.send_data.where.etime) * 1000));
+            time_arr_register.push(new Date(parseInt(this.send_data.where.reg_stime) * 1000));
+            time_arr_register.push(new Date(parseInt(this.send_data.where.reg_etime) * 1000));
             this.search_input = this.send_data.where.keyword;
         }else {
             time_arr.push(new Date(parseInt(this.send_data.start_time) * 1000));
@@ -133,6 +149,7 @@ export default class list_filter extends Vue{
             this.search_input = this.send_data.search;
         };
         this.select_time = time_arr;
+        this.select_time_register = time_arr_register;
         this.current_state = this.send_data.current_state;
     };
 
@@ -167,6 +184,16 @@ export default class list_filter extends Vue{
         }else {
             //如果没有值 则代表清空了时间
             this.$emit("clear_time");
+        }
+    };
+
+    //筛选注册时间
+    change_time_register() {
+        if (this.select_time_register) {
+            this.$emit("change_time_register", this.select_time_register);
+        }else {
+            //如果没有值 则代表清空了时间
+            this.$emit("clear_time_register");
         }
     };
 }

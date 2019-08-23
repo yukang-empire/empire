@@ -19,18 +19,18 @@
                 </vue-cropper>
 
                 <!-- 裁剪预览框 -->
-                <!-- <div class="right">
-                    <div class="show-preview square" :style="{'width': cropper_data.previews.w/2.5 + 'px', 'height': cropper_data.previews.h/2.5 + 'px',  'overflow': 'hidden'}">
+                <div class="right" v-if='cropper_data.is_previews'>
+                    <!-- <div class="show-preview square" :style="{'width': cropper_data.previews.w/2.5 + 'px', 'height': cropper_data.previews.h/2.5 + 'px',  'overflow': 'hidden'}">
                         <div :style="cropper_data.previews.div">
                             <img :src="cropper_data.previews.url" :style="cropper_data.previews.img">
                         </div>
-                    </div>
+                    </div> -->
                     <div class="show-preview circle" :style="{'overflow': 'hidden'}">
                         <div :style="cropper_data.previews.div">
                             <img :src="cropper_data.previews.url" :style="cropper_data.previews.img">
                         </div>
                     </div>
-                </div> -->
+                </div>
 
             </div>
 
