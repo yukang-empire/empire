@@ -17,7 +17,7 @@
                         <img src="../../../../assets/imgs/logo.png" alt="logo">
                         <p>{{ role_name }}</p>
                         <div class="flex_center">
-                            <el-button type="text" @click='change_password'>修改密码</el-button>
+                            <el-button type="text" @click='dialog_password.is_dialog = true'>修改密码</el-button>
                             <el-button type="text" @click='logout'>退出登录</el-button>
                         </div>
                     </div>
@@ -25,28 +25,80 @@
                 </el-tooltip>
             </div>
         </div>
+        <!-- 修改密码 -->
+        <dialog_form :dialog_data='dialog_password' @sure='revise_password' />
     </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
+import dialog_form from "@/components/dialog_form.vue";
 
 @Component({
     components: {
-        
+        dialog_form
     }
 })
 
 export default class c_header extends Vue{
     private role_name: any = sessionStorage.getItem('role_name') ? sessionStorage.getItem('role_name') : 'admin';
 
+    //验证再次输入密码
+    private re_pass: any = (rule, value, callback) => {
+        if (sessionStorage.getItem('newPwd')) { this.dialog_password.form_data.newPwd = JSON.parse(sessionStorage.getItem('newPwd')) };
+        if (value !== this.dialog_password.form_data.newPwd) {
+            callback(new Error('两次输入的密码不一致'));
+        }else {
+            callback();
+        };
+    };
+
+    //修改密码
+    private dialog_password: any = {
+        type: 'password',
+        is_dialog: false,
+        title: '修改密码',
+        sure_name: '确定修改',
+        //表单数据
+        form_data: {
+            newPwd: '',
+            password: '',
+            re_newPwd: ''
+        },
+        //表单规则
+        form_rules: {
+            password: [
+                { required: true, message: '请输入原密码', trigger: 'blur' },
+            ],
+            newPwd: [
+                { required: true, message: '请输入新密码', trigger: 'blur' },
+            ],
+            re_newPwd: [
+                { required: true, message: '请再次输入新密码', trigger: 'blur' },
+                { validator: this.re_pass, trigger: "change" }
+            ],
+        }
+    };
+
     mounted () {
         
     };
 
     //修改密码
-    change_password () {
-        this.$router.push({ path: '/set/change_password' });
+    revise_password () {
+        var that = this;
+        this.$store.dispatch("revise_password", { password: this.dialog_password.form_data.password, newPwd: this.dialog_password.form_data.newPwd }).then( (res: any) => {
+            console.log("修改密码", res);
+            if (res.code == 0 || res.status == 1) {
+                this.$message({ type: 'success', message: '修改成功！请重新登录！', duration: 1500 });
+                setTimeout(() => {
+                    that.$router.push({ path: '/login' });
+                }, 500);
+            }else {
+                //请求失败提示
+                this.$message({ message: res.msg, type: "error", duration: 2500 });
+            };
+        });
     };
 
     //登出

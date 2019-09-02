@@ -17,6 +17,8 @@
             @clear_time="clear_time"
             @clear_time_register='clear_time_register'
             @change_time_register='change_time_register'
+            @state_change='select_hj'
+            @clear_select='clear_hj'
             />
             
         </div>
@@ -86,6 +88,7 @@ export default class user_list extends Vue{
         size: sessionStorage.getItem("user_list_size") ? sessionStorage.getItem("user_list_size") : 10,
         where: {
             keyword: sessionStorage.getItem("user_list_keyword") ? sessionStorage.getItem("user_list_keyword") : "",
+            distribut_level: sessionStorage.getItem("user_list_distribut_level") ? sessionStorage.getItem("user_list_distribut_level") : "",
             stime: sessionStorage.getItem("user_list_stime") ? sessionStorage.getItem("user_list_stime") : "",
             etime: sessionStorage.getItem("user_list_etime") ? sessionStorage.getItem("user_list_etime") : "",
             reg_stime: sessionStorage.getItem("user_list_reg_stime") ? sessionStorage.getItem("user_list_reg_stime") : "",
@@ -99,7 +102,16 @@ export default class user_list extends Vue{
         show_time: true,
         time_name: '最近登录时间',
         time_name_register: '注册时间',
-        show_time_register: true
+        show_time_register: true,
+        state_name: '会籍情况',
+        is_state: true,
+        all_state: [
+            { state: 0, name: '普通会员' },
+            { state: 1, name: '银卡会员' },
+            { state: 2, name: '金卡会员' },
+            { state: 3, name: '城市合伙人' },
+            { state: 4, name: '商家' },
+        ]
     };
 
     mounted () {
@@ -158,10 +170,28 @@ export default class user_list extends Vue{
         this.user_list();
     };
 
+    //选择会籍情况
+    select_hj (val: any) {
+        //页码不重置为1的话 有可能请求不到数据
+        this.send_data.page = 1;
+        this.table_data.page.current_page = 1;
+        sessionStorage.setItem("user_list_page", '1');
+        this.send_data.where.distribut_level = val;
+        sessionStorage.setItem("user_list_distribut_level", val);
+        this.user_list();
+    };
+
     //清空搜索内容
     clear_search () {
         this.send_data.where.keyword = '';
         sessionStorage.setItem("user_list_keyword", "");
+        this.user_list();
+    };
+
+    //清空会籍
+    clear_hj () {
+        this.send_data.where.distribut_level = '';
+        sessionStorage.setItem("user_list_distribut_level", "");
         this.user_list();
     };
 

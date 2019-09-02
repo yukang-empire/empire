@@ -49,9 +49,7 @@ export default class checkbox extends Vue{
         this.$emit('click_option', value);
     };
     mounted () {
-        this.checked_option_children = [
-            20009
-        ];
+        this.checked_option_children = this.checked_option;
     };
     
 }

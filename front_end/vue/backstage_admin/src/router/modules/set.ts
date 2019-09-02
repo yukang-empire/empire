@@ -47,20 +47,20 @@ const set = {
             name: 'staff_add',
             component: () => import('@/views/set/staff/staff_add.vue'),
             meta: {
-                title: '新增员工',
+                title: '新增/编辑员工',
                 hidden: true
             }
         },
-        {
-            path: '/set/change_password',
-            name: 'change_password',
-            component: () => import('@/views/set/change_password.vue'),
-            meta: {
-                title: '修改密码',
-                hidden: false,
-                roles: '20046'
-            }
-        },
+        // {
+        //     path: '/set/change_password',
+        //     name: 'change_password',
+        //     component: () => import('@/views/set/change_password.vue'),
+        //     meta: {
+        //         title: '修改员工密码',
+        //         hidden: false,
+        //         roles: '20046'
+        //     }
+        // },
         {
             path: '/set/log',
             name: 'log',

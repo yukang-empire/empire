@@ -1,6 +1,6 @@
 <template>
     <div class="share_profit_add">
-        <add :add_data='share_profit_add_data' @add_submit='add_business' />
+        <add :add_data='share_profit_add_data' @add_submit='add_share_profit' />
     </div>
 </template>
 
@@ -29,9 +29,6 @@ export default class share_profit_add extends Vue{
     beforeRouteLeave (to: any, from: any, next: () => void): void {
         if (sessionStorage.getItem('add_form_data')) {
             this.$confirm("表单数据将会被全部清空，是否继续离开？", "提示", { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then( () => {
-                sessionStorage.removeItem('show_license');
-                sessionStorage.removeItem('show_store');
-                sessionStorage.removeItem('checkbox_checked');
                 sessionStorage.removeItem('add_form_data');
                 next();
             }).catch(() => {
@@ -43,16 +40,14 @@ export default class share_profit_add extends Vue{
     };
 
     //新增分润信息
-    add_business (ruleForm) {
-        this.$store.dispatch("add_business", ruleForm).then( (res: any) => {
+    add_share_profit (ruleForm) {
+        this.$store.dispatch("add_share_profit", ruleForm).then( (res: any) => {
             console.log("新增分润信息", res);
             if (res.code == 0 || res.status == 1) {
-                sessionStorage.removeItem('show_license');
-                sessionStorage.removeItem('show_store');
                 sessionStorage.removeItem('add_form_data');
                 //新增成功提示
                 this.$message({ message: '新增成功！', type: "success", duration: 1500 });
-                this.$router.push({ path: '/business/list' });
+                this.$router.push({ path: '/share_profit/list' });
             }else {
                 //失败提示
                 this.$message({ message: res.msg, type: "error", duration: 2500 });

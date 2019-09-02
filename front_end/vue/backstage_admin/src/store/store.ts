@@ -11,6 +11,7 @@ import coupon from "./modules/coupon";
 import finance from "./modules/finance";
 import operate from "./modules/operate";
 import set from "./modules/set";
+import share_profit from "./modules/share_profit";
 
 const store = new Vuex.Store({
   state: {
@@ -70,7 +71,8 @@ const store = new Vuex.Store({
     coupon,
     finance,
     operate,
-    set
+    set,
+    share_profit
   }
 });
 export default store;

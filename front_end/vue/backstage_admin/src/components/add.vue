@@ -55,9 +55,9 @@
                 </div>
 
                 <!-- 修改密码 -->
-                <div v-if='add_data.type == "change_password"'>
-                    <el-form-item label="员工姓名:" prop="staff_name">
-                        <el-input v-model="ruleForm.staff_name" placeholder="请输入员工姓名" clearable maxlength="10" show-word-limit @change='input_data'></el-input>
+                <!-- <div v-if='add_data.type == "change_password"'>
+                    <el-form-item label="员工账户:" prop="staff_name">
+                        <el-input v-model="ruleForm.staff_name" placeholder="请输入员工账户" clearable maxlength="10" show-word-limit @change='input_data'></el-input>
                     </el-form-item>
                     <el-form-item label="工号:" prop="staff_num">
                         <el-input v-model="ruleForm.staff_num" placeholder="请输入员工工号" clearable maxlength="20" show-word-limit @change='input_data'></el-input>
@@ -71,7 +71,7 @@
                     <el-form-item label="确认新密码:" prop="re_password">
                         <el-input v-model="ruleForm.re_password" placeholder="请再次输入新密码" show-password clearable @change='input_data'></el-input>
                     </el-form-item>
-                </div>
+                </div> -->
 
                 <!-- 新增员工 -->
                 <div v-if='add_data.type == "staff"'>
@@ -82,11 +82,11 @@
                         <el-input v-model="ruleForm.workid" placeholder="请输入员工工号" clearable maxlength="20" show-word-limit @change='input_data'></el-input>
                     </el-form-item>
                     <el-form-item label="密码:" prop="password">
-                        <el-input v-model="ruleForm.password" placeholder="请输入原密码" show-password clearable @change='input_data'></el-input>
+                        <el-input v-model="ruleForm.password" placeholder="请输入密码" show-password clearable @change='input_data'></el-input>
                     </el-form-item>
-                    <el-form-item label="状态:" prop="staff_state">
+                    <!-- <el-form-item label="状态:" prop="staff_state">
                         <el-switch v-model="ruleForm.staff_state" active-color="#13ce66" inactive-color="#ccc"> </el-switch>
-                    </el-form-item>
+                    </el-form-item> -->
                     <el-form-item label="角色:" prop="roleID">
                         <el-select v-model="ruleForm.roleID" filterable placeholder="请选择权限角色" @change='roleID_change'>
                             <el-option
@@ -177,28 +177,30 @@
                     <checkbox_modules :data='checkbox_business' :checked_option='checkbox_business_already' @click_all='click_all_business' @click_option='click_option_business'></checkbox_modules>
                     <checkbox_modules :data='checkbox_order' :checked_option='checkbox_order_already' @click_all='click_all_order' @click_option='click_option_order'></checkbox_modules>
                     <checkbox_modules :data='checkbox_finance' :checked_option='checkbox_finance_already' @click_all='click_all_finance' @click_option='click_option_finance'></checkbox_modules>
+                    <checkbox_modules :data='checkbox_share_profit' :checked_option='checkbox_share_profit_already' @click_all='click_all_share_profit' @click_option='click_option_share_profit'></checkbox_modules>
+                    <!-- <checkbox_modules :data='checkbox_set' :checked_option='checkbox_set_already' @click_all='click_all_set' @click_option='click_option_set'></checkbox_modules> -->
                     <checkbox_modules :data='checkbox_set' :checked_option='checkbox_set_already' @click_all='click_all_set' @click_option='click_option_set'></checkbox_modules>
                 </div>
                     
 
                 <!-- 新增优惠券 -->
                 <div v-if='add_data.type == "coupon"'>
-                    <el-form-item label="优惠券标题:" prop="coupon_name">
-                        <el-input v-model="ruleForm.coupon_name" placeholder="请输入优惠券标题" clearable maxlength="20" show-word-limit @change='input_data'></el-input>
+                    <el-form-item label="优惠券标题:" prop="name">
+                        <el-input v-model="ruleForm.name" placeholder="请输入优惠券标题" clearable maxlength="20" show-word-limit @change='input_data'></el-input>
                     </el-form-item>
-                    <el-form-item label="优惠券描述:" prop="coupon_describe">
-                        <el-input v-model="ruleForm.coupon_describe" placeholder="请输入优惠券描述" clearable maxlength="30" show-word-limit @change='input_data'></el-input>
+                    <el-form-item label="优惠券描述:" prop="coupon_info">
+                        <el-input v-model="ruleForm.coupon_info" placeholder="请输入优惠券描述" clearable maxlength="30" show-word-limit @change='input_data'></el-input>
                     </el-form-item>
-                    <el-form-item label="是否上架:" prop="coupon_upper">
-                        <el-switch v-model="ruleForm.coupon_upper" active-color="#13ce66" inactive-color="#ccc" @change='input_data'> </el-switch>
+                    <el-form-item label="是否上架:" prop="status">
+                        <el-switch v-model="ruleForm.status" active-color="#13ce66" inactive-color="#ccc" @change='input_data'> </el-switch>
                     </el-form-item>
-                    <el-form-item label="优惠金额:" prop="coupon_price">
-                        ¥ &nbsp;<el-input v-model="ruleForm.coupon_price" placeholder="请输入优惠券可抵扣的金额" clearable @change='input_data'></el-input>
+                    <el-form-item label="优惠金额:" prop="money">
+                        ¥ &nbsp;<el-input v-model="ruleForm.money" placeholder="请输入优惠券可抵扣的金额" clearable @change='input_data'></el-input>
                     </el-form-item>
-                    <el-form-item label="使用门槛:" prop="coupon_threshold">
-                        ¥ &nbsp;<el-input v-model="ruleForm.coupon_threshold" placeholder="请输入优惠券使用门槛，无门槛请填0" clearable @change='input_data'></el-input>
+                    <el-form-item label="使用门槛:" prop="condition">
+                        ¥ &nbsp;<el-input v-model="ruleForm.condition" placeholder="请输入优惠券使用门槛，无门槛请填0" clearable @change='input_data'></el-input>
                     </el-form-item>
-                    <el-form-item label="截止时间:" prop="coupon_time">
+                    <el-form-item label="有效时间:" prop="coupon_time">
                         <el-date-picker
                             is-range
                             type="datetimerange"
@@ -206,18 +208,18 @@
                             range-separator="至"
                             start-placeholder="开始时间"
                             end-placeholder="截止时间"
-                            @change='coupon_time'
+                            @change='select_coupon_time'
                             placeholder="选择时间范围">
                         </el-date-picker>
                     </el-form-item>
-                    <el-form-item label="使用范围:" prop="coupon_range">
+                    <el-form-item label="使用范围:" prop="use_type">
                         <el-checkbox :indeterminate="checkbox.isIndeterminate" v-model="checkbox.check_all" @change="handleCheckAllChange_coupon">全选</el-checkbox>
                         <el-checkbox-group v-model="checkbox.checked" @change="handleCheckedCitiesChange_coupon">
                             <el-checkbox v-for="item in checkbox.all_range" :label="item.id" :key="item.id" border>{{ item.name }}</el-checkbox>
                         </el-checkbox-group>
                     </el-form-item>
-                    <el-form-item label="获得方式:" prop="coupon_get_way">
-                        <el-select v-model="ruleForm.coupon_get_way" filterable placeholder="请选择获得方式" @change='coupon_get_way_change'>
+                    <el-form-item label="获得方式:" prop="type">
+                        <el-select v-model="ruleForm.type" filterable placeholder="请选择获得方式" @change='coupon_get_way_change'>
                             <el-option
                                 v-for="item in all_get_way"
                                 :key="item.id"
@@ -451,7 +453,7 @@ export default class add extends Vue{
         //修改密码
         username: '',
         workid: '',
-        origin_password: '',
+        // origin_password: '',
 
         //新增角色
         RoleName: '',
@@ -472,15 +474,16 @@ export default class add extends Vue{
         share_profit_time: '',
 
         //新增优惠券
-        coupon_name: '',
-        coupon_describe: '',
-        coupon_upper: false,
-        coupon_price: '',
-        coupon_threshold: '',
-        coupon_time: '',
-        coupon_range: '',
-        coupon_get_way: [],
+        name: '',
+        coupon_info: '',
+        status: false,
+        money: '',
+        condition: '',
+        use_type: '',
+        type: [],
         coupon_time: [],
+        coupon_time_start: '',
+        coupon_time_end: '',
 
         //新增商品
         goods_name: '',
@@ -588,7 +591,7 @@ export default class add extends Vue{
         ],
 
         staff_name: [
-            { required: true, message: '请输入员工姓名', trigger: 'blur' },
+            { required: true, message: '请输入员工账户', trigger: 'blur' },
         ],
         username: [
             { required: true, message: '请输入员工姓名', trigger: 'blur' },
@@ -602,24 +605,24 @@ export default class add extends Vue{
         // roleID: [
         //     { required: true, message: '请输入员工角色权限', trigger: 'blur' },
         // ],
-        origin_password: [
-            { required: true, message: '请输入原密码', trigger: 'blur' },
-            { pattern: /^[\w]{6,16}$/, message: "密码只能由数字或字母构成，且长度为6-16位", trigger: "change" }
-        ],
+        // origin_password: [
+        //     { required: true, message: '请输入原密码', trigger: 'blur' },
+        //     { pattern: /^[\w]{6,16}$/, message: "密码只能由数字或字母构成，且长度为6-16位", trigger: "change" }
+        // ],
 
-        coupon_name: [
+        name: [
             { required: true, message: '请输入优惠券标题', trigger: 'blur' },
         ],
-        coupon_price: [
+        money: [
             { required: true, message: '请输入优惠券可抵扣的金额', trigger: 'blur' },
         ],
-        coupon_threshold: [
+        condition: [
             { required: true, message: '请输入优惠券的使用门槛，无门槛请填0', trigger: 'blur' },
         ],
-        coupon_range: [
+        use_type: [
             { required: true, message: '请选择优惠券的使用范围', trigger: 'change' },
         ],
-        coupon_get_way: [
+        type: [
             { required: true, message: '请选择优惠券的获得方式', trigger: 'change' },
         ],
 
@@ -687,6 +690,16 @@ export default class add extends Vue{
         content: [
             { required: true, message: '请输入门店介绍', trigger: 'blur' },
         ],
+        //分润
+        share_profit_num: [
+            { required: true, message: '请输入分润期数', trigger: 'blur' },
+        ],
+        share_profit_time: [
+            { required: true, message: '请选择分润开始时间', trigger: 'change' },
+        ],
+        share_profit_price: [
+            { required: true, message: '请输入分润总金额', trigger: 'blur' },
+        ],
     };
 
     private is_loading: boolean = false;
@@ -702,7 +715,7 @@ export default class add extends Vue{
         //健身会所提供的服务
         all_serves: [],
         //所有的优惠券获得方式
-        all_range: [ { id: 1, name: "注册" }, { id: 2, name: '其他' } ]
+        all_range: [ { id: 3, name: "健身专用" } ]
     };
 
     //角色权限全选相关-首页
@@ -723,7 +736,7 @@ export default class add extends Vue{
     //所有的门店
     private all_store: any = [];
     //所有的优惠券获得方式
-    private all_get_way: any = [ { id: 1, name: "注册" }, { id: 2, name: '其他' } ];
+    private all_get_way: any = [ { id: 4, name: "注册" }, { id: 5, name: '购买银卡会籍赠送' } ];
     //所有的卡类型
     private all_card_type: any = [
         { card_type: 1, card_name: "次卡" },
@@ -833,12 +846,13 @@ export default class add extends Vue{
     private checkbox_home: any = {
         name: '首页',
         options: [
-            {id: 20009, name: '查看首页数据',},
+            {id: 20009, name: '展示首页',},
+            {id: 20053, name: '查看经营概况',},
+            {id: 20056, name: '查看待办事项',},
+            {id: 20054, name: '查看酷点',},
+            {id: 20055, name: '查看收入趋势',},
         ]
     };
-    private checkbox_home_already: any = [
-        {id: 20009, name: '查看首页数据'}
-    ];
     private checkbox_user: any = {
         name: '用户管理',
         options: [
@@ -847,11 +861,6 @@ export default class add extends Vue{
             {id: 20012, name: '禁用用户'}
         ]
     };
-    private checkbox_user_already: any = [
-        {id: 20003, name: '查看用户列表'},
-        {id: 20011, name: '查看用户详情'},
-        {id: 20012, name: '禁用用户'}
-    ];
     private checkbox_business: any = {
         name: '商家管理',
         options: [
@@ -868,21 +877,6 @@ export default class add extends Vue{
         ]
     };
     
-    private checkbox_business_already: any = {
-        name: '商家管理',
-        options: [
-            {id: 20004, name: '展示商家管理'},
-            {id: 20013, name: '查看商家列表'},
-            {id: 20014, name: '新增商家'},
-            {id: 20015, name: '查看门店列表'},
-            {id: 20016, name: '新增门店'},
-            {id: 20017, name: '编辑门店'},
-            {id: 20023, name: '禁用/开启门店'},
-            {id: 20020, name: '查看商品列表'},
-            {id: 20019, name: '新增商品'},
-            {id: 20018, name: '编辑商品'},
-        ]
-    };
     private checkbox_order: any = {
         name: '订单管理',
         options: [
@@ -900,22 +894,6 @@ export default class add extends Vue{
         ]
     };
     
-    private checkbox_order_already: any = {
-        name: '订单管理',
-        options: [
-            {id: 20007, name: '展示订单管理'},
-            {id: 20024, name: '查看转让订单列表'},
-            {id: 20025, name: '查看转让订单详情'},
-            {id: 20026, name: '修改健身卡信息'},
-            {id: 20027, name: '审核转让订单'},
-            {id: 20028, name: '新增私教课'},
-            {id: 20029, name: '上架私教课'},
-            {id: 20030, name: '下架私教课'},
-            {id: 20031, name: '查看领用订单列表'},
-            {id: 20021, name: '查看服务订单列表'},
-            {id: 20022, name: '查看服务订单详情'},
-        ]
-    };
     private checkbox_finance: any = {
         name: '财务管理',
         options: [
@@ -927,18 +905,25 @@ export default class add extends Vue{
             {id: 20035, name: '导出提现excel列表'},
         ]
     };
-    
-    private checkbox_finance_already: any = {
-        name: '财务管理',
+
+    private checkbox_share_profit: any = {
+        name: '分润',
         options: [
-            {id: 20005, name: '展示财务管理'},
-            {id: 20032, name: '查看提现列表'},
-            {id: 20036, name: '查看提现详情'},
-            {id: 20033, name: '审核提现'},
-            {id: 20034, name: '设置提现规则'},
-            {id: 20035, name: '导出提现excel列表'},
+            {id: 20008, name: '展示分润模块'},
+            {id: 20051, name: '查看分润详情'},
+            {id: 20052, name: '新增分润'},
         ]
     };
+
+    // private checkbox_share_profit: any = {
+    //     name: '运营',
+    //     options: [
+    //         {id: 20002, name: '展示运营模块'},
+    //         {id: 20051, name: '查看运营详情'},
+    //         {id: 20052, name: '新增运营'},
+    //     ]
+    // };
+    
     private checkbox_set: any = {
         name: '设置',
         options: [
@@ -956,22 +941,13 @@ export default class add extends Vue{
         ]
     };
     
-    private checkbox_set_already: any = {
-        name: '设置',
-        options: [
-            {id: 20001, name: '展示设置'},
-            {id: 20037, name: '查看角色列表'},
-            {id: 20038, name: '新增角色'},
-            {id: 20039, name: '修改角色'},
-            {id: 20040, name: '删除角色'},
-            {id: 20041, name: '查看员工列表'},
-            {id: 20042, name: '新增员工'},
-            {id: 20043, name: '编辑员工'},
-            {id: 20044, name: '删除员工'},
-            {id: 20045, name: '禁用员工'},
-            {id: 20046, name: '修改员工密码'},
-        ]
-    };
+    private checkbox_home_already: any = [];
+    private checkbox_user_already: any = [];
+    private checkbox_business_already: any = [];
+    private checkbox_order_already: any = [];
+    private checkbox_set_already: any = [];
+    private checkbox_share_profit_already: any = [];
+    private checkbox_finance_already: any = [];
     
     private final_power: any = [];
 
@@ -1029,6 +1005,12 @@ export default class add extends Vue{
     click_option_set (val) {
         this.screen_checkbox(val, this.checkbox_set.options);
     };
+    click_all_share_profit (val) {
+        this.screen_checkbox(val, this.checkbox_share_profit.options);
+    };
+    click_option_share_profit (val) {
+        this.screen_checkbox(val, this.checkbox_share_profit.options);
+    };
 
     // 将base64的图片转换为File文件
     dataURLtoFile(dataurl, filename) {
@@ -1068,7 +1050,7 @@ export default class add extends Vue{
     };
     //新增优惠券选择获得方式
     coupon_get_way_change (val) {
-        this.ruleForm.coupon_get_way = val;
+        this.ruleForm.type = val;
         sessionStorage.setItem('add_form_data', JSON.stringify(this.ruleForm));
     };
     //选择卡类型
@@ -1146,14 +1128,14 @@ export default class add extends Vue{
     handleCheckAllChange_coupon(val) {
         var that: any = this;
         if (val) {
-            this.ruleForm.coupon_range = [];
+            this.ruleForm.use_type = [];
             for (var i = 0; i < this.checkbox.all_range.length; i++) {
-                this.ruleForm.coupon_range.push(this.checkbox.all_range[i].id);
+                this.ruleForm.use_type.push(this.checkbox.all_range[i].id);
             };
         }else {
-            this.ruleForm.coupon_range = [];
+            this.ruleForm.use_type = [];
         };
-        this.checkbox.checked = this.ruleForm.coupon_range;
+        this.checkbox.checked = this.ruleForm.use_type;
         this.checkbox.isIndeterminate = false;
         sessionStorage.setItem('checkbox_checked', JSON.stringify(this.checkbox.checked));
         sessionStorage.setItem('add_form_data', JSON.stringify(this.ruleForm));
@@ -1180,7 +1162,7 @@ export default class add extends Vue{
         let checkedCount = value.length;
         this.checkbox.check_all = checkedCount === this.checkbox.all_range.length;
         this.checkbox.isIndeterminate = checkedCount > 0 && checkedCount < this.checkbox.all_range.length;
-        this.ruleForm.coupon_range = value;
+        this.ruleForm.use_type = value;
         sessionStorage.setItem('checkbox_checked', JSON.stringify(this.checkbox.checked));
         sessionStorage.setItem('add_form_data', JSON.stringify(this.ruleForm));
         //验证
@@ -1206,16 +1188,16 @@ export default class add extends Vue{
     };
 
     //选择优惠券的截至时间
-    coupon_time (time) {
+    select_coupon_time (time) {
         var that: any = this;
         if (time) {
             this.ruleForm.coupon_time = time;
-            this.ruleForm.open_time = time[0];
-            this.ruleForm.close_time = time[1];
+            this.ruleForm.coupon_time_start = time[0].getTime() / 1000;
+            this.ruleForm.coupon_time_end = time[1].getTime() / 1000;
         }else {
             this.ruleForm.coupon_time = [];
-            this.ruleForm.open_time = '';
-            this.ruleForm.close_time = '';
+            this.ruleForm.coupon_time_start = 0;
+            this.ruleForm.coupon_time_end = 0;
             //验证
             let ref: any = that.$refs.ruleForm;
             ref.validate();
@@ -1224,7 +1206,7 @@ export default class add extends Vue{
 
     //选择分润开始的时间
     change_share_profit_time (time) {
-        console.log(time);
+        this.ruleForm.share_profit_time = this.$moment(time).valueOf();
     };
 
     //选择省
@@ -1456,6 +1438,40 @@ export default class add extends Vue{
 
         if (sessionStorage.getItem('add_form_data')) {
             this.ruleForm = JSON.parse(sessionStorage.getItem('add_form_data'));
+            //获取优惠券信息
+            if (this.add_data.type == "coupon") {
+                this.ruleForm.status = this.ruleForm.status == '有效' ? true : false;
+                var item = this.ruleForm.use_type == '健身专用' ? 3 : '';
+                var arr = [];
+                arr.push(item);
+                this.checkbox.checked = arr;
+                this.ruleForm.use_type = item;
+                this.ruleForm.coupon_time = [];
+                this.ruleForm.coupon_time[0] = this.ruleForm.use_start_time * 1000;
+                this.ruleForm.coupon_time[1] = this.$moment(this.ruleForm.use_end_time).valueOf();
+                console.log(this.ruleForm.coupon_time);
+            };
+            //获取员工信息
+            if (this.ruleForm.username) {
+                this.show_cropper.head = this.ruleForm.head;
+                this.ruleForm.staff_content = this.ruleForm.content;
+            };
+            //获取用户的权限信息
+            var arr_power = this.ruleForm.Permission ? this.ruleForm.Permission.split(',') : '';
+            var length = arr_power.length;
+            for (var i = 0; i < length; i++) {
+                var str = arr_power[i];
+                arr_power[i] = parseInt(str);
+            };
+            
+            this.checkbox_home_already = arr_power;
+            this.checkbox_user_already = arr_power;
+            this.checkbox_business_already = arr_power;
+            this.checkbox_order_already = arr_power;
+            this.checkbox_set_already = arr_power;
+            this.checkbox_share_profit_already = arr_power;
+            this.checkbox_finance_already = arr_power;
+            // console.log('this.ruleForm.Permission', this.ruleForm.Permission);
             if (this.$route.query.store_id) {
                 //解析后端返回的营业时间
                 if (typeof this.ruleForm.open_time == "string" && this.ruleForm.open_time.indexOf('-') != -1) {
@@ -1547,7 +1563,16 @@ export default class add extends Vue{
                 sessionStorage.setItem('add_form_data', JSON.stringify(this.ruleForm));
                 this.is_loading = true;
                 //新增角色的权限集合
-                this.ruleForm.Permission = this.final_power.join(",");
+                if (this.final_power.length == 0 && this.$route.query.RoleId) {
+                    if (sessionStorage.getItem('add_form_data')) {
+                        var arr_power = JSON.parse(sessionStorage.getItem('add_form_data')).Permission.split(',')
+                        this.ruleForm.Permission = arr_power.join(",");
+                    }else {
+                        this.ruleForm.Permission = '';
+                    };
+                }else {
+                    this.ruleForm.Permission = this.final_power.join(",");
+                };
                 this.$emit('add_submit', this.ruleForm);
                 //取消转圈圈
                 setTimeout(() => {

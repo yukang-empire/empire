@@ -18,7 +18,7 @@
                         </div>
                         <div>
                             <p>已分润期数</p>
-                            <b>18</b>
+                            <b>{{ total_num }}</b>
                         </div>
                     </li>
                     <li class="flex_center" style="background-color: #ff9999;">
@@ -29,7 +29,7 @@
                         </div>
                         <div>
                             <p>已分润金额</p>
-                            <b>¥ 2330.00</b>
+                            <b>¥ {{ total_money }}</b>
                         </div>
                     </li>
                 </ul>
@@ -73,6 +73,7 @@
             @change_page_size='change_page_size'
             @change_state='change_state'
             @look_up='look_up'
+            @to_bonus='to_bonus'
             />
             
         </div>
@@ -133,6 +134,7 @@ export default class share_profit_list extends Vue{
         placeholder: "请输入关键词",
         show_time: true,
         time_name: '申请日期',
+        
         is_state: true,
         all_state: [
             {state: 1, name: '全部'},
@@ -140,6 +142,8 @@ export default class share_profit_list extends Vue{
             {state: 3, name: '已分润'},
         ]
     };
+    private total_num: any = null;
+    private total_money: any = null;
 
     mounted () {
         this.share_profit_list();
@@ -148,9 +152,9 @@ export default class share_profit_list extends Vue{
     //请求share_profit_list数据
     share_profit_list () {
         this.$store.dispatch("share_profit_list", this.send_data).then( (res: any) => {
-            console.log("商家列表", res);
+            console.log("分润列表", res);
             if (res.code == 0 || res.status == 1) {
-                this.table_data.table.lists = res.result;
+                this.table_data.table.lists = res.result.list;
                 //提取长度出来 提高for循环性能
                 var lists = this.table_data.table.lists;
                 var length = lists.length;
@@ -158,11 +162,12 @@ export default class share_profit_list extends Vue{
                 for (var i = 0; i < length; i++) {
                     //typescript语法严格 不声明会报错
                     var that: any = this;
-                    lists[i].add_time = lists[i].add_time == 0 ? "" : that.$moment(lists[i].add_time * 1000).format('YYYY-MM-DD HH:mm:ss');
-                    //拼接省市区
-                    lists[i].address = lists[i].province + lists[i].city + lists[i].area;
+                    lists[i].up_time = lists[i].up_time == 0 ? "" : that.$moment(lists[i].up_time * 1000).format('YYYY-MM-DD HH:mm:ss');
+                    lists[i].status = lists[i].status == 1 ? '未分' : '已分';
                 };
-                this.table_data.page.total = parseInt(res.count);
+                this.table_data.page.total = parseInt(length);
+                this.total_money = res.result.total_money;
+                this.total_num = res.result.total_num;
             }else {
                 //请求失败提示
                 this.$message({ message: res.msg, type: "error", duration: 2500 });
@@ -262,8 +267,26 @@ export default class share_profit_list extends Vue{
 
     //查看
     look_up (row: any) {
-        this.$router.push({ path: '/share_profit/details', query: { club_id: row.id } });
+        this.$router.push({ path: '/share_profit/details', query: { id: row.id } });
     };
+    //分红
+    to_bonus (row: any) {
+        var that = this;
+        that.$confirm("确定要开启期数为 " + row.phase +  " 的分红？", "提示", { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then( () => {
+            this.$store.dispatch("to_bonus", { id: row.id }).then( (res: any) => {
+                if (res.code == 0) {
+                    console.log("分红", res);
+                    that.$message({ type: "success", message: "已成功开启期数为 " + row.phase + " 的分红！", duration: 2000 });
+                    setTimeout( () => {
+                        that.share_profit_list();
+                    }, 500);
+                }else {
+                    //登录失败提示
+                    this.$message({ message: res.msg, type: "error", duration: 2500 });
+                };
+            })
+        });
+    }
 }
 
 </script>

@@ -38,6 +38,10 @@ export default class role_add extends Vue{
 
             //首页模块
                 // {fid: '20009', title: '首页数据', url: '/api/statistical', controller: 'api', action: 'statistical', note: '查看首页收入数据'},
+                // {fid: '20009', title: '查看首页经营状况数据', url: '/api/statistical', controller: 'api', action: 'statistical', note: '查看首页经营状况数据'},
+                // {fid: '20009', title: '查看首页待办事项数据', url: '/api/statistical', controller: 'api', action: 'statistical', note: '查看首页待办事项数据'},
+                // {fid: '20009', title: '查看首页酷点数据', url: '/api/statistical', controller: 'api', action: 'statistical', note: '查看首页酷点数据'},
+                // {fid: '20009', title: '查看首页收入趋势数据', url: '/api/statistical', controller: 'api', action: 'statistical', note: '查看首页收入趋势数据'},
 
             //用户管理模块
                 // //用户详情
@@ -81,7 +85,7 @@ export default class role_add extends Vue{
                 // {fid: '20007', title: '查看领用订单列表', url: '', controller: '', action: '', note: '查看领用订单列表'},
 
             //优惠券模块
-                // //优惠券
+                //优惠券
                 // {fid: '20006', title: '查看优惠券列表', url: '', controller: '', action: '', note: '查看优惠券列表'},
                 // //新增优惠券
                 // {fid: '20006', title: '新增优惠券', url: '', controller: '', action: '', note: '新增优惠券'},
@@ -179,24 +183,39 @@ export default class role_add extends Vue{
         };
     };
 
-    //新增角色
+    //新增/修改角色
     add_role (ruleForm) {
         console.log(ruleForm);
-        this.$store.dispatch("add_role", ruleForm).then( (res: any) => {
-            console.log("新增角色", res);
-            if (res.code == 0 || res.status == 1) {
-                sessionStorage.removeItem('show_license');
-                sessionStorage.removeItem('head');
-                sessionStorage.removeItem('show_store');
-                sessionStorage.removeItem('add_form_data');
-                //新增成功提示
-                this.$message({ message: '新增成功！', type: "success", duration: 1500 });
-                this.$router.push({ path: '/set/role/list' });
-            }else {
-                //失败提示
-                this.$message({ message: res.msg, type: "error", duration: 2500 });
-            };
-        });
+        if (this.$route.query.RoleId) {
+            this.$store.dispatch("revise_role", ruleForm).then( (res: any) => {
+                console.log("修改角色", res);
+                if (res.code == 0 || res.status == 1) {
+                    sessionStorage.removeItem('head');
+                    sessionStorage.removeItem('add_form_data');
+                    //修改成功提示
+                    this.$message({ message: '修改成功！', type: "success", duration: 1500 });
+                    this.$router.push({ path: '/set/role/list' });
+                }else {
+                    //失败提示
+                    this.$message({ message: res.msg, type: "error", duration: 2500 });
+                };
+            });
+            // console.log('编辑修改角色');
+        }else {
+            this.$store.dispatch("add_role", ruleForm).then( (res: any) => {
+                console.log("新增角色", res);
+                if (res.code == 0 || res.status == 1) {
+                    sessionStorage.removeItem('head');
+                    sessionStorage.removeItem('add_form_data');
+                    //新增成功提示
+                    this.$message({ message: '新增成功！', type: "success", duration: 1500 });
+                    this.$router.push({ path: '/set/role/list' });
+                }else {
+                    //失败提示
+                    this.$message({ message: res.msg, type: "error", duration: 2500 });
+                };
+            });
+        };
     };
 }
 

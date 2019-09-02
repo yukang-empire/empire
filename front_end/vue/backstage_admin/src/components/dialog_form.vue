@@ -1,6 +1,18 @@
 <template>
     <el-dialog class='dialog_form' :title="dialog_data.title" :visible.sync="dialog_data.is_dialog" width="700px" center>
         <el-form :model="dialog_data.form_data" :rules="dialog_data.form_rules" ref="dialog_ref">
+            <!-- 修改密码 -->
+            <div v-if="dialog_data.type == 'password'">
+                <el-form-item label="原密码:" prop="password">
+                    <el-input type='password' v-model="dialog_data.form_data.password" placeholder="请输入原密码" @change='password_data'></el-input>
+                </el-form-item>
+                <el-form-item label="新密码:" prop="newPwd">
+                    <el-input type='password' v-model="dialog_data.form_data.newPwd" placeholder="请输入新密码" @change='password_data'></el-input>
+                </el-form-item>
+                <el-form-item label="再次输入新密码:" prop="re_newPwd">
+                    <el-input type='password' v-model="dialog_data.form_data.re_newPwd" placeholder="请再次输入新密码" @change='password_data'></el-input>
+                </el-form-item>
+            </div>
             <div v-if="dialog_data.type == 'course'">
                 <el-form-item label="课程节数:" prop="tax_num">
                     <el-input v-model="dialog_data.form_data.tax_num" placeholder="请输入课程节数" clearable maxlength="20" show-word-limit @input='limit_input'></el-input>
@@ -125,6 +137,11 @@ export default class dialog_form extends Vue{
     //不允许输入中文
     limit_input () {
         this.dialog_data.form_data.tax_num = this.dialog_data.form_data.tax_num.replace(/[^\d]/g, '');
+    };
+    
+    //实时记录密码
+    password_data () {
+        sessionStorage.setItem('newPwd', JSON.stringify(this.dialog_data.form_data.newPwd));
     };
     
 }

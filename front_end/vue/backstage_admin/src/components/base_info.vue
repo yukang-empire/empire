@@ -15,10 +15,10 @@
 
                 <ul class="flex_between" v-if='base_info_type == "share_profit"'>
                     <li style="margin-left: 50px;">
-                        <p><span>期数：</span><i>01</i></p>
-                        <p><span>分润时间：</span><i>2019-8-12</i></p>
-                        <p><span>分润金额：</span><i>888</i></p>
-                        <p><span>状态：</span><i>已分润</i></p>
+                        <p><span>期数：</span><i>{{ base_info.phase }}</i></p>
+                        <p><span>分润时间：</span><i>{{ base_info.up_time }}</i></p>
+                        <p><span>分润金额：</span><i>{{ base_info.total_money }}</i></p>
+                        <p><span>状态：</span><i>{{ base_info.status }}</i></p>
                     </li>
                 </ul>
 

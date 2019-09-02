@@ -292,6 +292,23 @@ export default class carousel_list extends Vue{
     look_up (row: any) {
         this.$router.push({ path: '/user/details', query: { id: row.user_id } });
     };
+
+    //删除
+    
+    // this.$confirm("确定删除角色名为 " + row.RoleName +  " 的角色？", "提示", { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then( () => {
+    //     that.$store.dispatch("del_role", { RoleId: row.RoleId }).then( (res: any) => {
+    //         if (res.code == 0) {
+    //             console.log("删除角色", res);
+    //             that.$message({ type: "success", message: "已成功删除角色名为 " + row.RoleName + " 的角色！", duration: 2000 });
+    //             setTimeout(() => {
+    //                 that.$router.go(0);
+    //             }, 500);
+    //         }else {
+    //             //登录失败提示
+    //             that.$message({ message: res.msg, type: "error", duration: 2500 });
+    //         };
+    //     })
+    // });
 }
 
 </script>

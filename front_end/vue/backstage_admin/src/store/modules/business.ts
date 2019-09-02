@@ -20,7 +20,7 @@ const home =  {
             send_data.append("end_time", data.end_time);
             send_data.append("token", sessionStorage.getItem('token'));
             return new Promise((resolve, reject) => {
-                axios.post( state.state.domain02 + "/index.php?m=Api&c=Club&a=master_list", send_data, '20013').then( (res: any) => {
+                axios.post( state.state.domain02 + "/index.php?m=Api&c=Club&a=master_list", send_data).then( (res: any) => {
                     //返回数据给调起dispatch的那边
                     resolve(res);
                 }).catch( error => {

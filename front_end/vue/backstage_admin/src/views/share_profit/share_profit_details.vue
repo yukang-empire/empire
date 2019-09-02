@@ -1,7 +1,7 @@
 <template>
     <div class="share_profit_details">
         <!-- 基本信息 -->
-        <base_info :base_info="base_info" :base_info_type='base_info_type' />
+        <base_info :base_info="base_info.need_data" :base_info_type='base_info_type' />
         <!-- 统计信息 -->
         <div class="repeat_div">
             <p>
@@ -16,8 +16,8 @@
                     <span>本期分润人数</span>
                 </li>
                 <li class="flex_between">
-                    <span>2566.00</span>
-                    <span>10</span>
+                    <span>{{ base_info.total_points }}</span>
+                    <span>{{ base_info.bonus_num }}</span>
                 </li>
             </ul>
         </div>
@@ -49,8 +49,12 @@ import table_page from "@/components/table_page.vue";
 export default class share_profit_details extends Vue{
     private base_info: any = {
         title: '基本信息',
-        icon: '#iconqita'
+        icon: '#iconqita',
+        need_data: {},
+        total_points: '',
+        bonus_num: ''
     };
+    private base_info_type: string = "share_profit";
     private base_info_type: string = "share_profit";
     
     //本期分润记录
@@ -64,7 +68,7 @@ export default class share_profit_details extends Vue{
             //是否固定表头
             is_height: "auto",
             //表格数据
-            lists: [{num: '康大大'}],
+            lists: [],
         },
         //页码
         page: {
@@ -81,12 +85,32 @@ export default class share_profit_details extends Vue{
     };
 
     mounted () {
-        //请求分润记录
-        this.$store.dispatch("share_profit_details", { club_id: this.$route.query.club_id}).then( res => {
-            console.log("分润记录", res);
-            var that: any = this;
+        //请求分润详情
+        var that: any = this;
+        this.$store.dispatch("share_profit_details", { id: this.$route.query.id}).then( res => {
+            console.log("分润详情", res);
             if (res.code == 0 || res.status == 1) {
-                
+                that.table_data_record.table.lists = res.result.list;
+                //提取长度出来 提高for循环性能
+                var lists = that.table_data_record.table.lists || [];
+                var length = lists.length;
+                //转换时间戳
+                for (var i = 0; i < length; i++) {
+                    switch (lists[i].bonus_status) {
+                        case 1: 
+                            lists[i].bonus_status = '是';
+                            break;
+                        case 0: 
+                            lists[i].bonus_status = '否';
+                            break;
+                    };
+                };
+                that.base_info.need_data = res.result.bonus;
+                that.base_info.need_data.status = that.base_info.need_data.status == 1 ? '未分' : '已分';
+                var time = that.base_info.need_data.up_time * 1000 || '';
+                that.base_info.need_data.up_time = that.$moment(time).format('YYYY-MM-DD HH:mm:ss');
+                that.base_info.total_points = res.result.bonus.total_points;
+                that.base_info.bonus_num = res.result.bonus.bonus_num;
             }else {
                 //获取失败提示
                 this.$message({ message: res.msg, type: "error", duration: 2500 });

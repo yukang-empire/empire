@@ -44,16 +44,13 @@ export default class change_password extends Vue{
 
     //修改密码
     change_password (ruleForm) {
+        var that = this;
         this.$store.dispatch("change_password", ruleForm).then( (res: any) => {
             console.log("修改密码", res);
             if (res.code == 0 || res.status == 1) {
                 sessionStorage.removeItem('add_form_data');
                 //修改成功提示
-                this.$message({ message: '修改密码成功！请重新登录！', type: "success", duration: 1500 });
-                sessionStorage.removeItem('token');
-                sessionStorage.removeItem('role');
-                sessionStorage.removeItem('role_name');
-                this.$router.push({ path: '/login' });
+                this.$message({ message: '修改员工密码成功！', type: "success", duration: 1500 });
             }else {
                 //失败提示
                 this.$message({ message: res.msg, type: "error", duration: 2500 });

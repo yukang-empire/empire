@@ -43,23 +43,41 @@ export default class staff_add extends Vue{
         };
     };
 
-    //新增员工
+    //新增/修改员工
     add_staff (ruleForm) {
-        this.$store.dispatch("add_staff", ruleForm).then( (res: any) => {
-            console.log("新增员工", res);
-            if (res.code == 0 || res.status == 1) {
-                sessionStorage.removeItem('show_license');
-                sessionStorage.removeItem('head');
-                sessionStorage.removeItem('show_store');
-                sessionStorage.removeItem('add_form_data');
-                //新增成功提示
-                this.$message({ message: '新增成功！', type: "success", duration: 1500 });
-                this.$router.push({ path: '/set/staff/list' });
-            }else {
-                //失败提示
-                this.$message({ message: res.msg, type: "error", duration: 2500 });
-            };
-        });
+        if (this.$route.query.id) {
+            this.$store.dispatch("edit_staff", ruleForm).then( (res: any) => {
+                console.log("修改员工", res);
+                if (res.code == 0 || res.status == 1) {
+                    sessionStorage.removeItem('show_license');
+                    sessionStorage.removeItem('head');
+                    sessionStorage.removeItem('show_store');
+                    sessionStorage.removeItem('add_form_data');
+                    //修改成功提示
+                    this.$message({ message: '修改成功！', type: "success", duration: 1500 });
+                    this.$router.push({ path: '/set/staff/list' });
+                }else {
+                    //失败提示
+                    this.$message({ message: res.msg, type: "error", duration: 2500 });
+                };
+            });
+        }else {
+            this.$store.dispatch("add_staff", ruleForm).then( (res: any) => {
+                console.log("新增员工", res);
+                if (res.code == 0 || res.status == 1) {
+                    sessionStorage.removeItem('show_license');
+                    sessionStorage.removeItem('head');
+                    sessionStorage.removeItem('show_store');
+                    sessionStorage.removeItem('add_form_data');
+                    //新增成功提示
+                    this.$message({ message: '新增成功！', type: "success", duration: 1500 });
+                    this.$router.push({ path: '/set/staff/list' });
+                }else {
+                    //失败提示
+                    this.$message({ message: res.msg, type: "error", duration: 2500 });
+                };
+            });
+        };
     };
 }
 

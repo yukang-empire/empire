@@ -18,7 +18,8 @@ const coupon = {
             component: () => import('@/views/coupon/coupon_list.vue'),
             meta: {
                 title: '优惠券列表',
-                hidden: false
+                hidden: false,
+                roles: '20057'
             }
         },
         {
@@ -26,7 +27,7 @@ const coupon = {
             name: 'coupon_add',
             component: () => import('@/views/coupon/coupon_add.vue'),
             meta: {
-                title: '优惠券新增',
+                title: '优惠券新增/编辑',
                 hidden: false
             }
         },

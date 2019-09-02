@@ -209,10 +209,11 @@
 
             <!-- 优惠券列表 -->
             <el-table-column v-if="table_data.table.which=='coupon_list'" prop="name" label="优惠券标题"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='coupon_list'" prop="name" label="金额(元)"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='coupon_list'" prop="name" label="获得方式"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='coupon_list'" prop="name" label="状态"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='coupon_list'" prop="name" label="截止时间"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='coupon_list'" prop="money" label="金额(元)"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='coupon_list'" prop="type" label="获得方式"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='coupon_list'" prop="use_type" label="使用范围"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='coupon_list'" prop="status" label="状态"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='coupon_list'" prop="use_end_time" label="截止时间"></el-table-column>
 
             <!-- 角色管理 -->
             <el-table-column v-if="table_data.table.which=='role_list'" prop="RoleName" label="角色名称"></el-table-column>
@@ -222,7 +223,7 @@
 
             <!-- 员工管理 -->
             <el-table-column v-if="table_data.table.which=='staff_list'" prop="id" label="工号"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='staff_list'" prop="username" label="姓名"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='staff_list'" prop="username" label="账户名"></el-table-column>
             <el-table-column v-if="table_data.table.which=='staff_list'" prop="phone" label="手机"></el-table-column>
             <el-table-column v-if="table_data.table.which=='staff_list'" prop="roleID" label="角色"></el-table-column>
             <el-table-column v-if="table_data.table.which=='staff_list'" prop="createtime" label="添加时间"></el-table-column>
@@ -234,20 +235,21 @@
             <el-table-column v-if="table_data.table.which=='log_list'" prop="log_time" label="操作时间"></el-table-column>
 
             <!-- 分润列表 -->
-            <el-table-column v-if="table_data.table.which=='share_profit_list'" prop="num" label="序号"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='share_profit_list'" prop="num" label="分润期数"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='share_profit_list'" prop="num" label="总分润金额"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='share_profit_list'" prop="num" label="分润时间"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='share_profit_list'" prop="num" label="本期人数"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='share_profit_list'" prop="num" label="本期分润酷点"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='share_profit_list'" prop="num" label="状态"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='share_profit_list'" prop="id" label="序号"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='share_profit_list'" prop="phase" label="分润期数"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='share_profit_list'" prop="total_money" label="总分润金额"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='share_profit_list'" prop="up_time" label="分润时间"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='share_profit_list'" prop="bonus_num" label="本期人数"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='share_profit_list'" prop="total_points" label="本期分润酷点"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='share_profit_list'" prop="status" label="状态"></el-table-column>
 
             <!-- 分润记录 -->
-            <el-table-column v-if="table_data.table.which=='share_profit_record'" prop="num" label="序号"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='share_profit_record'" prop="num" label="用户"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='share_profit_record'" prop="num" label="用户手机"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='share_profit_record'" prop="num" label="分润酷点"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='share_profit_record'" prop="num" label="分润金额"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='share_profit_record'" prop="phase" label="期数"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='share_profit_record'" prop="nickname" label="用户"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='share_profit_record'" prop="mobile" label="用户手机"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='share_profit_record'" prop="total_points" label="注入酷点"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='share_profit_record'" prop="bonus_status" label="是否够资格分红"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='share_profit_record'" prop="bonus_money" label="分红金额"></el-table-column>
 
             
             <el-table-column label="状态" v-if="table_data.table.which == 'staff_list' || table_data.table.which == 'carousel_list'">
@@ -307,7 +309,8 @@
                         table_data.table.which != 'coupon_list' &&
                         table_data.table.which != 'role_list' &&
                         table_data.table.which != 'staff_list' &&
-                        table_data.table.which != 'upper_course'
+                        table_data.table.which != 'upper_course' &&
+                        table_data.table.which != 'coupon_list'
                     " type="text" @click="look_up(scope.row)">查看</el-button>
                     <el-button v-if="
                         table_data.table.which == 'upper_course' ||
@@ -321,20 +324,22 @@
                         table_data.table.which == 'carousel_list' ||
                         table_data.table.which == 'coupon_list' ||
                         table_data.table.which == 'role_list' ||
-                        table_data.table.which == 'staff_list'
+                        table_data.table.which == 'staff_list' ||
+                        table_data.table.which == 'coupon_list'
                     " type="text" @click="edit(scope.row)">编辑</el-button>
                     <el-button type="text" @click="add_recycle_bin(scope.row)"  v-if="table_data.table.which == 'help_list'">加入回收站</el-button>
                     <el-button type="text" @click="recovery(scope.row)"  v-if="table_data.table.which == 'recycle_bin_list'">恢复</el-button>
                     <el-button type="text" @click="delete_(scope.row)"  v-if="
-                        table_data.table.which == 'coupon_list' ||
                         table_data.table.which == 'role_list' ||
-                        table_data.table.which == 'staff_list'
+                        table_data.table.which == 'staff_list' ||
+                        table_data.table.which == 'carousel_list'
                     ">删除</el-button>
                     <el-button type="text" @click="down_course(scope.row)"  v-if="table_data.table.which == 'transfer_list' && scope.row.card_status == '已上架'">下架</el-button>
                     <el-button type="text" @click="down_course(scope.row)"  v-if="table_data.table.which == 'transfer_list' && scope.row.card_status == '已下架'">上架</el-button>
                     <el-button type="text" @click="complete_delete(scope.row)"  v-if="table_data.table.which == 'recycle_bin_list'">彻底删除</el-button>
                     <el-button type="text" @click="check_cash_out(scope.row)"  v-if="table_data.table.which == 'cash_out_list' && scope.row.status == '已申请'">通过</el-button>
                     <el-button type="text" @click="check_cash_no(scope.row)"  v-if="table_data.table.which == 'cash_out_list' && scope.row.status == '已申请'">驳回</el-button>
+                    <el-button type="text" @click="to_bonus(scope.row)"  v-if="table_data.table.which == 'share_profit_list'">分红</el-button>
                 </template>
             </el-table-column>
 
@@ -407,6 +412,10 @@ export default class table_page extends Vue{
     down_course (row: any) {
         this.$emit('down_course', row);
     };
+    //分红
+    to_bonus (row: any) {
+        this.$emit('to_bonus', row);
+    }
 }
 
 </script>

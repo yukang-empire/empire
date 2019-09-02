@@ -98,6 +98,7 @@ const home =  {
                 send_data_before.phone = data.phone;
                 send_data_before.head = data.head;
                 send_data_before.content = data.staff_content;
+                send_data_before.userid = data.id;
                 var send_data = JSON.stringify(send_data_before);
                 return new Promise((resolve, reject) => {
                     axios.post( "/api/editUser", send_data).then( (res: any) => {
@@ -177,9 +178,10 @@ const home =  {
             };
         },
         //修改角色
-        revise_role () {
+        revise_role (state: any, data: any) {
             if (arr_power.includes('20039')) {
                 var send_data_before = {};
+                send_data_before.RoleId = data.RoleId;
                 send_data_before.RoleName = data.RoleName;
                 send_data_before.Permission = data.Permission;
                 send_data_before.DbPermission = data.DbPermission;
@@ -201,7 +203,9 @@ const home =  {
         //删除角色
         del_role (state: any, data: any) {
             if (arr_power.includes('20040')) {
-                var send_data = JSON.stringify(data);
+                var send_data_before = {};
+                send_data_before.RoleId = data.RoleId;
+                var send_data = JSON.stringify(send_data_before);
                 return new Promise((resolve, reject) => {
                     axios.post( "/role/delRole", send_data).then( (res: any) => {
                         //返回数据给调起dispatch的那边
@@ -228,10 +232,14 @@ const home =  {
                 });
             });
         },
-        //修改密码
+        //修改员工密码
         change_password (state: any, data: any) {
             if (arr_power.includes('20046')) {
-                var send_data = JSON.stringify(data);
+                var send_data_before = {};
+                send_data_before.password = data.password;
+                send_data_before.workid = data.staff_num;
+                send_data_before.name = data.staff_name;
+                var send_data = JSON.stringify(send_data_before);
                 return new Promise((resolve, reject) => {
                     axios.post( "/api/getUserLog", send_data).then( (res: any) => {
                         //返回数据给调起dispatch的那边
@@ -245,6 +253,19 @@ const home =  {
                 Message({ message: '对不起！您没有修改员工密码的权限！', type: 'error', duration: 2500 });
             };
         },
+        //修改自身密码
+        revise_password (state: any, data: any) {
+            var send_data = JSON.stringify(data);
+            return new Promise((resolve, reject) => {
+                axios.post( "/api/upPwd", send_data).then( (res: any) => {
+                    //返回数据给调起dispatch的那边
+                    resolve(res);
+                }).catch( error => {
+                    //返回error给调起dispatch的那边
+                    reject(error);
+                });
+            });
+        }
     }
 };
 

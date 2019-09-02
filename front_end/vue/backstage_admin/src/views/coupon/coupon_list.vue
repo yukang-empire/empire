@@ -35,7 +35,7 @@
             :table_data='table_data'
             @change_page='change_page'
             @change_page_size='change_page_size'
-            @look_up='look_up'
+            @edit='edit_coupon'
             />
             
         </div>
@@ -104,10 +104,11 @@ export default class coupon_list extends Vue{
         this.coupon_list();
     };
     
-    //请求提现列表数据
+    //请求优惠券列表数据
     coupon_list () {
         this.$store.dispatch("coupon_list", this.send_data).then( (res: any) => {
-            console.log("商家列表", res);
+            console.log("优惠券列表", res);
+            var that: any = this;
             if (res.code == 0 || res.status == 1) {
                 this.table_data.table.lists = res.result;
                 //提取长度出来 提高for循环性能
@@ -116,10 +117,10 @@ export default class coupon_list extends Vue{
                 //转换时间戳
                 for (var i = 0; i < length; i++) {
                     //typescript语法严格 不声明会报错
-                    var that: any = this;
-                    lists[i].add_time = lists[i].add_time == 0 ? "" : that.$moment(lists[i].add_time * 1000).format('YYYY-MM-DD HH:mm:ss');
-                    //拼接省市区
-                    lists[i].address = lists[i].province + lists[i].city + lists[i].area;
+                    lists[i].use_end_time = lists[i].use_end_time == 0 ? "" : that.$moment(lists[i].use_end_time * 1000).format('YYYY-MM-DD HH:mm:ss');
+                    lists[i].status = lists[i].status == 1 ? '有效' : '无效';
+                    lists[i].type = lists[i].type == 4 ? '注册赠送' : '购买银卡会籍赠';
+                    lists[i].use_type = lists[i].use_type == 3 ? '健身专用' : '其他';
                 };
                 this.table_data.page.total = parseInt(res.count);
             }else {
@@ -197,10 +198,13 @@ export default class coupon_list extends Vue{
         
     };
 
-    //查看
-    look_up (row: any) {
-        this.$router.push({ path: '/order/service/details', query: { club_id: row.id } });
+    //编辑
+    edit_coupon (row: any) {
+        sessionStorage.setItem('add_form_data', JSON.stringify(row));
+        this.$router.push({ path: '/coupon/add', query: { id: row.id } });
     };
+
+    
 }
 
 </script>

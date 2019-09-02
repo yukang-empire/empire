@@ -1,6 +1,19 @@
 <template>
     <div class="home">
-        <div class="repeat_div">
+
+        <div class="repeat_div" v-if='!show_modules.profit && !show_modules.wait && !show_modules.income && !!show_modules.kd'>
+            <p>
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#iconjinggao"></use>
+                </svg>
+                <span>提示</span>
+            </p>
+            <div>
+                <p style="text-align: center;margin: 0 0 10px 0;">哦豁！您没有权限查看首页的数据哦！</p>
+            </div>
+        </div>
+
+        <div class="repeat_div" v-if='show_modules.profit'>
             <p>
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icongaishu"></use>
@@ -31,7 +44,7 @@
                             <b>¥ {{ home_data.recharge }}</b>
                         </div>
                     </li>
-                    <li class="flex_center" style="background-color: #a47bd0;">
+                    <li class="flex_center" style="background-color: #3fd2ed;">
                         <div>
                             <svg class="icon" aria-hidden="true">
                                 <use xlink:href="#icondingdan1"></use>
@@ -55,7 +68,7 @@
                     </li>
                 </ul>
                 <ul class="flex_between" style="margin-top: 30px;">
-                    <li class="flex_center" style="background-color: #00a9cc;">
+                    <li class="flex_center" style="background-color: #41dcd3;">
                         <div>
                             <svg class="icon" aria-hidden="true">
                                 <use xlink:href="#iconshuliang"></use>
@@ -66,7 +79,7 @@
                             <b>{{ home_data.distribut.distribut }}</b>
                         </div>
                     </li>
-                    <li class="flex_center" style="background-color: #9e9e9e;">
+                    <li class="flex_center" style="background-color: #ffba69;">
                         <div>
                             <svg class="icon" aria-hidden="true">
                                 <use xlink:href="#iconshouruliushui"></use>
@@ -87,7 +100,54 @@
             </div>
         </div>
 
-        <div class="repeat_div">
+        <div class="repeat_div" v-if='show_modules.kd'>
+            <p>
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icondian"></use>
+                </svg>
+                <span>我的酷点</span>
+            </p>
+            <div class="profit">
+                <ul class="flex_between">
+                    <li class="flex_center" style="background-color: #ea6493;">
+                        <div>
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#iconchiyoushouyiyuan"></use>
+                            </svg>
+                        </div>
+                        <router-link tag="div" to="/user/list">
+                            <p>酷点总持有量</p>
+                            <b>{{ home_data.cool_point.hold }}</b>
+                        </router-link>
+                    </li>
+                    <li class="flex_center" style="background-color: #40a6db;">
+                        <div>
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#iconxiaofei"></use>
+                            </svg>
+                        </div>
+                        <div>
+                            <p>酷点总消费量</p>
+                            <b>¥ {{ home_data.cool_point.used }}</b>
+                        </div>
+                    </li>
+                    <li class="flex_center" style="background-color: #a47bd0;">
+                        <div>
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#iconqian1"></use>
+                            </svg>
+                        </div>
+                        <div>
+                            <p>酷点总产生量</p>
+                            <b>{{ home_data.cool_point.produce }}</b>
+                        </div>
+                    </li>
+                    <li></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="repeat_div" v-if='show_modules.wait'>
             <p>
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#iconshitu_gaikuang"></use>
@@ -119,7 +179,7 @@
                         </router-link>
                     </li>
                     <li class="flex_center">
-                        <div class="flex_center" style="background-color: #a47bd0;">
+                        <div class="flex_center" style="background-color: #ffbf63;">
                             <svg class="icon" aria-hidden="true">
                                 <use xlink:href="#iconruzhuchenggongdapx"></use>
                             </svg>
@@ -145,7 +205,7 @@
         </div>
 
         <!-- 图表echarts -->
-        <echart :echarts_data_week='echarts_data_week' :echarts_data_mon='echarts_data_mon' />
+        <echart  v-if='show_modules.income' :echarts_data_week='echarts_data_week' :echarts_data_mon='echarts_data_mon' />
     </div>
 </template>
 
@@ -160,6 +220,13 @@ import echart from "@/components/echart.vue";
 })
 
 export default class home extends Vue{
+    //有权限展示的数据
+    private show_modules: any = {
+        profit: false,
+        kd: false,
+        wait: false,
+        income: false
+    };
     //首页数据
     private home_data: object = {
         regUser: 0,
@@ -179,6 +246,9 @@ export default class home extends Vue{
         card_out: 0,
         store_apply: 0,
         feedback: 0,
+        cool_point: {
+
+        }
     };
     //周图表数据 API可查看官网文档 https://www.echartsjs.com/option.html#title;
     private echarts_data_week: any = {
@@ -261,6 +331,10 @@ export default class home extends Vue{
                 this.echarts_data_mon.month_order = res.month_order;
                 this.echarts_data_week.chart_weeks_order = res.chart_weeks_order;
                 this.echarts_data_mon.chart_month_order = res.chart_month_order;
+                //保留2位小数
+                this.home_data.cool_point.hold = parseInt(this.home_data.cool_point.hold).toFixed(2);
+                this.home_data.cool_point.produce = parseInt(this.home_data.cool_point.produce).toFixed(2);
+                this.home_data.cool_point.used = parseInt(this.home_data.cool_point.used).toFixed(2);
 
                 //获取最近一周和最近一月X轴的日期 以及对应Y轴的数据
                 var time = new Date();
@@ -288,6 +362,12 @@ export default class home extends Vue{
                 this.$message({ message: response.msg, type: "error", duration: 2500 });
             };
         });
+        const arr_power = sessionStorage.getItem('Permission') ? sessionStorage.getItem('Permission').split(',') : [];
+        this.show_modules.profit = arr_power.includes('20053');
+        this.show_modules.kd = arr_power.includes('20054');
+        this.show_modules.wait = arr_power.includes('20056');
+        this.show_modules.income = arr_power.includes('20055');
+        // console.log(arr_power.includes('20053'));
     };
 }
 
@@ -360,8 +440,8 @@ export default class home extends Vue{
 
                     .icon {
                         color: #fff;
-                        width: 2.5rem;
-                        height: 2.5rem;
+                        width: 2rem;
+                        height: 2rem;
                         margin: 0;
                     }
 
