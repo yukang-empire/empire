@@ -40,15 +40,21 @@ export default {
 		line-height: 44px;
 		display: flex;
 		align-items: flex-end;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		z-index: 99;
+		background-color: #f0f0f0;
 	}
 	.address {
 		margin: 0 auto;
 	}
+	.map {
+		margin-left: 10px;
+	}
 	.address .city {
 		margin-left: 3px;
-	}
-	.map {
-		margin-left: 8px;
 	}
 	.map .iconfont {
 		font-size: 23px;

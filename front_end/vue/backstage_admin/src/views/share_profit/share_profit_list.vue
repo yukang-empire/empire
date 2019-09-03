@@ -71,12 +71,13 @@
             :table_data='table_data'
             @change_page='change_page'
             @change_page_size='change_page_size'
-            @change_state='change_state'
             @look_up='look_up'
             @to_bonus='to_bonus'
             />
             
-        </div>
+		</div>
+		
+		<dialog_form :dialog_data='dialog_share_profit' @sure='sure_share_profit'></dialog_form>
     </div>
 </template>
 
@@ -84,15 +85,39 @@
 import { Vue, Component } from "vue-property-decorator";
 import list_filter from "@/components/list_filter.vue";
 import table_page from "@/components/table_page.vue";
+import dialog_form from "@/components/dialog_form.vue";
 
 @Component({
     components: {
         list_filter,
-        table_page
+		table_page,
+		dialog_form
     }
 })
 
 export default class share_profit_list extends Vue{
+	//分红弹框
+	private dialog_share_profit: any = {
+        type: 'share_profit',
+        is_dialog: false,
+		title: '分红信息',
+		sure_name: '确定分红',
+        //表单数据
+        form_data: {
+            phase: '',
+            bonus_num: '',
+            total_points: '',
+            up_time: '',
+			total_money: '',
+			status: 1
+        },
+        //表单规则
+        form_rules: {
+            total_money: [
+                { required: true, message: '请输入本期分红总金额', trigger: 'blur' },
+            ],
+        }
+    };
     //表格、页码数据
     private table_data: any = {
         //表格
@@ -233,60 +258,32 @@ export default class share_profit_list extends Vue{
         this.share_profit_list();
     };
 
-    //改变状态
-    change_state (index: any, row: any) {
-        var that: any = this;
-        if (row.status == 1) {
-            that.$confirm("确定禁用ID为 " + row.id +  " 的商家？", "提示", { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then( () => {
-                this.$store.dispatch("change_state_user", { userSN: row.user_sn, isLock: '1' }).then( (res: any) => {
-                    if (res.code == 0) {
-                        console.log("改变状态", res);
-                        this.table_data.table.lists[index].status = 2;
-                        that.$message({ type: "success", message: "已成功禁用ID为 " + row.id + " 的商家！", duration: 2000 });
-                    }else {
-                        //登录失败提示
-                        this.$message({ message: res.msg, type: "error", duration: 2500 });
-                    };
-                })
-            });
-        }else {
-            that.$confirm("确定开启ID为 " + row.id +  " 的商家？", "提示", { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then( () => {
-                this.$store.dispatch("change_state_user", { userSN: row.user_sn, isLock: '0' }).then( (res: any) => {
-                    if (res.code == 0) {
-                        console.log("改变状态", res);
-                        this.table_data.table.lists[index].status = 1;
-                        that.$message({ type: "success", message: "已成功开启ID为 " + row.id + " 的商家！", duration: 2000 });
-                    }else {
-                        //登录失败提示
-                        this.$message({ message: res.msg, type: "error", duration: 2500 });
-                    };
-                })
-            });
-        };
-    };
-
     //查看
     look_up (row: any) {
         this.$router.push({ path: '/share_profit/details', query: { id: row.id } });
     };
-    //分红
+    //分红确认
     to_bonus (row: any) {
-        var that = this;
-        that.$confirm("确定要开启期数为 " + row.phase +  " 的分红？", "提示", { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then( () => {
-            this.$store.dispatch("to_bonus", { id: row.id }).then( (res: any) => {
-                if (res.code == 0) {
-                    console.log("分红", res);
-                    that.$message({ type: "success", message: "已成功开启期数为 " + row.phase + " 的分红！", duration: 2000 });
-                    setTimeout( () => {
-                        that.share_profit_list();
-                    }, 500);
-                }else {
-                    //登录失败提示
-                    this.$message({ message: res.msg, type: "error", duration: 2500 });
-                };
-            })
-        });
-    }
+		var that = this;
+		this.dialog_share_profit.form_data = row;
+		// console.log(this.dialog_share_profit.form_data);
+		this.dialog_share_profit.is_dialog = true;
+	};
+	//确定分红
+	sure_share_profit (name, data) {
+		this.$store.dispatch("to_bonus", { id: data.id, total_money: data.total_money }).then( (res: any) => {
+			if (res.status == 1) {
+				console.log("分红", res);
+				that.$message({ type: "success", message: "已成功开启期数为 " + data.phase + " 的分红！", duration: 2000 });
+				setTimeout( () => {
+					that.share_profit_list();
+				}, 500);
+			}else {
+				//登录失败提示
+				this.$message({ message: res.msg, type: "error", duration: 2500 });
+			};
+		})
+	}
 }
 
 </script>

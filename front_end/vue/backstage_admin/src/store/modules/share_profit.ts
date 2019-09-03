@@ -50,6 +50,7 @@ const user =  {
             if (arr_power.includes('20052')) {
                 var send_data: any = new FormData();
                 send_data.append("id", data.id);
+                send_data.append("total_money", data.total_money);
                 send_data.append("token", sessionStorage.getItem('token'));
                 return new Promise((resolve, reject) => {
                     axios.post( state.state.domain02 + "/index.php?m=Api&c=Bonus&a=give_bonus", send_data).then( (res: any) => {

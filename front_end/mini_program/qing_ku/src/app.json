@@ -4,6 +4,11 @@
     "pages/find/main",
     "pages/my/main"
   ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "展示您附近的健身会所"
+    }
+  },
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
@@ -56,6 +61,7 @@
     "van-action-sheet": "/static/vant/cell-group/index",
     "van-switch-cell": "/static/vant/switch-cell/index",
     "van-area": "/static/vant/area/index",
-    "van-dialog": "/static/vant/dialog/index"
+	"van-dialog": "/static/vant/dialog/index",
+	"van-loading": "/static/vant/loading/index"
   }
 }

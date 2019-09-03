@@ -80,7 +80,25 @@
                         placeholder="请选择到期时间">
                     </el-date-picker>
                 </el-form-item>
-            </div>
+			</div>
+			<!-- 本期分红 -->
+			<div v-if="dialog_data.type == 'share_profit'">
+				<el-form-item label="分红期数:" prop="phase">
+					<el-input type="text" v-model="dialog_data.form_data.phase" disabled></el-input>
+				</el-form-item>
+				<el-form-item label="分红人数:" prop="bonus_num">
+					<el-input type="text" v-model="dialog_data.form_data.bonus_num" disabled></el-input>
+				</el-form-item>
+				<el-form-item label="分红总酷点:" prop="total_points">
+					<el-input type="text" v-model="dialog_data.form_data.total_points" disabled></el-input>
+				</el-form-item>
+				<el-form-item label="分红时间:" prop="up_time">
+					<el-input type="text" v-model="dialog_data.form_data.up_time" disabled></el-input>
+				</el-form-item>
+				<el-form-item label="分红总金额:" prop="total_money">
+					<el-input type="text" v-model="dialog_data.form_data.total_money" placeholder="请输入分红总金额" clearable :disabled="dialog_data.form_data.status == '已分'"></el-input>
+				</el-form-item>
+			</div>
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="dialog_data.is_dialog = false">取 消</el-button>
@@ -117,7 +135,11 @@ export default class dialog_form extends Vue{
                 return false;
             };
         });
-    };
+	};
+	
+	mounted () {
+		console.log(this.dialog_data);
+	};
 
     //改变健身卡的类型
     type_change (val) {
