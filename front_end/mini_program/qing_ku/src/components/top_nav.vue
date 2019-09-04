@@ -45,7 +45,7 @@ export default {
 		left: 0;
 		width: 100%;
 		z-index: 99;
-		background-color: #f0f0f0;
+		background-color: #fff;
 	}
 	.address {
 		margin: 0 auto;

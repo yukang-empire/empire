@@ -17,7 +17,7 @@
 		</div>
 		<div class="right">
 			<i class="iconfont">&#xe690;</i>
-			<input placeholder="请输入您想去的健身房" placeholder-style="color: #ccc">
+			<input placeholder="请输入您想去的健身房" placeholder-style="color: #ccc" @click='get_focus' disabled>
 		</div>
 	</div>
 	<div class="club_list">
@@ -52,6 +52,7 @@
 
 <script>
 import top_nav from "../../components/top_nav.vue";
+var QQMapWX = require('../../../static/map/qqmap-wx-jssdk.min.js');
 
 export default {
   data () {
@@ -79,15 +80,47 @@ export default {
 		//加载中
 		is_loading: false,
 		//请求页码
-		request_page: 1
+		request_page: 1,
     }
   },
 
   components: {
     top_nav
   },
-
+  //下拉刷新
+  onPullDownRefresh () {
+	this.request_page = 1;
+	this.club_lists = [];
+	this.get_club_list();
+	wx.stopPullDownRefresh();
+  },
+  //上拉加载
+  onReachBottom () {
+	var that = this;
+	this.request_page ++;
+	wx.getStorage({
+		key: 'get_address',
+		success (res) {
+			var send_data = {};
+			send_data.lat = res.data.latitude;
+			send_data.lng = res.data.longitude;
+			send_data.type = 2;
+			send_data.p = that.request_page;
+			//会所列表
+			that.$store.dispatch("club_list", send_data).then( (res) => {
+				if (res.data.status == 1) {
+					console.log("会所列表", res.data.result);
+					that.club_lists = that.club_lists.concat(res.data.result);
+				};
+			});
+		}
+	});
+  },
   methods: {
+	//获取焦点 跳转搜索页面
+	get_focus () {
+		mpvue.navigateTo({ url: "../search/main" });
+	},
 	//获取会所列表(需要经纬度)
 	get_club_list () {
 		var that = this;
@@ -102,23 +135,23 @@ export default {
 				send_data.lng = res.data.longitude;
 				send_data.type = 2;
 				send_data.p = that.request_page;
+				//会所列表
 				that.$store.dispatch("club_list", send_data).then( (res) => {
 					if (res.data.status == 1) {
 						that.is_loading = false;
 						console.log("会所列表", res.data.result);
-						that.club_lists = res.data.result;
+						that.club_lists = that.club_lists.concat(res.data.result);
 					};
 				});
+				//地址逆解析
+				that.inverse_address(res.data.latitude, res.data.longitude);
 			},
 			fail () {
 				wx.getLocation({
 					type: 'gcj02',
 					success (res) {
 						console.log("当前位置信息", res);
-						wx.setStorage({
-							key: "get_address",
-							data: res
-						});
+						wx.setStorageSync('get_address', res);
 						var send_data = {};
 						send_data.lat = res.latitude;
 						send_data.lng = res.longitude;
@@ -128,15 +161,16 @@ export default {
 							if (res.data.status == 1) {
 								that.is_loading = false;
 								console.log("会所列表", res.data.result);
-								that.club_lists = res.data.result;
+								that.club_lists = that.club_lists.concat(res.data.result);
 							};
 						});
+						//地址逆解析
+						that.inverse_address(res.data.latitude, res.data.longitude);
 					}
 				})
 			}
 		});
 	},
-
 	//引导客户去设置页面 打开授权
 	openSetting () {
 		var that = this;
@@ -148,6 +182,33 @@ export default {
 				};
 			}
 		})
+	},
+	//获取经纬度后逆解析(腾讯地图)
+	inverse_address (latitude, longitude) {
+		var that = this;
+		wx.getStorage({
+			key: 'gym_city',
+			success (res) {
+				that.top_nav_data.city = res.data;
+			},
+			fail () {
+				let qqmapsdk = new QQMapWX({
+					key: 'UDHBZ-X3U6V-EXHP5-UEXTX-36HPZ-E5BKL'
+				});
+				var location = {
+					latitude: latitude,
+					longitude: longitude
+				};
+				qqmapsdk.reverseGeocoder({
+					location: location,
+					success: function(res) {
+						console.log('地址逆解析', res);
+						that.top_nav_data.city = res.result.address_component.city;
+						wx.setStorageSync('gym_city', that.top_nav_data.city);
+					}
+				})
+			}
+		});
 	}
   },
 

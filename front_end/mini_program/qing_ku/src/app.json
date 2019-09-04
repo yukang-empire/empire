@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/gym/main",
+    "pages/search/main",
     "pages/find/main",
     "pages/my/main"
   ],
@@ -10,11 +11,12 @@
     }
   },
   "window": {
-    "backgroundTextStyle": "light",
+    "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
+    "navigationBarTitleText": "轻酷",
 	"navigationBarTextStyle": "black",
-	"navigationStyle": "custom"
+	"navigationStyle": "default",
+	"enablePullDownRefresh": true
   },
   "tabBar": {
     "color": "#999",

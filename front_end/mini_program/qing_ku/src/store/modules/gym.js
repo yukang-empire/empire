@@ -29,7 +29,19 @@ const gym =  {
                     reject(error);
                 });
 			});
-        },
+		},
+		//搜索会所
+		search_club (state, data) {
+            return new Promise((resolve, reject) => {
+                fly.post("/index.php?m=Api&c=Club&a=search_club", data).then( (res) => {
+                    //返回数据给调起dispatch的那边
+                    resolve(res);
+                }).catch( error => {
+                    //返回error给调起dispatch的那边
+                    reject(error);
+                });
+			});
+		},
     }
 };
 
