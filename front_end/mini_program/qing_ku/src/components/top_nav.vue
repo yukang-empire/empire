@@ -1,11 +1,15 @@
 <template>
-	<div class="top_nav" :style="{height: top_nav_data.nav_height + 'px'}">
-		<div class="map">
-			<i class="iconfont">&#xe751;</i>
-		</div>	
-		<div class="address flex_center">
-			<i class="iconfont" style="font-size: 17px;">&#xe78e;</i>
-			<span class="city">{{ top_nav_data.city }}</span>
+	<div>
+		<div class="gym_top_nav" :style="{height: top_nav_data.nav_height + 'px'}">
+			<div class="map">
+				<i class="iconfont">&#xe751;</i>
+			</div>	
+			<div class="address flex_center">
+				<div class="address_div flex_center">
+					<i class="iconfont" style="font-size: 17px;">&#xe78e;</i>
+					<span class="city">{{ top_nav_data.city }}</span>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -36,7 +40,8 @@ export default {
 </script>
 
 <style scoped>
-	.top_nav {
+	
+	.gym_top_nav {
 		line-height: 44px;
 		display: flex;
 		align-items: flex-end;
@@ -49,6 +54,9 @@ export default {
 	}
 	.address {
 		margin: 0 auto;
+	}
+	.address_div {
+		margin-left: -23px;
 	}
 	.map {
 		margin-left: 10px;

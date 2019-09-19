@@ -2,6 +2,11 @@ import Vue from 'vue'
 import App from './App'
 
 
+//转换时间格式的moment插件
+import moment from 'moment';
+moment.locale('zh-cn');
+Vue.prototype.$moment= moment;
+
 //阿里图标
 import "../static/fonts/iconfont.css"
 //基础样式

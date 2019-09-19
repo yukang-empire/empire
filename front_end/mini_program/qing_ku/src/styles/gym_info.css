@@ -1,0 +1,210 @@
+.gym_info {
+	color: #666;
+	background-color: #fff;
+}
+.gym_info .iconfont {
+	font-size: 20px;
+	color: #666;
+}
+.slide_banners {
+	height: 150px;
+}
+.club_name, .item_address {
+	margin: 0 15px;
+	padding: 10px 0 8px 0;
+	border-bottom: 1px solid #E0E0E0;
+}
+.item_address {
+	border: none;
+}
+.club_name {
+	font-size: 18px;
+	font-weight: 900;
+}
+.club_address {
+	display: flex;
+	align-items: center;
+	width: 80%;
+}
+.club_address .iconfont {
+	margin-right: 6px;
+}
+.club_address .ico_img {
+	width: 29px;
+	height: 18px;
+}
+.tel {
+	width: 20%;
+	margin-left: 5%;
+	height: 30px;
+	border-left: 1px solid #E0E0E0;
+}
+.tel_icon {
+	width: 25px;
+}
+.club_service {
+	display: flex;
+	align-items: center;
+	margin: 0 15px;
+	padding: 5px 0;
+}
+.club_service .iconfont {
+	margin: 0 8px 0 3px;
+	font-size: 19px;
+}
+.club_service .service_time {
+	display: flex;
+	align-items: center;
+}
+.card_title {
+	padding: 4px 15px;
+	background-color: #FAFAFA;
+	border-top: 8px solid #F0F0F0;
+}
+.card_title_list, .card_title_right {
+	display: flex;
+	align-items: center;
+}
+.card_title_list .iconfont {
+	font-size: 19px;
+	margin: 0 8px 0 3px;
+}
+.card_title_right, .card_title_right .iconfont {
+	color: #B3B3B3;
+}
+.card_lists {
+	margin: 0 15px 0 18px;
+}
+.item_lists {
+	padding: 13px 0;
+	border-bottom: 1px solid #E0E0E0;
+}
+.item_lists:last-of-type {
+	border: none;
+}
+.item_lists_left, .item_lists_right {
+	display: flex;
+	align-items: center;
+}
+.card_type {
+	padding: 0 3px;
+	border: 1px solid #ccc;
+	font-size: 12px;
+	margin-right: 8px;
+}
+.item_lists_price {
+	color: #FF811B;
+	margin-right: 15px;
+	font-weight: 900;
+}
+.item_lists_button {
+	border-radius: 8px;
+	background-color: #31BFAD;
+	padding: 0 20px;
+	color: #fff;
+	font-size: 15px;
+	line-height: 30px;
+}
+.refund {
+	width: 22px;
+	height: 22px;
+	margin-right: 5px;
+}
+.store_introduce {
+	border-top: 8px solid #F0F0F0;
+}
+.introduce_title {
+	display: flex;
+	align-items: center;
+	background-color: #FAFAFA;
+	padding: 5px 15px;
+}
+.introduce_title .iconfont {
+	font-size: 19px;
+	margin: 0 8px 0 3px;
+}
+.introduce_content {
+	margin: 10px 44px 0 44px;
+	padding-bottom: 20px;
+}
+.introduce_content .step_img {
+	width: 100%;
+}
+.step {
+	padding-bottom: 10px;
+}
+.czhl {
+	width: 70px;
+	margin-left: 5px;
+}
+.dialog_gift {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background-color: rgba(0, 0, 0, 0.6);
+
+}
+.dialog_main {
+	background-color: #fff;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	padding: 20px 0 30px 0;
+}
+.dialog_top {
+	display: flex;
+	align-items: center;
+	color: #333;
+	font-size: 17px;
+	margin-bottom: 20px;
+}
+.dialog_top_img {
+	width: 100px;
+	margin-right: 15px;
+}
+.dialog_top_p2 {
+	color: #FF700A;
+}
+.dialog_middle_title {
+	color: #31BFAD;
+	display: flex;
+	align-items: center;
+	font-size: 16px;
+}
+.dialog_middle_border {
+	width: 3px;
+	height: 20px;
+	background-color: #31BFAD;
+	margin-right: 10px;
+}
+.dialog_middle_ul {
+	color: #333333;
+	margin-bottom: 15px;
+}
+.dialog_middle_ul_ul {
+	padding-left: 35px;
+	color: #666666;
+	font-size: 14px;
+}
+.dialog_bottom {
+	color: #22AE9C;
+}
+.dialog_bottom, .dialog_middle, .dialog_top {
+	padding: 0 20px;
+}
+.close {
+	position: absolute;
+	top: 13px;
+	right: 13px;
+}
+.close_img {
+	width: 18px;
+}
+.ico_img {
+	width: 18px;
+	height: 18px;
+	margin-right: 8px;
+}

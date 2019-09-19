@@ -55,20 +55,22 @@
 	margin-bottom: 12px;
 }
 .li_list .info_01, .li_list .info_02 {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
 	margin: 0 12px 0 12px;
 }
 .li_list .name {
 	font-weight: 900;
 	font-size: 32rpx;
+	min-width: 220px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 .distance {
 	color: #ccc;
 	font-size: 28rpx;
 	display: flex;
 	align-items: center;
+	margin-left: 15px;
 }
 .distance .iconfont {
 	margin-left: 8px;
@@ -93,11 +95,9 @@
 	padding-bottom: 8px;
 }
 .no_address, .loading {
-	display: flex;
 	flex-direction: column;
-	align-items: center;
-	justify-content: center;
 	color: #999;
+	margin-top: 30px;
 }
 .loading {
 	margin-top: 150px;

@@ -1,9 +1,21 @@
 {
   "pages": [
-    "pages/gym/main",
-    "pages/search/main",
-    "pages/find/main",
-    "pages/my/main"
+    "pages/home/step/main",
+    "pages/gym/index/main",
+    "pages/home/index/main",
+    "pages/my/order/main",
+    "pages/my/index/main",
+    "pages/gym/activity/main",
+    "pages/gym/search/main",
+    "pages/gym/gym_info/main",
+    "pages/gym/submit_order/main",
+    "pages/my/login/main",
+    "pages/my/register/main",
+    "pages/my/help/main",
+    "pages/my/invitation/main",
+    "pages/my/mall/main",
+    "pages/my/star/main",
+    "pages/my/set/main"
   ],
   "permission": {
     "scope.userLocation": {
@@ -25,45 +37,31 @@
 	"borderStyle": "black",
     "list": [
 		{
+			"text": "首页",
+			"pagePath": "pages/home/index/main",
+			"iconPath": "static/imgs/home.png",
+			"selectedIconPath": "static/imgs/home_active.png"
+		},
+		{
 			"text": "场馆",
-			"pagePath": "pages/gym/main",
+			"pagePath": "pages/gym/index/main",
 			"iconPath": "static/imgs/gym_active.png",
 			"selectedIconPath": "static/imgs/gym.png"
-		}, 
-		{
-			"text": "发现",
-			"pagePath": "pages/find/main",
-			"iconPath": "static/imgs/find_active.png",
-			"selectedIconPath": "static/imgs/find.png"
 		},
 		{
 			"text": "我的",
-			"pagePath": "pages/my/main",
+			"pagePath": "pages/my/index/main",
 			"iconPath": "static/imgs/my_active.png",
 			"selectedIconPath": "static/imgs/my.png"
 		}
 	]
   },
   "usingComponents": {
-    "van-search": "/static/vant/search/index",
-    "van-row": "/static/vant/row/index",
-    "van-col": "/static/vant/col/index",
-    "van-tab": "/static/vant/tab/index",
-    "van-tabs": "/static/vant/tabs/index",
-    "van-cell": "/static/vant/cell/index",
-    "van-cell-group": "/static/vant/cell-group/index",
-    "van-radio": "/static/vant/radio/index",
-    "van-radio-group": "/static/vant/radio-group/index",
-    "van-field": "/static/vant/field/index",
-    "van-button": "/static/vant/button/index",
-    "van-card": "/static/vant/card/index",
-    "van-popup": "/static/vant/popup/index",
-    "van-icon": "/static/vant/icon/index",
-    "van-panel": "/static/vant/panel/index",
-    "van-action-sheet": "/static/vant/cell-group/index",
-    "van-switch-cell": "/static/vant/switch-cell/index",
-    "van-area": "/static/vant/area/index",
-	"van-dialog": "/static/vant/dialog/index",
-	"van-loading": "/static/vant/loading/index"
+	"van-loading": "/static/vant/loading/index",
+	"van-toast": "/static/vant/toast/index",
+	"van-notify": "/static/vant/notify/index",
+	"van-tab": "/static/vant/tab/index",
+  	"van-tabs": "/static/vant/tabs/index",
+  	"van-dialog": "/static/vant/dialog/index"
   }
 }

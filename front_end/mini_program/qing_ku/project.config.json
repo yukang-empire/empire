@@ -9,7 +9,7 @@
     },
     "miniprogramRoot": "dist/wx/",
     "compileType": "miniprogram",
-    "appid": "wxae365552a93ebcdf",
+    "appid": "wx1d82e53fb116dda1",
     "projectname": "qing_ku",
     "condition": {
         "search": {
