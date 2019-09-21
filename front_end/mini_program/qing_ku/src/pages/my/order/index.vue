@@ -43,7 +43,7 @@
 							</div>
 							<div class="flex_between li_order_btn">
 								<div class="flex_center cancel_btn" @click='cancel_order(item.id)'>取消订单</div>
-								<div class="flex_center QR_code_btn" @click='look_QR_code(item.code)'>
+								<div class="flex_center QR_code_btn" @click='look_QR_code(item.code, item.order_sn)'>
 									<img class="QR_ico" src="../../../../static/imgs/QR_code.png" alt="">
 									<span class="QR_code">二维码</span>
 								</div>
@@ -82,7 +82,7 @@
 							</div>
 							<div class="flex_between li_order_btn">
 								<div class="flex_center cancel_btn" @click='cancel_order(item.id)'>取消订单</div>
-								<div class="flex_center QR_code_btn" @click='look_QR_code(item.code)'>
+								<div class="flex_center QR_code_btn" @click='look_QR_code(item.code, item.order_sn)'>
 									<img class="QR_ico" src="../../../../static/imgs/QR_code.png" alt="">
 									<span class="QR_code">二维码</span>
 								</div>
@@ -206,7 +206,7 @@
 					<div class="circle_left"></div>
 					<div class="circle_right"></div>
 				</div>
-				<p class="QR_code_num">4589 5678 7849 2200 0111</p>
+				<p class="QR_code_num">{{ dialog_sn }}</p>
 			</div>
 			<img class="circle_close" src="../../../../static/imgs/circle_close.png" alt="" @click='is_dialog = false'>
 		</div>
@@ -226,7 +226,7 @@ export default {
 		top_nav_data: '',
 		switch_index: 1,
 		status_index: 0,
-		page: {
+		page: { 
 			all: 1,
 			complete: 1,
 			refund: 1,
@@ -241,7 +241,8 @@ export default {
 		current_order_type: 0,
 		my_data: null,
 		is_dialog: false,
-        imagePath: '',
+		imagePath: '',
+		dialog_sn: ''
     }
   },
 
@@ -365,12 +366,13 @@ export default {
 		});
 	},
 	//展示二维码
-	look_QR_code (code) {
+	look_QR_code (code, order_sn) {
         var that = this;
 		this.is_dialog = true;
 		var time = Math.round(new Date() / 1000);
 		var final_str = code + time;
 		var qrcode = Object.assign({}, QRCode);
+		this.dialog_sn = order_sn;
 		console.log('QRCode', QRCode);
 		console.log('qrcode', qrcode);
 		qrcode.api.draw(final_str, 'mycanvas', 160, 160);

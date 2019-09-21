@@ -100,6 +100,8 @@ export default {
 										mpvue.navigateTo({ url: "../../gym/submit_order/main?goods_id=" + that.query.goods_id });
 									}else if (that.query.src == "my") {
 										mpvue.switchTab({ url: "../index/main" });
+									}else if (that.query.src == "step") {
+										mpvue.navigateTo({ url: "../../home/step/main" });
 									};
 								}, 500);
 							}else {

@@ -61,7 +61,7 @@
 				<span>健身步骤</span>
 			</div>
 			<div class="introduce_content">
-				<img class="step_img" src="../../../../static/imgs/step.png" alt="" mode="widthFix">
+				<img class="step_img" src="../../../../static/imgs/step.jpg" alt="" mode="widthFix">
 			</div>
 		</div>
 		<!-- 弹框 -->

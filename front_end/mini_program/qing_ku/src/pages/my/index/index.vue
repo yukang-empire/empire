@@ -7,7 +7,7 @@
 			<img @click='to_login' class="default_head" src="../../../../static/imgs/default_head.png" alt="head" v-if='!my_data.head_pic'>
 			<img @click='to_login' class="default_head" :src="'https://shop.technologyle.com' + my_data.head_pic" alt="head" v-if='my_data.head_pic'>
 			<span @click='to_login' v-if='!my_data.nickname'>登录 / 注册</span>
-			<span v-if='my_data.nickname'>{{ my_data.nickname }}</span>
+			<span v-if='my_data.nickname || my_data.mobile'>{{ my_data.nickname ? my_data.nickname : my_data.mobile }}</span>
 		</div>
 		<div class="flex_center bottom_info">
 			<img class="yxhj" src="../../../../static/imgs/yxhj.png" alt="" mode='widthFix'>

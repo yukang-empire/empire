@@ -1,8 +1,8 @@
 {
   "pages": [
-    "pages/home/step/main",
-    "pages/gym/index/main",
     "pages/home/index/main",
+    "pages/gym/index/main",
+    "pages/home/step/main",
     "pages/my/order/main",
     "pages/my/index/main",
     "pages/gym/activity/main",

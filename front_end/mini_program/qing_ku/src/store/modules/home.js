@@ -42,6 +42,18 @@ const home =  {
                 });
 			});
 		},
+		// 上传步数
+		upload_step (state, data) {
+            return new Promise((resolve, reject) => {
+                fly.post("/index.php?m=Api&c=user&a=add_step", data).then( (res) => {
+                    //返回数据给调起dispatch的那边
+                    resolve(res);
+                }).catch( error => {
+                    //返回error给调起dispatch的那边
+                    reject(error);
+                });
+			});
+		}, 
 	}
 };
 
