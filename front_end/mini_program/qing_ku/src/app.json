@@ -1,7 +1,10 @@
 {
   "pages": [
+    "pages/home/sign_in/main",
     "pages/home/index/main",
     "pages/gym/index/main",
+    "pages/home/rule/main",
+    "pages/home/walk_money/main",
     "pages/home/step/main",
     "pages/my/order/main",
     "pages/my/index/main",
@@ -62,6 +65,7 @@
 	"van-notify": "/static/vant/notify/index",
 	"van-tab": "/static/vant/tab/index",
   	"van-tabs": "/static/vant/tabs/index",
-  	"van-dialog": "/static/vant/dialog/index"
+	"van-dialog": "/static/vant/dialog/index",
+	"van-transition": "/static/vant/transition/index"
   }
 }

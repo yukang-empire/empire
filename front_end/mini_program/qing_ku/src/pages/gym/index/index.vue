@@ -46,12 +46,14 @@
 			<p>请<span class="click" @click='openSetting'> 点我 </span>打开地理位置授权</p>
 			<p>以获取您附近的会所</p>
 		</div>
+		<van-toast id="van-toast" />
 	</div>
   </div>
 </template>
 
 <script>
 import top_nav from "../../../components/top_nav.vue";
+import Toast from '../../../../static/vant/toast/toast';
 var QQMapWX = require('../../../../static/map/qqmap-wx-jssdk.min.js');
 
 export default {
@@ -77,11 +79,12 @@ export default {
 		//会所列表
 		club_lists: [],
 		//是否获取了地理位置授权
-		is_address: true,
+		is_address: false,
 		//加载中
 		is_loading: false,
 		//请求页码
 		request_page: 1,
+		num_scope: 1,
     }
   },
 
@@ -167,14 +170,48 @@ export default {
 	//引导客户去设置页面 打开授权
 	openSetting () {
 		var that = this;
-		wx.openSetting({
-			success (res) {
-				console.log("设置页面", res);
-				if(res.authSetting["scope.userLocation"]){
+		//获取地理位置
+		wx.getSetting({
+			success: function(res) {
+				console.log("用户授权信息", res);
+				if(!res.authSetting["scope.userLocation"]){
+					wx.authorize({
+						scope: 'scope.userLocation',
+						success(res) {
+							that.get_club_list()
+						},
+						fail () {
+							that.is_address = false;
+						}
+					});
+				}else{
 					that.get_club_list()
+				}
+			},
+			fail (res) {
+				console.log("fail", res);
+				Toast('获取会所失败！需要您同意授权！');
+			},
+			complete (res) {
+				that.num_scope ++;
+				console.log("complete", res);
+				if (!res.authSetting['scope.userLocation'] && that.num_scope <= 2) {
+					Toast('获取会所失败！需要您同意授权！');
+				};
+				if (!res.authSetting['scope.userLocation'] && that.num_scope > 2) {
+					wx.openSetting({
+						success (res) {
+							console.log("设置页面", res);
+							if(res.authSetting["scope.userLocation"]){
+								that.get_club_list()
+							}else {
+								Toast('获取会所失败！需要您同意授权！');
+							};
+						}
+					});
 				};
 			}
-		})
+		});
 	},
 	//获取经纬度后逆解析(腾讯地图)
 	inverse_address (latitude, longitude) {
@@ -218,25 +255,7 @@ export default {
 			this.gym_slide.banners = res.data.result;
 		};
 	});
-	//获取地理位置
-	wx.getSetting({
-        success: function(res) {
-			console.log("用户授权信息", res);
-			if(!res.authSetting["scope.userLocation"]){
-				wx.authorize({
-					scope: 'scope.userLocation',
-					success(res) {
-						that.get_club_list()
-					},
-					fail () {
-						that.is_address = false;
-					}
-				});
-			}else{
-				that.get_club_list()
-			}
-        }
-	});
+	
 
   }
 }

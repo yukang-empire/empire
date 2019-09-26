@@ -102,6 +102,8 @@ export default {
 										mpvue.switchTab({ url: "../index/main" });
 									}else if (that.query.src == "step") {
 										mpvue.navigateTo({ url: "../../home/step/main" });
+									}else if (that.query.src == "home") {
+										mpvue.switchTab({ url: "../../home/index/main" });
 									};
 								}, 500);
 							}else {

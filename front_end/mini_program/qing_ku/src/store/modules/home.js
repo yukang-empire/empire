@@ -54,6 +54,42 @@ const home =  {
                 });
 			});
 		}, 
+		//获取运动首页数据
+		get_home_data (state, data) {
+            return new Promise((resolve, reject) => {
+                fly.post("/index.php?m=Api&c=Exercise&a=exercise_index", data).then( (res) => {
+                    //返回数据给调起dispatch的那边
+                    resolve(res);
+                }).catch( error => {
+                    //返回error给调起dispatch的那边
+                    reject(error);
+                });
+			});
+		}, 
+		//点击泡泡
+		collect_kd (state, data) {
+            return new Promise((resolve, reject) => {
+                fly.post("/index.php?m=Api&c=Exercise&a=give_points", data).then( (res) => {
+                    //返回数据给调起dispatch的那边
+                    resolve(res);
+                }).catch( error => {
+                    //返回error给调起dispatch的那边
+                    reject(error);
+                });
+			});
+		}, 
+		//签到数据
+		sign_data (state, data) {
+            return new Promise((resolve, reject) => {
+                fly.post("/index.php?m=Api&c=Exercise&a=sign_index", data).then( (res) => {
+                    //返回数据给调起dispatch的那边
+                    resolve(res);
+                }).catch( error => {
+                    //返回error给调起dispatch的那边
+                    reject(error);
+                });
+			});
+		}, 
 	}
 };
 

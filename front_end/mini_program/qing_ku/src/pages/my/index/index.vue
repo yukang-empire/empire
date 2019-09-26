@@ -139,7 +139,15 @@ export default {
 		mpvue.navigateTo({ url: "../help/main" });
 	},
     to_login () {
-		mpvue.navigateTo({ url: "../login/main?src=" + 'my' });
+		wx.getStorage({
+			key: 'my_data',
+			success (res) {
+				
+			},
+			fail () {
+				mpvue.navigateTo({ url: "../login/main?src=" + 'my' });
+			}
+		});
 	},
 	//拉取用户数据
 	get_user_data () {
