@@ -16,6 +16,7 @@ import coupon from './modules/coupon';
 import operate from './modules/operate';
 import share_profit from './modules/share_profit';
 import set from './modules/set';
+import game from './modules/game';
 
 //三级菜单以上的路由 如果要复用layout的main组件 则必须在其文件夹下新建一个index.vue 用router-view来渲染对应的子组件内容;
 
@@ -48,7 +49,8 @@ const router = new Router({
     finance,
     operate,
     share_profit,
-    set
+	game,
+	set,
   ],
   scrollBehavior (to, from, savedPosition) {
     return { x: 0, y: 0 }

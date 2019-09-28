@@ -12,6 +12,7 @@ import finance from "./modules/finance";
 import operate from "./modules/operate";
 import set from "./modules/set";
 import share_profit from "./modules/share_profit";
+import game from "./modules/game";
 
 const store = new Vuex.Store({
   state: {
@@ -72,7 +73,8 @@ const store = new Vuex.Store({
     finance,
     operate,
     set,
-    share_profit
+	share_profit,
+	game
   }
 });
 export default store;

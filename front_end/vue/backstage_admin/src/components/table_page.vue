@@ -249,7 +249,21 @@
             <el-table-column v-if="table_data.table.which=='share_profit_record'" prop="mobile" label="用户手机"></el-table-column>
             <el-table-column v-if="table_data.table.which=='share_profit_record'" prop="total_points" label="注入酷点"></el-table-column>
             <el-table-column v-if="table_data.table.which=='share_profit_record'" prop="bonus_status" label="是否够资格分红"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='share_profit_record'" prop="bonus_money" label="分红金额"></el-table-column>
+			<el-table-column v-if="table_data.table.which=='share_profit_record'" prop="bonus_money" label="分红金额"></el-table-column>
+			
+			<!-- 分润记录 -->
+            <el-table-column v-if="table_data.table.which=='sign_up'" prop="num" label="日期"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='sign_up'" prop="num" label="总奖励金"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='sign_up'" prop="num" label="打卡金"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='sign_up'" prop="num" label="未打卡金"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='sign_up'" prop="num" label="总参与人数"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='sign_up'" prop="num" label="打卡人"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='sign_up'" prop="num" label="未打卡人"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='sign_up'" prop="num" label="虚拟人数"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='sign_up'" prop="num" label="虚拟奖励金"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='sign_up'" prop="num" label="发放奖励"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='sign_up'" prop="num" label="平台费"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='sign_up'" prop="num" label="状态"></el-table-column>
 
             
             <el-table-column label="状态" v-if="table_data.table.which == 'staff_list' || table_data.table.which == 'carousel_list'">
