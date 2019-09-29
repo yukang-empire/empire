@@ -7,8 +7,9 @@ const game = {
     redirect: '/game/list',
     meta: {
         title: '小游戏',
-        icon: '#iconyonghu1',
-        hidden: false
+        icon: '#iconyouxi',
+        hidden: false,
+        roles: '20009'
     },
     children: [
         {
@@ -17,7 +18,18 @@ const game = {
             component: () => import('@/views/game/sign_up.vue'),
             meta: {
                 title: '早起打卡',
-                hidden: false
+                hidden: false,
+				roles: '20009'
+            } 
+		},
+		{
+            path: '/game/sign_up_set',
+            name: 'sign_up_set',
+            component: () => import('@/views/game/sign_up_set.vue'),
+            meta: {
+                title: '参数配置',
+                hidden: true,
+				roles: '20009'
             } 
         },
         {

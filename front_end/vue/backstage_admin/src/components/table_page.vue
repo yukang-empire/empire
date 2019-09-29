@@ -252,18 +252,18 @@
 			<el-table-column v-if="table_data.table.which=='share_profit_record'" prop="bonus_money" label="分红金额"></el-table-column>
 			
 			<!-- 分润记录 -->
-            <el-table-column v-if="table_data.table.which=='sign_up'" prop="num" label="日期"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='sign_up'" prop="num" label="总奖励金"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='sign_up'" prop="num" label="打卡金"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='sign_up'" prop="num" label="未打卡金"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='sign_up'" prop="num" label="总参与人数"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='sign_up'" prop="num" label="打卡人"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='sign_up'" prop="num" label="未打卡人"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='sign_up'" prop="num" label="虚拟人数"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='sign_up'" prop="num" label="虚拟奖励金"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='sign_up'" prop="num" label="发放奖励"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='sign_up'" prop="num" label="平台费"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='sign_up'" prop="num" label="状态"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='sign_up_list'" prop="phase" label="期数"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='sign_up_list'" prop="total_bonus" label="总奖励金"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='sign_up_list'" prop="sign_bonus" label="打卡金"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='sign_up_list'" prop="no_sign_bonus" label="未打卡金"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='sign_up_list'" prop="part_num" label="总参与人数"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='sign_up_list'" prop="clock_num" label="打卡人数"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='sign_up_list'" prop="no_sign_num" label="未打卡人数"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='sign_up_list'" prop="add_num" label="虚拟人数"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='sign_up_list'" prop="add_bonus" label="虚拟奖励金"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='sign_up_list'" prop="give_bonus" label="发放奖励"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='sign_up_list'" prop="cut_bonus" label="平台费"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='sign_up_list'" prop="status" label="状态"></el-table-column>
 
             
             <el-table-column label="状态" v-if="table_data.table.which == 'staff_list' || table_data.table.which == 'carousel_list'">
@@ -309,7 +309,8 @@
                 table_data.table.which == 'coupon_list' ||
                 table_data.table.which == 'role_list' ||
                 table_data.table.which == 'staff_list' ||
-                table_data.table.which == 'share_profit_list'
+				table_data.table.which == 'share_profit_list' ||
+				table_data.table.which == 'sign_up_list'
             ">
                 <template slot-scope="scope">
                     <el-button v-if="
@@ -324,7 +325,8 @@
                         table_data.table.which != 'role_list' &&
                         table_data.table.which != 'staff_list' &&
                         table_data.table.which != 'upper_course' &&
-                        table_data.table.which != 'coupon_list'
+						table_data.table.which != 'coupon_list' &&
+						table_data.table.which != 'sign_up_list'
                     " type="text" @click="look_up(scope.row)">查看</el-button>
                     <el-button v-if="
                         table_data.table.which == 'upper_course' ||
@@ -339,7 +341,8 @@
                         table_data.table.which == 'coupon_list' ||
                         table_data.table.which == 'role_list' ||
                         table_data.table.which == 'staff_list' ||
-                        table_data.table.which == 'coupon_list'
+                        table_data.table.which == 'coupon_list' ||
+                        table_data.table.which == 'sign_up_list'
                     " type="text" @click="edit(scope.row)">编辑</el-button>
                     <el-button type="text" @click="add_recycle_bin(scope.row)"  v-if="table_data.table.which == 'help_list'">加入回收站</el-button>
                     <el-button type="text" @click="recovery(scope.row)"  v-if="table_data.table.which == 'recycle_bin_list'">恢复</el-button>

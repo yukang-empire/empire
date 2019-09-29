@@ -97,7 +97,42 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
-                </div>
+				</div>
+				
+				<!-- 早起打卡参数配置 -->
+				<div v-if='add_data.type == "sign_up_set"'>
+					<el-form-item label="打卡时间:" prop="sign_up_time">
+						<el-date-picker
+							is-range
+							type="datetimerange"
+							v-model="ruleForm.sign_up_time"
+							range-separator="至"
+							start-placeholder="开始时间"
+							end-placeholder="截止时间"
+							@change='select_sign_up_time'
+							placeholder="选择时间范围">
+						</el-date-picker>
+					</el-form-item>
+					<el-form-item label="工号:" prop="workid">
+						<el-input v-model="ruleForm.workid" placeholder="请输入员工工号" clearable maxlength="20" show-word-limit @change='input_data'></el-input>
+					</el-form-item>
+					<el-form-item label="密码:" prop="password">
+						<el-input v-model="ruleForm.password" placeholder="请输入密码" show-password clearable @change='input_data'></el-input>
+					</el-form-item>
+					<!-- <el-form-item label="状态:" prop="staff_state">
+						<el-switch v-model="ruleForm.staff_state" active-color="#13ce66" inactive-color="#ccc"> </el-switch>
+					</el-form-item> -->
+					<el-form-item label="角色:" prop="roleID">
+						<el-select v-model="ruleForm.roleID" filterable placeholder="请选择权限角色" @change='roleID_change'>
+							<el-option
+								v-for="item in staff_roles"
+								:key="item.RoleId"
+								:label="item.RoleName"
+								:value="item.RoleId">
+							</el-option>
+						</el-select>
+					</el-form-item>
+				</div>
                 
                     
                 <!-- 新增员工 -->

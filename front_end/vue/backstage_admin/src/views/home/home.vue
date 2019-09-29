@@ -142,7 +142,17 @@
                             <b>{{ home_data.cool_point.produce }}</b>
                         </div>
                     </li>
-                    <li></li>
+                    <li class="flex_center" style="background-color: #a47bd0;">
+						<div>
+							<svg class="icon" aria-hidden="true">
+								<use xlink:href="#iconcaiwu"></use>
+							</svg>
+						</div>
+						<div>
+							<p>酷点兑换收益</p>
+							<b>{{ home_data.cool_point.use_points }}</b>
+						</div>
+					</li>
                 </ul>
             </div>
         </div>

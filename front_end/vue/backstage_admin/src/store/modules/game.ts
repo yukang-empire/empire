@@ -10,17 +10,32 @@ const game =  {
         domain02: "https://shop.technologyle.com",
     },
     actions: {
-        //获取商家列表
-        business_list (state: any, data: any) {
+        //获取打卡列表
+        sign_up_list (state: any, data: any) {
             var send_data: any = new FormData();
             send_data.append("p", data.p);
             send_data.append("size", data.size);
-            send_data.append("search", data.search);
             send_data.append("start_time", data.start_time);
             send_data.append("end_time", data.end_time);
             send_data.append("token", sessionStorage.getItem('token'));
             return new Promise((resolve, reject) => {
-                axios.post( state.state.domain02 + "/index.php?m=Api&c=Club&a=master_list", send_data).then( (res: any) => {
+                axios.post( state.state.domain02 + "/index.php?m=Api&c=Game&a=admin_clock_list", send_data).then( (res: any) => {
+                    //返回数据给调起dispatch的那边
+                    resolve(res);
+                }).catch( error => {
+                    //返回error给调起dispatch的那边
+                    reject(error);
+                });
+            });
+		},
+		//修改虚拟人数
+        revise_person (state: any, data: any) {
+            var send_data: any = new FormData();
+            send_data.append("id", data.id);
+            send_data.append("num", data.num);
+            send_data.append("token", sessionStorage.getItem('token'));
+            return new Promise((resolve, reject) => {
+                axios.post( state.state.domain02 + "/index.php?m=Api&c=Game&a=admin_save_clock", send_data).then( (res: any) => {
                     //返回数据给调起dispatch的那边
                     resolve(res);
                 }).catch( error => {
@@ -29,7 +44,25 @@ const game =  {
                 });
             });
         },
-        
+		//新增配置
+		add_sign_up_set (state: any, data: any) {
+            var send_data: any = new FormData();
+            send_data.append("start_clock", data.start_clock);
+            send_data.append("end_clock", data.end_clock);
+            send_data.append("entered_end", data.entered_end);
+            send_data.append("clock_cut", data.clock_cut);
+            send_data.append("one_price", data.one_price);
+            send_data.append("token", sessionStorage.getItem('token'));
+            return new Promise((resolve, reject) => {
+                axios.post( state.state.domain02 + "/index.php?m=Api&c=Game&a=admin_save_clock", send_data).then( (res: any) => {
+                    //返回数据给调起dispatch的那边
+                    resolve(res);
+                }).catch( error => {
+                    //返回error给调起dispatch的那边
+                    reject(error);
+                });
+            });
+        },
     }
 };
 

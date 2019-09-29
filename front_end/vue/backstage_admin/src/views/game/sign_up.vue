@@ -15,20 +15,20 @@
 			@clear_search="clear_search"
 			@change_time='change_time'
 			@clear_time="clear_time"
-			@clear_time_register='clear_time_register'
-			@change_time_register='change_time_register'
-			@state_change='select_hj'
-			@clear_select='clear_hj'
 			/>
-			
 		</div>
 
 		<div class="repeat_div">
-			<p>
-				<svg class="icon" aria-hidden="true">
-					<use xlink:href="#iconshitu_gaikuang"></use>
-				</svg>
-				<span>{{ $store.state.current_route ? $store.state.current_route.meta.title : "列表数据" }}</span>
+			<p class="flex_between">
+				<span>
+					<svg class="icon" aria-hidden="true">
+						<use xlink:href="#iconshitu_gaikuang"></use>
+					</svg>
+					<span>{{ $store.state.current_route ? $store.state.current_route.meta.title : "列表数据" }}</span>
+				</span>
+				<router-link to="/game/sign_up_set" tag="span" class="add_btn">
+					<el-button size="medium" type="primary" icon="el-icon-setting">参数配置</el-button>
+				</router-link>
 			</p>
 			<!-- 表格和页码 -->
 			<table_page 
@@ -37,9 +37,13 @@
 			@change_page_size='change_page_size'
 			@change_state='change_state'
 			@look_up='look_up'
+			@edit='edit_person'
 			/>
 			
 		</div>
+
+		
+        <dialog_form :dialog_data='dialog_person' @sure='sure_revise' />
 	</div>
 </template>
 
@@ -47,21 +51,42 @@
 import { Vue, Component } from "vue-property-decorator";
 import list_filter from "@/components/list_filter.vue";
 import table_page from "@/components/table_page.vue";
+import dialog_form from "@/components/dialog_form.vue";
 
 @Component({
 	components: {
 		list_filter,
-		table_page
+		table_page,
+		dialog_form
 	}
 })
 
 export default class sign_up_list extends Vue{
+
+	private sign_up_id: any = '';
+	//编辑健身卡
+    private dialog_person: any = {
+        type: 'invent_person',
+        is_dialog: false,
+        title: '修改虚拟人数',
+        sure_name: '确定修改',
+        //表单数据
+        form_data: {
+            person_num: ''
+        },
+        //表单规则
+        form_rules: {
+            person_num: [
+                { required: true, message: '请输入虚拟人数', trigger: 'blur' },
+            ]
+        }
+    };
 	//表格、页码数据
 	private table_data: any = {
 		//表格
 		table: {
 			//属于哪个表格
-			which: 'sign_up',
+			which: 'sign_up_list',
 			//是否多选
 			checkbox: true,
 			//是否固定表头
@@ -74,7 +99,7 @@ export default class sign_up_list extends Vue{
 			//是否显示页码
 			is_page: true,
 			//当前页码
-			current_page: sessionStorage.getItem("sign_up_list_page") ? parseInt(sessionStorage.getItem("sign_up_list_page")) : 1,
+			current_page: sessionStorage.getItem("sign_up_list_p") ? parseInt(sessionStorage.getItem("sign_up_list_p")) : 1,
 			//每页显示的数量
 			size: sessionStorage.getItem("sign_up_list_size") ? parseInt(sessionStorage.getItem("sign_up_list_size")) : 10,
 			sizes: [10, 15, 20],
@@ -84,34 +109,19 @@ export default class sign_up_list extends Vue{
 	};
 	//请求列表数据的参数
 	private send_data: any = {
-		page: sessionStorage.getItem("sign_up_list_page") ? sessionStorage.getItem("sign_up_list_page") : 1,
+		p: sessionStorage.getItem("sign_up_list_p") ? sessionStorage.getItem("sign_up_list_p") : 1,
 		size: sessionStorage.getItem("sign_up_list_size") ? sessionStorage.getItem("sign_up_list_size") : 10,
-		where: {
-			keyword: sessionStorage.getItem("sign_up_list_keyword") ? sessionStorage.getItem("sign_up_list_keyword") : "",
-			distribut_level: sessionStorage.getItem("sign_up_list_distribut_level") ? sessionStorage.getItem("sign_up_list_distribut_level") : "",
-			stime: sessionStorage.getItem("sign_up_list_stime") ? sessionStorage.getItem("sign_up_list_stime") : "",
-			etime: sessionStorage.getItem("sign_up_list_etime") ? sessionStorage.getItem("sign_up_list_etime") : "",
-			reg_stime: sessionStorage.getItem("sign_up_list_reg_stime") ? sessionStorage.getItem("sign_up_list_reg_stime") : "",
-			reg_etime: sessionStorage.getItem("sign_up_list_reg_etime") ? sessionStorage.getItem("sign_up_list_reg_etime") : "",
-		}
+		search: sessionStorage.getItem("sign_up_list_search") ? sessionStorage.getItem("sign_up_list_search") : "",
+		start_time: sessionStorage.getItem("sign_up_list_start_time") ? sessionStorage.getItem("sign_up_list_start_time") : "",
+		end_time: sessionStorage.getItem("sign_up_list_end_time") ? sessionStorage.getItem("sign_up_list_end_time") : ""
 	};
 	//需要展示的筛选功能
 	private show_filter: any = {
-		is_type: 'domain01',
+		is_type: "domain02",
 		is_search: false,
+		placeholder: "请输入企业名称、手机号(全部)",
 		show_time: true,
-		time_name: '打卡日期',
-		time_name_register: '注册时间',
-		show_time_register: false,
-		state_name: '会籍情况',
-		is_state: false,
-		all_state: [
-			{ state: 0, name: '普通会员' },
-			{ state: 1, name: '银卡会员' },
-			{ state: 2, name: '金卡会员' },
-			{ state: 3, name: '城市合伙人' },
-			{ state: 4, name: '商家' },
-		]
+		time_name: '打卡日期'
 	};
 
 	mounted () {
@@ -121,36 +131,20 @@ export default class sign_up_list extends Vue{
 	//请求sign_up_list数据
 	sign_up_list () {
 		this.$store.dispatch("sign_up_list", this.send_data).then( (res: any) => {
-			console.log("用户列表", res);
-			if (res.code == 0) {
-				this.table_data.table.lists = res.data;
+			console.log("早起打卡列表", res);
+			if (res.code == 0 || res.status == 0) {
+				this.table_data.table.lists = res.result;
 				//提取长度出来 提高for循环性能
 				var lists = this.table_data.table.lists;
 				var length = lists.length;
-				//转换时间戳
+				// //转换时间戳
 				for (var i = 0; i < length; i++) {
 					//typescript语法严格 不声明会报错
 					var that: any = this;
-					lists[i].last_login = lists[i].last_login == 0 ? "" : that.$moment(lists[i].last_login * 1000).format('YYYY-MM-DD HH:mm:ss');
-					switch (lists[i].distribut_level) {
-						case '0': 
-							lists[i].distribut_level = '未开通';
-							break;
-						case '1': 
-							lists[i].distribut_level = '银卡';
-							break;
-						case '2': 
-							lists[i].distribut_level = '金卡';
-							break;
-						case '3': 
-							lists[i].distribut_level = '城市合伙人';
-							break;
-						case '4': 
-							lists[i].distribut_level = '商家';
-							break;
-					};
+					// lists[i].add_time = lists[i].add_time == 0 ? "" : that.$moment(lists[i].add_time * 1000).format('YYYY-MM-DD HH:mm:ss');
+					//拼接省市区
+					lists[i].status = lists[i].status == 0 ? '待结算' : '已结算';
 				};
-				//总个数
 				this.table_data.page.total = parseInt(res.count);
 			}else {
 				//请求失败提示
@@ -162,92 +156,77 @@ export default class sign_up_list extends Vue{
 	//搜索 重新获取列表数据
 	search (val: any) {
 		//页码不重置为1的话 有可能请求不到数据
-		this.send_data.page = 1;
 		this.table_data.page.current_page = 1;
-		sessionStorage.setItem("sign_up_list_page", '1');
-		this.send_data.where.keyword = val;
-		sessionStorage.setItem("sign_up_list_keyword", val);
-		this.sign_up_list();
-	};
-
-	//选择会籍情况
-	select_hj (val: any) {
-		//页码不重置为1的话 有可能请求不到数据
-		this.send_data.page = 1;
-		this.table_data.page.current_page = 1;
-		sessionStorage.setItem("sign_up_list_page", '1');
-		this.send_data.where.distribut_level = val;
-		sessionStorage.setItem("sign_up_list_distribut_level", val);
+		this.send_data.p = 1;
+		sessionStorage.setItem("sign_up_list_p", "1");
+		this.send_data.search = val;
+		sessionStorage.setItem("sign_up_list_search", val);
 		this.sign_up_list();
 	};
 
 	//清空搜索内容
 	clear_search () {
-		this.send_data.where.keyword = '';
-		sessionStorage.setItem("sign_up_list_keyword", "");
+		this.send_data.search = '';
+		sessionStorage.setItem("sign_up_list_search", "");
 		this.sign_up_list();
 	};
 
-	//清空会籍
-	clear_hj () {
-		this.send_data.where.distribut_level = '';
-		sessionStorage.setItem("sign_up_list_distribut_level", "");
-		this.sign_up_list();
+	//编辑虚拟人数
+	edit_person (val: any) {
+		console.log(val);
+		this.sign_up_id = val.id;
+		this.dialog_person.form_data.person_num = val.add_num;
+		this.dialog_person.is_dialog = true;
+	};
+	//确定编辑虚拟人数
+	sure_revise () {
+		var that = this;
+		var send_data = {
+			id: this.sign_up_id,
+			num: this.dialog_person.form_data.person_num
+		};
+		console.log('send_data', send_data);
+		this.$store.dispatch("revise_person", send_data).then( (res: any) => {
+			console.log("确定编辑虚拟人数", res);
+			if (res.status == 0) {
+				this.$message({ message: res.msg, type: "success", duration: 2500 });
+				this.dialog_person.is_dialog = false;
+				setTimeout(() => {
+					that.sign_up_list();
+				}, 500);
+			};
+		});
 	};
 
 	//筛选时间
 	change_time(val: any) {
 		//页码不重置为1的话 有可能请求不到数据
-		this.send_data.page = 1;
 		this.table_data.page.current_page = 1;
-		sessionStorage.setItem("sign_up_list_page", '1');
+		this.send_data.p = 1;
+		sessionStorage.setItem("sign_up_list_p", "1");
 		var that: any = this;
-		this.send_data.where.stime = val[0] ? that.$moment(val[0]).valueOf() / 1000 : "",
-		this.send_data.where.etime = val[1] ? that.$moment(val[1]).valueOf() / 1000 : "",
-		sessionStorage.setItem("sign_up_list_stime", this.send_data.where.stime);
-		sessionStorage.setItem("sign_up_list_etime", this.send_data.where.etime);
-		this.sign_up_list();
-	};
-
-	//筛选注册时间
-	change_time_register(val: any) {
-		//页码不重置为1的话 有可能请求不到数据
-		this.send_data.page = 1;
-		this.table_data.page.current_page = 1;
-		sessionStorage.setItem("sign_up_list_page", '1');
-		var that: any = this;
-		this.send_data.where.reg_stime = val[0] ? that.$moment(val[0]).valueOf() / 1000 : "",
-		this.send_data.where.reg_etime = val[1] ? that.$moment(val[1]).valueOf() / 1000 : "",
-		sessionStorage.setItem("sign_up_list_reg_stime", this.send_data.where.reg_stime);
-		sessionStorage.setItem("sign_up_list_reg_etime", this.send_data.where.reg_etime);
+		this.send_data.start_time = val[0] ? that.$moment(val[0]).valueOf() / 1000 : "",
+		this.send_data.end_time = val[1] ? that.$moment(val[1]).valueOf() / 1000 : "",
+		sessionStorage.setItem("sign_up_list_start_time", this.send_data.start_time);
+		sessionStorage.setItem("sign_up_list_end_time", this.send_data.end_time);
 		this.sign_up_list();
 	};
 
 	//清空时间
 	clear_time () {
 		var that: any = this;
-		this.send_data.where.stime = "",
-		this.send_data.where.etime = "",
-		sessionStorage.setItem("sign_up_list_stime", this.send_data.where.stime);
-		sessionStorage.setItem("sign_up_list_etime", this.send_data.where.etime);
-		this.sign_up_list();
-	};
-
-	//清空时间
-	clear_time_register () {
-		var that: any = this;
-		this.send_data.where.reg_stime = "",
-		this.send_data.where.reg_etime = "",
-		sessionStorage.setItem("sign_up_list_reg_stime", this.send_data.where.etime);
-		sessionStorage.setItem("sign_up_list_reg_etime", this.send_data.where.etime);
+		this.send_data.start_time = "",
+		this.send_data.end_time = "",
+		sessionStorage.setItem("sign_up_list_start_time", this.send_data.start_time);
+		sessionStorage.setItem("sign_up_list_end_time", this.send_data.end_time);
 		this.sign_up_list();
 	};
 	
 	//改变页码
 	change_page(val: any) {
 		this.table_data.page.current_page = val;
-		this.send_data.page = val;
-		sessionStorage.setItem("sign_up_list_page", val);
+		this.send_data.p = val;
+		sessionStorage.setItem("sign_up_list_p", val);
 		this.sign_up_list();
 	};
 
@@ -262,13 +241,13 @@ export default class sign_up_list extends Vue{
 	//改变状态
 	change_state (index: any, row: any) {
 		var that: any = this;
-		if (row.is_lock == 0) {
-			that.$confirm("确定禁用ID为 " + row.user_id +  " 的账户？", "提示", { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then( () => {
+		if (row.status == 1) {
+			that.$confirm("确定禁用ID为 " + row.id +  " 的商家？", "提示", { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then( () => {
 				this.$store.dispatch("change_state_user", { userSN: row.user_sn, isLock: '1' }).then( (res: any) => {
 					if (res.code == 0) {
 						console.log("改变状态", res);
-						this.table_data.table.lists[index].is_lock = 1;
-						that.$message({ type: "success", message: "已成功禁用ID为 " + row.user_id + " 的账户！", duration: 2000 });
+						this.table_data.table.lists[index].status = 2;
+						that.$message({ type: "success", message: "已成功禁用ID为 " + row.id + " 的商家！", duration: 2000 });
 					}else {
 						//登录失败提示
 						this.$message({ message: res.msg, type: "error", duration: 2500 });
@@ -276,12 +255,12 @@ export default class sign_up_list extends Vue{
 				})
 			});
 		}else {
-			that.$confirm("确定开启ID为 " + row.user_id +  " 的账户？", "提示", { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then( () => {
+			that.$confirm("确定开启ID为 " + row.id +  " 的商家？", "提示", { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then( () => {
 				this.$store.dispatch("change_state_user", { userSN: row.user_sn, isLock: '0' }).then( (res: any) => {
 					if (res.code == 0) {
 						console.log("改变状态", res);
-						this.table_data.table.lists[index].is_lock = 0;
-						that.$message({ type: "success", message: "已成功开启ID为 " + row.user_id + " 的账户！", duration: 2000 });
+						this.table_data.table.lists[index].status = 1;
+						that.$message({ type: "success", message: "已成功开启ID为 " + row.id + " 的商家！", duration: 2000 });
 					}else {
 						//登录失败提示
 						this.$message({ message: res.msg, type: "error", duration: 2500 });
@@ -293,7 +272,7 @@ export default class sign_up_list extends Vue{
 
 	//查看
 	look_up (row: any) {
-		this.$router.push({ path: '/user/details', query: { id: row.user_id } });
+		this.$router.push({ path: '/business/details', query: { club_id: row.id } });
 	};
 }
 

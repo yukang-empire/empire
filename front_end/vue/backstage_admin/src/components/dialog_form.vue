@@ -1,6 +1,12 @@
 <template>
     <el-dialog class='dialog_form' :title="dialog_data.title" :visible.sync="dialog_data.is_dialog" width="700px" center>
         <el-form :model="dialog_data.form_data" :rules="dialog_data.form_rules" ref="dialog_ref">
+			<!-- 编辑虚拟人数 -->
+			<div v-if="dialog_data.type == 'invent_person'">
+				<el-form-item label="输入虚拟人数:" prop="person_num">
+					<el-input v-model="dialog_data.form_data.person_num" placeholder="请输入虚拟人数" @input='limit_input_person_num'></el-input>
+				</el-form-item>
+			</div>
             <!-- 修改密码 -->
             <div v-if="dialog_data.type == 'password'">
                 <el-form-item label="原密码:" prop="password">
@@ -15,7 +21,7 @@
             </div>
             <div v-if="dialog_data.type == 'course'">
                 <el-form-item label="课程节数:" prop="tax_num">
-                    <el-input v-model="dialog_data.form_data.tax_num" placeholder="请输入课程节数" clearable maxlength="20" show-word-limit @input='limit_input'></el-input>
+                    <el-input v-model="dialog_data.form_data.tax_num" placeholder="请输入课程节数" clearable maxlength="20" show-word-limit @input='limit_input_tax_num'></el-input>
                 </el-form-item>
                 <el-form-item label="私教费用:" prop="price">
                     <el-input type='number' v-model="dialog_data.form_data.price" placeholder="请输入私教总费用"></el-input>
@@ -157,8 +163,11 @@ export default class dialog_form extends Vue{
     };
 
     //不允许输入中文
-    limit_input () {
+    limit_input_tax_num () {
         this.dialog_data.form_data.tax_num = this.dialog_data.form_data.tax_num.replace(/[^\d]/g, '');
+	};
+	limit_input_person_num () {
+        this.dialog_data.form_data.person_num = this.dialog_data.form_data.person_num.replace(/[^\d]/g, '');
     };
     
     //实时记录密码
