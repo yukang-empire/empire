@@ -122,7 +122,7 @@ export default class cap_treasure_list extends Vue{
 	cap_treasure_list () {
 		this.$store.dispatch("cap_treasure_list", this.send_data).then( (res: any) => {
 			console.log("用户列表", res);
-			if (res.code == 0) {
+			if (res.code == 0 || res.status == 1) {
 				this.table_data.table.lists = res.data;
 				//提取长度出来 提高for循环性能
 				var lists = this.table_data.table.lists;

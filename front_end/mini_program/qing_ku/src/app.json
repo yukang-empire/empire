@@ -1,7 +1,10 @@
 {
   "pages": [
-    "pages/home/sign_in/main",
+    "pages/home/own_steps/main",
+    "pages/home/team_steps/main",
     "pages/home/index/main",
+    "pages/home/sign_in/main",
+    "pages/home/clock_in/main",
     "pages/gym/index/main",
     "pages/home/rule/main",
     "pages/home/walk_money/main",

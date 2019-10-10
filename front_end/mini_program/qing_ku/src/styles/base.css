@@ -146,3 +146,89 @@ input[type="button"],button {
     position: absolute;
     transform: translate(-50%,-50%);
 }
+.dialog_diy {
+	position: fixed;
+	left: 0;
+	top: 0;
+	height: 100%;
+	width: 100%;
+	z-index: 999;
+	background-color: rgba(0, 0, 0, 0.6);
+}
+.dialog_diy_main {
+	background-color: #fff;
+	border-radius: 10px;
+	flex-direction: column;
+	padding: 20px 0 25px 0;
+	width: 70%;
+}
+.dialog_diy_main_02 {
+	padding: 0;
+}
+.dialog_diy_title {
+	background-color: #e8f8f6;
+	color: #31BFAD;
+	font-size: 16px;
+	border-radius: 20px;
+	width: 80%;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+}
+.dialog_diy_content {
+	margin: 40px 0;
+	color: #666666;
+	text-align: center;
+}
+.dialog_diy_btn {
+	border: 1px solid #84d9ce;
+	color: #31BFAD;
+	font-size: 14px;
+	padding: 0 25px;
+	height: 35px;
+	line-height: 35px;
+	border-radius: 5px;
+}
+.dialog_diy_header {
+	position: relative;
+	width: 100%;
+	height: 200px;
+}
+.dialog_diy_header_bg {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	border-top-right-radius: 10px;
+	border-top-left-radius: 10px;
+}
+.dialog_diy_header_h3 {
+	position: absolute;
+	top: 15px;
+	width: 100%;
+	text-align: center;
+	color: #fff;
+	font-size: 22px;
+}
+.dialog_diy_header_close {
+	position: absolute;
+	top: 12px;
+	right: 10px;
+	width: 15px;
+	height: 15px;
+}
+.dialog_diy_content02 {
+	font-weight: 900;
+	margin: 10px 0 20px 0;
+}
+.dialog_diy_btn02 {
+	width: 90%;
+	border-radius: 5px;
+	background-color: #FFB04A;
+	color: #fff;
+	font-weight: 900;
+	text-align: center;
+	height: 42px;
+	line-height: 42px;
+	margin-bottom: 20px;
+}

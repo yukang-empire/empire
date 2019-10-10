@@ -57,14 +57,14 @@
 		<img src="../../../../static/imgs/home_zlzq.jpg" alt="" mode='widthFix' style="width: 100%;">
 	</div>
 	<div class="flex_center" style='margin: 5px 15px;'>
-		<div class="flex_center game" style="margin-right: 10px;">
+		<div class="flex_center game" style="margin-right: 10px;" @click='to_sign_in'>
 			<img style="width: 60px;" mode='widthFix' src="../../../../static/imgs/home_get_up.png" alt="">
 			<div class="game01">
 				<h3 style="font-weight: 900;">早起打卡</h3>
-				<p style="color: #999;font-size: 13px;">早起瓜分奖励	</p>
+				<p style="color: #999;font-size: 13px;">早起瓜分奖励</p>
 			</div>
 		</div>
-		<div class="flex_center game">
+		<div class="flex_center game" @click='to_treasure'>
 			<img style="width: 75px;" mode='widthFix' src="../../../../static/imgs/home_box.png" alt="">
 			<div class="game01">
 				<h3 style="font-weight: 900;">酷点夺宝</h3>
@@ -126,7 +126,34 @@ export default {
   },
   methods: {
 	sign_in () {
-		mpvue.navigateTo({ url: "../index//main" });
+		wx.getStorage({
+			key: 'token',
+			success (res) {
+				mpvue.navigateTo({ url: "../sign_in/main" });
+			},
+			fail () {
+				Toast('请先登录');
+				mpvue.navigateTo({ url: "../../my/login/main?src=" + 'home' });
+			}
+		});
+	},
+	//早起打卡
+	to_sign_in () {
+		var that = this;
+		wx.getStorage({
+			key: 'token',
+			success (res) {
+				mpvue.navigateTo({ url: "../clock_in/main" });
+			},
+			fail () {
+				Toast('请先登录');
+				mpvue.navigateTo({ url: "../../my/login/main?src=" + 'home' });
+			}
+		});
+	},
+	//酷点夺宝
+	to_treasure () {
+		Toast('敬请期待！');
 	},
 	//同步步数
 	sync_steps () {

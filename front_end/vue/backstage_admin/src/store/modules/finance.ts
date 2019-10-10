@@ -39,7 +39,7 @@ const home =  {
                     });
                 });
             }else {
-            Message({ message: '对不起！您没有查看此内容的权限！', type: 'error', duration: 2500 });
+            	Message({ message: '对不起！您没有查看此内容的权限！', type: 'error', duration: 2500 });
             };
         },
         //提现通过

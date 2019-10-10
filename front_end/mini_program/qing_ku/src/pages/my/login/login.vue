@@ -96,14 +96,22 @@ export default {
 								wx.setStorageSync('token', res.data.data.userid);
 								Toast('登陆成功！');
 								setTimeout(() => {
-									if (that.query.src == "order") {
-										mpvue.navigateTo({ url: "../../gym/submit_order/main?goods_id=" + that.query.goods_id });
-									}else if (that.query.src == "my") {
-										mpvue.switchTab({ url: "../index/main" });
-									}else if (that.query.src == "step") {
-										mpvue.navigateTo({ url: "../../home/step/main" });
-									}else if (that.query.src == "home") {
-										mpvue.switchTab({ url: "../../home/index/main" });
+									switch (that.query.src) {
+										case 'order':
+											mpvue.navigateTo({ url: "../../gym/submit_order/main?goods_id=" + that.query.goods_id });
+											break;
+										case 'my':
+											mpvue.switchTab({ url: "../index/main" });
+											break;
+										case 'step':
+											mpvue.navigateTo({ url: "../../home/step/main" });
+											break;
+										case 'home':
+											mpvue.switchTab({ url: "../../home/index/main" });
+											break;
+										case 'sign_in':
+											mpvue.navigateTo({ url: "../../home/sign_in/main" });
+											break;
 									};
 								}, 500);
 							}else {

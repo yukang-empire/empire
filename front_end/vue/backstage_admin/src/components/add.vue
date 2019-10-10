@@ -100,37 +100,24 @@
 				</div>
 				
 				<!-- 早起打卡参数配置 -->
-				<div v-if='add_data.type == "sign_up_set"'>
+				<div v-if='add_data.type == "sign_up_set"' class="sign_up_set">
 					<el-form-item label="打卡时间:" prop="sign_up_time">
-						<el-date-picker
+						<el-time-picker
 							is-range
-							type="datetimerange"
 							v-model="ruleForm.sign_up_time"
 							range-separator="至"
 							start-placeholder="开始时间"
 							end-placeholder="截止时间"
 							@change='select_sign_up_time'
 							placeholder="选择时间范围">
-						</el-date-picker>
+						</el-time-picker>
 					</el-form-item>
-					<el-form-item label="工号:" prop="workid">
-						<el-input v-model="ruleForm.workid" placeholder="请输入员工工号" clearable maxlength="20" show-word-limit @change='input_data'></el-input>
-					</el-form-item>
-					<el-form-item label="密码:" prop="password">
-						<el-input v-model="ruleForm.password" placeholder="请输入密码" show-password clearable @change='input_data'></el-input>
-					</el-form-item>
-					<!-- <el-form-item label="状态:" prop="staff_state">
-						<el-switch v-model="ruleForm.staff_state" active-color="#13ce66" inactive-color="#ccc"> </el-switch>
-					</el-form-item> -->
-					<el-form-item label="角色:" prop="roleID">
-						<el-select v-model="ruleForm.roleID" filterable placeholder="请选择权限角色" @change='roleID_change'>
-							<el-option
-								v-for="item in staff_roles"
-								:key="item.RoleId"
-								:label="item.RoleName"
-								:value="item.RoleId">
-							</el-option>
-						</el-select>
+					<el-form-item label="每期报名结束时间:" prop="sign_up_deadline">
+						<el-time-picker
+							v-model="ruleForm.sign_up_deadline"
+							@change='select_sign_up_deadline'
+							placeholder="选择结束时间">
+						</el-time-picker>
 					</el-form-item>
 				</div>
                 
@@ -214,6 +201,7 @@
                     <checkbox_modules :data='checkbox_finance' :checked_option='checkbox_finance_already' @click_all='click_all_finance' @click_option='click_option_finance'></checkbox_modules>
                     <checkbox_modules :data='checkbox_share_profit' :checked_option='checkbox_share_profit_already' @click_all='click_all_share_profit' @click_option='click_option_share_profit'></checkbox_modules>
                     <!-- <checkbox_modules :data='checkbox_set' :checked_option='checkbox_set_already' @click_all='click_all_set' @click_option='click_option_set'></checkbox_modules> -->
+                    <checkbox_modules :data='checkbox_game' :checked_option='checkbox_game_already' @click_all='click_all_game' @click_option='click_option_game'></checkbox_modules>
                     <checkbox_modules :data='checkbox_set' :checked_option='checkbox_set_already' @click_all='click_all_set' @click_option='click_option_set'></checkbox_modules>
                 </div>
                     
@@ -342,22 +330,39 @@
                     <el-form-item label="结算价格(元):" prop="cost_price">
                         <el-input type='number' v-model="ruleForm.cost_price" placeholder="请输入商品的结算价格" clearable maxlength="10" show-word-limit @change='input_data'></el-input>
                     </el-form-item>
-                    <el-form-item label="购买须知:" prop="card_info">
+                    <el-form-item label="购买须知:" prop="card_info"> 
                         <el-input type="textarea" @change='input_data' :autosize="{ minRows: 5, maxRows: 10 }" v-model="ruleForm.card_info" placeholder="请输入商品购买须知" maxlength="500" show-word-limit @keyup.13.native="add_submit()"></el-input>
                     </el-form-item>
                 </div>
-                
+                  
                 <!-- 新增商家/门店 -->
                 <div v-if="
                     add_data.type == 'business' ||
-                    add_data.type == 'store'
+					add_data.type == 'store' ||
+					add_data.type == 'sign_up_set'
                 ">
                     <p v-if="add_data.type == 'business' || add_data.type == 'staff'" style="margin-bottom: 20px;">
                         <svg class="icon" aria-hidden="true">
                             <use xlink:href="#iconruzhuchenggongdapx"></use>
                         </svg>
                         <span>填写门店信息</span>
-                    </p>
+					</p>
+					
+					<p v-if="add_data.type == 'sign_up_set'" style="margin-bottom: 20px;">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#iconqian1"></use>
+                        </svg>
+                        <span>资金参数</span>
+					</p>
+					
+					<div v-if="add_data.type == 'sign_up_set'" class="sign_up_set">
+						<el-form-item label="每期报名金额(元):" prop="sign_up_price">
+                            <el-input v-model="ruleForm.sign_up_price" placeholder="每期报名金额(元)" clearable @change='input_data' @input='limit_input("sign_up_price")'></el-input>
+						</el-form-item>
+						<el-form-item label="每期扣除未打卡金额(百分比):" prop="sign_up_deduct">
+                            <el-input v-model="ruleForm.sign_up_deduct" placeholder="每期扣除未打卡金额(百分比)" clearable @change='input_data' @input='limit_input("sign_up_deduct")'></el-input>
+                        </el-form-item>
+					</div>
                     
                     <div v-if="add_data.type == 'business' || add_data.type == 'store'">
                         <el-form-item label="门店名称:" prop="club_name">
@@ -400,7 +405,7 @@
                         </el-form-item>
                     </div>
 
-                    <el-form-item label="门店环境照片:" prop="shop_image">
+                    <el-form-item label="门店环境照片:" prop="shop_image" v-if="add_data.type == 'business' || add_data.type == 'store'">
                         <span class="bottom_tip">(至多5张)</span>
                         <ul class="show_store_imgs flex_center">
                             <li class="flex_center" v-for='(item, index) in show_cropper.store' @mouseenter="enter_store_img(index)" @mouseleave="leave_store_img()">
@@ -432,7 +437,7 @@
                     @cancel_crop='cancel_crop'
                     @com_crop='com_crop'
                     />
-                    <el-form-item label="门店介绍:" prop="content">
+                    <el-form-item label="门店介绍:" prop="content" v-if="add_data.type == 'business' || add_data.type == 'store'">
                         <el-input type="textarea" @change='input_data' :autosize="{ minRows: 5, maxRows: 10 }" v-model="ruleForm.content" placeholder="请输入门店介绍" maxlength="500" show-word-limit @keyup.13.native="add_submit()"></el-input>
                     </el-form-item>
                 </div>
@@ -477,6 +482,14 @@ export default class add extends Vue{
     
     //表单数据
     private ruleForm: any = {
+
+		//早起打卡
+		sign_up_time: '',
+		sign_up_s_time: null,
+		sign_up_e_time: null,
+		sign_up_deadline: '',
+		sign_up_price: '',
+		sign_up_deduct: '',
 
         //轮播图
         carousel_name: '',
@@ -616,6 +629,20 @@ export default class add extends Vue{
 
     //验证规则
     private add_rules: object = {
+
+		//早起打卡
+		sign_up_time: [
+            { required: true, message: '请选择打卡时间', trigger: 'blur' },
+		],
+		sign_up_price: [
+            { required: true, message: '请选择每期报名结束时间', trigger: 'blur' },
+		],
+		sign_up_deadline: [
+            { required: true, message: '请输入每期报名金额(元)', trigger: 'blur' },
+		],
+		sign_up_deduct: [
+            { required: true, message: '请输入每期扣除未打卡金额(百分比)', trigger: 'blur' },
+        ],
 
         //轮播图
         carousel_name: [
@@ -974,6 +1001,15 @@ export default class add extends Vue{
             {id: 20045, name: '禁用员工'},
             {id: 20046, name: '修改员工密码'},
         ]
+	};
+	
+	private checkbox_game: any = {
+        name: '小游戏',
+        options: [
+            {id: 20059, name: '展示小游戏模块'},
+            {id: 20060, name: '编辑虚拟人数'},
+            {id: 20061, name: '配置早起打卡参数'},
+        ]
     };
     
     private checkbox_home_already: any = [];
@@ -981,10 +1017,26 @@ export default class add extends Vue{
     private checkbox_business_already: any = [];
     private checkbox_order_already: any = [];
     private checkbox_set_already: any = [];
+    private checkbox_game_already: any = [];
     private checkbox_share_profit_already: any = [];
     private checkbox_finance_already: any = [];
     
-    private final_power: any = [];
+	private final_power: any = [];
+
+	//早起打卡-选择时间
+	select_sign_up_time (val) {
+		this.ruleForm.sign_up_s_time = val[0].getTime();
+		this.ruleForm.sign_up_e_time = val[1].getTime();
+	};
+	select_sign_up_deadline (val) {
+		this.ruleForm.sign_up_deadline = val.getTime();
+	};
+	
+	//不允许输入中文
+    limit_input (name) {
+        this.ruleForm[name] = this.ruleForm[name].replace(/[^\d]/g, '');
+        // sessionStorage.setItem('add_form_data', JSON.stringify(this.ruleForm));
+	};
 
     screen_checkbox (val, vals) {
         for (var i = 0; i < vals.length; i++) {
@@ -1045,6 +1097,13 @@ export default class add extends Vue{
     };
     click_option_share_profit (val) {
         this.screen_checkbox(val, this.checkbox_share_profit.options);
+	};
+	
+    click_all_game (val) {
+        this.screen_checkbox(val, this.checkbox_game.options);
+    };
+    click_option_game (val) {
+        this.screen_checkbox(val, this.checkbox_game.options);
     };
 
     // 将base64的图片转换为File文件
@@ -1504,6 +1563,7 @@ export default class add extends Vue{
             this.checkbox_business_already = arr_power;
             this.checkbox_order_already = arr_power;
             this.checkbox_set_already = arr_power;
+            this.checkbox_game_already = arr_power;
             this.checkbox_share_profit_already = arr_power;
             this.checkbox_finance_already = arr_power;
             // console.log('this.ruleForm.Permission', this.ruleForm.Permission);
@@ -1654,6 +1714,10 @@ export default class add extends Vue{
         .add .el-checkbox.is-bordered {
             width: 175px;
             text-align: center;
-        }
+		}
+		
+		.add .sign_up_set .el-input__inner, .el-date-editor.el-input {
+			width: 400px;
+		}
     }
 </style>

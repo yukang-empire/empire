@@ -132,8 +132,8 @@ export default class sign_up_list extends Vue{
 	sign_up_list () {
 		this.$store.dispatch("sign_up_list", this.send_data).then( (res: any) => {
 			console.log("早起打卡列表", res);
-			if (res.code == 0 || res.status == 0) {
-				this.table_data.table.lists = res.result;
+			if (res.code == 0 || res.status == 1) {
+				this.table_data.table.lists = res.result.reverse();
 				//提取长度出来 提高for循环性能
 				var lists = this.table_data.table.lists;
 				var length = lists.length;
@@ -188,7 +188,7 @@ export default class sign_up_list extends Vue{
 		console.log('send_data', send_data);
 		this.$store.dispatch("revise_person", send_data).then( (res: any) => {
 			console.log("确定编辑虚拟人数", res);
-			if (res.status == 0) {
+			if (res.status == 1) {
 				this.$message({ message: res.msg, type: "success", duration: 2500 });
 				this.dialog_person.is_dialog = false;
 				setTimeout(() => {

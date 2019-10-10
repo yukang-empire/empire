@@ -9,7 +9,7 @@ const game = {
         title: '小游戏',
         icon: '#iconyouxi',
         hidden: false,
-        roles: '20009'
+        roles: '20059'
     },
     children: [
         {
@@ -19,7 +19,7 @@ const game = {
             meta: {
                 title: '早起打卡',
                 hidden: false,
-				roles: '20009'
+				roles: '20059'
             } 
 		},
 		{
@@ -29,7 +29,7 @@ const game = {
             meta: {
                 title: '参数配置',
                 hidden: true,
-				roles: '20009'
+				roles: '20061'
             } 
         },
         {

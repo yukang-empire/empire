@@ -31,6 +31,7 @@
 	justify-content: space-between;
 	flex-direction: column;
 	height: 100%;
+	width: 35px;
 }
 .before_no_circle, .before_yes_circle, .today_circle, .future_circle {
 	width: 30px;
@@ -54,12 +55,18 @@
 	color: #666666;
 	margin-bottom: 3px;
 }
+.sign_in_date .future:last-of-type .time{
+	position: absolute;
+	width: 35px;
+	right: -15px;
+}
 .header_bottom {
 	background-color: #fff;
-	margin: 4% 20px;
+	margin: 20px 0 10px 0;
 	border-radius: 8px;
 	width: 92%;
-	z-index: -10;
+	z-index: 0;
+	padding-bottom: 20px;
 }
 .sign_in_date {
 	position: relative;
@@ -71,7 +78,7 @@
 	position: absolute;
 	bottom: 13px;
 	left: 0;
-	width: 100%;
+	width: 98%;
 	z-index: -2;
 }
 .common_class:first-of-type .before_no_circle {
@@ -99,4 +106,85 @@
 .today_yes .today_text {
 	color: #fff;
 	font-weight: 900;
+}
+.today_no .today_text {
+	color: #fff;
+	font-weight: 900;
+}
+.sign_in_btn {
+	background-color: #FFBD2E;
+	border-radius: 5px;
+	color: #fff;
+	font-weight: 900;
+	width: 70%;
+	margin-left: 15%;
+	height: 45px;
+	line-height: 45px;
+	text-align: center;
+}
+.sign_in_btn_02 {
+	background-color: #CCCCCC;
+}
+.footer {
+	background-color: #fff;
+	border-radius: 10px;
+	color: #333;
+	width: 92%;
+}
+.footer_h3 {
+	font-weight: 900;
+	padding: 10px 25px;
+	border-bottom: 1px solid #E0E0E0;
+}
+.footer_li {
+	border-bottom: 1px solid #E6E6E6;
+	margin: 0 25px 0 20px;
+	padding: 10px 0;
+	font-size: 15px;
+}
+.footer_li:last-of-type {
+	border: none;
+}
+.footer_li_left_img {
+	width: 25px;
+	height: 25px;
+	margin-right: 12px;
+}
+.footer_li_left {
+	display: flex;
+	align-items: center;
+}
+.footer_li_left_img_02 {
+	width: 16px;
+	height: 16px;
+	margin-left: 8px;
+}
+
+.footer_li_left_div_p_01 {
+	color: #31BFAD;
+	color: #333;
+}
+.footer_li_left_div_p_02 {
+	color: #ccc;
+	display: flex;
+	align-items: center;
+	font-size: 13px;
+}
+.footer_li_right {
+	color: #666;
+	font-size: 13px;
+	margin-right: 6px;
+}
+.footer_li_right_span_02 {
+	color: #FFBD2E;
+}
+.footer_li_right_btn {
+	background-color: #31BFAD;
+	color: #fff;
+	font-size: 13px;
+	border-radius: 5px;
+	padding: 0 15px;
+	height: 28px;
+	line-height: 28px;
+	text-align: center;
 }

@@ -90,6 +90,18 @@ const home =  {
                 });
 			});
 		}, 
+		// 签到打卡
+		to_sign_in (state, data) {
+            return new Promise((resolve, reject) => {
+                fly.post("/index.php?m=Api&c=Exercise&a=sign_in", data).then( (res) => {
+                    //返回数据给调起dispatch的那边
+                    resolve(res);
+                }).catch( error => {
+                    //返回error给调起dispatch的那边
+                    reject(error);
+                });
+			});
+		}, 
 	}
 };
 

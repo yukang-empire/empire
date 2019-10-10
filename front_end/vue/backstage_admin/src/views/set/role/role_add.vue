@@ -131,7 +131,12 @@ export default class role_add extends Vue{
 
             //分润管理
                 // {fid: '20008', title: '查看分润详情', url: '', controller: '', action: '', note: '查看分润详情'},
-                // {fid: '20008', title: '新增分润', url: '', controller: '', action: '', note: '新增分润'},
+				// {fid: '20008', title: '新增分润', url: '', controller: '', action: '', note: '新增分润'},
+				
+			//小游戏
+                // {fid: '20010', title: '查看小游戏模块', url: '', controller: '', action: '', note: '查看小游戏模块'},
+                // {fid: '20010', title: '编辑虚拟人数', url: '', controller: '', action: '', note: '编辑早起打卡的虚拟人数'},
+                // {fid: '20010', title: '配置早起打卡参数', url: '', controller: '', action: '', note: '配置早起打卡的参数'},
 
             //设置
                 // //角色

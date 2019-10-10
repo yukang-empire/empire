@@ -301,7 +301,7 @@ export default class layout extends Vue{
                 width: 100px;
             }
             .el-form-item__label {
-                min-width: 110px;
+                min-width: 210px;
             }
             .el-form-item__error {
                 width: 100%;

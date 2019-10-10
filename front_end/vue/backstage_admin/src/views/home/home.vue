@@ -142,7 +142,7 @@
                             <b>{{ home_data.cool_point.produce }}</b>
                         </div>
                     </li>
-                    <li class="flex_center" style="background-color: #a47bd0;">
+                    <li class="flex_center" style="background-color: #9886ab;">
 						<div>
 							<svg class="icon" aria-hidden="true">
 								<use xlink:href="#iconcaiwu"></use>

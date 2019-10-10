@@ -20,10 +20,9 @@ export default {
 	onLoad () {
 		var that = this;
 		wx.getStorage({
-			key: 'ad_link',
+			key: 'token',
 			success (res) {
-				console.log('ad_link', res.ad_link);
-				that.url = 'https://shop.technologyle.com' + res.data;
+				that.url = 'https://shop.technologyle.com/sign_up/index.html?token=' + res.data;
 			},
 			fail (res) {
 				Toast('敬请期待！');

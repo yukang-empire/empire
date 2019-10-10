@@ -1,6 +1,6 @@
 <template>
 	<div class="sign_up_set">
-		<add :add_data='sign_up_set_data' @add_submit='add_business' />
+		<add :add_data='sign_up_set_data' @add_submit='add_sign_up_set' />
 	</div>
 </template>
 
@@ -26,30 +26,28 @@ export default class sign_up_set extends Vue{
 		
 	};
 
-	beforeRouteLeave (to: any, from: any, next: () => void): void {
-		if (sessionStorage.getItem('add_form_data')) {
-			this.$confirm("表单数据将会被全部清空，是否继续离开？", "提示", { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }).then( () => {
-				sessionStorage.removeItem('show_license');
-				sessionStorage.removeItem('show_store');
-				sessionStorage.removeItem('checkbox_checked');
-				sessionStorage.removeItem('add_form_data');
-				next();
-			}).catch(() => {
-				next(false);
-			});
-		}else {
-			next();
-		};
-	};
-
-	//新增配置
+	//编辑配置
 	add_sign_up_set (ruleForm) {
-		this.$store.dispatch("add_sign_up_set", ruleForm).then( (res: any) => {
-			console.log("新增商家", res);
+		var that = this;
+		var start_clock = this.$moment(ruleForm.sign_up_s_time).format('HH:mm');
+		var end_clock = this.$moment(ruleForm.sign_up_e_time).format('HH:mm');
+		var entered_end = this.$moment(ruleForm.sign_up_deadline).format('HH:mm');
+		var send_data = {
+			start_clock: start_clock,
+			end_clock: end_clock,
+			entered_end: entered_end,
+			clock_cut: ruleForm.sign_up_deduct,
+			one_price: ruleForm.sign_up_price + '.00',
+		};
+		this.$store.dispatch("add_sign_up_set", send_data).then( (res: any) => {
+			console.log("编辑配置", res);
 			if (res.code == 0 || res.status == 1) {
 				//新增成功提示
-				this.$message({ message: '新增成功！', type: "success", duration: 1500 });
-				this.$router.push({ path: '/game/sign_up' });
+				this.$message({ message: '修改成功！', type: "success", duration: 1500 });
+				sessionStorage.removeItem('add_form_data');
+				setTimeout(() => {
+					that.$router.push({ path: '/game/sign_up' });
+				}, 500);
 			}else {
 				//失败提示
 				this.$message({ message: res.msg, type: "error", duration: 2500 });
@@ -63,6 +61,6 @@ export default class sign_up_set extends Vue{
 <style lang="scss" scoped>
 
 	@media screen and (min-width: 769px) {
-		
+
 	}
 </style>
