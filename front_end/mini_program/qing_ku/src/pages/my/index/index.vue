@@ -2,17 +2,31 @@
   <div class="my">
 	<div class="header">
 		<img class="bg_my" src="../../../../static/imgs/bg_my.png" alt="bg" mode='widthFix'>
-		<i class="iconfont">&#xe62d;</i>
+		<!-- <i class="iconfont">&#xe62d;</i> -->
 		<div class="flex_center user_info">
 			<img @click='to_login' class="default_head" src="../../../../static/imgs/default_head.png" alt="head" v-if='!my_data.head_pic'>
 			<img @click='to_login' class="default_head" :src="'https://shop.technologyle.com' + my_data.head_pic" alt="head" v-if='my_data.head_pic'>
 			<span @click='to_login' v-if='!my_data.nickname'>登录 / 注册</span>
-			<span v-if='my_data.nickname || my_data.mobile'>{{ my_data.nickname ? my_data.nickname : my_data.mobile }}</span>
+			<span @click='to_login' v-if='my_data.nickname || my_data.mobile'>{{ my_data.nickname ? my_data.nickname : my_data.mobile }}</span>
 		</div>
-		<div class="flex_center bottom_info">
+		<div class="flex_center bottom_info" v-if='my_data.distribut_level == 0' :style="{top: posi_top + 'px'}">
 			<img class="yxhj" src="../../../../static/imgs/yxhj.png" alt="" mode='widthFix'>
 			<span>开通会员卡分享得红包</span>
 			<img class="immed_open" src="../../../../static/imgs/immed_open.png" alt="" mode='widthFix'>
+		</div>
+		<div class="flex_between bottom_info other" v-if='my_data.distribut_level == 1'>
+			<div class="flex_center">
+				<img class="silver_card" src="../../../../static/imgs/silver_card.png" alt="" mode='widthFix'>
+				<span>银卡会籍</span>
+			</div>
+			<img class="immed_open" src="../../../../static/imgs/imme_upgrade.png" alt="" mode='widthFix'>
+		</div>
+		<div class="flex_between bottom_info other" v-if='my_data.distribut_level == 2'>
+			<div class="flex_center">
+				<img class="gold_card" src="../../../../static/imgs/gold_card.png" alt="" mode='widthFix'>
+				<span>金卡会籍</span>
+			</div>
+			<img class="immed_open" src="../../../../static/imgs/imme_upgrade.png" alt="" mode='widthFix'>
 		</div>
 	</div>
 	<ul class="flex_center nav">
@@ -42,24 +56,25 @@
 				<img @click='jump_order' class="my_service_img" src="../../../../static/imgs/my_order.png" alt="" mode='widthFix'>
 				<span @click='jump_order' class="my_service_span">订单</span>
 			</div>
-			<div class="my_service_item">
+			<!-- <div class="my_service_item">
 				<img @click='jump_mall' class="my_service_img" src="../../../../static/imgs/my_mall.png" alt="" mode='widthFix'>
 				<span @click='jump_mall' class="my_service_span">轻酷商城</span>
-			</div>
-			<div class="my_service_item">
+			</div> -->
+			<!-- <div class="my_service_item">
 				<img @click='jump_invi' class="my_service_img" src="../../../../static/imgs/my_invi.png" alt="" mode='widthFix'>
 				<span @click='jump_invi' class="my_service_span">邀请得红包</span>
-			</div>
-			<div class="my_service_item">
+			</div> -->
+			<!-- <div class="my_service_item">
 				<img @click='jump_team' class="my_service_img" src="../../../../static/imgs/my_team.png" alt="" mode='widthFix'>
-				<span @click='jump_team' class="my_service_span">团队</span>
-			</div>
+				<span @click='jump_team' class="my_service_span">好友</span>
+			</div> -->
 			<div class="my_service_item">
 				<img @click='jump_help' class="my_service_img" src="../../../../static/imgs/my_help.png" alt="" mode='widthFix'>
 				<span @click='jump_help' class="my_service_span">帮助中心</span>
 			</div>
 		</div>
 	</div>
+	<van-toast id="van-toast" />
   </div>
 </template>
 
@@ -71,8 +86,9 @@ export default {
     return {
       my_data: {
 		nickname: '',
-		head_pic: ''
-	  }
+		head_pic: '',
+	  },
+	  posi_top: 0
     }
   },
 
@@ -125,7 +141,8 @@ export default {
 		wx.getStorage({
 			key: 'my_data',
 			success (res) {
-				mpvue.navigateTo({ url: "../team/main" });
+				// mpvue.navigateTo({ url: "../team/main" });
+				Toast('敬请期待！');
 			},
 			fail (res) {
 				mpvue.navigateTo({ url: "../login/main?src=" + 'my' });
@@ -179,6 +196,15 @@ export default {
 
   onShow () {
 	this.get_user_data();
+  },
+  created () {
+	  //检测系统
+	  var that = this;
+		wx.getSystemInfo({
+			success: (res) => {
+				that.posi_top = res.screenWidth / 3.312;
+			}
+		});
   }
 }
 </script>

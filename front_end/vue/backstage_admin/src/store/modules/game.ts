@@ -75,7 +75,105 @@ const game =  {
             }else {
             	Message({ message: '对不起！您没有修改此内容的权限！', type: 'error', duration: 2500 });
             };
-        },
+		},
+		//夺宝列表
+		cap_treasure_list (state: any, data: any) {
+			if (arr_power.includes('20062')) {
+				var send_data: any = new FormData();
+				send_data.append("p", data.p);
+				send_data.append("size", data.size);
+				send_data.append("start_time", data.start_time);
+				send_data.append("end_time", data.end_time);
+				send_data.append("token", sessionStorage.getItem('token'));
+				return new Promise((resolve, reject) => {
+					axios.post( state.state.domain02 + "/index.php?m=Api&c=Game&a=admin_luck_list", send_data).then( (res: any) => {
+						//返回数据给调起dispatch的那边
+						resolve(res);
+					}).catch( error => {
+						//返回error给调起dispatch的那边
+						reject(error);
+					});
+				});
+            }else {
+            	Message({ message: '对不起！您没有查看此内容的权限！', type: 'error', duration: 2500 });
+            };
+		},
+		//新增夺宝期数
+		add_add_cap_treasure (state: any, data: any) {
+			if (arr_power.includes('20063')) {
+				var send_data: any = new FormData();
+				send_data.append("goods_name", data.goods_name);
+				send_data.append("goods_price", data.goods_price);
+				send_data.append("goods_points", data.goods_points);
+				send_data.append("total_num", data.total_num);
+				send_data.append("goods_image", data.goods_image);
+				send_data.append("token", sessionStorage.getItem('token'));
+				return new Promise((resolve, reject) => {
+					axios.post( state.state.domain02 + "/index.php?m=Api&c=Game&a=admin_add_luck", send_data).then( (res: any) => {
+						//返回数据给调起dispatch的那边
+						resolve(res);
+					}).catch( error => {
+						//返回error给调起dispatch的那边
+						reject(error);
+					});
+				});
+            }else {
+            	Message({ message: '对不起！您没有新增此内容的权限！', type: 'error', duration: 2500 });
+            };
+		},
+		//夺宝期数详情
+		cap_treasure_details (state: any, data: any) {
+			if (arr_power.includes('20065')) {
+				var send_data: any = new FormData();
+				send_data.append("id", data.id);
+				send_data.append("token", sessionStorage.getItem('token'));
+				return new Promise((resolve, reject) => {
+					axios.post( state.state.domain02 + "/index.php?m=Api&c=Game&a=admin_luck_info", send_data).then( (res: any) => {
+						//返回数据给调起dispatch的那边
+						resolve(res);
+					}).catch( error => {
+						//返回error给调起dispatch的那边
+						reject(error);
+					});
+				});
+            }else {
+            	Message({ message: '对不起！您没有查看此内容的权限！', type: 'error', duration: 2500 });
+            };
+		},
+		//生成中奖号码
+		created_num (state: any, data: any) {
+			var send_data: any = new FormData();
+			send_data.append("id", data.id);
+			send_data.append("token", sessionStorage.getItem('token'));
+			return new Promise((resolve, reject) => {
+				axios.post( state.state.domain02 + "/index.php?m=Api&c=Game&a=admin_give_no", send_data).then( (res: any) => {
+					//返回数据给调起dispatch的那边
+					resolve(res);
+				}).catch( error => {
+					//返回error给调起dispatch的那边
+					reject(error);
+				});
+			});
+		},
+		//确定开奖
+		sure_lottery (state: any, data: any) {
+			if (arr_power.includes('20064')) {
+				var send_data: any = new FormData();
+				send_data.append("luck_no", data.luck_no);
+				send_data.append("token", sessionStorage.getItem('token'));
+				return new Promise((resolve, reject) => {
+					axios.post( state.state.domain02 + "/index.php?m=Api&c=Game&a=admin_add_no", send_data).then( (res: any) => {
+						//返回数据给调起dispatch的那边
+						resolve(res);
+					}).catch( error => {
+						//返回error给调起dispatch的那边
+						reject(error);
+					});
+				});
+            }else {
+            	Message({ message: '对不起！您没有生成中奖号码的权限！', type: 'error', duration: 2500 });
+            };
+		},
     }
 };
 

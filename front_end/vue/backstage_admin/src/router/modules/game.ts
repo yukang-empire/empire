@@ -38,7 +38,38 @@ const game = {
             component: () => import('@/views/game/cap_treasure.vue'),
             meta: {
                 title: '酷点夺宝',
-                hidden: false
+                hidden: false,
+				roles: '20062'
+            }
+		},
+		{
+            path: '/game/add_cap_treasure',
+            name: 'add_cap_treasure',
+            component: () => import('@/views/game/add_cap_treasure.vue'),
+            meta: {
+                title: '新增期数',
+				hidden: true,
+				roles: '20063'
+            }
+		},
+		{
+            path: '/game/cap_treasure_info',
+            name: 'cap_treasure_info',
+            component: () => import('@/views/game/cap_treasure_info.vue'),
+            meta: {
+                title: '期数详情',
+				hidden: true,
+				roles: '20065'
+            }
+		},
+		{
+            path: '/game/lottery',
+            name: 'lottery',
+            component: () => import('@/views/game/lottery.vue'),
+            meta: {
+                title: '开奖',
+                hidden: true,
+				roles: '20064'
             }
         },
     ]

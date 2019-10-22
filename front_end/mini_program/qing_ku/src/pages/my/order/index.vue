@@ -16,19 +16,22 @@
 		<!-- 服务订单 -->
 		<div v-if='switch_index == 1'>
 			<van-tabs animated swipeable :active="status_index" color='#31BFAD' line-width='35' @change='onChange'>
+				
 				<van-tab title-style="color: #999999" title="全部订单">
 					<div class="order_li" v-for='item in orders.all' :key='item.id' v-if='orders.all.length > 0'>
-						<div class="flex_between li_title">
+						<div class="flex_between li_title" :class='{gray: item.status == 2 || item.status == 4}'>
 							<span>健身</span>
 							<span>有效期：<span class="li_deadline">{{ item.end_time }}</span></span>
 						</div>
-						<div class="flex_between li_order_num">
+						<div class="flex_between li_order_num" :class='{gray: item.status == 2 || item.status == 4}'>
 							<div>
 								<p class="li_order_id">{{ item.order_sn }}</p>
 								<p class="li_order_time">下单时间：<span>{{ item.create_time }}</span></p>
 							</div>
+							<img v-if='item.status == 2' class="status_img" src="../../../../static/imgs/order_wc.png" alt="" mode='widthFix'>
+							<img v-if='item.status == 4' class="status_img" src="../../../../static/imgs/order_tk.png" alt="" mode='widthFix'>
 						</div>
-						<div class="li_order_info">
+						<div class="li_order_info" :class='{gray: item.status == 2 || item.status == 4}'>
 							<div class="flex_between li_title02">
 								<span>{{ item.goods_name }}</span>
 								<span class="li_price">{{ item.goods_price }}元</span>
@@ -41,7 +44,7 @@
 								<img class="order_ico_address" src="../../../../static/imgs/address_icon.png" alt="">
 								<span>{{ item.province + item.city + item.area + item.address }}</span>
 							</div>
-							<div class="flex_between li_order_btn">
+							<div class="flex_between li_order_btn" v-if='item.status == 1'>
 								<div class="flex_center cancel_btn" @click='cancel_order(item.id)'>取消订单</div>
 								<div class="flex_center QR_code_btn" @click='look_QR_code(item.code, item.order_sn)'>
 									<img class="QR_ico" src="../../../../static/imgs/QR_code.png" alt="">

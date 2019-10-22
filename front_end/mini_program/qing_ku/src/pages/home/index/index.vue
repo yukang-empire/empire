@@ -39,13 +39,13 @@
 		</div>
 		
 		<div class="flex_center home_steps">
-			<div class="flex_center home_step_person" style="margin-right: 15px;">
+			<div class="flex_center home_step_person" style="margin-right: 15px;" @click='personal_steps'>
 				<img class="home_step_icon" style="width: 17px;height: 17px;" src="../../../../static/imgs/home_step_icon.png" alt="">
 				<div class="border_right"></div>
 				<span class="steps_num">{{ home_data.steps }}</span>
 				<span>步</span>
 			</div> 
-			<div class="flex_center home_step_person">
+			<div class="flex_center home_step_person" @click='team_steps'>
 				<img class="home_step_icon" mode='widthFix' src="../../../../static/imgs/home_team_icon.png" alt="">
 				<div class="border_right"></div>
 				<span class="steps_num">{{ home_data.prom_steps }}</span>
@@ -139,11 +139,43 @@ export default {
 	},
 	//早起打卡
 	to_sign_in () {
+		Toast('敬请期待！');
+		// var that = this;
+		// wx.getStorage({
+		// 	key: 'token',
+		// 	success (res) {
+		// 		// wx.setEnableDebug({
+		// 		// 	enableDebug: true
+		// 		// });
+		// 		mpvue.navigateTo({ url: "../clock_in/main" });
+		// 	},
+		// 	fail () {
+		// 		Toast('请先登录');
+		// 		mpvue.navigateTo({ url: "../../my/login/main?src=" + 'home' });
+		// 	}
+		// });
+	},
+	//个人步数
+	personal_steps () {
 		var that = this;
 		wx.getStorage({
 			key: 'token',
 			success (res) {
-				mpvue.navigateTo({ url: "../clock_in/main" });
+				mpvue.navigateTo({ url: "../own_steps/main" });
+			},
+			fail () {
+				Toast('请先登录');
+				mpvue.navigateTo({ url: "../../my/login/main?src=" + 'home' });
+			}
+		});
+	},
+	//团队步数
+	team_steps () {
+		var that = this;
+		wx.getStorage({
+			key: 'token',
+			success (res) {
+				mpvue.navigateTo({ url: "../team_steps/main" });
 			},
 			fail () {
 				Toast('请先登录');
@@ -327,7 +359,16 @@ export default {
 		mpvue.navigateTo({ url: "../rule/main" });
 	},
 	jump_walk () {
-		mpvue.navigateTo({ url: "../walk_money/main" });
+		wx.getStorage({
+			key: 'token',
+			success (res) {
+				mpvue.navigateTo({ url: "../walk_money/main" });
+			}, 
+			fail () {
+				Toast('请先登录');
+				mpvue.navigateTo({ url: "../../my/login/main?src=" + 'home' });
+			}
+		});
 	},
 	// 文字轮播
 	animate_text () {

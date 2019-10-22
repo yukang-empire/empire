@@ -1,3 +1,4 @@
+var UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 var utils = require('./utils')
 var webpack = require('webpack')
 var config = require('../config')
@@ -80,6 +81,7 @@ module.exports = merge(baseWebpackConfig, {
     //   template: 'index.html',
     //   inject: true
     // }),
-    new FriendlyErrorsPlugin()
+	new FriendlyErrorsPlugin(),
+	new UglifyJsPlugin({ sourceMap: true })
   ]
 })

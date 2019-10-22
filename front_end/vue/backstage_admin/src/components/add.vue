@@ -120,6 +120,52 @@
 						</el-time-picker>
 					</el-form-item>
 				</div>
+
+				<!-- 新增夺宝期数 -->
+				<div v-if='add_data.type == "add_cap_treasure"' class="cap_treasure">
+					<el-form-item label="商品名称:" prop="cap_treasure_goods_name">
+						<el-input v-model="ruleForm.cap_treasure_goods_name" placeholder="请输入商品名称" clearable @change='input_data'></el-input>
+					</el-form-item>
+					<el-form-item label="商品价格:" prop="cap_treasure_goods_price">
+						<el-input v-model="ruleForm.cap_treasure_goods_price" placeholder="请输入商品价格" clearable @change='input_data' @input='limit_input("cap_treasure_goods_price")'></el-input>
+					</el-form-item>
+					<el-form-item label="营业执照:" prop="goods_pic">
+						<el-upload
+							id="goods_pic"
+							action=""
+							drag
+							:auto-upload='false'
+							:show-file-list="false"
+							:on-change='upload_change_goods_pic'>
+							<img v-if="show_cropper.goods_pic" :src="show_cropper.goods_pic" class="full_width" alt='goods_pic_img'>
+							<i v-else class="el-icon-plus" style="font-size: 2rem;"></i>
+						</el-upload>
+					</el-form-item>
+					<!-- 裁剪工具cropper -->
+					<cropper
+						v-if='goods_pic_cropper_data.is_cropper'
+						:cropper_data='goods_pic_cropper_data'
+						@startCrop='startCrop_goods_pic'
+						@cancel_crop='cancel_crop'
+						@com_crop='com_crop_goods_pic'
+					/>
+				</div>
+
+				<!-- 夺宝条件 -->
+                <div  v-if='add_data.type == "add_cap_treasure"'>
+					<p style="margin-bottom: 20px;">
+						<svg class="icon" aria-hidden="true">
+							<use xlink:href="#iconquanxian"></use>
+						</svg>
+						<span>夺宝条件</span>
+					</p>
+					<el-form-item label="所需人次:" prop="cap_treasure_people">
+						<el-input v-model="ruleForm.cap_treasure_people" placeholder="请输入所需人次" clearable @change='input_data'></el-input>
+					</el-form-item>
+					<el-form-item label="所需酷点:" prop="cap_treasure_kd">
+						<el-input v-model="ruleForm.cap_treasure_kd" placeholder="请输入所需酷点" clearable @change='input_data'></el-input>
+					</el-form-item>
+				</div>
                 
                     
                 <!-- 新增员工 -->
@@ -491,6 +537,13 @@ export default class add extends Vue{
 		sign_up_price: '',
 		sign_up_deduct: '',
 
+		//酷点夺宝
+		cap_treasure_goods_name: '',
+		cap_treasure_goods_price: '',
+		goods_pic: '',
+		cap_treasure_people: '',
+		cap_treasure_kd: '',
+
         //轮播图
         carousel_name: '',
         carousel_local: '',
@@ -585,6 +638,16 @@ export default class add extends Vue{
         }else {
             callback();
         };
+	};
+	
+	//验证夺宝图片
+    private goods_pic: any = (rule, value, callback) => {
+        if (sessionStorage.getItem('goods_pic')) { var goods_pic = sessionStorage.getItem('goods_pic') };
+        if (!goods_pic) {
+            callback(new Error('请上传商品图片'));
+        }else {
+            callback();
+        };
     };
 
     //验证门店图片
@@ -643,6 +706,24 @@ export default class add extends Vue{
 		sign_up_deduct: [
             { required: true, message: '请输入每期扣除未打卡金额(百分比)', trigger: 'blur' },
         ],
+
+		//酷点夺宝
+		cap_treasure_goods_name: [
+            { required: true, message: '请输入商品名称', trigger: 'blur' },
+		],
+		cap_treasure_goods_price: [
+            { required: true, message: '请输入商品价格', trigger: 'blur' },
+		],
+		cap_treasure_people: [
+            { required: true, message: '请输入所需人次', trigger: 'blur' },
+		],
+		cap_treasure_kd: [
+            { required: true, message: '请输入所需酷点', trigger: 'blur' },
+		],
+        goods_pic: [
+            { required: true, validator: this.goods_pic },
+        ],
+		
 
         //轮播图
         carousel_name: [
@@ -847,6 +928,27 @@ export default class add extends Vue{
         previews: {},
         //标题
         title: "头像裁剪"
+	};
+
+	//夺宝商品图片裁剪相关数据
+    private goods_pic_cropper_data: any = {
+        //裁剪参数
+        option: {
+            img: '',
+            fixedBox: true,
+            autoCrop: true,
+            // 只有自动截图开启 宽度高度才生效
+            autoCropWidth: 600,
+            autoCropHeight: 400,
+            centerBox: true
+        },
+        is_previews: true,
+        //是否开启裁剪
+        is_cropper: false,
+        //裁剪预览框
+        previews: {},
+        //标题
+        title: "夺宝商品图片"
     };
 
     //轮播图裁剪数据
@@ -894,7 +996,8 @@ export default class add extends Vue{
     private show_cropper: any = {
         license: '',
         store: [],
-        head: ''
+		head: '',
+		goods_pic: ''
     };
 
     //放大图片
@@ -1006,11 +1109,15 @@ export default class add extends Vue{
 	private checkbox_game: any = {
         name: '小游戏',
         options: [
-            {id: 20059, name: '展示小游戏模块'},
+            {id: 20059, name: '早起打卡模块'},
             {id: 20060, name: '编辑虚拟人数'},
             {id: 20061, name: '配置早起打卡参数'},
+            {id: 20062, name: '夺宝模块'},
+            {id: 20063, name: '新增夺宝权限'},
+            {id: 20064, name: '夺宝开奖权限'},
+            {id: 20065, name: '查看夺宝详情'},
         ]
-    };
+	};
     
     private checkbox_home_already: any = [];
     private checkbox_user_already: any = [];
@@ -1338,6 +1445,7 @@ export default class add extends Vue{
             ref.resetFields();
             that.show_cropper.license = '';
             that.show_cropper.head = '';
+            that.show_cropper.goods_pic = '';
             that.show_cropper.store = [];
             that.ruleForm.province = '';
             that.ruleForm.city = '';
@@ -1350,6 +1458,7 @@ export default class add extends Vue{
             that.ruleForm.shop_image = [];
             sessionStorage.removeItem('show_license');
             sessionStorage.removeItem('head');
+            sessionStorage.removeItem('goods_pic');
             sessionStorage.removeItem('show_store');
             sessionStorage.removeItem('add_form_data');
             ref.validate();
@@ -1389,6 +1498,23 @@ export default class add extends Vue{
             that.carousel_cropper_data.option.img = URL.createObjectURL(file.raw);
             that.startCrop_head();
         };
+	};
+	
+	//上传营业执照
+    upload_change_goods_pic(file) {
+        var that: any = this;
+        var isJPG = file.raw.type === 'image/jpeg' || file.raw.type === 'image/jpg';
+        var isLt1M = file.size / 1024 / 1024 < 1;
+        if (!isJPG) {
+            this.$message({ message: "上传的图片只能是 jpg/jpeg 格式!", type: "error", duration: 2500 });
+        };
+        if (!isLt1M) {
+            this.$message({ message: "上传的图片大小不能超过 1MB!", type: "error", duration: 2500 });
+        };
+        if (isJPG && isLt1M) {
+            that.goods_pic_cropper_data.option.img = URL.createObjectURL(file.raw);
+            that.startCrop_goods_pic();
+        };
     };
 
     //上传门店图片
@@ -1417,6 +1543,11 @@ export default class add extends Vue{
         var that: any = this;
         that.head_cropper_data.is_cropper = true;
         that.carousel_cropper_data.is_cropper = true;
+	};
+	
+    startCrop_goods_pic() {
+        var that: any = this;
+        that.goods_pic_cropper_data.is_cropper = true;
     };
     startCrop_store() {
         var that: any = this;
@@ -1427,6 +1558,7 @@ export default class add extends Vue{
         var that: any = this;
         that.license_cropper_data.is_cropper = false;
         that.head_cropper_data.is_cropper = false;
+        that.goods_pic_cropper_data.is_cropper = false;
         that.carousel_cropper_data.is_cropper = false;
         that.store_cropper_data.is_cropper = false;
     };
@@ -1435,9 +1567,13 @@ export default class add extends Vue{
         var that: any = this;
         if (title == "营业执照裁剪") {
             that.show_cropper.license = data;
+            that.show_cropper.goods_pic = data;
             sessionStorage.setItem('show_license', data);
+            sessionStorage.setItem('goods_pic', data);
             that.ruleForm.image = img;
+            that.ruleForm.goods_pic = img;
             that.license_cropper_data.is_cropper = false;
+            that.goods_pic_cropper_data.is_cropper = false;
         }else {
             that.show_cropper.store.push(data);
             sessionStorage.setItem('show_store', JSON.stringify(that.show_cropper.store));
@@ -1458,7 +1594,19 @@ export default class add extends Vue{
         //验证
         let ref: any = this.$refs.ruleForm;
         ref.validate();
-    };
+	};
+
+	//完成夺宝商品图裁剪
+    com_crop_goods_pic(img, data) {
+        var that: any = this;
+		that.show_cropper.goods_pic = data;
+		sessionStorage.setItem('goods_pic', data);
+		that.ruleForm.goods_pic = img;
+		that.goods_pic_cropper_data.is_cropper = false;
+        //验证
+        let ref: any = this.$refs.ruleForm;
+        ref.validate();
+	};
 
     //完成头像裁剪
     com_crop_staff (img, data) {
@@ -1621,8 +1769,10 @@ export default class add extends Vue{
                 //保存的营业执照
                 this.ruleForm.image = sessionStorage.getItem('show_license') ? this.dataURLtoFile(sessionStorage.getItem('show_license'), "image") : '';
                 this.ruleForm.head = sessionStorage.getItem('head') ? sessionStorage.getItem('head') : '';
+                this.ruleForm.goods_pic = sessionStorage.getItem('goods_pic') ? sessionStorage.getItem('goods_pic') : '';
                 this.show_cropper.license = sessionStorage.getItem('show_license') || '';
                 this.show_cropper.head = sessionStorage.getItem('head') || '';
+                this.show_cropper.goods_pic = sessionStorage.getItem('goods_pic') || '';
                 //保存的门店图片
                 this.show_cropper.store = sessionStorage.getItem('show_store') ? JSON.parse(sessionStorage.getItem('show_store')) : [];
                 var length = this.show_cropper.store.length;
@@ -1719,5 +1869,10 @@ export default class add extends Vue{
 		.add .sign_up_set .el-input__inner, .el-date-editor.el-input {
 			width: 400px;
 		}
+		.add .el-form-item.btn {
+			display: flex;
+			justify-content: center;
+		}
+
     }
 </style>

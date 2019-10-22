@@ -251,7 +251,7 @@
             <el-table-column v-if="table_data.table.which=='share_profit_record'" prop="bonus_status" label="是否够资格分红"></el-table-column>
 			<el-table-column v-if="table_data.table.which=='share_profit_record'" prop="bonus_money" label="分红金额"></el-table-column>
 			
-			<!-- 分润记录 -->
+			<!-- 打卡游戏 -->
             <el-table-column v-if="table_data.table.which=='sign_up_list'" prop="phase" label="期数"></el-table-column>
             <el-table-column v-if="table_data.table.which=='sign_up_list'" prop="total_bonus" label="总奖励金"></el-table-column>
             <el-table-column v-if="table_data.table.which=='sign_up_list'" prop="sign_bonus" label="打卡金"></el-table-column>
@@ -263,7 +263,20 @@
             <el-table-column v-if="table_data.table.which=='sign_up_list'" prop="add_bonus" label="虚拟奖励金"></el-table-column>
             <el-table-column v-if="table_data.table.which=='sign_up_list'" prop="give_bonus" label="发放奖励"></el-table-column>
             <el-table-column v-if="table_data.table.which=='sign_up_list'" prop="cut_bonus" label="平台费"></el-table-column>
-            <el-table-column v-if="table_data.table.which=='sign_up_list'" prop="status" label="状态"></el-table-column>
+			<el-table-column v-if="table_data.table.which=='sign_up_list'" prop="status" label="状态"></el-table-column>
+			
+			<!-- 夺宝游戏 -->
+            <el-table-column v-if="table_data.table.which=='cap_treasure_list'" prop="phase" label="期数"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='cap_treasure_list'" prop="goods_name" label="商品名称"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='cap_treasure_list'" prop="goods_price" label="商品价格"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='cap_treasure_list'" prop="total_num" label="所需人次"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='cap_treasure_list'" prop="goods_points" label="所需酷点"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='cap_treasure_list'" prop="join_num" label="已参加人数"></el-table-column>
+            <!-- <el-table-column v-if="table_data.table.which=='cap_treasure_list'" prop="no_sign_num" label="已参加酷点"></el-table-column> -->
+            <el-table-column v-if="table_data.table.which=='cap_treasure_list'" prop="completion" label="完成度"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='cap_treasure_list'" prop="give_no" label="开奖号码"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='cap_treasure_list'" prop="add_time" label="创建时间"></el-table-column>
+            <el-table-column v-if="table_data.table.which=='cap_treasure_list'" prop="status" label="状态"></el-table-column>
 
             
             <el-table-column label="状态" v-if="table_data.table.which == 'staff_list' || table_data.table.which == 'carousel_list'">
@@ -310,7 +323,8 @@
                 table_data.table.which == 'role_list' ||
                 table_data.table.which == 'staff_list' ||
 				table_data.table.which == 'share_profit_list' ||
-				table_data.table.which == 'sign_up_list'
+				table_data.table.which == 'sign_up_list' ||
+				table_data.table.which == 'cap_treasure_list'
             ">
                 <template slot-scope="scope">
                     <el-button v-if="
@@ -346,6 +360,7 @@
                     " type="text" @click="edit(scope.row)">编辑</el-button>
                     <el-button type="text" @click="add_recycle_bin(scope.row)"  v-if="table_data.table.which == 'help_list'">加入回收站</el-button>
                     <el-button type="text" @click="recovery(scope.row)"  v-if="table_data.table.which == 'recycle_bin_list'">恢复</el-button>
+                    <el-button type="text" @click="lottery_treasure(scope.row)"  v-if="table_data.table.which == 'cap_treasure_list' && scope.row.status == '已完成'">开奖</el-button>
                     <el-button type="text" @click="delete_(scope.row)"  v-if="
                         table_data.table.which == 'role_list' ||
                         table_data.table.which == 'staff_list' ||
@@ -404,6 +419,11 @@ export default class table_page extends Vue{
     //查看详情
     look_up (row: any) {
         this.$emit('look_up', row);
+	};
+	
+    //查看详情
+    lottery_treasure (row: any) {
+        this.$emit('lottery_treasure', row);
     };
     //编辑
     edit (row: any) {

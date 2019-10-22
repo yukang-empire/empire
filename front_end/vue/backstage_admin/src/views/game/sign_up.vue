@@ -41,7 +41,6 @@
 			/>
 			
 		</div>
-
 		
         <dialog_form :dialog_data='dialog_person' @sure='sure_revise' />
 	</div>

@@ -5,7 +5,7 @@
 		<swiper :indicator-dots="gym_slide.is_dots" :autoplay="gym_slide.is_auto" :interval="gym_slide.interval" :duration="gym_slide.duration" :circular='gym_slide.circular'>
 			<block v-for="(item, index) in gym_slide.banners" :key='item.ad_id'>
 				<swiper-item>
-					<img :src="'https://shop.technologyle.com' + item.ad_code" class="slide_banners" alt="banner" @click='jump_activity' />
+					<img :src="'https://shop.technologyle.com' + item.ad_code" class="slide_banners" alt="banner" @click='jump_activity(item.ad_link)' />
 				</swiper-item>
 			</block>
 		</swiper>
@@ -127,7 +127,8 @@ export default {
   },
   methods: {
 	//跳转H5活动页面
-	jump_activity () {
+	jump_activity (link) {
+		wx.setStorageSync('link', link);
 		mpvue.navigateTo({ url: "../../gym/activity/main" });
 	},
 	//跳转会所详情

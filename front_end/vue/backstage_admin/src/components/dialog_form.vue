@@ -7,6 +7,16 @@
 					<el-input v-model="dialog_data.form_data.person_num" placeholder="请输入虚拟人数" @input='limit_input_person_num'></el-input>
 				</el-form-item>
 			</div>
+			<!-- 开奖 -->
+			<div v-if="dialog_data.type == 'cap_treasure'">
+				<el-form-item label="期数:" prop="person_num">
+					<span>{{ dialog_data.phase }}期</span>
+				</el-form-item>
+				<el-form-item label="中奖号码:" prop="lottery_num">
+					<el-input v-model="dialog_data.form_data.lottery_num" placeholder="请输入或生成中奖号码" clearable @input='limit_input_lottery'></el-input>
+					<span style="white-space: nowrap;margin-left: 20px;color: red;cursor: pointer;" @click='created_num'>点击生成</span>
+				</el-form-item>
+			</div>
             <!-- 修改密码 -->
             <div v-if="dialog_data.type == 'password'">
                 <el-form-item label="原密码:" prop="password">
@@ -140,13 +150,24 @@ export default class dialog_form extends Vue{
                 this.$message({ message: "请完善带*号的必填信息！", type: 'error', duration: 2500 });
                 return false;
             };
-        });
+		});
+		sessionStorage.setItem('lottery_num', this.dialog_data.form_data.lottery_num);
 	};
 	
 	mounted () {
 		console.log(this.dialog_data);
 	};
 
+	//生成中奖号码
+	created_num () {
+		this.$store.dispatch("created_num", {id: this.dialog_data.id}).then( (res: any) => {
+			console.log("生成中奖号码", res);
+			if (res.status == 1) {
+				this.dialog_data.form_data.lottery_num = res.result;
+				sessionStorage.setItem('lottery_num', this.dialog_data.form_data.lottery_num);
+			};
+		});
+	};
     //改变健身卡的类型
     type_change (val) {
         console.log(val);
@@ -168,6 +189,10 @@ export default class dialog_form extends Vue{
 	};
 	limit_input_person_num () {
         this.dialog_data.form_data.person_num = this.dialog_data.form_data.person_num.replace(/[^\d]/g, '');
+	};
+	
+	limit_input_lottery () {
+        this.dialog_data.form_data.lottery_num = this.dialog_data.form_data.lottery_num.replace(/[^\d]/g, '');
     };
     
     //实时记录密码

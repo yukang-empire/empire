@@ -1,6 +1,6 @@
 <template>
   <div class="activity">
-	<web-view src="https://shop.technologyle.com/userReg/activity.html" bindmessage=""></web-view>
+	<web-view :src="url" bindmessage=""></web-view>
   </div>
 </template>
 
@@ -9,12 +9,21 @@
 export default {
   data () {
     return {
-		
+		url: ''
     }
   },
 
   methods: {
 	
+  },
+  mounted () {
+	var that = this;
+	wx.getStorage({
+		key: 'link',
+		success (res) {
+			that.url = res.data;
+		}
+	});
   }
 }
 </script>

@@ -16,6 +16,7 @@ import order_info from '@/components/order_info.vue';
 
 export default class service_details extends Vue{
     private order_data: any = {
+		main_type: 'order',
         type: 'service',
         current_state: '已确定',
         title01: '买家信息',

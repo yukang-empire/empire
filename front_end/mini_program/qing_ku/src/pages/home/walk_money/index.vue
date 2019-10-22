@@ -1,6 +1,7 @@
 <template>
 	<div class="activity">
 		<web-view :src="url" bindmessage=""></web-view>
+		<van-toast id="van-toast" />
 	</div>
 </template>
 	
@@ -22,11 +23,14 @@ export default {
 		wx.getStorage({
 			key: 'ad_link',
 			success (res) {
-				console.log('ad_link', res.ad_link);
-				that.url = 'https://shop.technologyle.com' + res.data;
-			},
-			fail (res) {
-				Toast('敬请期待！');
+				if (res.data) {
+					that.url = 'https://shop.technologyle.com' + res.data;
+				}else {
+					Toast('敬请期待！');
+					setTimeout(() => {
+						mpvue.switchTab({ url: "../home/index/main" });
+					}, 500); 
+				}
 			}
 		});
 	}

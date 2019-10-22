@@ -102,6 +102,54 @@ const home =  {
                 });
 			});
 		}, 
+		//个人步数
+		personal_steps (state, data) {
+            return new Promise((resolve, reject) => {
+                fly.post("/index.php?m=Api&c=user&a=steps_list", data).then( (res) => {
+                    //返回数据给调起dispatch的那边
+                    resolve(res);
+                }).catch( error => {
+                    //返回error给调起dispatch的那边
+                    reject(error);
+                });
+			});
+		},
+		//团队步数
+		team_steps (state, data) {
+            return new Promise((resolve, reject) => {
+                fly.post("/index.php?m=Api&c=Exercise&a=prom_list", data).then( (res) => {
+                    //返回数据给调起dispatch的那边
+                    resolve(res);
+                }).catch( error => {
+                    //返回error给调起dispatch的那边
+                    reject(error);
+                });
+			});
+		},
+		//个人步数领取明细
+		personal_steps_details (state, data) {
+            return new Promise((resolve, reject) => {
+                fly.post("/index.php?m=Api&c=Exercise&a=exercise_list", data).then( (res) => {
+                    //返回数据给调起dispatch的那边
+                    resolve(res);
+                }).catch( error => {
+                    //返回error给调起dispatch的那边
+                    reject(error);
+                });
+			});
+		}, 
+		//早起打卡支付
+		pay_sign_up (state, data) {
+            return new Promise((resolve, reject) => {
+                fly.post("/index.php?m=Api&c=Wxpay&a=minappPay", data).then( (res) => {
+                    //返回数据给调起dispatch的那边
+                    resolve(res);
+                }).catch( error => {
+                    //返回error给调起dispatch的那边
+                    reject(error);
+                });
+			});
+		}, 
 	}
 };
 

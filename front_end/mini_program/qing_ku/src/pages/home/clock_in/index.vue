@@ -1,6 +1,6 @@
 <template>
 	<div class="activity">
-		<web-view :src="url" bindmessage=""></web-view>
+		<web-view :src="url" bindmessage="bindGetMsg"></web-view>
 	</div>
 </template>
 	
@@ -17,7 +17,7 @@ export default {
 	methods: {
 		
 	},
-	onLoad () {
+	onLoad (options) {
 		var that = this;
 		wx.getStorage({
 			key: 'token',

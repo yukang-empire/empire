@@ -16,6 +16,7 @@ import order_info from '@/components/order_info.vue';
 
 export default class receive_details extends Vue{
     private order_data: any = {
+		main_type: 'order',
         type: 'receive',
         current_state: '已确定',
         title01: '用户信息',

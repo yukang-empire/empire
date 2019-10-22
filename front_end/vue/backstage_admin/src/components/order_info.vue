@@ -1,6 +1,110 @@
 <template>
     <div class="order_info">
-        <div class="repeat_div">
+
+		<div class="repeat_div"  v-if='order_data.main_type == "game"'>
+			<p>
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#iconqita"></use>
+				</svg>
+				<span>期数信息</span>
+			</p>
+			
+			<div class="base">
+				<ul>
+					<li class="flex_between">
+						<p><span>期数：</span><span>{{ show_order_data.phase }}</span></p>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="repeat_div"  v-if='order_data.main_type == "game"'>
+			<p>
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#iconshangpin"></use>
+				</svg>
+				<span>商品信息</span>
+			</p>
+			
+			<div class="base">
+				<ul>
+					<li class="flex_between">
+						<p><span>商品名称：</span><span>{{ show_order_data.goods_name }}</span></p>
+					</li>
+					<li class="flex_between">
+						<p><span>商品价格：</span><span>{{ show_order_data.goods_price }}</span></p>
+					</li>
+					<li class="flex_between">
+						<p style="display: flex;align-items: center;"><span>商品图片：</span><img style="width: 150px;" :src="show_order_data.goods_image" alt=""></p>
+					</li>
+				</ul>
+			</div>
+		</div> 
+
+		<div class="repeat_div"  v-if='order_data.main_type == "game"'>
+			<p>
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#iconyes_line"></use>
+				</svg>
+				<span>夺宝条件</span>
+			</p>
+			
+			<div class="base">
+				<ul>
+					<li class="flex_between">
+						<p><span>所需人次：</span><span>{{ show_order_data.total_num }}</span></p>
+					</li>
+					<li class="flex_between">
+						<p><span>所需酷点：</span><span>{{ show_order_data.goods_points }}</span></p>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="repeat_div"  v-if='order_data.main_type == "game"'>
+			<p>
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#iconshitu_gaikuang"></use>
+				</svg>
+				<span>完成情况</span>
+			</p>
+			
+			<div class="base">
+				<ul>
+					<li class="flex_between">
+						<p><span>已参加人次：</span><span>{{ show_order_data.join_num }}</span></p>
+					</li>
+					<li class="flex_between">
+						<p><span>已参加酷点：</span><span>{{ show_order_data.join_num * 100 }}</span></p>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="repeat_div"  v-if='order_data.main_type == "game"'>
+			<p>
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#iconqian1"></use>
+				</svg>
+				<span>中奖详情</span>
+			</p>
+			
+			<div class="base">
+				<ul>
+					<li class="flex_between">
+						<p><span>中奖号码：</span><span>{{ show_order_data.give_no }}</span></p>
+					</li>
+					<li class="flex_between">
+						<p><span>中奖人：</span><span>{{ show_order_data.join_numickname }}</span></p>
+					</li>
+					<li class="flex_between">
+						<p><span>中奖手机号：</span><span>{{ show_order_data.mobile }}</span></p>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+
+        <div class="repeat_div" v-if='order_data.main_type == "order"'>
             <p>
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icondashboard"></use>
@@ -15,7 +119,7 @@
             </p>
         </div>
 
-        <div class="repeat_div">
+        <div class="repeat_div" v-if='order_data.main_type == "order"'>
             <p>
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icondingdan1"></use>
@@ -55,7 +159,7 @@
             </div>
         </div>
 
-        <div class="repeat_div">
+        <div class="repeat_div" v-if='order_data.main_type == "order"'>
             <p>
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#iconjibenxinxi"></use>
@@ -435,6 +539,20 @@ export default class order_info extends Vue{
 
     
     created () {
+
+		//获取夺宝期数详情
+        if (this.order_data.type == 'cap_treasure') {
+            this.$store.dispatch("cap_treasure_details", { id: this.$route.query.id }).then( (res: any) => {
+                console.log("夺宝期数详情", res);
+                if (res.code == 0 || res.status == 1) {
+					this.show_order_data = res.result;
+					this.show_order_data.goods_image = 'https://shop.technologyle.com' + this.show_order_data.goods_image;
+                }else {
+                    //请求失败提示
+                    this.$message({ message: res.msg, type: "error", duration: 2500 });
+                };
+            });
+        };
 
         //获取领用订单详情
         if (this.order_data.type == 'receive') {

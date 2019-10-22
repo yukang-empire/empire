@@ -137,6 +137,10 @@ export default class role_add extends Vue{
                 // {fid: '20010', title: '查看小游戏模块', url: '', controller: '', action: '', note: '查看小游戏模块'},
                 // {fid: '20010', title: '编辑虚拟人数', url: '', controller: '', action: '', note: '编辑早起打卡的虚拟人数'},
                 // {fid: '20010', title: '配置早起打卡参数', url: '', controller: '', action: '', note: '配置早起打卡的参数'},
+                // {fid: '20010', title: '酷点夺宝小游戏模块', url: '', controller: '', action: '', note: '酷点夺宝小游戏模块'},
+                // {fid: '20010', title: '新增酷点夺宝期数', url: '', controller: '', action: '', note: '新增酷点夺宝期数'},
+                // {fid: '20010', title: '查看酷点夺宝当期信息', url: '', controller: '', action: '', note: '查看酷点夺宝当期信息'},
+                // {fid: '20010', title: '酷点夺宝开奖', url: '', controller: '', action: '', note: '酷点夺宝开奖'},
 
             //设置
                 // //角色
