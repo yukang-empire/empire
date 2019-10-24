@@ -14,6 +14,7 @@ import moment from 'moment';
 moment.locale('zh-cn');
 Vue.prototype.$moment = moment;
 
+
 //数据请求axios
 import axios from './assets/api/axios';
 Vue.prototype.$axios = axios;

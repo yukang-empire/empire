@@ -7,6 +7,7 @@ const home = {
 	component: Home,
 	meta: {
 		title: '首页',
+		grade: 0
 	}
 };
 

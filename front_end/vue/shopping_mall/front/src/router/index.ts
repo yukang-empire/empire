@@ -2,14 +2,11 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
-import { Message } from 'element-ui';
-
 import home from './modules/home';
-// import my from './modules/my';
-// import goods from './modules/goods';
-// import member_center from './modules/member_center';
-// import address from './modules/address'; 
-// import payment from './modules/payment';
+import search from './modules/search';
+import goods_area from './modules/goods_area';
+import goods_details from './modules/goods_details';
+import my from './modules/my';
 
 const router = new VueRouter({
 	// mode: 'history',
@@ -20,11 +17,10 @@ const router = new VueRouter({
 			redirect: '/index'
 		},
 		home,
-		// my,
-		// goods,
-		// member_center,
-		// address,
-		// payment
+		search,
+		goods_area,
+		goods_details,
+		my
 	],
 	scrollBehavior (to: any, from: any, savedPosition: any) {
 		return { x: 0, y: 0}

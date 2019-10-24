@@ -9,7 +9,7 @@ html, body {
 body {
 	color: #333;
 	text-align: justify;
-	background-color: #fff;
+	background-color: #F0F0F0;
 	font: 15px/1.8 -apple-system-font,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Hiragino Sans GB,Microsoft YaHei UI,Microsoft YaHei,Arial,sans-serif;
 }
 h1 {
@@ -51,16 +51,16 @@ input[type="button"], button {
 	letter-spacing: 1.5px;
 }
 input::-webkit-input-placeholder {
-	color: #999;
-	font-size: 0.95rem;
+	color: #ccc;
+	font-size: 0.9rem;
 }
 input::-moz-input-placeholder {
-	color: #999;
-	font-size: 0.95rem;
+	color: #ccc;
+	font-size: 0.9rem;
 }
 input::-ms-input-placeholder {
-	color: #999;
-	font-size: 0.95rem;
+	color: #ccc;
+	font-size: 0.9rem;
 }
 
 /* 阿里图标 symbol方式 */
@@ -113,6 +113,32 @@ input::-ms-input-placeholder {
 	position: absolute;
 }
 
+/* 路由动画 */
+.slide-right-enter-active,
+.slide-right-leave-active,
+.slide-left-enter-active,
+.slide-left-leave-active {
+  will-change: transform;
+  transition: all 500ms;
+  position: absolute;
+}
+.slide-right-enter {
+  opacity: 0;
+  transform: translate3d(-100%, 0, 0);
+}
+.slide-right-leave-active {
+  opacity: 0;
+  transform: translate3d(100%, 0, 0);
+}
+.slide-left-enter {
+  opacity: 0;
+  transform: translate3d(100%, 0, 0);
+}
+.slide-left-leave-active {
+  opacity: 0;
+  transform: translate3d(-100%, 0, 0);
+}
+
 /* 公共类 */
 .block {
 	display: block;
@@ -133,6 +159,7 @@ input::-ms-input-placeholder {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	
 }
 .fixed_top {
 	top: 0;

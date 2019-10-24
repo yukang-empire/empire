@@ -1,6 +1,6 @@
 <template>
 	<div class="home">
-		
+		<p>my</p>
 	</div>
 </template>
 
@@ -14,7 +14,10 @@ import { Vue, Component } from 'vue-property-decorator';
 })
 
 export default class home extends Vue{
-	
+	private data: any = {
+
+	};
+
 	created () {
 
 	};
