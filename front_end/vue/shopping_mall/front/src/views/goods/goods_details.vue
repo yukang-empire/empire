@@ -12,7 +12,7 @@
 			<swiper_imgs :swiper_data='swiper_data'></swiper_imgs>
 			<div class="goods_details">
 				<h3>
-					<i class="tag">会员</i>
+					<i class="tag vip_span">会员</i>
 					<span>WORLDTOUCH  移动wifi</span>
 				</h3>
 				<p class="goods_name">WORLDTOUCH  移动WiFi WORLDTOUCH WORLDTOUCH WORLDTOUCH</p>
@@ -36,27 +36,56 @@
 				<img src="https://img.alicdn.com/imgextra/i4/2082003790/O1CN01EDMcmF1drremZlYqL_!!2082003790.jpg" alt="goods_imgs">
 			</div>
 		</div>
-		<div class="buy_btn">
-			<button class="fixed_bottom" @click='is_select_goods=true'>立即购买</button>
+		<div class="bottom_btn">
+			<button class="fixed_bottom" @click='is_buy_dialog=true'>立即购买</button>
 		</div>
 
 		<!-- 选择商品 -->
-		<div class="fixed_top diy_dialog">
-			<div class="fixed_bottom main">
+		<transition name='fade'>
+			<div class="fixed_top diy_dialog" v-if='is_buy_dialog' @click.self='is_buy_dialog=false'></div>
+		</transition>
+		<transition name='fold'>
+			<div class="fixed_bottom diy_dialog_main" v-if='is_buy_dialog' style="z-index: 99;">
 				<div class="goods_info">
 					<div>
-						<img src="https://img.alicdn.com/imgextra/i4/2082003790/O1CN01EDMcmF1drremZlYqL_!!2082003790.jpg" alt="goods">
+						<img src="../../assets/imgs/search_no_result.png" alt="goods">
 					</div>
-					<div>
-						<p>
-							<i class="tag">会员</i>
+					<div class="dialog_title">
+						<p class="dialog_name">
+							<i class="tag vip_span">会员</i>
 							<span>WORLDTOUCH  移动...</span>
 						</p>
-						<p class="dialog_price"></p>
+						<p class="dialog_price">￥268</p>
+					</div>
+					<svg class="icon" aria-hidden="true" @click='is_buy_dialog=false'>
+						<use xlink:href="#icon-1"></use>
+					</svg>
+				</div>
+				<div class="dialog_specs">
+					<h3>规格</h3>
+					<ul>
+						<li>蓝色</li>
+						<li class="select_li">蓝色</li>
+						<li>蓝色</li>
+						<li>蓝色</li>
+						<li>蓝色</li>
+						<li>蓝色</li>
+					</ul>
+				</div>
+				<div class="flex_between dialog_num">
+					<h3>数量</h3>
+					<div class="flex_center add_reduce">
+						<img src="../../assets/imgs/add_icon.png" alt="add">
+						<span>1</span>
+						<img src="../../assets/imgs/reduce_icon.png" alt="reduce">
 					</div>
 				</div>
+				<div class="bottom_btn" @click='sure_buy'>
+					<button>确定购买</button>
+				</div>
 			</div>
-		</div>
+		</transition>
+
 	</div>
 </template>
 
@@ -86,7 +115,7 @@ export default class home extends Vue{
 		imgs: []
 	};
 
-	
+	private is_buy_dialog: any = false;
 
 	created () {
 
@@ -104,6 +133,11 @@ export default class home extends Vue{
 	back () {
 		this.$router.back();
 	};
+
+	//确定购买
+	sure_buy () {
+		this.$router.push({ path: '/order_sure' });
+	}
 
 }
 </script>
@@ -184,12 +218,101 @@ export default class home extends Vue{
 		}
 	}
 
-	.buy_btn button {
-		height: 55px;
-		line-height: 55px;
-		color: #fff;
-		border-radius: 0;
-		background-color: $btn_color;
+	.diy_dialog_main {
+		padding-bottom: 50px;
+
+		.goods_info {
+			margin: 20px 15px;
+			display: flex;
+			align-items: center;
+			position: relative;
+
+			img {
+				width: 80px;
+				margin-right: 10px;
+			}
+
+			.dialog_title {
+				max-width: 70%;
+				
+				.dialog_name {
+					margin-bottom: 8px;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+
+					span {
+						font-weight: 900;
+						margin-left: 5px;
+					}
+				}
+			}
+
+			.icon {
+				position: absolute;
+				top: -7px;
+   	 			right: 0px;
+				width: 1rem;
+			}
+
+			.dialog_price {
+				color: $price_color;
+				font-weight: 900;
+				font-size: 1.1rem;
+			}
+		}
+
+		.dialog_specs {
+			display: flex;
+			margin: 20px 15px;
+			padding-bottom: 20px;
+			color: #666666;
+			border-top: 1px solid #E6E6E6;
+			border-bottom: 1px solid #E6E6E6;
+
+			h3 {
+				margin: 14px 15px 0 0;
+				white-space: nowrap;
+			}
+
+			ul {
+				display: flex;
+				flex-wrap: wrap;
+
+				li {
+					background-color: #F5F5F5;
+					padding: 0 10px;
+					border-radius: 5px;
+					height: 35px;
+					line-height: 35px;
+					margin: 20px 6px 0 6px;
+				}
+
+				.select_li {
+					background-color: transparent;
+					border: 1px solid $btn_color;
+					color: $btn_color;
+					height: 33px;
+					line-height: 33px;
+				}
+			}
+		}
+		
+		.dialog_num {
+			margin: -6px 15px 0 15px;
+
+			.add_reduce {
+				
+				span {
+					margin: 0 15px;
+				}
+
+				img {
+					width: 30px;
+				}
+			}
+		}
+
 	}
 
 </style>

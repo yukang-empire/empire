@@ -6,7 +6,7 @@ const goods_details = {
 	component: () => import('../../views/goods/goods_details.vue'),
 	meta: {
 		title: '商品详情',
-		grade: 5
+		grade: 2
 	}
 };
 

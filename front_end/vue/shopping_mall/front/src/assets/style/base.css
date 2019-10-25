@@ -83,6 +83,14 @@ input::-ms-input-placeholder {
 .fade-enter, .fade-leave-to {
 	opacity: 0;
 }
+/* 底部弹起 */
+.fold-enter-active,.fold-leave-active{
+	transition: all .5s ease;
+	transform: translate3d(0,0,0);
+}
+.fold-enter,.fold-leave-to{
+	transform: translate3d(0,100%,0);
+}
 
 /*fade-transform*/
 .fade-transform-leave-active, .fade-transform-enter-active {

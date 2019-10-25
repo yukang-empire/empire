@@ -14,6 +14,7 @@
 	display: flex;
 	background-color: #fff;
 	align-items: center;
+	margin-bottom: 1px;
 	
 	.back {
 		width: 12%;
@@ -28,6 +29,44 @@
 		width: 78%;
 	}
 }
+// 我的-头部标题
+.header_my {
+	background-color: $btn_color;
+	color: #fff;
+	margin-bottom: 0;
+
+	h3 {
+		font-weight: 400;
+		letter-spacing: 3px;
+	}
+}
+.my_info {
+	background-color: $btn_color;
+	padding: 20px 30px 12px 30px;
+	color: #fff;
+
+	.left {
+		display: flex;
+		align-items: center;
+	}
+
+	.head_pic {
+		margin-right: 15px;
+
+		img {
+			width: 50px;
+			border-radius: 50%;
+		}
+	}
+	.info {
+		font-size: 0.9rem;
+
+		h3 {
+			font-weight: 400;
+			margin-bottom: 3px;
+		}
+	}
+}
 
 //标签
 .tag {
@@ -38,9 +77,21 @@
 	text-align: center;
 	border-radius: 3px;
 	color: #fff;
-	margin-right: 3px;
+	margin-right: 5px;
 	display: inline-block;
 	white-space: nowrap;
+}
+
+.tag.vip_span {
+	background-color: $vip_span;
+}
+
+.tag.yx_span {
+	background-color: $yx_span;
+}
+
+.tag.motion_span {
+	background-color: $motion_span;
 }
 
 //商品样式
@@ -65,18 +116,6 @@
 			text-align: left;
 			margin-left: 30%;
 			color: #666;
-
-			span.vip_span {
-				background-color: $vip_span;
-			}
-
-			span.yx_span {
-				background-color: $yx_span;
-			}
-
-			span.motion_span {
-				background-color: $motion_span;
-			}
 		}
 
 		p.flex_center {
@@ -121,9 +160,95 @@
 .diy_dialog {
 	height: 100%;
 	background-color: rgba(0, 0, 0, 0.7);
+}
+.diy_dialog_main {
+	background-color: #fff;
+	height: 60%;
+}
 
-	.main {
-		background-color: #fff;
-		height: 60%;
+//底部支付按钮
+.footer_btn {
+	height: 55px;
+	background-color: #fff;
+
+	.final_price {
+		width: 60%;
+		height: 100%;
+		line-height: 55px;
+
+		span {
+			margin-left: 20px;
+			font-size: 0.9rem;
+		}
+
+		i {
+			color: $price_color;
+			font-size: 1.2rem;
+		}
+	}
+
+	.pay_btn {
+		width: 40%;
+		height: 100%;
+		
+		button {
+			background-color: $btn_color;
+			width: 100%;
+			height: 100%;
+			border-radius: 0;
+			color: #fff;
+		}
+	}
+}
+// 底部全宽按钮
+.bottom_btn {
+
+	button {
+		position: absolute;
+		bottom: 0;
+		border-radius: 0;
+		background-color: $btn_color;
+		color: #fff;
+		height: 55px;
+		line-height: 55px;
+		width: 100%;
+	}
+
+}
+
+.assessment {
+	margin: 15px 0;
+	background-color: #fff;
+
+	.title {
+		background-color: #FAFAFA;
+		padding: 10px 20px;
+	}
+
+	.reusable_div {
+		padding: 10px 20px;
+
+		div {
+			padding: 10px 20px;
+			border-radius: 10px;
+			flex-direction: column;
+			color: #FF8288;
+			background-color: #ccc;
+
+			p {
+				margin-top: 5px;
+				display: flex;
+				align-items: center;
+
+				span {
+					white-space: nowrap;
+				}
+
+				img {
+					width: 18px;
+					margin-right: 5px;
+				}
+			}
+		}
 	}
 }

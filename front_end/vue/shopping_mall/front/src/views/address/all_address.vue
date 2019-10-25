@@ -1,0 +1,127 @@
+<template>
+	<div class="all_address">
+		<div class="header_public">
+			<div class="flex_center back">
+				<svg class="icon" aria-hidden="true" @click='back'>
+					<use xlink:href="#icon-arrow-right"></use>
+				</svg>
+			</div>
+			<h3 class="flex_center">我的地址</h3>
+		</div>
+		<ul class="address_list">
+			<li class="flex_between">
+				<div class="content">
+					<div class="name">
+						<p>张小六</p>
+						<i class='tag'>默认</i>
+					</div>
+					<div class="address_info">
+						<i>13416816832</i>
+						<p>广东省  深圳市  龙华新区 </p>
+					</div>
+				</div>
+				<div class="flex_center icon"><img @click='edit_address' src="../../assets/imgs/edit_icon.png" alt="edit"></div>
+			</li>
+			<li class="flex_between">
+				<div class="content">
+					<div class="name">
+						<p>张小六</p>
+					</div>
+					<div class="address_info">
+						<i>13416816832</i>
+						<p>广东省  深圳市  龙华新区 </p>
+					</div>
+				</div>
+				<div class="flex_center icon"><img @click='edit_address' src="../../assets/imgs/edit_icon.png" alt="edit"></div>
+			</li>
+		</ul>
+		<div class="bottom_btn" @click='add_address'>
+			<button>+ 新建收货地址</button>
+		</div>
+	</div>
+</template>
+
+<script lang="ts">
+import { Vue, Component } from 'vue-property-decorator';
+
+@Component({
+	components: {
+
+	}
+})
+
+export default class all_address extends Vue{
+	
+	created () {
+
+	};
+	mounted () {
+
+	};
+
+	back () {
+		this.$router.back();
+	};
+
+	add_address () {
+		this.$router.push({ path: '/add_address' });
+	};
+
+	edit_address () {
+		this.$router.push({ path: '/edit_address' });
+	}
+	
+}
+</script>
+
+<style lang="scss" scoped>
+
+	.address_list {
+		margin-bottom: 70px;
+
+		li {
+			background-color: #fff;
+			margin: 0 0 1px 0;
+			padding: 12px 20px 12px 25px;
+
+			.content {
+				display: flex;
+				width: 85%;
+
+				.name {
+					min-width: 25%;
+					font-weight: 900;
+
+					i.tag {
+						height: 20px;
+						line-height: 20px;
+						border-radius: 5px;
+						background-color: #31BFAD;
+					}
+				}
+
+				.address_info {
+					max-width: 75%;
+					color: #666;
+
+					p {
+						overflow: hidden;
+						text-overflow: ellipsis;
+						white-space: nowrap;
+						margin-top: 5px;
+					}
+				}
+			}
+
+			.icon {
+				min-width: 15%;
+				height: 100%;
+				justify-content: flex-end;
+				
+				img {
+					width: 20px;
+				}
+			}
+		}
+	}
+</style>
