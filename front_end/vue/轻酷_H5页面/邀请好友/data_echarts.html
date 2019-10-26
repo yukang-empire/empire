@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="author" content="yukang" />
+    <meta name="keywords" content="数据看板" />
+    <meta name="description" content="数据看板" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" /> -->
+    <title>数据看板</title>
+    <!-- 自定义的css -->
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/data_echarts.css">
+</head>
+<body>
+    <div id="app" class="data_echarts" v-cloak>
+        <header class="flex_center">
+            <h1>轻酷平台 数据看板</h1>
+        </header>
+
+        <article>
+
+        </article>
+            
+        <footer>
+            <div class="left">
+                <div class="left_top">
+                    <div class="number">
+                        <h2>会员注册量（人）</h2>
+                        <div class="common_div_01">
+                            <img src="./imgs/number_icon.png" alt="">
+                            <span>{{ home_data.regUser }}</span>
+                        </div>
+                    </div>
+                    <div class="club">
+                        <h2>会所入驻数量（家）</h2>
+                        <div class="common_div_01">
+                            <img src="./imgs/club_icon.png" alt="" style="width: 40px;">
+                            <span style="margin-left: 27px;">{{ home_data.club }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="left_bottom">
+                    <div class="left_bottom_01">
+                        <h2>
+                            <img src="./imgs/right_arrow.png" alt="">
+                            <span>会员年龄分布</span>
+                        </h2>
+                        <div class="man_women">
+                            <div class="man">
+                                <div></div>
+                                <span>男性</span>
+                            </div>
+                            <div class="women">
+                                <div></div>
+                                <span>女性</span>
+                            </div>
+                        </div>
+                        <div class="echarts" ref='echarts_age' style="width: 100%;height:320px;margin-top: -20px;"></div>
+                    </div>
+                    <div class="left_bottom_01 left_bottom_02">
+                        <h2>
+                            <img src="./imgs/right_arrow.png" alt="">
+                            <span>会员性别分布</span>
+                        </h2>
+                        <div class="echarts" ref='echarts_sex' style="width: 100%;height:240px;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="right">
+                <div class="right_left">
+                    <div class="left_bottom_01 right_left_top">
+                        <h2>
+                            <img src="./imgs/right_arrow.png" alt="">
+                            <span>会员区域分布(深圳市)</span>
+                        </h2>
+                        <div class="echarts" ref='echarts_area_number' style="width: 100%;height:370px;margin-top: -10px;"></div>
+                    </div>
+                    <div class="left_bottom_01 right_left_bottom">
+                        <h2>
+                            <img src="./imgs/right_arrow.png" alt="">
+                            <span>会员区域分布(深圳市)</span>
+                        </h2>
+                        <div class="echarts" ref='echarts_area_number_02' style="width: 100%;height:330px;margin-top: -20px;"></div>
+                    </div>
+                </div>
+                <div class="right_right">
+                    <div class="left_bottom_01 right_right_top">
+                        <h2>
+                            <img src="./imgs/right_arrow.png" alt="">
+                            <span>会所区域分布(深圳市)</span>
+                        </h2>
+                        <div class="echarts" ref='echarts_area_club' style="width: 100%;height:370px;margin-top: -10px;"></div>
+                    </div>
+                    <div class="left_bottom_01 right_right_bottom">
+                        <h2>
+                            <img src="./imgs/right_arrow.png" alt="">
+                            <span>会所区域分布(深圳市)</span>
+                        </h2>
+                        <div class="echarts" ref='echarts_area_club_02' style="width: 100%;height:330px;margin-top: -20px;"></div>
+                    </div>
+                </div>
+            </div>
+
+        </footer>
+    </div>
+
+    
+    <!-- 微信分享相关 -->
+    <!-- <script src="js/jweixin-1.2.0.js"></script> -->
+    <!-- vue -->
+    <script src="js/vue_2.6.1.js"></script>
+    <!-- axios -->
+    <!-- 低版本安卓和IOS里内嵌的H5页面 用axios会导致整个页面空白不加载 目前尚不清楚什么原因 用jq就没问题 特此注明 -->
+    <!-- <script src="js/axios_0.18.0.min.js"></script> -->
+    <!-- jquery -->
+    <script src="js/jquery_3.4.1.min.js"></script>
+    <!-- echarts -->
+    <script src="js/echarts-en.common.min.js"></script>
+    <!-- 自定义的js -->
+    <script src="js/data_echarts.js"></script>
+    
+
+</body>
+</html>

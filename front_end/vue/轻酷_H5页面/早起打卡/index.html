@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="author" content="yukang" />
+  <meta name="keywords" content="早起打卡" />
+  <meta name="description" content="早起打卡" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>早起打卡奖金赛</title>
+  <!-- element-ui -->
+  <link rel="stylesheet" href="./css/element-ui_2.8.2.css">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/index.css">
+</head>
+<body>
+  <div class="flex_center" id="app" v-cloak>
+    <header>
+      <img class="fixed_top head" src="./imgs/index_bg_head.png" alt="">
+      <img class="fixed_top body" :style="{ top: dis_height +'px' }" src="./imgs/index_bg_body.png" alt="">
+	  <img class="fixed_bottom foot" src="./imgs/index_bg_foot.png" alt="">
+	  <button class="header_btn" @click='location.href="./record.html"'>参赛记录</button>
+	</header>
+
+    <footer :style="{ marginTop: dis_height + 10 +'px' }">
+		<div class="flex_between nav">
+			<div :class="{select_btn: nav_index == 0}" @click='select_btn(0)'>昨天</div>
+			<div :class="{select_btn: nav_index == 1}" @click='select_btn(1)'>今天</div>
+			<div :class="{select_btn: nav_index == 2}" @click='select_btn(2)'>明天</div>
+		</div>
+		<!-- 昨天 -->
+		<div v-if='nav_index == 0'>
+			<p style="color: #FFEB02; font-size: 16px;margin: 25px 0 -5px 0;">昨天 <span>{{ home_data.yesterday.phase ? home_data.yesterday.phase : 0 }}</span> 期 可瓜分奖金(元)</p>
+			<h2 style="font-size: 40px;">{{ home_data.yesterday.total_bonus ? home_data.yesterday.total_bonus : '0.00' }}</h2>
+			<p style="font-size: 16px;margin: -10px 0 20px 0;">
+				<img style="width: 26px;margin-right: 5px;" src="./imgs/team_icon.png" alt="">
+				<span><i>{{ home_data.yesterday.part_num ? home_data.yesterday.part_num : 0 }}</i>人已报名</span>
+			</p>
+			<div class="flex_center" style="margin: 15px 0;" v-if='home_data.yesterday && home_data.yesterday.is_list == 1 && home_data.yesterday.is_sign == 0'>
+				<img src="./imgs/line_left.png" alt="">
+				<span style="margin: 0 15px;white-space: nowrap;color: #046F61;font-size: 18px;font-weight: 900;">本期早起失败</span>
+				<img src="./imgs/line_right.png" alt="">
+			</div>
+			<div class="flex_center" style="margin: 15px 0;" v-if='home_data.yesterday && home_data.yesterday.is_list == 0'>
+				<span style="margin: 0 15px;white-space: nowrap;color: #FFEB02;font-size: 18px;font-weight: 900;">本期未参赛</span>
+			</div>
+			<div>
+				<button class="sign_up_bth" @click='nav_index = 2'>报名下期比赛</button>
+			</div>
+		</div>
+		
+		<!-- 今天 -->
+		<div v-if='nav_index == 1'>
+			<p style="color: #FFEB02; font-size: 16px;margin: 25px 0 -5px 0;">今天 <span>{{ home_data.today.phase ? home_data.today.phase : 0 }}</span> 期 可瓜分奖金(元)</p>
+			<h2 style="font-size: 40px;">{{ home_data.today.total_bonus ? home_data.today.total_bonus : '0.00' }}</h2>
+			<p style="font-size: 16px;margin: -10px 0 20px 0;">
+				<img style="width: 26px;margin-right: 5px;" src="./imgs/team_icon.png" alt="">
+				<span><i>{{ home_data.today.part_num ? home_data.today.part_num : 0 }}</i>人已报名</span>
+			</p>
+			<div class="flex_center" style="margin: 15px 0;" v-if='home_data.today && home_data.today.is_list == 1 && home_data.today.is_sign == 0 && is_range != 2'>
+				<span style="margin: 0 15px;white-space: nowrap;color: #FFEB02;font-size: 18px;font-weight: 900;">打卡时间：<i>06:00-08:00</i></span>
+			</div>
+			<div class="flex_center" style="margin: 15px 0;" v-if='home_data.today && home_data.today.is_list == 1 && home_data.today.is_sign == 1'>
+				<span style="margin: 0 15px;white-space: nowrap;color: #FFEB02;font-size: 18px;font-weight: 900;">本期已打卡</span>
+			</div>
+			<div class="flex_center" style="margin: 15px 0;" v-if='home_data.today && home_data.today.is_list == 1 && home_data.today.is_sign == 0 && is_range == 2'>
+				<img src="./imgs/line_left.png" alt="">
+				<span style="margin: 0 15px;white-space: nowrap;color: #046F61;font-size: 18px;font-weight: 900;">本期早起失败</span>
+				<img src="./imgs/line_right.png" alt="">
+			</div>
+			<div class="flex_center" style="margin: 15px 0;" v-if='home_data.today && home_data.today.is_list == 0'>
+				<span style="margin: 0 15px;white-space: nowrap;color: #FFEB02;font-size: 18px;font-weight: 900;">本期未参赛</span>
+			</div>
+			<div>
+				<button class="sign_up_bth clock" v-if='home_data.today && home_data.today.is_list == 1 && home_data.today.is_sign == 0 && is_range == 1' @click='to_sign_up'>
+					<img src="./imgs/clock.png" alt="">
+					<i>早起打卡</i>
+				</button>
+				<button class="sign_up_bth sign_up_done" v-if='home_data.today && home_data.today.is_list == 1 && home_data.today.is_sign == 0 && is_range == 0'>已报名</button>
+				<button class="sign_up_bth" v-else @click='nav_index = 2'>报名下期比赛</button>
+			</div>
+		</div>
+		
+		<!-- 明天 -->
+		<div v-if='nav_index == 2'>
+			<p style="color: #FFEB02; font-size: 16px;margin: 25px 0 -5px 0;">明天 <span>{{ home_data.tomorrow.phase ? home_data.tomorrow.phase : 0 }}</span>期 可瓜分奖金(元)</p>
+			<h2 style="font-size: 40px;">{{ home_data.tomorrow.total_bonus ? home_data.tomorrow.total_bonus : '0.00' }}</h2>
+			<p style="font-size: 16px;margin: -10px 0 20px 0;">
+				<img style="width: 26px;margin-right: 5px;" src="./imgs/team_icon.png" alt="">
+				<span><i>{{ home_data.tomorrow.part_num ? home_data.tomorrow.part_num : 0 }}</i>人已报名</span>
+			</p>
+			<div class="flex_center" style="margin: 15px 0;">
+				<span style="margin: 0 15px;white-space: nowrap;color: #FFEB02;font-size: 18px;font-weight: 900;">打卡时间：<i>06:00-08:00</i></span>
+			</div>
+			<div>
+				<button class="sign_up_bth sign_up_done" v-if='home_data.tomorrow && home_data.tomorrow.is_list == 1'>已报名</button>
+				<button class="sign_up_bth" v-if='home_data.tomorrow && home_data.tomorrow.is_list == 0' @click='toPay(home_data.tomorrow.phase, home_data.tomorrow.one_price)'>立即报名</button>
+			</div>
+		</div>
+	</footer>
+	
+	<div class="footer_div">
+		<div class="flex_between" style="padding-bottom: 5px;border-bottom: 1px dashed #fff;">
+			<span style="font-size: 18px;font-weight: 900;">玩法介绍{{test_text}}</span>
+			<a href="./details.html" style="color: #FFEB02;margin-right: -5px;">查看详情 》</a>
+		</div>
+		<ul class="flex_center">
+			<li>
+				<div class="num">1</div>
+				<div>23:50前支付 契约金报名</div>
+			</li>
+			<li>
+				<div class="num">2</div>
+				<div>第二天 6:00-8:00 完成打卡</div>
+			</li>
+			<li>
+				<div class="num">3</div>
+				<div>打卡用户 获得奖金</div>
+			</li>
+		</ul>
+	</div>
+	
+	<transition name="fade">
+		<section class="dialog flex_center fixed_top" v-if='dialog.is_open' @click.self='dialog.is_open = false'>
+			<div class="main">
+				<h3>提示</h3>
+				<div class="content">
+					<!-- <span>{{ dialog.msg }}</span> -->
+					<span>已打卡</span>
+				</div>
+				<div class="no_cancel">
+					<button class="sure" @click='dialog.is_open = false' style="display: unset;">确定</button>
+				</div>
+				<svg class="icon" aria-hidden="true" @click='dialog.is_open = false'>
+					<use xlink:href="#icon-chahao"></use>
+				</svg>
+			</div>
+		</section>
+	</transition>
+
+	<!-- 打卡弹窗 -->
+	<transition name="fade">
+		<div class="flex_center sign_dialog" v-if='sign_dialog.is_open' @click.self='sign_dialog.is_open = false'>
+			<div class="body">
+				<div class="pic">
+					<img class="dialog_bg" src="./imgs/dialog_bg.png" alt="">
+					<div class="tip">
+						<h2>早起打卡成功</h2>
+						<p>请保持早起习惯</p>
+					</div>
+					<img class="close_icon" src="./imgs/close_icon.png" alt="" @click='sign_dialog.is_open = false'>
+				</div>
+				<p class="middle_p">奖励金预计<span style="color: #FFB04A">当日24点前</span>到账</p>
+				<div class="foot_btn">
+					<button @click='dialog_sign_up'>报名下一期</button>
+				</div>
+			</div>
+		</div>
+	</transition>
+
+  </div>
+
+
+  <!-- 阿里图标 symbol引入方式 -->
+  <script src="./js/fonts/iconfont.js"></script>
+  <!-- vue -->
+  <script src="./js/frames/vue_2.6.1.min.js"></script>
+  <!-- element-ui -->
+  <script src="./js/plugins/element-ui_2.8.2.js"></script>
+  <!-- jquery -->
+  <script src="./js/plugins/jquery_3.4.1.min.js"></script>
+  <!-- moment -->
+  <script src="./js/plugins/moment.js"></script>
+  <script src="./js/plugins/jweixin-1.3.2.js"></script>
+  <script defer>
+	  wx.miniProgram.getEnv(function(res) {
+		console.log(res.miniprogram) // true
+		alert('999');
+	})
+  </script>
+  <!-- <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"></script> -->
+  <script src="./js/index.js"></script>
+</body>
+</html>

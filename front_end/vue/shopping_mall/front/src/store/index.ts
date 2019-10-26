@@ -4,6 +4,7 @@ Vue.use(Vuex);
 
 //拆分模块
 import home from './modules/home';
+import goods from './modules/goods';
 
 const store = new Vuex.Store({
 	state: {
@@ -16,7 +17,8 @@ const store = new Vuex.Store({
 
 	},
 	modules: {
-		home
+		home,
+		goods
 	}
 });
 

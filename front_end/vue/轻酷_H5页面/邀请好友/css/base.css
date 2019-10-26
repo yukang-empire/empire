@@ -1,0 +1,76 @@
+
+/* 基础样式 */
+* {
+	margin: 0;
+	padding: 0;
+}
+body {
+    color: #333;
+    text-align: justify;
+    padding: 0 0 30px 0;
+    background-color: #fff;
+    font: 14px/1.7 -apple-system-font,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Hiragino Sans GB,Microsoft YaHei UI,Microsoft YaHei,Arial,sans-serif;
+}
+h1 {
+    text-align: center;
+}
+h1,h2,h3 {
+    white-space: nowrap;
+}
+i {
+	font-style: normal;
+}
+ul {
+    list-style: none;
+    overflow: hidden;
+}
+ol {
+    overflow: hidden;
+}
+a {
+    color: deepskyblue;
+    text-decoration: none;
+}
+input[type="button"],button {
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    border-radius: 8px;
+    letter-spacing: 3px;
+}
+input::-webkit-input-placeholder{
+    color: #999 !important;
+    font-size: 0.95rem;
+}
+input::-moz-input-placeholder{
+    color: #999 !important;
+    font-size: 0.95rem;
+}
+input::-ms-input-placeholder{
+    color: #999 !important;
+    font-size: 0.95rem;
+}
+
+
+
+/* 阿里图标 */
+.icon {
+    width: 1.2rem;
+    height: 1.2rem;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+}
+
+
+/* vue相关 */
+[v-cloak] {
+    display: none;
+}
+/* fade淡入淡出 */
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to {
+    opacity: 0;
+}

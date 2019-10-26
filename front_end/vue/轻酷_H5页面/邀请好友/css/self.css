@@ -1,0 +1,201 @@
+
+
+/* 邀请好友页面 */
+.invitation article,.invitation nav,.invitation footer {
+    width: 90%;
+    margin: 5px 5%;
+}
+.invitation nav button {
+    width: 100%;
+    height: 45px;
+    border-radius: 20px;
+    background-color: #31bfad;
+	color: #fff;
+	line-height: 45px;
+}
+.invitation article .main h3 {
+    background-color: #c8efef;
+    color: #666;
+    text-align: center;
+    padding: 10px 0;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    margin-bottom: 0;
+    font-size: 1rem;
+    margin-top: 10px;
+}
+.invitation .main>div {
+    background-color: transparent;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+.invitation .main .no_list {
+    padding: 30px 0;
+    text-align: center;
+    color: #CCCCCC;
+}
+.invitation footer {
+    background-color: #fff;
+    margin-top: 20px;
+    padding: 25px 0 20px 0;
+    text-align: center;
+    border-radius: 15px;
+}
+.invitation footer p.rule {
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: #666;
+}
+.invitation footer ol {
+    padding: 5px 20px 0 40px;
+}
+.invitation footer ol li {
+    margin: 10px 0;
+    text-align: justify;
+}
+.invitation .list ul {
+    padding: 25px 20px;
+    display: flex;
+    align-items: center;
+    overflow-x: scroll;
+}
+.invitation .list ul li {
+    margin-right: 10px;
+}
+.invitation .list ul li:last-of-type {
+    padding-right: 10px;
+}
+.invitation .list ul li.no_pic {
+    border: 1px dashed #999; 
+}
+.invitation .list ul li.no_pic:last-of-type {
+    padding-right: 0px;
+}
+.invitation .list ul li div{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.invitation .list ul li img {
+    width: 100%;
+}
+
+
+/* 邀请记录详情 */
+.invitation_details header {
+    background-color: #c8efef;
+    color: #666;
+    padding: 10px 0;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    font-size: 0.95rem;
+    font-weight: 900;
+}
+.invitation_details header ul {
+    display: flex;
+    align-items: center;
+}
+.invitation_details header li {
+    white-space: nowrap;
+    width: 25%;
+    text-align: center;
+}
+.invitation_details footer {
+    padding: 0 5px 0 0;
+}
+.invitation_details footer ul li {
+    display: flex;
+    align-items: center;
+    margin: 25px 0;
+    font-size: 0.8rem;
+}
+.invitation_details footer ul li .time {
+    color: #ccc;
+}
+.invitation_details footer ul li div {
+    white-space: nowrap;
+    width: 25%;
+    display: flex;
+    justify-content: center;
+}
+.invitation_details footer ul li .level {
+    color: #5D5860;
+}
+.invitation_details footer ul li div>p {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.invitation_details footer ul li p.no_pic {
+    border: 1px dashed #999;
+}
+.invitation_details .no_list {
+    padding: 50px 0;
+    text-align: center;
+    color: #999;
+    font-size: 0.95rem;
+}
+
+
+/* 制作邀请卡页面 */
+.make_card {
+    height: 100%;
+    background-color: #E2F5F3;
+}
+.make_card .user {
+    top: 30px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    background: url('../imgs/user_bg.png') no-repeat;
+    background-size: cover;
+}
+.make_card .user>div {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 5px 8px 5px 1.2rem;
+}
+.make_card .QR_code {
+    bottom: 2rem;
+    flex-direction: column;
+}
+.make_card .QR_code img {
+    width: 7rem;
+    border-radius: 8px;
+    margin-bottom: 5px;
+}
+
+
+/* 邀请下载页面 */
+.invi_download .download_btn {
+    margin-top: 10px;
+}
+.invi_download .download_btn button {
+    width: 90%;
+    margin: 15px 5%;
+    background-color: transparent;
+    height: 55px;
+    color: #FF7C42;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    border: 1px solid #FF7C42;
+}
+.invi_download .download_btn .icon {
+    width: 1.8rem;
+    height: 1.8rem;
+    margin-right: 5px;
+}
+.invi_download .download_btn .register {
+    background-color: #FF7C42;
+    margin-bottom: 0;
+    border: none;
+    color: #fff;
+    letter-spacing: 10px;
+}

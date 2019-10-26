@@ -12,15 +12,17 @@
 			<swiper_imgs :swiper_data='swiper_data'></swiper_imgs>
 			<div class="goods_details">
 				<h3>
-					<i class="tag vip_span">会员</i>
-					<span>WORLDTOUCH  移动wifi</span>
+					<span v-if='goods_info.shop_type == 1' class="tag vip_span">会员</span>
+					<span v-if='goods_info.shop_type == 2' class="tag yx_span">优选</span>
+					<span v-if='goods_info.shop_type == 3' class="tag motion_span">运动</span>
+					<i>{{ goods_info.goods_name }}</i>
 				</h3>
-				<p class="goods_name">WORLDTOUCH  移动WiFi WORLDTOUCH WORLDTOUCH WORLDTOUCH</p>
-				<p class="goods_price">￥<span>380</span></p>
-				<p class="goods_discount">本级折扣价：￥<span>304</span></p>
+				<p class="goods_name">{{ goods_info.goods_remark }}</p>
+				<p class="goods_price">￥<span>{{ goods_info.shop_price }}</span></p>
+				<p class="goods_discount">本级折扣价：￥<span>{{ total_account }}</span></p>
 			</div>
 		</div>
-		<div class="flex_between select_goods">
+		<div class="flex_between select_goods" @click='is_buy_dialog=true'>
 			<span>请选择规格 / 数量</span>
 			<svg class="icon" aria-hidden="true" @click='back'>
 				<use xlink:href="#icon-you"></use>
@@ -31,9 +33,8 @@
 				<i></i>
 				<span>商品细节</span>
 			</h3>
-			<div class="goods_imgs_list">
-				<img src="https://img.alicdn.com/imgextra/i4/2082003790/O1CN01EDMcmF1drremZlYqL_!!2082003790.jpg" alt="goods_imgs">
-				<img src="https://img.alicdn.com/imgextra/i4/2082003790/O1CN01EDMcmF1drremZlYqL_!!2082003790.jpg" alt="goods_imgs">
+			<div class="goods_imgs_list" v-html='goods_info.goods_content'>
+				
 			</div>
 		</div>
 		<div class="bottom_btn">
@@ -48,36 +49,40 @@
 			<div class="fixed_bottom diy_dialog_main" v-if='is_buy_dialog' style="z-index: 99;">
 				<div class="goods_info">
 					<div>
-						<img src="../../assets/imgs/search_no_result.png" alt="goods">
+						<img v-if='goods_info.original_img' :src="'https://shop.technologyle.com' + goods_info.original_img" alt="goods">
+						<img v-if='!goods_info.original_img' src="../../assets/imgs/search_no_result.png" alt="goods">
 					</div>
 					<div class="dialog_title">
 						<p class="dialog_name">
-							<i class="tag vip_span">会员</i>
-							<span>WORLDTOUCH  移动...</span>
+							<span v-if='goods_info.shop_type == 1' class="tag vip_span">会员</span>
+							<span v-if='goods_info.shop_type == 2' class="tag yx_span">优选</span>
+							<span v-if='goods_info.shop_type == 3' class="tag motion_span">运动</span>
+							<i>{{ goods_info.goods_name }}</i>
 						</p>
-						<p class="dialog_price">￥268</p>
+						<p class="dialog_price">￥{{ goods_info.shop_price }}</p>
 					</div>
 					<svg class="icon" aria-hidden="true" @click='is_buy_dialog=false'>
 						<use xlink:href="#icon-1"></use>
 					</svg>
 				</div>
-				<div class="dialog_specs">
-					<h3>规格</h3>
+				<div class="dialog_specs" v-if='filter_spec["尺寸"]'>
+					<h3>尺寸</h3>
 					<ul>
-						<li>蓝色</li>
-						<li class="select_li">蓝色</li>
-						<li>蓝色</li>
-						<li>蓝色</li>
-						<li>蓝色</li>
-						<li>蓝色</li>
+						<li v-for='(item, index) in filter_spec["尺寸"]' :key='item.item_id' :class="{select_li: size_index == index}" @click='select_size(index)'>{{ item.item }}</li>
+					</ul>
+				</div>
+				<div class="dialog_specs" v-if='filter_spec["颜色"]'>
+					<h3>颜色</h3>
+					<ul>
+						<li v-for='(item, index) in filter_spec["颜色"]' :key='item.item_id' :class="{select_li: color_index == index}" @click='select_color(index)'>{{ item.item }}</li>
 					</ul>
 				</div>
 				<div class="flex_between dialog_num">
 					<h3>数量</h3>
 					<div class="flex_center add_reduce">
-						<img src="../../assets/imgs/add_icon.png" alt="add">
-						<span>1</span>
 						<img src="../../assets/imgs/reduce_icon.png" alt="reduce">
+							<span>{{ goods_num }}</span>
+						<img src="../../assets/imgs/add_icon.png" alt="add">
 					</div>
 				</div>
 				<div class="bottom_btn" @click='sure_buy'>
@@ -114,20 +119,40 @@ export default class home extends Vue{
 		},
 		imgs: []
 	};
-
-	private is_buy_dialog: any = false;
+	private is_buy_dialog: any = true;
+	private goods_info: any = {};
+	private total_account: any = null;
+	private filter_spec: any = {};
+	private size_index: any = 0;
+	private color_index: any = 0;
+	private goods_num: any = 0;
 
 	created () {
 
 	};
 	mounted () {
 		var that = this;
-		setTimeout(() => {
-			that.swiper_data.imgs = [
-				{ id: '1', src: 'https://img.alicdn.com/imgextra/https://img.alicdn.com/imgextra/i2/2082003790/O1CN015O2Wuw1drre7MfiMv_!!2082003790.jpg_430x430q90.jpg' },
-				{ id: '2', src: 'https://img.alicdn.com/imgextra/https://img.alicdn.com/imgextra/i4/2082003790/O1CN013OdH4V1drre9Jt9fX_!!2082003790.jpg_430x430q90.jpg' },
-			];
-		}, 300);
+		var query = this.$route.query;
+		//请求数据
+		var http_data = {
+			goods_id: query.goods_id
+		};
+		this.$store.dispatch('get_goods_details', http_data).then((res) => {
+			console.log('商品详情', res);
+			if (res.status == 1) {
+				this.total_account = res.result.total_account;
+				this.goods_info = res.result.goods;
+				if (this.goods_info.goods_content) {
+					this.goods_info.goods_content = this.goods_info.goods_content.replace(/&(?!#?\w+;)/g, '&amp;').replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, "\"").replace(/&#39;/g, "\'");
+				}else {
+					this.goods_info.goods_content = '';
+				};
+				if (res.result.goods.goods_images && res.result.goods.goods_images.length > 0) {
+					this.swiper_data.imgs = res.result.goods.goods_images;
+				};
+				this.filter_spec = res.result.filter_spec;
+			};
+		});
 	};
 
 	back () {
@@ -137,7 +162,17 @@ export default class home extends Vue{
 	//确定购买
 	sure_buy () {
 		this.$router.push({ path: '/order_sure' });
-	}
+	};
+
+	//选择尺寸
+	select_size(index) {
+		this.size_index = index;
+	};
+
+	//选择颜色
+	select_color(index) {
+		this.color_index = index;
+	};
 
 }
 </script>
@@ -157,6 +192,12 @@ export default class home extends Vue{
 				font-size: 1.2rem;
 				line-height: 1.4;
 				margin-bottom: 8px;
+
+				i {
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+				}
 			}
 
 			.goods_name {
@@ -226,9 +267,11 @@ export default class home extends Vue{
 			display: flex;
 			align-items: center;
 			position: relative;
+			padding-bottom: 15px;
+			border-bottom: 1px solid #E6E6E6;
 
 			img {
-				width: 80px;
+				width: 70px;
 				margin-right: 10px;
 			}
 
@@ -267,11 +310,10 @@ export default class home extends Vue{
 			margin: 20px 15px;
 			padding-bottom: 20px;
 			color: #666666;
-			border-top: 1px solid #E6E6E6;
 			border-bottom: 1px solid #E6E6E6;
 
 			h3 {
-				margin: 14px 15px 0 0;
+				margin: 0 15px 0 0;
 				white-space: nowrap;
 			}
 
@@ -285,7 +327,7 @@ export default class home extends Vue{
 					border-radius: 5px;
 					height: 35px;
 					line-height: 35px;
-					margin: 20px 6px 0 6px;
+					margin: 0 6px 0 6px;
 				}
 
 				.select_li {

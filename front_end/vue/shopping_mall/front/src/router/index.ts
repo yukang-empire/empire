@@ -13,6 +13,7 @@ import add_address from './modules/add_address';
 import edit_address from './modules/edit_address';
 import my from './modules/my';
 import vip_center from './modules/vip_center';
+import member_grade from './modules/member_grade';
 
 const router = new VueRouter({
 	// mode: 'history',
@@ -32,7 +33,8 @@ const router = new VueRouter({
 		add_address,
 		edit_address,
 		my,
-		vip_center
+		vip_center,
+		member_grade
 	],
 	scrollBehavior (to: any, from: any, savedPosition: any) {
 		return { x: 0, y: 0}

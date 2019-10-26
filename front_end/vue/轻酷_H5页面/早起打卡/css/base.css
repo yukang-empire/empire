@@ -1,0 +1,189 @@
+
+/* 基础标签样式 */
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+    color: #fff;
+    overflow-x: hidden;
+    text-align: justify;
+    background-color: #fff;
+    font: 14px/1.8 -apple-system-font,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Hiragino Sans GB,Microsoft YaHei UI,Microsoft YaHei,Arial,sans-serif;
+}
+h1 {
+    text-align: center;
+}
+h1,h2,h3 {
+    white-space: nowrap;
+}
+i {
+	font-style: normal;
+}
+ul {
+    list-style: none;
+    overflow: hidden;
+}
+ol {
+    overflow: hidden;
+}
+a {
+    color: #666;
+    text-decoration: none;
+}
+img {
+    width: 100%;
+}
+input {
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    background-color: transparent;
+}
+input[type="button"],button {
+    border: none;
+    outline: none;
+    display: flex;
+    cursor: pointer;
+    font-size: 1rem;
+    border-radius: 8px;
+    letter-spacing: 3px;
+    align-items: center;
+    justify-content: center;
+}
+input::-webkit-input-placeholder{
+    color: #999 !important;
+    font-size: 0.95rem;
+}
+input::-moz-input-placeholder{
+    color: #999 !important;
+    font-size: 0.95rem;
+}
+input::-ms-input-placeholder{
+    color: #999 !important;
+    font-size: 0.95rem;
+}
+
+
+/* 阿里图标 */
+.icon {
+    width: 1.2rem;
+    height: 1.2rem;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+}
+
+
+/* vue相关 */
+[v-cloak] {
+    display: none !important;
+}
+/* fade淡入淡出 */
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to {
+    opacity: 0;
+}
+
+/* 自定义dialog弹框 */
+.dialog {
+    height: 100%;
+    background-color: rgba(0,0,0,0.65);
+}
+.dialog .main {
+    width: 85%;
+    position: absolute;
+    margin: -2rem 0 0 0;
+	border-radius: 8px;
+	color: #333;
+	text-align: center;
+    background-color: #fff;
+}
+
+.dialog .main .icon {
+    top: 8px;
+    right: 10px;
+    color: #bbb;
+    width: 1.1rem;
+    height: 1.1rem;
+    position: absolute;
+}
+.dialog .main h3 {
+    margin: 0;
+    color: #666;
+    font-size: 1.1rem;
+    padding: 10px 0 8px 0;
+    border-bottom: 1px solid #ddd;
+}
+.dialog .main .content {
+    color: #999;
+    margin: 20px;
+    font-size: 1rem;
+    text-align: center;
+}
+.dialog .no_cancel, .dialog .normal {
+    margin: 25px 30px;
+}
+.dialog button{
+    width: 7rem;
+    height: 45px;
+    color: #333;
+    font-size: 1rem;
+	border-radius: 5px;
+	background-color: #fee330;
+    /* background: linear-gradient(to right, #b667d1, #491b99); */
+}
+.dialog .cancel{
+    color: #773BB1;
+    background: transparent;
+    border: 1px solid #773BB1;
+}
+
+
+/* 共用的类 */
+.full_width {
+    width: 100%;
+}
+.full {
+    width: 100%;
+    height: 100%;
+}
+.block {
+    display: block;
+}
+.flex_center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.flex_between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.fixed_top {
+    top: 0;
+    left: 0;
+	z-index: 99;
+    width: 100%;
+    position: fixed;
+}
+.fixed_bottom {
+    left: 0;
+    bottom: 0;
+	z-index: 2;
+    width: 100%;
+    position: fixed;
+}
+.ab_center {
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    position: absolute;
+    transform: translate(-50%,-50%);
+}

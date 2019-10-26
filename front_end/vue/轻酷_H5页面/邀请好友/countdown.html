@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="author" content="yukang" />
+    <meta name="keywords" content="个人网站" />
+    <meta name="description" content="个人网站" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>轻酷APP-上线倒计时</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            color: #333;
+            text-align: justify;
+            padding: 0 0 30px 0;
+            background-color: #fff;
+            font: 14px/1.7 -apple-system-font,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Hiragino Sans GB,Microsoft YaHei UI,Microsoft YaHei,Arial,sans-serif;
+        }
+        ul {
+            list-style: none;
+            overflow: hidden;
+        }
+        img {
+            width: 100%;
+        }
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1
+        }
+        header img {
+            margin-top: -64px;
+        }
+        article {
+            width: 80%;
+            text-align: center;
+            margin: 25px 10% 8px 10%;
+        }
+        .logo {
+            width: 90px;
+        }
+        .tip {
+            position: relative;
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin-top: -7px;
+        }
+        .tip p {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            transform: translateY(-50%);
+        }
+        footer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.6rem;
+        }
+        .time {
+            margin-right: 8px;
+            display: flex;
+            overflow: hidden;
+        }
+        .time p {
+            background-color: #fff;
+            color: #7d7d7d;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            line-height: 50px;
+        }
+        .time div {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            flex-direction: column;
+        }
+        .time div i {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background-color: #fff;
+            margin-left: 8px;
+        }
+        .time img {
+            width: 50px;
+            height: 50px;
+        }
+
+        #end article{
+            margin: 0;
+            text-align: center;
+            width: 100%;
+            margin-top: 9rem;
+            color: #fff;
+            font-size: 1.2rem;
+            white-space: nowrap;
+        }
+        #end button {
+            margin-top: 1.5rem;
+            width: 180px;
+            height: 58px;
+            line-height: 50px;
+            border: none;
+            color: #fff;
+            background-color: rgba(254, 92, 241, 0.6);
+            border-radius: 10px;
+            font-size: 1.1rem;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="start">
+        
+        <header>
+            <img src="imgs/countdown_bg.png" alt="banner">
+        </header>
+    
+        <article>
+            <img src="imgs/countdownText.png" alt="text">
+            <div class="tip">
+                <img src="imgs/countdown_tip.png" alt="tip">
+                <p>2019-05-18 &nbsp;&nbsp;05:30:00</p>
+            </div>
+        </article>
+            
+        <footer>
+            <div class="time">
+                <p id="hour"></p>
+                <div>
+                    <i></i>
+                    <i></i>
+                </div>
+            </div>
+            <div class="time">
+                <p id="min"></p>
+                <div>
+                    <i></i>
+                    <i></i>
+                </div>
+            </div>
+            <div class="time">
+                <p id="sec"></p>
+                <div>
+                    <i></i>
+                    <i></i>
+                </div>
+            </div>
+            <div class="time">
+                <img src="imgs/countdown_ss.gif" alt="">
+            </div>
+        </footer>
+    </div>
+
+    
+    <div id="end">
+        <header>
+            <img src="imgs/countdown_bg.png" alt="banner">
+        </header>
+        <article>
+            <h2>倒计时结束!</h2>
+            <h2>轻酷APP已正式上线!</h2>
+        </article>
+        <footer>
+            <!-- <button id="download">前往下载</button> -->
+            <img id="download" style='width: 180px;margin-top: 20px;' src="imgs/to_download.png">
+        </footer>
+    </div>
+    
+    <script>
+        
+        
+        document.getElementById('end').style.display = 'none';
+
+        document.getElementById('download').onclick = function () {
+            window.location.href = 'https://shop.technologyle.com/download';
+        };
+
+        countdown = function () {
+            
+            //当前时间
+            let today = new Date();
+            //截至时间
+            let stop_time = new Date("May 18 2019 05:30:00");
+
+            //剩余的总毫秒数
+            let remain_all_s = stop_time.getTime() - today.getTime();
+            //倒计时结束隐藏计时页面
+            if (remain_all_s < 1000) {
+                document.getElementById('start').style.display = 'none';
+                document.getElementById('end').style.display = 'block';
+            };
+            //剩余的小时
+            let remain_h = parseInt(remain_all_s / (60*60*1000)),
+            //除去小时所得的毫秒数
+            remain_s_01 = remain_all_s - remain_h *60*60*1000,
+            //再转换成分钟
+            remain_m = parseInt(remain_s_01 / (60*1000)),
+            //最后剩余的毫秒数
+            remain_s_02 = remain_s_01 - remain_m *60*1000,
+            //再转换成秒
+            remain_s = parseInt((remain_all_s - remain_h *60*60*1000 - remain_m *60*1000) / 1000);
+
+            document.getElementById("hour").innerHTML = remain_h < 10 ? '0' + remain_h : remain_h;
+            document.getElementById("min").innerHTML = remain_m < 10 ? '0' + remain_m : remain_m;
+            document.getElementById("sec").innerHTML = remain_s < 10 ? '0' + remain_s : remain_s;
+            //定时器
+            setTimeout(countdown, 500);
+        };
+        window.onload = countdown;
+    </script>
+</body>
+</html>

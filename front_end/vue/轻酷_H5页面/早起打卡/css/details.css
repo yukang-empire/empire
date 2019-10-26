@@ -1,0 +1,69 @@
+
+
+header .body {
+	z-index: -10;
+	height: 100%;
+}
+header .foot {
+	z-index: 2;
+}
+footer {
+	/* position: relative; */
+	/* padding: 0 40px 30px 40px; */
+	width: 100%;
+	text-align: center;
+	margin-left: 40px;
+	margin-right: 40px;
+	margin-bottom: 30px;
+}
+.introduce button {
+	background-color: #31BFAD;
+	border-radius: 20px;
+	height: 45px;
+	line-height: 45px;
+	font-size: 18px;
+	font-weight: 900;
+	color: #fff;
+	text-align: center;
+	width: 100%;
+}
+.steps {
+	flex-direction: column;
+	color: #22B09E;
+	text-align: center;
+	border: 1px solid #22B09E;
+	border-radius: 15px;
+	padding: 20px 0 10px 0;
+	margin: 15px 0 0 0;
+}
+.steps li {
+	margin: 0 0 10px 0;
+}
+.steps li img {
+	width: 70px;
+	margin-top: 10px;
+}
+.steps_num {
+	width: 18px;
+	height: 18px;
+	line-height: 18px;
+	color: #fff;
+	font-size: 12px;
+	margin-right: 5px;
+	background-color: #22B09E;
+	border-radius: 50%;
+	display: inline-block;
+}
+.Q_A li {
+	color: #333;
+}
+.Q_A li h3 {
+	background-color: #FFF3DF;
+	border-radius: 5px;
+	padding: 5px 10px;
+	text-align: left;
+}
+.Q_A li p {
+	margin: 10px 10px 20px 10px;
+	text-align: justify;
+}

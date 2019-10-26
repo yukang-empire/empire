@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="author" content="yukang" />
+  <meta name="keywords" content="酷点夺宝" />
+  <meta name="description" content="酷点夺宝" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>酷点夺宝</title>
+  <!-- element-ui -->
+  <!-- <link rel="stylesheet" href="./css/element-ui_2.8.2.css"> -->
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/index.css">
+</head>
+<body>
+  <div id="app" v-cloak>
+		<!-- <p>token: {{ token }}</p> -->
+    <header :style="{width: device_rele.width - 81 + 'px'}">
+		<div class="flex_center item" v-for='(item, index) in home_data' :class="{select: select_index == index, no_border: index == home_data.length - 1}" @click='select_phase(index)'>
+			<p>{{ item.phase }}期</p>
+			<p>{{ item.status }}</p>
+		</div>
+	  
+	</header>
+	
+	<div class="flex_center item history" @click="location.href='./history.html'">
+		<p>往期</p>
+		<p>查看</p>
+	</div>
+
+	<nav class="flex_center">
+		<img v-if='newest_phase.goods_image' :src="'https://shop.technologyle.com' + newest_phase.goods_image" alt="">
+		<div v-if='!newest_phase.goods_image' style="text-align: center;">
+			<img style="width: 150px;" src="./imgs/default_goods.png" alt="">
+		</div>
+	</nav>
+
+	<footer>
+		<p class="price">¥<span>{{ newest_phase.goods_price }}</span></p>
+		<h2 class="title">{{ newest_phase.goods_name }}</h2>
+
+		<div class="info" v-if='newest_phase.status == "进行中"'>
+			<div class="progress">
+				<div class="progress_line" :style="{width: progress + '%'}"></div>
+			</div>
+			<div class="flex_between">
+				<span>所需人次：<i>{{ newest_phase.total_num }}</i></span>
+				<span>剩余人次：<i>{{ newest_phase.total_num - newest_phase.join_num }}</i></span>
+			</div>
+			<div class="info_tip" style="margin-bottom: 20px;">
+				<p>最多参与5人次，满人次后开奖</p>
+				<p>每人次需要支付1元和100酷点</p>
+			</div>
+			<div class="completed" v-if='newest_phase_win_num.length > 0' style="height: 265px;">
+				<div>
+					<img src="./imgs/spit_prize.png" alt="">
+					<h2 class="main_title">您已参与，待开奖</h2>
+					<div class="main" style="margin-bottom: 85px;">
+						<div class="my_num">
+							<div>我的号码：</div>
+							<ul>
+								<li v-for='(item, index) in newest_phase_win_num' :class="{win_num_color: item.luck_no == newest_phase.give_no}">{{ item.luck_no }}</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<button class="btn" @click='pay_db_01(newest_phase.id, newest_phase.goods_name, newest_phase.goods_points, newest_phase.total_num, newest_phase.goods_price, newest_phase.goods_image)'>参与夺宝</button>
+		</div>
+
+		<div class="info" style="margin: 0;" v-if='newest_phase.status == "已完成" && newest_phase_win_num.length > 0'>
+			<div class="progress">
+				<div class="progress_line" :style="{width: progress + '%'}"></div>
+			</div>
+			<div class="flex_between">
+				<span>所需人次：<i>{{ newest_phase.total_num }}</i></span>
+				<span>剩余人次：<i>{{ newest_phase.total_num - newest_phase.join_num }}</i></span>
+			</div>
+			<div class="info_tip" style="margin-bottom: 30px;">
+				<p>最多参与5人次，满人次后开奖</p>
+				<p>每人次需要支付1元和100酷点</p>
+			</div>
+
+			
+			<div class="spit_prize_02" v-if='newest_phase_win_num.length > 0' style="width: 85%;left: 50%;transform: translateX(-50%);">
+				<img src="./imgs/spit_prize.png" alt="">
+				<h2 class="main_title" style="font-size: 17px;top: 3px;">您已参与，待开奖</h2>
+				<div class="main" style="margin-bottom: 85px;">
+					<div class="my_num">
+						<div>我的号码：</div>
+						<ul>
+							<li v-for='(item, index) in newest_phase_win_num' :class="{win_num_color: item.luck_no == newest_phase.give_no}">{{ item.luck_no }}</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="spit_prize" v-if='newest_phase.status == "已开奖" && !is_win  && newest_phase_win_num.length > 0'>
+			<img src="./imgs/spit_prize.png" alt="">
+			<h2 class="main_title">您未中奖，谢谢参与</h2>
+			<div class="main">
+				<h3 class="win_num">中奖号码：<span>{{ newest_phase.give_no }}</span></h3>
+				<div class="my_num">
+					<div>我的号码：</div>
+					<ul>
+						<li v-for='(item, index) in newest_phase_win_num' :class="{win_num_color: item.luck_no == newest_phase.give_no}">{{ item.luck_no }}</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="spit_prize" v-if='newest_phase.status == "已开奖" && is_win  && newest_phase_win_num.length > 0'>
+			<img src="./imgs/spit_prize.png" alt="">
+			<h2 class="main_title">恭喜中奖！</h2>
+			<div class="main">
+				<h3 class="win_num">中奖号码：<span>{{ newest_phase.give_no }}</span></h3>
+				<div class="my_num">
+					<div>我的号码：</div>
+					<ul>
+						<li v-for='(item, index) in newest_phase_win_num' :class="{win_num_color: item.luck_no == newest_phase.give_no}">{{ item.luck_no }}</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<!-- <div class="spit_prize" v-if='newest_phase.status == "进行中" && newest_phase_win_num.length <= 0'>
+			<img src="./imgs/no_partake.png" alt="">
+			<h2 class="main_title" style="font-size: 17px;top: 3px;">您未参与本期抽奖</h2>
+			<div class="main" style="margin-bottom: 85px;">
+				<h3 class="win_num" style="color: #333;border: none;">待开奖</h3>
+			</div>
+			
+			<button class="btn" @click='pay_db_01(newest_phase.id, newest_phase.goods_name, newest_phase.goods_points, newest_phase.total_num, newest_phase.goods_price, newest_phase.goods_image)' v-if='newest_phase_win_num.length <= 4'>参与夺宝</button>
+		</div> -->
+
+		<div class="spit_prize" v-if='newest_phase.status != "进行中" && newest_phase_win_num.length <= 0'>
+			<img src="./imgs/no_partake.png" alt="">
+			<h2 class="main_title" style="font-size: 17px;top: 3px;">您未参与本期抽奖</h2>
+			<div class="main" style="margin-bottom: 85px;">
+				<h3 class="win_num" style="color: #333;border: none;">中奖号码：<span>{{ newest_phase.give_no ? newest_phase.give_no : '待开奖' }}</span></h3>
+			</div>
+		</div>
+
+		<transition name="fade">
+			<div class="kd_tip" v-if='is_tip.is_open'>{{ is_tip.msg }}</div>
+		</transition>
+
+	</footer>
+
+	<transition name="fade">
+		<section class="buy" v-if='buy_dialog' @click.self='buy_dialog = false'>
+			<div class="buy_main">
+				<div class="buy_title">
+					<img v-if='!goods_image_text' class="default_goods" src="./imgs/default_goods.png" alt="">
+					<img v-if='goods_image_text' class="default_goods" :src="goods_image_text" alt="">
+					<div>
+						<p>{{ goods_name_text }}</p>
+						<h4>￥{{ goods_price_text }}</h4>
+					</div>
+					<img class="close" src="./imgs/close.png" alt="" @click='buy_dialog = false'>
+				</div>
+				<div class="flex_between">
+					<div>参与人次</div>
+					<div class="re_plus">
+						<img src="./imgs/reduce.png" alt="" @click='reduce_kd'>
+						<span>{{ need_kd }}</span>
+						<img src="./imgs/plus.png" alt="" @click='plus_kd'>
+					</div>
+				</div>
+				<div class="flex_between">
+					<span>所需酷点</span>
+					<span style="color: #FF6C00;font-size: 19px;">{{ kd_need * need_kd }}</span>
+				</div>
+				<div class="flex_between">
+					<span>所需金额</span>
+					<span style="color: #FF6C00;font-size: 19px;">￥{{ need_kd }}.00</span>
+				</div>
+				<div>
+					<button class="buy_btn" @click='pay_db_02'>立即参与</button>
+				</div>
+			</div>
+		</section>
+	</transition>
+
+	<transition name="fade">
+		<section class="dialog flex_center fixed_top" v-if='dialog.is_open' @click.self='dialog.is_open = false'>
+			<div class="main">
+				<h3>提示</h3>
+				<div class="content">
+					<!-- <span>{{ dialog.msg }}</span> -->
+					<span>已打卡</span>
+				</div>
+				<div class="no_cancel">
+					<button class="sure" @click='dialog.is_open = false' style="display: unset;">确定</button>
+				</div>
+				<svg class="icon" aria-hidden="true" @click='dialog.is_open = false'>
+					<use xlink:href="#icon-chahao"></use>
+				</svg>
+			</div>
+		</section>
+	</transition>
+
+	<!-- 打卡弹窗 -->
+	<transition name="fade">
+		<div class="flex_center sign_dialog" v-if='sign_dialog.is_open' @click.self='sign_dialog.is_open = false'>
+			<div class="body">
+				<div class="pic">
+					<img class="dialog_bg" src="./imgs/gift.png" alt="">
+					<div class="tip">
+						<h2>恭喜中奖</h2>
+					</div>
+					<img class="close_icon" src="./imgs/close.png" alt="" @click='sign_dialog.is_open = false'>
+				</div>
+				<p class="middle_p" style="color: #FFB04A;font-weight: 900;margin-bottom: 0;">恭喜中奖!</p>
+				<p class="middle_p" style="margin: 0;">稍后客服将与您联系!</p>
+				<div class="foot_btn">
+					<button @click='dialog_sign_up'>确定</button>
+				</div>
+			</div>
+		</div>
+	</transition>
+
+  </div>
+
+
+  <!-- 阿里图标 symbol引入方式 -->
+  <script src="./js/fonts/iconfont.js"></script>
+  <!-- vue -->
+  <script src="./js/frames/vue_2.6.1.min.js"></script>
+  <!-- element-ui -->
+  <!-- <script src="./js/plugins/element-ui_2.8.2.js"></script> -->
+  <!-- jquery -->
+  <script src="./js/plugins/jquery_3.4.1.min.js"></script>
+  <!-- moment -->
+  <script src="./js/plugins/moment.js"></script>
+  <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"></script>
+  <script src="./js/index.js"></script>
+
+</body>
+</html>

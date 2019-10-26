@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="author" content="yukang" />
+    <meta name="keywords" content="个人网站" />
+    <meta name="description" content="个人网站" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>走路赚钱</title>
+    <!-- 自定义的css -->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/modules.css">
+    <link rel="stylesheet" href="css/walk_money.css">
+</head>
+<body>
+    <div id="app" class="walk_money" v-cloak>
+		<img class="full_img" src="./imgs/walk_bg.jpg" alt="">
+		<img src="./imgs/walk_header.png" alt="">
+		<div class="flex_center walk_nav">
+			<img class="full_img" src="./imgs/walk_nav.png" alt="">
+			<p style="margin-top: 1rem;">
+				人生没有白走的路，曾经的每一步都算数！
+			</p>
+			<p style="margin-top: 5px;">您的每一次努力都值得奖励！</p>
+		</div>
+		<div class="flex_center walk_article">
+			<img class="full_img" src="./imgs/walk_nav02.png" alt="">
+			<div class="flex_center walk_title">
+				<img src="./imgs/walk_left.png" alt="">
+				<span>轻酷APP</span>
+				<img src="./imgs/walk_right.png" alt="">
+			</div>
+			<p style="font-size: 19px;font-weight: 900;"> 同步微信运动  走路赚钱</p>
+			<p style="color: #333;font-size: 12px;margin: 15px 0 20px 0;">只要每天有步数，就会产生酷点收益，即刻换取人民币</p>
+			<div class="exchange_way">
+				<img class="full_img" src="./imgs/walk_title01.png" alt="">
+				<p class="p_way_title">兑换方式</p>
+				<p class="p_way">100步 = 1酷点，100酷点 = 1元人民币</p>
+			</div>
+			<div class="flex_center exchange_speed">
+				<img class="full_img" src="./imgs/walk_title02.png" alt="">
+				<p class="p_way_title">兑换速度</p>
+				<p class="p_way02">VIP会员邀请好友注册，获取好友20%的步数赞助</p>
+				<p class="p_way02" style="margin-bottom: 1.1rem;">普通会员邀请好友注册，获取好友5%的步数赞助</p>
+			</div>
+		</div>
+		
+		<div class="flex_center example">
+			<img class="full_img" src="./imgs/walk_title03.png" alt="">
+			<p class="p_way_title p_way_title02">举例</p>
+			<p class="p_way03">轻酷VIP会员邀请30个好友注册</p>
+			<p>赚取的收益（按天计算）</p>
+			<img style="width: 85%;margin-top: 15px;" src="./imgs/walk_table.png" alt="">
+		</div>
+		<footer>
+			<button @click='toOpenVip'>立即开通VIP会员</button>
+		</footer>
+    </div>
+
+    
+    <!-- 微信分享相关 -->
+	<!-- <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"></script> -->
+    <!-- vue -->
+    <script src="js/vue_2.6.1.js"></script>
+    <!-- axios -->
+    <!-- 低版本安卓和IOS里内嵌的H5页面 用axios会导致整个页面空白不加载 目前尚不清楚什么原因 用jq就没问题 特此注明 -->
+    <!-- <script src="js/axios_0.18.0.min.js"></script> -->
+    <!-- jquery -->
+    <script src="js/jquery_3.4.1.min.js"></script>
+    <!-- 自定义的js -->
+    <script src="js/walk_money.js"></script>
+    
+
+</body>
+</html>

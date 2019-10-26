@@ -1,0 +1,129 @@
+
+body {
+    background-color: #eee;
+}
+header {
+    height: 210px;
+    padding: 5px 10% 0 10%;
+    background: url('../imgs/kd_bg.jpg') no-repeat 0 0/cover;
+}
+
+.price {
+    padding: 10px 0 5px 0;
+    height: 46px;
+}
+.price i {
+    margin-left: 8px;
+}
+.price b {
+    font-size: 1.6rem;
+}
+
+.pour button{
+    width: 100%;
+    color: #fff;
+    padding: 10px 0 13px 0;
+    font-size: 0.90rem;
+    margin-top: 12px;
+    border-radius: 5px;
+    background-color: #ffb260;
+}
+
+article,footer {
+    color: #999;
+}
+article h3,footer h3 {
+    color: #666;
+    background-color: #fff;
+    padding: 6px 0 6px 15px;
+    border-bottom: 1px solid #eee;
+}
+article p {
+    padding: 10px 15px;
+    background-color: #fff;
+    border-bottom: 8px solid #eee;
+}
+footer {
+    padding-bottom: 30px;
+}
+footer ul {
+    background-color: #fff;
+    padding: 0 15px;
+}
+footer ul li {
+    border-bottom: 1px solid #eee;
+    padding: 8px 0;
+}
+footer ul li p {
+    color: #333;
+    margin-bottom: -3px;
+}
+footer ul li span {
+    font-size: 0.8rem;
+}
+footer ul li>div:nth-of-type(2) {
+    color: #FF9000;
+    font-size: 1rem;
+}
+footer ul li>div:nth-of-type(2) span {
+    font-size: 1rem;
+}
+
+.can {
+    background-color: #f0e9f6;
+    border-radius: 5px;
+    padding: 15px 0;
+    width: 90%;
+    margin: 20px 5% 15px 5%;
+    color: #773BB1;
+    font-size: 0.95rem;
+}
+.can span {
+    margin: 0 15px;
+}
+.main h3 {
+    color: #333333;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.4rem;
+}
+.input {
+    border-bottom: 1px solid #eee;
+    text-align: center;
+    width: 90%;
+    margin: 15px 0 0 5%;
+    padding-bottom: 10px;
+}
+.input input {
+    color: #773BB1;
+    text-align: center;
+}
+.explain {
+    color: #9D78C5;
+    width: 80%;
+    margin: 20px 0 60px 10%;
+    display: flex;
+    font-size: 0.8rem;
+}
+.explain .icon {
+    color: #9D78C5;
+    width: 2.1rem;
+    height: 1.6rem;
+    margin-right: 5px;
+}
+
+input::-webkit-input-placeholder{
+    color: #E0E0E0 !important;
+    font-size: 0.9rem;
+}
+input::-moz-input-placeholder{
+    color: #E0E0E0 !important;
+    font-size: 0.9rem;
+}
+input::-ms-input-placeholder{
+    color: #E0E0E0 !important;
+    font-size: 0.9rem;
+}
+.dialog button {
+    line-height: 45px;
+}

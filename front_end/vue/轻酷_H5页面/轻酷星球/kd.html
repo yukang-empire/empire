@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="author" content="yukang" />
+  <meta name="keywords" content="轻酷星球" />
+  <meta name="description" content="轻酷星球" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>我的酷点</title>
+  <!-- element-ui -->
+  <link rel="stylesheet" href="./css/element-ui_2.8.2.css">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/kd.css">
+  <style>
+
+  </style>
+</head>
+<body>
+  <div id="app" v-cloak>
+    <header>
+        <div class="flex_between price" style="border-bottom: 1px solid #fff;">
+            <span class="flex_between">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-caiwu"></use>
+                </svg>
+                <i>可用酷点</i>
+            </span>
+            <b>{{ kd_data.user_points }}</b>
+        </div>
+        <div class="flex_between price">
+            <span class="flex_between">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-qian"></use>
+                </svg>
+                <i>已注入酷点</i>
+            </span>
+            <b>{{ kd_data.frozen_points || 0 }}</b>
+        </div>
+        <div class="pour" @click='dialog.is_open=true'>
+            <button>注入酷点</button>
+        </div>
+    </header>
+
+    <!-- 自定义的dialog弹框 -->
+    <transition name='fade'>
+        <section class="dialog flex_center fixed_top" v-if='dialog.is_open' @click.self='dialog.is_open=false'>
+            <div class="main">
+                <div class="can flex_between">
+                    <span>可注入酷点</span>
+                    <span>{{ kd_data.user_points }}</span>
+                </div>
+                <h3>注入酷点</h3>
+                <div class="input">
+                    <input type="tel" placeholder="请输入要注入的酷点" v-model='input_kd' @input='limit_input'>
+                    <p style="color: #dc4444; margin-top: 5px;" v-if='is_show_kd'>注入酷点需大于0且小于可注入酷点数</p>
+                </div>
+                <p class="explain">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-gantanhao-copy-1"></use>
+                    </svg>
+                    <span>
+                        注入酷点达到5000酷点以上才可以参与分红，酷点可以在轻酷应用使用消费！
+                    </span>
+                </p>
+                <div class="normal flex_between">
+                    <button class="cancel" @click='dialog.is_open=false'>取消</button>
+                    <button @click='in_kd'>确定注入</button>
+                </div>
+            </div>
+        </section>
+    </transition>
+
+    <article>
+        <h3>酷点简介</h3>
+        <p>
+            酷点是平台赠送给会员的一种积分，可以用来抵扣或者兑换商城货品。酷点可以通过在轻酷APP上进行充值、签到、消费，获得酷点，由于目前正在前期搭建中，未来将支持更多的酷点获取方式。
+        </p>
+    </article>
+
+    <footer>
+        <h3>注入记录</h3>
+        <ul>
+            <li class="flex_between" v-for='item in pours'>
+                <div>
+                    <p>{{ item.type == 1 ? '注入' : '提取' }}酷点</p>
+                    <span>{{ item.add_time }}</span>
+                </div>
+                <div>
+                    酷点 <span>{{ item.user_points + '.00' }}</span>
+                </div>
+            </li>
+        </ul>
+    </footer>
+  </div>
+
+
+  <!-- 阿里图标 symbol引入方式 -->
+  <!-- <script src="./js/fonts/iconfont.js"></script> -->
+  <script src="https://at.alicdn.com/t/font_1180618_9uxrf4jc3yu.js"></script>
+  <!-- vue -->
+  <script src="./js/frames/vue_2.6.1.min.js"></script>
+  <!-- element-ui -->
+  <script src="./js/plugins/element-ui_2.8.2.js"></script>
+  <!-- jquery -->
+  <script src="./js/plugins/jquery_3.4.1.min.js"></script>
+  <!-- moment -->
+  <script src="./js/plugins/moment.js"></script>
+  <script src="./js/kd01.js"></script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="author" content="yukang" />
+    <meta name="keywords" content="个人网站" />
+    <meta name="description" content="个人网站" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>邀请好友</title>
+    <!-- 自定义的css -->
+    <link rel="stylesheet" href="css/index.css">
+    <style>
+        body {
+            background-color: #E2F5F3;
+            color: #999999;
+        }
+        header {
+            margin-top: -15px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="invitation" v-cloak>
+        <header>
+            <img class="full_width" src="imgs/banner.png" alt="banner">
+        </header>
+
+        <nav>
+            <!-- <img class="full_width" src="imgs/nav.png" alt="nav" @click='share'> -->
+            <button class="flex_center" @click='share'>邀请好友</button>
+		</nav>
+
+        <article>
+            <div class="main">
+				<h3>已成功邀请 <span>{{ peop.all }}</span> 人，开通会员 <span>{{ peop.level_count }}</span> 人</h3>
+				<div>
+					<div class="list" v-if='peop.img_lists.length > 0'>
+						<ul>
+							<li v-for='(item, index) in peop.img_lists' :class="{no_pic: !item.head_pic}" @click='jump_details'>
+								<div>
+									<img :src="item.head_pic ? item.head_pic : 'imgs/logo02.png' " alt="head_pic">
+								</div>
+							</li>
+							<!-- <li class="no_pic" @click='jump_details'>
+								<div>
+									<img src="imgs/no_pic.png" alt="no_pic">
+								</div>
+							</li> -->
+						</ul>
+					</div>
+					<div class="no_list" v-else>还没有好友使用你的邀请码</div>
+				</div>
+			</div>
+        </article>
+            
+        <footer>
+            <!-- <img src="imgs/rule.png" alt="rule" style="width: 110px;"> -->
+            <p class="rule">活动规则</p>
+
+            <ol>
+                <li>
+                    分享给好友，让好友通过你的邀请码注册。
+                </li>
+                <li>
+                    当邀请好友首次购买会员，可得29～129元奖励。
+                </li>
+                <li>
+                    酷点会直接注入到您的账号中，现金奖励发放至你的钱包的提现红包中。
+                </li>
+            </ol>
+
+            <!-- 底部分享 -->
+            <transition name='fade'>
+                <div class="bottom_share fixed_top" v-if='modules.is_bottom_share' @click.self='modules.is_bottom_share=false'>
+                    <div class="main fixed_bottom">
+                        <h3>分享至</h3>
+                        <div>
+                            <ul class="flex_between">
+                                <li @click='make_card'>
+                                    <img src="imgs/card.png" alt="card">
+                                    <p>制作邀请卡</p>
+                                </li>
+                                <li @click='wx_share("friend")'>
+                                    <img src="imgs/wechat.png" alt="wechat">
+                                    <p>微信朋友</p>
+                                </li>
+                                <li @click='wx_share("circle")'>
+                                    <img src="imgs/circle_friends.png" alt="circle_friends">
+                                    <p>微信朋友圈</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </transition>
+
+            <!-- 展示提示信息的dialog弹框 -->
+            <!-- <section class="dialog flex_center fixed_top" v-if='dialog.is_open' @click.self='dialog.is_open = false'>
+                <div class="main">
+                    <h3>提示</h3>
+                    <div class="content">
+                        <span>{{ dialog.msg }}</span>
+                    </div>
+                    <div class="normal flex_between">
+                        <button class="cancel" @click='dialog.is_open = false'>取消</button>
+                        <button class="sure" @click='dialog.is_open = false'>确定</button>
+                    </div>
+                    <div class="no_cancel">
+                        <button class="sure" @click='dialog.is_open = false'>确定</button>
+                    </div>
+
+                    <div class="QR_code">
+                        <img src="imgs/QR_code.png" alt="QR_code">
+                        <p>长按识别二维码</p>
+                    </div>
+                    
+                    <svg class="icon" aria-hidden="true" @click='dialog.is_open = false'>
+                        <use xlink:href="#icon-chahao"></use>
+                    </svg>
+                </div>
+            </section> -->
+
+        </footer>
+    </div>
+
+    
+    <!-- 微信分享相关 -->
+    <script src="js/jweixin-1.2.0.js"></script>
+    <!-- vue -->
+    <script src="js/vue_2.6.1.js"></script>
+    <!-- axios -->
+    <!-- 低版本安卓和IOS里内嵌的H5页面 用axios会导致整个页面空白不加载 目前尚不清楚什么原因 用jq就没问题 特此注明 -->
+    <!-- <script src="js/axios_0.18.0.min.js"></script> -->
+    <!-- jquery -->
+    <script src="js/jquery_3.4.1.min.js"></script>
+    <!-- 自定义的js -->
+    <script src="js/invitation.js"></script>
+    
+
+</body>
+</html>

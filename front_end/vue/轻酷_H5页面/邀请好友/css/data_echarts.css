@@ -1,0 +1,119 @@
+body {
+    background-color: #01153A;
+    color: #D8FAFF;
+    font-size: 16px;
+    padding: 0;
+}
+header.flex_center {
+    background: url('../imgs/top_bg.png') 0 0 no-repeat;
+    background-size: 100%;
+}
+header img {
+    width: 100%;
+}
+header h1 {
+    font-size: 2.5em;
+    margin-top: 5px;
+}
+footer {
+    margin: 30px 2% 10px 2%;
+    display: flex;
+    color: #D7F5FF;
+}
+.left {
+    width: 45%;
+}
+.right {
+    width: 53%;
+    margin-left: 2%;
+    background: url('../imgs/max_border.png') 0 0 no-repeat;
+    background-size: 100% 100%;
+    padding: 30px 25px;
+    display: flex;
+}
+.left_top {
+    display: flex;
+    margin-bottom: 20px;
+}
+.number, .club {
+    background: url('../imgs/min_border.png') 0 0 no-repeat;
+    background-size: 100% 100%;
+    width: 42%;
+    padding: 20px 0 20px 6%;
+}
+.number {
+    margin-right: 4%;
+}
+.number h2, .club h2 {
+    margin-bottom: -10px;
+}
+.common_div_01 img {
+    width: 45px;
+}
+.common_div_01 span {
+    color: #FFF29D;
+    font-size: 3.5rem;
+    font-family: 'Microsoft JhengHei';
+}
+@font-face{
+    font-family: 'DS-Digital'; 
+    src: url('./fonts/ds-digital.eot');
+    src:url('./fonts/ds-digital.woff') format('woff'),
+    url('./fonts/ds-digital.ttf') format('truetype'),
+    url('./fonts/ds-digital.svg') format('svg');
+}
+.common_div_01 span {
+    font-family: 'DS-Digital';
+    margin-left: 20px;
+}
+.left_bottom_01 h2{
+    display: flex;
+    align-items: center;
+    font-size: 1.3rem;
+}
+.left_bottom_01 h2 img {
+    width: 30px;
+    margin-right: 10px;
+}
+.left_bottom {
+    background: url('../imgs/middle_border.png') 0 0 no-repeat;
+    background-size: 100% 100%;
+    padding: 30px 25px;
+    position: relative;
+}
+.man_women {
+    position: absolute;
+    right: 75px;
+    top: 55px;
+    display: flex;
+    align-items: center;
+}
+.man, .women {
+    display: flex;
+    align-items: center;
+    margin: 0 0 0 45px;
+}
+.man div, .women div {
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+}
+.man div {
+    background-color: #22FEFD;
+}
+.women div {
+    background-color: #F2659A;
+}
+.left_bottom_02 {
+    margin-top: -15px;
+}
+.right_left, .right_right {
+    width: 47.5%;
+}
+.right_left {
+    border-right: 1px solid #444;
+    padding-right: 1.2%;
+}
+.right_right {
+    padding-left: 3.8%;
+}

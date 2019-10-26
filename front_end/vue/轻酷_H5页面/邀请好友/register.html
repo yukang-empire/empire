@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="author" content="yukang" />
+    <meta name="keywords" content="个人网站" />
+    <meta name="description" content="个人网站" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>注册轻酷账号</title>
+    <!-- element-ui css -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 自定义的css -->
+    <link rel="stylesheet" href="css/index.css">
+    <style>
+        body {
+            background-color: #504747;
+        }
+        header {
+            padding: 80px 0 10px 0;
+            color: #fff;
+            letter-spacing: 2px;
+        }
+        header img.fixed_top {
+            z-index: -1;
+        }
+        .form .el-button--success {
+            background: #31BFAD;
+            color: #fff;
+        }
+        .agree {
+            color: #999;
+            margin-top: 12px;
+        }
+        .agree a {
+            color: #999;
+        }
+        .form .el-button--success {
+            margin-top: 8px;
+        }
+        .form .el-button--success.download {
+            margin: 20px 0 0 0;
+            background-color: transparent;
+            border: 1px solid #31BFAD;
+            color: #31BFAD;
+		}
+		.el-input.is-disabled .el-input__inner {
+			color: #eee;
+		}
+    </style>
+</head>
+<body>
+    <div id="app" v-cloak>
+        <header class="flex_center">
+            <img class="fixed_top" src="imgs/register_bg.png" alt="logo">
+            <h2>账号注册</h2>
+        </header>
+
+        <article>
+             <!-- 登录和注册页面 -->
+             <div class="form flex_center" v-if='modules.is_form'>
+                <el-input
+                    clearable
+                    placeholder="请输入手机号"
+                    type='tel'
+                    @blur='blur_verify("phone")'
+                    @clear='clear_input("phone")'
+                    v-model="form_data.phone">
+                    <svg slot="prefix" class="icon password" aria-hidden="true">
+                        <use xlink:href="#icon-shouji"></use>
+                    </svg>
+                </el-input>
+                <transition name="fade"><p class='verify_tip' v-if='tip.phone.is_open'><span>{{ tip.phone.text }}</span></p></transition>
+
+                <div class="verify">
+                    <el-input
+                        placeholder="请输入验证码"
+                        type='tel'
+                        @blur='blur_verify("verify_code")'
+                        @clear='clear_input("verify_code")'
+                        v-model="form_data.verify_code">
+                        <svg slot="prefix" class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-yanzhengyanzhengma"></use>
+                        </svg>
+                    </el-input>
+                    <transition name="fade"><p class='verify_tip' v-if='tip.verify_code.is_open'><span>{{ tip.verify_code.text }}</span></p></transition>
+                    <span class="get_code" :class="{'disabled': !limit_get.is_disabled}" @click='get_code'>{{ limit_get.text }}</span>
+                </div>
+
+                <el-input
+                    clearable
+                    show-password
+                    placeholder="请设置密码"
+                    @blur='blur_verify("password")'
+                    @clear='clear_input("password")'
+                    v-model="form_data.password">
+                    <svg slot="prefix" class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-mima"></use>
+                    </svg>
+                </el-input>
+                <transition name="fade"><p class='verify_tip' v-if='tip.password.is_open'><span>{{ tip.password.text }}</span></p></transition>
+                <!-- <el-input
+                    clearable
+                    show-password
+                    placeholder="请再次输入密码"
+                    @blur='blur_verify("re_password")'
+                    @clear='clear_input("re_password")'
+                    v-model="form_data.re_password">
+                    <svg slot="prefix" class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-zaicishurumima"></use>
+                    </svg>
+                </el-input>
+                <transition name="fade"><p class='verify_tip' v-if='tip.re_password.is_open'><span>{{ tip.re_password.text }}</span></p></transition> -->
+
+				<el-input
+                    :disabled='is_code_disabled'
+                    placeholder="请输入邀请码(选填)"
+                    v-model="form_data.invi_code">
+                    <svg slot="prefix" class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-yaoqing"></use>
+                    </svg>
+                </el-input>
+                
+                <p class="agree">点击完成则同意<a href="https://shop.technologyle.com/userReg/register_agreement.html">《用户协议》</a></p>
+                <el-button type="success" :loading="form_data.login" @click='register'>完成</el-button>
+                <el-button type="success" class="download" @click='to_download'>前往下载</el-button>
+            </div>
+    
+        </article>
+            
+        <footer>
+            <!-- 展示提示信息的dialog弹框 -->
+            <section class="dialog flex_center fixed_top" v-if='dialog.is_open' @click.self='dialog.is_open = false'>
+                <div class="main">
+                    <h3>提示</h3>
+                    <div class="content">
+                        <span>{{ dialog.msg }}</span>
+                    </div>
+                    <!-- <div class="normal flex_between">
+                        <button class="cancel" @click='dialog.is_open = false'>取消</button>
+                        <button class="sure" @click='dialog.is_open = false'>确定</button>
+                    </div> -->
+                    <div class="no_cancel">
+                        <button class="sure" @click='dialog.is_open = false'>确定</button>
+                    </div>
+
+                    <!-- <div class="QR_code">
+                        <img src="imgs/QR_code.png" alt="QR_code">
+                        <p>长按识别二维码</p>
+                    </div> -->
+                    
+                    <svg class="icon" aria-hidden="true" @click='dialog.is_open = false'>
+                        <use xlink:href="#icon-chahao"></use>
+                    </svg>
+                </div>
+            </section>
+            
+        </footer>
+    </div>
+
+    
+    <!-- 阿里图标 symbol引入方式 -->
+    <script src="js/iconfont.js"></script>
+	<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"></script>
+    <!-- vue -->
+    <script src="js/vue_2.6.1.js"></script>
+    <!-- element-ui -->
+    <script src="js/element-ui_2.8.2.js"></script>
+    <!-- axios -->
+    <!-- 低版本安卓和IOS里内嵌的H5页面 用axios会导致整个页面空白不加载 目前尚不清楚什么原因 用jq就没问题 特此注明 -->
+    <script src="js/axios_0.18.0.min.js"></script>
+    <!-- jquery -->
+    <script src="js/jquery_3.4.1.min.js"></script>
+    <!-- md5 -->
+    <script src="js/md5.js"></script>
+    <!-- 自定义的js -->
+    <script src="js/register.js"></script>
+</body>
+</html>

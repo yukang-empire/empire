@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="author" content="yukang" />
+  <meta name="keywords" content="早起打卡" />
+  <meta name="description" content="早起打卡" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>规则详情</title>
+  <!-- element-ui -->
+  <link rel="stylesheet" href="./css/element-ui_2.8.2.css">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/details.css">
+</head>
+<body>
+  <div class="flex_center" id="app" v-cloak>
+    <header>
+      <img class="fixed_top head" src="./imgs/index_bg_head.png" alt="">
+      <img class="fixed_top body" :style="{ top: dis_height +'px' }" src="./imgs/details_bg_body.png" alt="">
+      <img class="fixed_bottom foot" src="./imgs/details_bg_foot.png" alt="">
+	</header>
+
+    <footer :style="{ marginTop: dis_height + 15 +'px' }">
+		<div class="introduce">
+			<button>玩法介绍</button>
+		</div>
+		<ul class="flex_center steps">
+			<li>
+				<p><span class="steps_num">1</span><span>23:50前支付契约金报名</span></p>
+				<img src="./imgs/step_item01.png" alt="">
+			</li>
+			<li>
+				<p><span class="steps_num">2</span><span>第二天6:00-8:00完成打卡</span></p>
+				<img src="./imgs/step_item02.png" alt="">
+			</li>
+			<li>
+				<p><span class="steps_num">3</span><span>打卡用户 获得奖金</span></p>
+				<img src="./imgs/step_item03.png" alt="" style="width: 80px;">
+			</li>
+		</ul>
+		<div class="introduce" style="margin: 30px 0 20px 0;">
+			<button>常见问题</button>
+		</div>
+		<ul class="Q_A">
+			<li>
+				<h3>Q: 如何完成早起打卡?</h3>
+				<p>A: 当日报名(报名截止时间每日24:00前),参与次日早起打卡挑战赛,用户需在次日06:00-08:00回到活动页面打卡,系统会提示打卡成功。时间以东八区时间(北京时间)为准。</p>
+			</li>
+			<li>
+				<h3>Q: 如何获得早起奖励金? </h3>
+				<p>A：成功完成早起打卡的用户,作为奖励可平分红包奖励(本人契约金+平分未打卡用户契约金),获得一个>2元的现金红包。</p>
+			</li>
+			<li>
+				<h3>Q: 红包如何提现?  </h3>
+				<p>A:红包奖励将在比赛结束后24小时内发放,可以在“收益"查看,可以提现。</p>
+			</li>
+			<li>
+				<h3>Q: 如果没有完成打卡契约金退还吗? </h3>
+				<p>A:若未在规定时间内完成打卡,则挑战失败。</p>
+			</li>
+		</ul>
+	</footer>
+	
+	
+	<!-- <section class="dialog flex_center fixed_top" v-if='dialog.is_open' @click.self='dialog.is_open = false'>
+		<div class="main">
+			<h3>提示</h3>
+			<div class="content">
+				<span>{{ dialog.msg }}</span>
+			</div>
+			<div class="no_cancel">
+				<button class="sure" @click='dialog.is_open = false' style="display: unset;">确定</button>
+			</div>
+			<svg class="icon" aria-hidden="true" @click='dialog.is_open = false'>
+				<use xlink:href="#icon-chahao"></use>
+			</svg>
+		</div>
+	</section> -->
+
+  </div>
+
+
+  <!-- 阿里图标 symbol引入方式 -->
+  <script src="./js/fonts/iconfont.js"></script>
+  <!-- vue -->
+  <script src="./js/frames/vue_2.6.1.min.js"></script>
+  <!-- element-ui -->
+  <script src="./js/plugins/element-ui_2.8.2.js"></script>
+  <!-- jquery -->
+  <script src="./js/plugins/jquery_3.4.1.min.js"></script>
+  <!-- moment -->
+  <script src="./js/plugins/moment.js"></script>
+  <script src="./js/details.js"></script>
+</body>
+</html>

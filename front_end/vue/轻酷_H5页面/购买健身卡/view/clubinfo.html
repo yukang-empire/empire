@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta name="author" content="玉康">
+	<meta name="description" content="购买享卡拉APP的健身会所健身卡">
+	<meta name="keywords" content="购买健身卡,享卡拉,健身卡">
+	<meta name='viewport' content="width=device-width, initial-scale=1, user-scalable=no">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+	<title></title>
+	<style>
+
+		
+		/* 阿里图标 */
+		.icon {
+			width: 1.2rem;
+			height: 1.2rem;
+			vertical-align: -0.15em;
+			fill: #999;
+			overflow: hidden;
+			margin-right: 5px;
+			color: #999;
+		}
+
+		[v-cloak] {
+		  display: none;
+		}
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		body {
+			font: 15px/1.8 ArialMT,-apple-system-font,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Hiragino Sans GB,Microsoft YaHei UI,Microsoft YaHei,Arial,sans-serif;
+			text-align: justify;
+			padding: 0 0 50px 0;
+			color: #333;
+			background-color: #f0f0f0;
+		}
+		h1,h2,h3 {
+			white-space: nowrap;
+		}
+		ul {
+			list-style: none;
+		}
+		img {
+			width: 100%;
+		}
+		i {
+			font-style: normal;
+		}
+
+		header,article {
+			background-color: #fff;
+		}
+		header,.info {
+			padding: 5px 15px 0 15px;
+		}
+		header {
+			padding-top: 12px;
+		}
+		header h1 {
+			font-size: 1.1rem;
+			padding: 7px 0 10px 0;
+		}
+
+		.info h2,.card h2 {
+			font-weight: 400;
+			font-size: 0.98rem;
+			display: flex;
+			align-items: center;
+			color: #999;
+			padding: 15px;
+			background-color: #FAFAFA;
+		}
+		.info ul {
+			display: flex;
+			align-items: center;
+			margin: 8px 0 8px 0;
+			padding: 0 0 5px 25px;
+			overflow-x: scroll;
+			border-bottom: 1px solid #E0E0E0;
+		}
+		.info ul li {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+			margin-right: 8px;
+		}
+		.info ul li p {
+			font-size: 0.8rem;
+			color: #31BFAD;
+			white-space: nowrap;
+		}
+		.info li img {
+			width: 32px;
+		}
+
+		
+		.serve {
+			border-top: 1px solid #E0E0E0;
+			padding: 5px 0 0 0;
+			margin: 0 15px;
+		}
+		.serve h2 {
+			padding: 2px 0;
+			background-color: #fff;
+		}
+
+		.card {
+			border-top: 12px solid #f0f0f0;
+		}
+		.card>div,.card>h2 {
+			padding: 0 15px;
+		}
+		.card li {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin: 20px 0;
+			padding-bottom: 15px;
+			border-bottom: 1px solid #E0E0E0;
+		}
+		.card li.one {
+			border: none;
+			padding: 0;
+		}
+		.card li>div {
+			display: flex;
+    	align-items: center;
+		}
+		.card li i {
+			font-style: normal;
+			font-size: 0.8rem;
+			color: #31BFAD;
+			border: 1px solid #31BFAD;
+			margin-right: 5px;
+			width: 20px;
+			height: 20px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			border-radius: 5px;
+		}
+		.card li .price {
+			color: #FF6C00;
+			font-weight: 600;
+			margin-right: 5px;
+		}
+		.card .icon-right-line {
+			margin-top: -1px;
+			color: #ccc;
+		}
+		.card .bold {
+			background-color: #FAFAFA;
+			padding: 12px 15px;
+			color: #333;
+		}
+		.phone .icon-tel-line {
+			font-size: 1.5rem;
+		    margin-left: -1.5px;
+		    margin-right: 2.5px;
+		}
+		.info.phone {
+			border-bottom: 12px solid #f0f0f0;
+			background-color: #fff;
+			padding: 0;
+		}
+		.info.introduce {
+			color: #999999;
+			background-color: #fff;
+			padding: 0;
+			padding-bottom: 25px;
+		}
+		.info.introduce>div {
+			margin: -12px 20px 0 20px;
+		}
+		.info.introduce>div p:first-of-type {
+			margin: 15px 0;
+			font-weight: 600;
+		}
+		.kubi {
+			padding: 15px;
+			height: 80px;
+			color: #f0f0f0;
+			position: relative;
+			background-color: #f0f0f0;
+		}
+		.kubi .main {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			height: 100%;
+			position: relative;
+			z-index: 1;
+		}
+		.kubi .main .icon {
+			margin-right: 10px;
+		}
+		.kubi img {
+			position: absolute;
+			top: 15px;
+			left: 5%;
+			z-index: 0;
+			height: 80px;
+			width: 90%;
+		}
+		.kubi p {
+			margin-left: 5.5rem;
+			font-weight: 900;
+			font-size: 1.1rem;
+			color: #fff;
+		}
+		.kubi .iconfont {
+			color: #fff;
+			font-weight: 900;
+		}
+		.serve .address {
+			padding: 0 0 12px 0;
+			background-color: #fff;
+		}
+	</style>
+</head>
+<body>
+	<div id="app" v-cloak>
+		<header style="height: 160px;overflow: hidden;">
+			<!-- <img :src="data.shop_image[0]" alt="banner"> -->
+			<div class="block">
+				<el-carousel height="160px">
+					<el-carousel-item v-for="(item, index) in data.shop_image" :key="index">
+						<img :src="item" alt="banner">
+					</el-carousel-item>
+				</el-carousel>
+			</div>
+			<h1 v-text='data.club_name'></h1>
+		</header>
+
+		<article>
+			<div class="info serve">
+				<h2>
+					<svg class="icon" aria-hidden="true">
+							<use xlink:href="#icon-xianxing_shangdian"></use>
+					</svg>
+					<span>门店服务<i v-if='data.open_time'>（<i v-text='data.open_time'></i>）</i></span>
+				</h2>
+				<ul>
+					<li v-for='item in data.club_facil'>
+						<img :src="item.image" alt="service">
+						<p v-text='item.name'></p>
+					</li>
+				</ul>
+				<h2 class="address">
+					<svg class="icon" aria-hidden="true">
+							<use xlink:href="#icon-dingwei1"></use>
+					</svg>
+					<span v-text='data.address' style="white-space: normal;line-height: 20px;"></span>
+				</h2>
+			</div>
+
+			<div class="card">
+				<h2 class="bold">
+					<svg class="icon" aria-hidden="true">
+							<use xlink:href="#icon-icon-test"></use>
+					</svg>
+					<span>健身卡</span>
+				</h2>
+				<div>
+					<ul>
+						<li v-for='(item, index) in data.goods' :class="{one: data.goods.length == 1}" @click='clickCard(item.goods_id)'>
+							<div>
+								<i v-text='item.virtual_type'></i>
+								<span v-text='item.goods_name'></span>
+							</div>
+							<div>
+								<span class="price">¥<b v-text='item.shop_price'></b></span>
+								<svg class="icon" aria-hidden="true">
+										<use xlink:href="#icon-jinru-copy"></use>
+								</svg>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<!-- <div class="info kubi" @click='clickCoolBi'>
+				<img src="__STATIC__/images/club/kuBi.png" alt="kubi">
+				<div class="main">
+					<p>购买酷卡</p>
+					<svg class="icon" aria-hidden="true">
+							<use xlink:href="#icon-jinru"></use>
+					</svg>
+				</div>
+			</div> -->
+
+			<div class="info phone">
+				<h2>
+					<svg class="icon" aria-hidden="true">
+							<use xlink:href="#icon-dianhua"></use>
+					</svg>
+					<span>门店电话 : <i v-text='data.phone'></i></span>
+				</h2>
+			</div>
+
+			<div class="info introduce">
+				<h2>
+					<svg class="icon" aria-hidden="true">
+							<use xlink:href="#icon-gongsiqiye"></use>
+					</svg>
+					<span>门店介绍</span>
+				</h2>
+				<div>
+					{{ data.text }}
+					<!-- <p>
+						由FUSION FITNESS热炼健身国际认证精英教练团带来一对一专属训练课程，并提供专业SECA体测分析及训后追踪。详细教练信息您可查看主界面教练栏进一步了解。
+					</p>
+					<p>
+						课程描述：
+					</p>
+					<p>
+						体验课程内容：身体评估+运动训练
+					</p>
+					<p>
+						身体评估：专业SECA身体身体成分测试分析，详细了解身体质量指数以及顾客个人的身体情况，包含PBF（身体脂肪含量），TBW人体水分含量，SMM骨骼肌含量，KCAL基础代谢率WHR臀腰比指数，再进行运动能力风险评估。
+					</p>
+					<p>
+						了解顾客需求，进行形体力量评估，运动心理评估，心肺体能测试，平衡测试。
+					</p> -->
+				</div>
+			</div>
+		</article>
+	</div>
+
+
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+	<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+	<script src="__STATIC__/images/club/iconfont.js"></script>
+	<script>
+		window.onload = function () {
+	        new Vue({
+	            el:'#app',
+	            data:{
+	                data: {},
+	                device_rele: {
+	                	is_android: null,
+	                	is_ios: null,
+	                	is_wx: null,
+	                },
+	                isClickCoolBi: false,
+					card_index: 0,
+	            },
+	            methods: {
+	            	//点击套餐
+	            	clickCard: function (index) {
+	            		this.card_index = index;
+	            		this.send_meal();
+	            	},
+	            	//点击购买酷卡
+	            	clickCoolBi: function () {
+	            		this.isClickCoolBi = true;
+	            		//IOS终端
+	            		if (this.device_rele.is_ios) {
+	            			this.setupWebViewJavascriptBridge( bridge => {
+	            				bridge.callHandler('clickCoolBi', function(response) {
+									console.log(response);
+						        });
+	            			});
+	            		}
+	            		//Android终端
+	            		else if (this.device_rele.is_android) {
+	            			//调起Android定义的相关函数
+	            			window.jsInterface.clickCoolBi();
+	            		}
+	            	},
+	            	//发送用户点击的套餐数据给原生APP
+	            	send_meal: function () {
+						//IOS终端
+						let that = this;
+	            		if (this.device_rele.is_ios) {
+	            			var meal = {};
+	            			meal.meal_id = this.card_index;
+	            			// meal.isClickCoolBi = this.isClickCoolBi;
+	            			this.setupWebViewJavascriptBridge( bridge => {
+	            				bridge.callHandler('sendMeal', meal, function(response) {
+									console.log(response);
+						        });
+	            			});
+	            		}
+	            		//Android终端
+	            		else if (this.device_rele.is_android) {
+	            			var meal = {};
+	            			meal.meal_id = this.card_index;
+	            			// meal.isClickCoolBi = this.isClickCoolBi;
+	            			//转成字符串
+	            			var meal_ = JSON.stringify(meal);
+	            			//调起Android定义的相关函数 发送数据过去
+	            			window.jsInterface.sendMeal(meal_);
+	            		}
+	            	},
+			        //与IOS APP交互相关
+            		setupWebViewJavascriptBridge: function (callback) {
+				        if (window.WebViewJavascriptBridge) { return callback(WebViewJavascriptBridge); }
+				        if (window.WVJBCallbacks) { return window.WVJBCallbacks.push(callback); }
+				        window.WVJBCallbacks = [callback];
+				        var WVJBIframe = document.createElement('iframe');
+				        WVJBIframe.style.display = 'none';
+				        WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__';
+				        document.documentElement.appendChild(WVJBIframe);
+				        setTimeout(function() { document.documentElement.removeChild(WVJBIframe) }, 0)
+			        },
+	            },
+	            mounted: function () {
+	            	//判断浏览器终端类型
+					var agent = navigator.userAgent;
+					//Android终端
+					this.device_rele.is_android = agent.indexOf('Android') != -1 || agent.indexOf('Adr') != -1 || agent.indexOf('Linux') != -1;
+					//IOS终端
+					this.device_rele.is_ios = !!agent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+					//微信终端
+					this.device_rele.is_wx = agent.toLowerCase().indexOf('micromessenger') != -1;
+
+					//获取PHP类型的数据
+					this.data = {$club};
+					this.data.goods = {$goods};
+					this.data.club_facil = {$club_facil};
+					this.data.phone = {$club}.tel;
+					this.data.text = {$club}.content;
+					for (var i = 0; i < this.data.goods.length; i++) {
+						switch (this.data.goods[i].virtual_type) {
+							case 0: 
+								this.data.goods[i].virtual_type = '虚';
+								break;
+							case 1: 
+								this.data.goods[i].virtual_type = '单';
+								break;
+							case 2: 
+								this.data.goods[i].virtual_type = '多';
+								break;
+							case 3: 
+								this.data.goods[i].virtual_type = '月';
+								break;
+							case 4: 
+								this.data.goods[i].virtual_type = '季';
+								break;
+							case 5: 
+								this.data.goods[i].virtual_type = '半';
+								break;
+							case 6: 
+								this.data.goods[i].virtual_type = '年';
+								break;
+						};
+						
+					};
+					document.getElementsByTagName("title")[0].innerText = this.data.club_name;
+					console.log(this.data);
+	            }
+	        });
+	    };
+	</script>
+</body>
+</html>

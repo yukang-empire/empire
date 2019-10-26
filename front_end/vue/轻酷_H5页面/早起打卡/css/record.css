@@ -1,0 +1,82 @@
+
+body {
+	height: 100%;
+	background-color: #F0F0F0;
+}
+header {
+	background: url('../imgs/record_bg.png') 0 0 no-repeat;
+	background-size: 100% 100%;
+	height: 200px;
+	width: 100%;
+	color: #333333;
+	flex-direction: column;
+	padding: 10px 0 15px 0;
+}
+header ul {
+	width: 100%;
+	color: #fff;
+}
+header ul li{
+	width: 33%;
+	border-right: 1px solid #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	text-align: center;
+}
+header ul li:last-of-type {
+	border: none;
+}
+header ul li p {
+	background-color: #50C7BA;
+	font-size: 16px;
+	border-radius: 20px;
+	width: 90px;
+	margin-bottom: 5px;
+}
+header ul li span {
+	font-size: 20px;
+}
+footer {
+	padding: 10px 10px 30px 10px;
+}
+footer li {
+	background-color: #fff;
+	border-radius: 5px;
+	padding: 8px 15px;
+	color: #666;
+	margin-bottom: 10px;
+}
+footer p.flex_between {
+	padding-bottom: 5px;
+	border-bottom: 1px solid #E0E0E0;
+	margin-bottom: 5px;
+}
+footer p.flex_between span {
+	font-size: 17px;
+	font-weight: 900;
+	color: #333;
+}
+footer p.flex_between i {
+	font-size: 13px;
+	color: #31BFAD;
+}
+.time {
+	display: flex;
+	align-items: center;
+}
+.time>div {
+	margin-right: 35px;
+}
+.time>div p {
+	font-size: 14px;
+	color: #999;
+}
+.time>div span {
+	font-size: 20px;
+}
+footer p.flex_between i.done {
+	color: #666666;
+	font-size: 14px;
+}

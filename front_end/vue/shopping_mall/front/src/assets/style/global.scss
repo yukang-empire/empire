@@ -106,8 +106,7 @@
 		margin: 0 0 2px 0;
 
 		.goods_img {
-			width: 75px;
-			height: 135px;
+			width: 60%;
 			margin: 25px 0 20px 0;
 		}
 
@@ -204,7 +203,7 @@
 .bottom_btn {
 
 	button {
-		position: absolute;
+		position: fixed;
 		bottom: 0;
 		border-radius: 0;
 		background-color: $btn_color;
@@ -215,40 +214,15 @@
 	}
 
 }
-
-.assessment {
-	margin: 15px 0;
-	background-color: #fff;
-
-	.title {
-		background-color: #FAFAFA;
-		padding: 10px 20px;
-	}
-
-	.reusable_div {
-		padding: 10px 20px;
-
-		div {
-			padding: 10px 20px;
-			border-radius: 10px;
-			flex-direction: column;
-			color: #FF8288;
-			background-color: #ccc;
-
-			p {
-				margin-top: 5px;
-				display: flex;
-				align-items: center;
-
-				span {
-					white-space: nowrap;
-				}
-
-				img {
-					width: 18px;
-					margin-right: 5px;
-				}
-			}
-		}
-	}
+// 轻提示
+.text_tip {
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 99;
+	background-color: $btn_color;
+	color: #fff;
+	padding: 8px 12px;
+	border-radius: 8px;
 }

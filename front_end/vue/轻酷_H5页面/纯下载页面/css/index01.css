@@ -1,0 +1,119 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+img {
+	width: 100%;
+	display: block;
+}
+i {
+	font-style: normal;
+}
+ul {
+	list-style: none;
+}
+ol {
+	padding: 0 0 0 3rem;
+	line-height: 2.5rem;
+}
+
+body {
+	position: relative;
+	font-family:SourceHanSansCN-Light;
+}
+
+header {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	margin: 2rem 0 0 0;
+}
+header img {
+	width: 8rem;
+}
+header p {
+	font-size: 1.5rem;
+	font-weight:bold;
+	color:rgba(51,51,51,1);
+}
+
+footer {
+	position: relative;
+}
+footer div img {
+	width: 28px;
+	margin: 0 10px 0 0;
+}
+footer div {
+	border:1px solid rgba(255,255,255,1);
+	border-radius:20px;
+	padding: 1rem 5%;
+	width: 70%;
+	margin: 5rem 10% 0 10%;
+	font-size: 1.2rem;
+	color:rgba(255,255,255,1);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	white-space: nowrap;
+}
+.ios {
+	position: fixed;
+	bottom: 11.5rem;
+}
+.android {
+	position: fixed;
+	bottom: 17rem;
+}
+
+.explain {
+	color: #fff;
+    position: fixed;
+    bottom: 5px;
+}
+
+.explain h3 {
+	text-align: center;
+    margin-bottom: 10px;
+}
+
+.explain ol {
+	padding-left: 2rem;
+    font-size: 0.9rem;
+}
+
+.explain li {
+	line-height: 20px;
+    text-align: justify;
+	padding-right: 18px;
+	margin-bottom: 8px;
+}
+
+.bg{
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	z-index: -1;
+	width: 100%;
+}
+
+.tip {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	z-index: 2;
+	background-color: rgba(0,0,0,0.65);
+	color: #eee;
+	font-size: 1.1rem;
+	padding: 10rem 0 0 0;
+}
+.tip img {
+	width: 5rem;
+	position: absolute;
+	right: 2rem;
+	top: 2rem;
+	transform: rotate(22deg);
+}

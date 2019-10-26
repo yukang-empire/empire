@@ -6,7 +6,7 @@
 					<use xlink:href="#icon-arrow-right"></use>
 				</svg>
 			</div>
-			<h3 class="flex_center">会员区</h3>
+			<h3 class="flex_center">{{ area_type }}</h3>
 		</div>
 		<ul class="flex_center nav">
 			<li class="flex_center left">
@@ -25,20 +25,22 @@
 				</svg>
 			</li>
 		</ul>
-		<ul class="goods_list" v-if='true'>
-			<router-link :to="{ path: '/goods_details', query: { goods_id: 1 } }" tag='li' class="flex_center">
+		<ul class="goods_list" v-if='goods_list.length > 0'>
+			<router-link v-for='(item, index) in goods_list' :to="{ path: '/goods_details', query: { goods_id: item.goods_id } }" tag='li' class="flex_center">
 				<div class="flex_center goods_img">
-					<img v-if='true' src="https://shop.technologyle.com/userReg/imgs/index_goods.png" alt="goods">
-					<img v-if='false' src="../../assets/imgs/default_goods_img.png" alt="goods">
+					<img v-if='item.original_img' :src="'https://shop.technologyle.com' + item.original_img" alt="goods">
+					<img v-if='!item.original_img' src="../../assets/imgs/default_goods_img.png" alt="goods">
 				</div>
 				<p class="flex_center">
-					<span class="tag vip_span">会员</span>
-					<i>健身增肌粉健身增肌粉</i>
+					<span v-if='item.shop_type == 1' class="tag vip_span">会员</span>
+					<span v-if='item.shop_type == 2' class="tag yx_span">优选</span>
+					<span v-if='item.shop_type == 3' class="tag motion_span">运动</span>
+					<i>{{ item.goods_name }}</i>
 				</p>
-				<p class="price">¥<i>268</i></p>
+				<p class="price">¥<i>{{ item.shop_price }}</i></p>
 			</router-link>
 		</ul>
-		<div class="flex_center no_result" v-if='false'>
+		<div class="flex_center no_result" v-if='goods_list.length <= 0'>
 			<img src="../../assets/imgs/search_no_result.png" alt="result">
 			<p>暂无商品</p>
 		</div>
@@ -55,12 +57,32 @@ import { Vue, Component } from 'vue-property-decorator';
 })
 
 export default class goods_area extends Vue{
+	private area_type: any = null;
+	private goods_list: any = [];
 
 	created () {
 
 	};
 	mounted () {
-
+		var query = this.$route.query;
+		if (query.type == 1) {
+			this.area_type = '会员区';
+		}else if (query.type == 2) {
+			this.area_type = '优选区';
+		}else if (query.type == 3) {
+			this.area_type = '运动区';
+		};
+		//请求数据
+		var http_data = {
+			type: query.type,
+			searcoriginal_imgh: ''
+		};
+		this.$store.dispatch('get_area_data', http_data).then((res) => {
+			console.log('分区数据', res);
+			if (res.status == 1) {
+				this.goods_list = res.result;
+			};
+		});
 	};
 
 	back () {

@@ -1,0 +1,49 @@
+header {
+	margin: 20px 0 0 0;
+}
+header img {
+	width: 20px;
+}
+header span {
+	margin: 0 10px;
+	font-weight: 900;
+	font-size: 17px;
+}
+.close_img {
+	position: absolute;
+	right: 12px;
+	top: 15px;
+	width: 18px;
+}
+.div_01 {
+	margin: 15px 25px;
+}
+.div_01 h3 {
+	position: relative;
+}
+.div_01 p{
+	margin-top: 10px;
+	color: #666;
+	text-align: justify;
+}
+.border_span {
+	position: absolute;
+	bottom: 3px;
+	left: 0;
+	width: 108px;
+	height: 5px;
+	z-index: -1;
+	background-color: #7BCEC4;
+}
+.div_01 h4 {
+	margin: 10px 0 -10px 0;
+	font-size: 15px;
+}
+.div_01 h4 img {
+	width: 10px;
+}
+footer {
+	margin: 25px 25px 0 25px;
+	color: #31BFAD;
+	text-align: justify;
+}

@@ -1,0 +1,111 @@
+body {
+    background: url('../imgs/bonus_bg.jpg') repeat-y 0 0/100%;
+}
+header {
+    padding: 15px 15px;
+}
+.el-tabs__item {
+    color: #fff;
+}
+.el-tabs__item.is-active {
+    color: #fff;
+}
+.el-tabs__active-bar {
+    border-bottom: 1px solid #fff;
+}
+.el-tabs__nav-wrap::after {
+    display: none;
+}
+.el-tabs__item {
+    padding: 0 12px 0 12px;
+    font-size: 0.85rem;
+}
+.el-tabs__nav {
+    margin-left: 15px;
+    width: 80%;
+    overflow-x: scroll;
+}
+.explain {
+    background: linear-gradient(to right, #8f5cbc, #b968d3);
+    margin: 5px 15px 0 15px;
+    padding: 8px 15px;
+    border-radius: 8px;
+    position: relative;
+}
+.progress {
+    position: absolute;
+    right: 0;
+    color: #C87B02;
+    font-size: 0.8rem;
+    padding: 4px 8px 4px 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #fff1c7;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+.timer {
+    font-size: 1rem;
+    color: #333;
+    flex-direction: column;
+    margin: 0 25px;
+    padding: 25px 0 8px 0;
+    background-color: #fff;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    height: 175px;
+}
+.timer h3 {
+    font-size: 1.6rem;
+    margin: 0 0 8px 0;
+    padding: 0 0 35px 0;
+    width: 70%;
+    text-align: center;
+    border-bottom: 1px solid #E0E0E0;
+    height: 45px;
+}
+.timer span {
+    font-size: 0.85rem;
+    color: #666;
+}
+.tip {
+    margin: 10px 25px;
+    font-size: 0.8rem;
+}
+
+footer button.fixed_bottom {
+    width: 90%;
+    margin: 0 5% 16px 5%;
+    padding: 13px 0 13px 0;
+    border-radius: 5px;
+    color: #fff;
+    background: linear-gradient(to right, #B869D3 , #451897);
+}
+article {
+    position: relative;
+	margin-top: 10px;
+	padding-bottom: 50px;
+}
+.pro_img {
+    position: absolute;
+    width: 40px;
+    top: -12px;
+    left: 35px;
+}
+#history {
+    border: 1px solid #FBC076;
+    border-radius: 17px;
+    height: 22px;
+    line-height: 22px;
+    position: absolute;
+    right: 15px;
+    font-size: 0.8rem;
+    padding: 0 5px 0 6px;
+    background-color: transparent;
+    color: #FEEEBD;
+    top: 9px;
+    z-index: 10;
+}
+.el-tabs__active-bar {
+    background-color: #FFF1C7;
+}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="author" content="yukang" />
+  <meta name="keywords" content="轻酷9.9元开通会员卡活动" />
+  <meta name="description" content="轻酷9.9元开通会员卡活动" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>9.9元开通会员</title>
+  <style>
+      * {
+          margin: 0;
+          padding: 0;
+      }
+      header img {
+          width: 90%;
+          margin: 20px 5% 0 5%;
+      }
+      header {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          padding-bottom: 70px;
+      }
+      .down {
+          width: 50px;
+          margin: 10px 0 -10px 0;
+      }
+      footer button {
+          width: 100%;
+          border: none;
+          background-color: #31BFAD;
+          color: #fff;
+          height: 50px;
+          line-height: 50px;
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          font-size: 1rem;
+      }
+  </style>
+</head>
+<body>
+    <div id="app" class="invitation" v-cloak>
+        <header>
+            <img src="./imgs/img01.jpg" alt="" style="width: 100%; margin: 0;">
+            <img src="./imgs/img02.png" alt="" style="width: 75%;">
+            <img src="./imgs/img03.png" alt="">
+            <img src="./imgs/img04.png" alt="">
+            <img src="./imgs/img05.png" alt="">
+            <img src="./imgs/img06.png" alt="" style="margin-top: 50px;">
+            <img class="down" src="./imgs/down.png" alt="">
+            <img src="./imgs/img07.png" alt="">
+            <img class="down" src="./imgs/down.png" alt="">
+            <img src="./imgs/img08.png" alt="">
+            <img class="down" src="./imgs/down.png" alt="">
+            <img src="./imgs/img09.png" alt="">
+        </header>
+
+
+        <footer>
+            <button @click='jumpActivity'>立即开通普通会员</button>
+        </footer>
+    </div>
+
+    
+	<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"></script>
+    <script src="./js/vue_2.6.1.min.js"></script>
+    <script src="./js/activity.js"></script>
+</body>
+</html>

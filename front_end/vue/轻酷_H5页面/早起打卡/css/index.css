@@ -1,0 +1,172 @@
+
+
+header .body {
+	z-index: -10;
+	height: 100%;
+}
+header .foot {
+	z-index: 80;
+	height: 190px;
+}
+footer {
+	position: relative;
+	/* padding: 0 40px 0 40px; */
+	width: 100%;
+	text-align: center; 
+	height: 300px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	margin-bottom: 180px;
+	margin-left: 40px;
+    margin-right: 40px;
+}
+.nav {
+	background: url('../imgs/nav_bg.png') 0 0 no-repeat;
+	background-size: 100% 100%;
+	height: 40px;
+}
+.nav div {
+	width: 33%;
+	text-align: center;
+	color: #AF5E10;
+	line-height: 40px;
+}
+.select_btn {
+	background: url('../imgs/select_btn.png') 0 0 no-repeat;
+	background-size: 100% 100%;
+	height: 40px;
+}
+.sign_up_bth {
+	border-radius: 20px;
+	background: url('../imgs/sign_up_bg.png') 0 0 no-repeat;
+	background-size: 100% 100%;
+	height: 43px;
+	line-height: 43px;
+	text-align: center;
+	color: #BE6D1E;
+	margin: 0 auto;
+	padding: 0 33px;
+	min-width: 200px;
+}
+.sign_up_done {
+	min-width: 200px;
+	color: #666666;
+	background: url('../imgs/sign_up_done.png') 0 0 no-repeat;
+}
+.clock {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.clock img {
+	width: 18px;
+	margin-right: 10px;
+}
+.footer_div {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	z-index: 99;
+	margin: 20px 0 35px 0;
+}
+.footer_div>ul {
+	padding: 20px 40px 0 40px;
+}
+.footer_div>div {
+	margin: 0 40px 0 40px;
+}
+.footer_div>ul li {
+	width: 30%;
+	position: relative;
+	background-color: #159786;
+	border-radius: 10px;
+	color: #fff;
+	padding: 10px 10px 0 20px;
+	height: 65px;
+	font-size: 13px;
+	line-height: 19px;
+	text-align: left;
+}
+.footer_div>ul li:first-of-type {
+	margin-right: 3%;
+}
+.footer_div>ul li:last-of-type {
+	margin-left: 3%;
+}
+.num {
+	position: absolute;
+	top: -10px;
+	left: 0;
+	width: 22px;
+	height: 22px;
+	background-color: #fff;
+	line-height: 22px;
+	text-align: center;
+	border-radius: 50%;
+	color: #0F8778;
+	font-weight: 900;
+}
+.sign_dialog {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 99;
+	background-color: rgba(0, 0, 0, 0.6);
+}
+.sign_dialog .body {
+	background-color: #fff;
+	width: 70%;
+	border-radius: 12px;
+	overflow: hidden;
+}
+.sign_dialog .body .pic {
+	position: relative;
+}
+.sign_dialog .close_icon {
+	width: 18px;
+	right: 15px;
+	top: 15px;
+	position: absolute;
+}
+.sign_dialog .tip {
+	position: absolute;
+	bottom: 20%;
+	left: 20px;
+	font-size: 16px;
+}
+.middle_p {
+	color: #333;
+	text-align: center;
+	font-size: 17px;
+	margin: 15px 0;
+}
+.foot_btn {
+	padding-bottom: 20px;
+}
+.foot_btn button {
+	width: 80%;
+	margin: 0 10%;
+	color: #fff;
+	height: 43px;
+	line-height: 43px;
+	background-color: #FFB04A;
+	border-radius: 8px;
+	font-size: 17px;
+	margin-top: 25px;
+}
+.header_btn {
+	position: fixed;
+	top: 8px;
+	right: 8px;
+	z-index: 99;
+	width: 90px;
+	height: 30px;
+	line-height: 32px;
+	background-color: #ffee2b;
+	border-radius: 5px;
+	font-size: 14px;
+	color: #AF5E10;
+}

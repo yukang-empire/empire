@@ -1,8 +1,8 @@
 <template>
 	<div class="swiper_imgs">
 		<swiper v-if="swiper_data.imgs.length > 0" :options="swiper_data.options">
-			<swiper-slide v-for="(item, index) in swiper_data.imgs" :key="item.id">
-				<img :src="item.src" alt="goods">
+			<swiper-slide v-for="(item, index) in swiper_data.imgs" :key="index">
+				<img :src="'https://shop.technologyle.com' + item.ad_code" alt="goods" @click='jump(item.ad_link)'>
 			</swiper-slide>
 			<div class="swiper-pagination" slot="pagination"></div>
 		</swiper>
@@ -29,6 +29,12 @@ export default class swiper_imgs extends Vue{
 	};
 	mounted () {
 
+	};
+
+	jump (link) {
+		if (link) {
+			window.location.href = 'https://shop.technologyle.com' + link;
+		};
 	};
 	
 }

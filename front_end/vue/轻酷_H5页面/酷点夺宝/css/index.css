@@ -1,0 +1,214 @@
+
+
+
+header {
+	background-color: #31BFAD;
+	color: #fff;
+	text-align: center;
+	font-size: 16px;
+	display: flex;
+	align-items: center;
+	overflow-x: scroll;
+	-webkit-overflow-scrolling: touch;
+}
+header .no_border {
+	border: none;
+}
+.select {
+	background-color: #fff;
+	color: #31BFAD;
+}
+.item {
+	border-right: 1px solid #19AB98;
+	min-width: 80px;
+	height: 80px;
+	flex-direction: column;
+}
+.history {
+	position: absolute;
+    top: 0;
+	right: 0;
+	color: #fff;
+    background-color: #19ab98;
+	border: none;
+	border-left: 1px solid #19AB98;
+}
+nav {
+	background-color: #fff;
+	/* padding: 20px 0; */
+	border-bottom: 1px solid #F0F0F0;
+}
+nav>img {
+	width: 100%;    
+	margin: 15px 0;
+}
+.price {
+	color: #FF6C00;
+	font-size: 20px;
+	padding: 0 20px 0 20px;
+	text-decoration: line-through;
+	background-color: #fff;
+}
+.progress {
+	margin: 0 0 8px 0;
+	height: 5px;
+	background-color: #F5F5F5;
+	border-radius: 20px;
+	width: 100%;
+}
+.progress_line {
+	height: 100%;
+	width: 40%;
+	background-color: #31BFAD;
+	border-radius: 20px;
+}
+.title {
+	font-size: 18px;
+	background-color: #fff;
+	padding: 0 20px 8px 20px;
+}
+.btn {
+	background-color: #31BFAD;
+	border-radius: 0;
+	color: #fff;
+	height: 55px;
+	line-height: 55px;
+	font-size: 16px;
+	font-weight: 900;
+	position: fixed;
+	width: 100%;
+	bottom: 0;
+	left: 0;
+	z-index: 99;
+}
+.info_tip {
+	padding: 10px 0 20px 0;
+	margin-bottom: 80px;
+	color: #31BFAD;
+}
+.info {
+	padding: 0 20px;
+	background-color: #fff;
+}
+.spit_prize {
+	position: relative;
+	height: 265px;
+	margin: 20px 30px 25px 30px;
+}
+.spit_prize_02 {
+	position: absolute;
+	height: 265px;
+}
+.main {
+	background-color: #fff;
+	width: 80%;
+	position: absolute;
+	left: 10%;
+	top: 43px;
+	text-align: center;
+	margin-bottom: 35px;
+	padding-bottom: 15px;
+}
+.main_title {
+	position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #fff;
+    font-size: 20px;
+}
+.win_num {
+	padding: 20px 0 8px 0;
+    margin: 0 20px 0 20px;
+    color: #20BBA6;
+    font-size: 19px;
+    border-bottom: 2px dashed #33C2AE;
+}
+.my_num {
+	display: flex;
+    justify-content: center;
+    color: #333;
+	font-size: 17px;
+	margin-top: 20px;
+}
+
+
+.sign_dialog {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 99;
+	background-color: rgba(0, 0, 0, 0.6);
+}
+.sign_dialog .body {
+	background-color: #fff;
+	width: 70%;
+	border-radius: 12px;
+	overflow: hidden;
+}
+.sign_dialog .body .pic {
+	position: relative;
+}
+.sign_dialog .close_icon {
+	width: 18px;
+	right: 15px;
+	top: 15px;
+	position: absolute;
+}
+.sign_dialog .tip {
+	position: absolute;
+	top: 10px;
+	left: 50%;
+	transform: translateX(-50%);
+	font-size: 16px;
+	color: #fff;
+}
+.middle_p {
+	color: #333;
+	text-align: center;
+	font-size: 16px;
+	margin: 15px 0;
+}
+.foot_btn {
+	padding-bottom: 20px;
+}
+.foot_btn button {
+	width: 80%;
+	margin: 0 10%;
+	color: #fff;
+	height: 43px;
+	line-height: 43px;
+	background-color: #31BFAD;
+	border-radius: 8px;
+	font-size: 17px;
+	margin-top: 25px;
+}
+.kd_tip {
+	background-color: #999;
+	color: #fff;
+	border-radius: 8px;
+	height: 48px;
+	line-height: 48px;
+	padding: 0 30px 0 40px;
+	position: fixed;
+	bottom: 80px;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 999;
+	font-size: 14px;
+	letter-spacing: 0;
+	white-space: nowrap;
+}
+.completed {
+	position: absolute;
+    background-color: #F0F0F0;
+    width: 90%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.win_num_color {
+	color: #20BBA6;
+	font-weight: 900;
+}
