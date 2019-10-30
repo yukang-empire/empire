@@ -26,7 +26,7 @@
 			</li>
 		</ul>
 		<ul class="goods_list" v-if='goods_list.length > 0'>
-			<router-link v-for='(item, index) in goods_list' :to="{ path: '/goods_details', query: { goods_id: item.goods_id } }" tag='li' class="flex_center">
+			<router-link v-for='(item, index) in goods_list' :to="{ path: '/goods_details', query: { goods_id: item.goods_id } }" tag='li' class="flex_center" :key='item.goods_id'>
 				<div class="flex_center goods_img">
 					<img v-if='item.original_img' :src="'https://shop.technologyle.com' + item.original_img" alt="goods">
 					<img v-if='!item.original_img' src="../../assets/imgs/default_goods_img.png" alt="goods">
@@ -64,7 +64,7 @@ export default class goods_area extends Vue{
 
 	};
 	mounted () {
-		var query = this.$route.query;
+		var query: any = this.$route.query;
 		if (query.type == 1) {
 			this.area_type = '会员区';
 		}else if (query.type == 2) {
@@ -95,10 +95,14 @@ export default class goods_area extends Vue{
 	
 	.nav {
 		background-color: #fff;
-		justify-content: space-evenly;
+		justify-content: center;
 		margin: 2px 0;
 		height: 43px;
 		color: #999999;
+
+		li {
+			width: 33.3%;
+		}
 		
 		.right {
 

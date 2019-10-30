@@ -8,33 +8,24 @@
 			</div>
 			<h3 class="flex_center">我的地址</h3>
 		</div>
-		<ul class="address_list">
-			<li class="flex_between">
+		<ul class="address_list" v-if='address_list.length > 0'>
+			<li class="flex_between" v-for='(item, index) in address_list' :key='item.address_id'>
 				<div class="content">
 					<div class="name">
-						<p>张小六</p>
-						<i class='tag'>默认</i>
+						<p>{{ item.consignee }}</p>
+						<i class='tag' v-if='item.is_default == 1'>默认</i>
 					</div>
 					<div class="address_info">
-						<i>13416816832</i>
-						<p>广东省  深圳市  龙华新区 </p>
+						<i>{{ item.mobile }}</i>
+						<p>{{ item.province + item.city + item.district + item.twon + item.address }}</p>
 					</div>
 				</div>
-				<div class="flex_center icon"><img @click='edit_address' src="../../assets/imgs/edit_icon.png" alt="edit"></div>
-			</li>
-			<li class="flex_between">
-				<div class="content">
-					<div class="name">
-						<p>张小六</p>
-					</div>
-					<div class="address_info">
-						<i>13416816832</i>
-						<p>广东省  深圳市  龙华新区 </p>
-					</div>
-				</div>
-				<div class="flex_center icon"><img @click='edit_address' src="../../assets/imgs/edit_icon.png" alt="edit"></div>
+				<div class="flex_center icon"><img @click='edit_address(item.address_id)' src="../../assets/imgs/edit_icon.png" alt="edit"></div>
 			</li>
 		</ul>
+		<div v-if='address_list.length <= 0' class="no_address">
+			<p>暂无地址，请新增</p>
+		</div>
 		<div class="bottom_btn" @click='add_address'>
 			<button>+ 新建收货地址</button>
 		</div>
@@ -51,30 +42,52 @@ import { Vue, Component } from 'vue-property-decorator';
 })
 
 export default class all_address extends Vue{
+	private address_list: any = [];
 	
 	created () {
 
 	};
 	mounted () {
-
+		var that = this;
+		//获取所有地址
+		this.$store.dispatch('get_all_address').then((res) => {
+			console.log('所有地址', res);
+			if (res.status == 1) {
+				that.address_list = res.result;
+			};
+		});
 	};
 
 	back () {
-		this.$router.back();
+		this.$router.push({ path: '/order_sure' });
 	};
 
 	add_address () {
+		sessionStorage.removeItem('address_data');
 		this.$router.push({ path: '/add_address' });
 	};
 
-	edit_address () {
-		this.$router.push({ path: '/edit_address' });
-	}
+	edit_address (id) {
+		var that = this;
+		for (var i = 0; i < this.address_list.length; i++) {
+			if (this.address_list[i].address_id == id) {
+				var address_data = JSON.stringify(this.address_list[i]);
+				sessionStorage.setItem('address_data', address_data);
+				this.$router.push({ path: '/edit_address', query: {address_id: id} });
+			};
+		};
+	};
 	
 }
 </script>
 
 <style lang="scss" scoped>
+
+	.no_address {
+		margin: 100px 0 0 0;
+		text-align: center;
+		color: #ccc;
+	}
 
 	.address_list {
 		margin-bottom: 70px;

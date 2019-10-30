@@ -8,17 +8,17 @@
 			</div>
 			<h3 class="flex_center">订单确认</h3>
 		</div>
-		<div class="flex_between address" v-if='true' @click='select_address'>
+		<div class="flex_between address" v-if='address_info' @click='select_address'>
 			<div class="left">
 				<svg class="icon" aria-hidden="true">
 					<use xlink:href="#icon-dizhi"></use>
 				</svg>
 				<div class="address_info">
 					<p>
-						<span>张三</span>
-						<i>13416816832</i>
+						<span>{{ address_info.consignee }}</span>
+						<i>{{ address_info.mobile }}</i>
 					</p>
-					<p class="address_details">广东省  深圳市  龙华新区  金銮国际大厦10...</p>
+					<p class="address_details">{{ address_info.total_address }}</p>
 				</div>
 			</div>
 			<div>
@@ -27,7 +27,7 @@
 				</svg>
 			</div>
 		</div>
-		<div class="flex_between no_address" v-if='false' @click='select_address'>
+		<div class="flex_between no_address" v-if='!address_info' @click='select_address'>
 			<div class="left">
 				<svg class="icon" aria-hidden="true">
 					<use xlink:href="#icon-dizhi"></use>
@@ -54,16 +54,16 @@
 			<div class="goods_title">
 				<p class="goods_name">
 					<i class="tag vip_span">会员</i>
-					<span>WORLDTOUCHWORLDTOUCHWORLDTOUCHWORLDTOUCH  移动...</span>
+					<span>{{ goods_info.goods_name }}</span>
 				</p>
-				<p class="goods_price">￥268</p>
+				<p class="goods_price">￥{{ goods_info.shop_price + '.00' }}</p>
 			</div>
-			<div class="goods_num">x<span>1</span></div>
+			<div class="goods_num">x<span>{{ goods_info.goods_num }}</span></div>
 		</div>
 		<ul class="other_info">
 			<li>
 				<span>商品金额</span>
-				<span class="total_price">￥<i>560.00</i></span>
+				<span class="total_price">￥<i>{{ goods_info.shop_price * goods_info.goods_num }}</i></span>
 			</li>
 			<li>
 				<span>运费</span>
@@ -71,22 +71,26 @@
 			</li>
 			<li>
 				<span>会员自购</span>
-				<span class="discount">-112.00</span>
+				<span class="discount">{{ goods_info.deduction_account ? '-' + goods_info.deduction_account : '￥0.00' }}</span>
 			</li>
 			<li>
 				<span>实付</span>
-				<span class="actual_pay">￥<i>448.00</i></span>
+				<span class="actual_pay">￥<i>{{ goods_info.total_account }}</i></span>
 			</li>
 		</ul>
 		<div class="fixed_bottom flex_center footer_btn">
 			<div class="final_price">
 				<span>应付金额：</span>
-				<i>￥448.00</i>
+				<i>￥{{ goods_info.total_account }}</i>
 			</div>
-			<div class="pay_btn" @click='to_pay'>
-				<button>去支付</button>
+			<div class="pay_btn">
+				<button @click='to_pay'>去支付</button>
 			</div>
 		</div>
+		<!-- 文字提示 -->
+		<transition name='fade'>
+			<div class="text_tip" v-if='text_tip.is_open'>{{ text_tip.msg }}</div>
+		</transition>
 	</div>
 </template>
 
@@ -100,24 +104,94 @@ import { Vue, Component } from 'vue-property-decorator';
 })
 
 export default class order_sure extends Vue{
+	private address_info: any = {};
+	private goods_info: any = {};
+	private text_tip: any = {
+		is_open: false,
+		msg: '',
+		can_click: true
+	};
 	
 	created () {
 
 	};
 	mounted () {
+		var that = this;
+		//请求数据
+		if (sessionStorage.getItem('goods_parameter')) {
+			var goods_parameter: any = sessionStorage.getItem('goods_parameter');
+			var http_data: any = JSON.parse(goods_parameter);
+		};
+		this.$store.dispatch('get_order_details', http_data).then((res) => {
+			console.log('订单详情', res);
+			if (res.status == 1) {
+				this.address_info = res.result.address;
+				this.goods_info = res.result.goods;
+				this.goods_info.shop_price = parseInt(this.goods_info.shop_price);
+				this.goods_info.deduction_account = res.result.deduction_account;
+				this.goods_info.total_account = res.result.total_account;
+				if (sessionStorage.getItem('goods_parameter')) {
+					var goods_parameter: any = sessionStorage.getItem('goods_parameter');
+					var goods_num: any = parseInt(JSON.parse(goods_parameter).goods_num);
+					this.goods_info.goods_num = goods_num;
+				}else {
+					this.goods_info.goods_num = 1;
+				};
+			};
+		});
+	};
 
+	//打开轻提示
+	open_text_tip (text: any) {
+		if (this.text_tip.can_click) {
+			this.text_tip.can_click = false;
+			this.text_tip.is_open = true;
+			this.text_tip.msg = text;
+			setTimeout(() => {
+				this.text_tip.can_click = true;
+				this.text_tip.is_open = false;
+				this.text_tip.msg = '';
+			}, 1500);
+		}else {
+			return false;
+		};
 	};
 
 	back () {
-		this.$router.back();
-	};
-
-	to_pay() {
-		this.$router.push({ path: '/order_pay' });
+		if (sessionStorage.getItem('goods_id')) {
+			var goods_id = sessionStorage.getItem('goods_id');
+			this.$router.push({ path: '/goods_details', query: { goods_id: goods_id } });
+		}else {
+			this.$router.push({ path: '/goods_details' });
+		}
 	};
 
 	select_address () {
 		this.$router.push({ path: '/all_address' });
+	};
+
+	to_pay () {
+		var that = this;
+		//请求数据
+		if (sessionStorage.getItem('goods_parameter')) {
+			var goods_parameter: any = sessionStorage.getItem('goods_parameter');
+			var http_data: any = JSON.parse(goods_parameter);
+		};
+		this.$store.dispatch('get_order_num', http_data).then((res) => {
+			console.log('订单号', res);
+			if (res.status == 1) {
+				var order_info = {
+					num: res.result,
+					price: that.goods_info.total_account
+				};
+				var order_info_ = JSON.stringify(order_info);
+				sessionStorage.setItem('order_info', order_info_);
+				that.$router.push({ path: '/order_pay' });
+			}else {
+				that.open_text_tip(res.msg);
+			}
+		});
+		
 	}
 
 }

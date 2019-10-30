@@ -31,7 +31,7 @@ export default class swiper_imgs extends Vue{
 
 	};
 
-	jump (link) {
+	jump (link: any) {
 		if (link) {
 			window.location.href = 'https://shop.technologyle.com' + link;
 		};

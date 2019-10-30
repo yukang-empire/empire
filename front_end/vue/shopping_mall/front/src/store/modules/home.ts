@@ -34,6 +34,22 @@ const home = {
                 });
             });
 		},
+		//搜索
+		to_search (state: any, data: any) {
+			var http_data: any = new FormData();
+            http_data.append("type", data.type);
+            http_data.append("search", data.search);
+            http_data.append("token", sessionStorage.getItem('token'));
+            return new Promise((resolve, reject) => {
+                axios.post("/index.php?m=Api&c=Shop&a=shop_goods_list", http_data).then((res: any) => {
+                    //返回数据给调起dispatch的那边
+                    resolve(res);
+                }).catch( error => {
+                    //返回error给调起dispatch的那边
+                    reject(error);
+                });
+            });
+		},
 	}
 }
 

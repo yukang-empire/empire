@@ -193,31 +193,21 @@ export default {
 		wx.getStorage({
 			key: 'token',
 			success (res) {
-				wx.getStorage({
-					key: 'session_key',
-					success (res) {
+				wx.login({
+					success: function(res){
+						console.log("微信用户信息", res);
+						var send_data = {
+							code: res.code
+						};
 						that.dialog_loading = true;
-						that.getData(res.data);
-					},
-					fail () {
-						wx.login({
-							success: function(res){
-								console.log("微信用户信息", res);
-								var send_data = {
-									code: res.code
-								};
-								that.dialog_loading = true;
-								that.$store.dispatch("get_session_key", send_data).then( (res) => {
-									console.log("获取session_key", res);
-									if (res.data.status == 1) {
-										that.openid = res.data.result.openid;
-										that.session_key = res.data.result.session_key;
-										wx.setStorageSync('openid', res.data.result.openid);
-										wx.setStorageSync('session_key', res.data.result.session_key);
-										that.getData(that.session_key);
-									};
-								});
-							}
+						that.$store.dispatch("get_session_key", send_data).then( (res) => {
+							console.log("获取session_key", res);
+							if (res.data.status == 1) {
+								that.openid = res.data.result.openid;
+								that.session_key = res.data.result.session_key;
+								wx.setStorageSync('openid', res.data.result.openid);
+								that.getData(that.session_key);
+							};
 						});
 					}
 				});

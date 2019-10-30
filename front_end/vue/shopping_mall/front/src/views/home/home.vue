@@ -28,7 +28,7 @@
 		<div class="footer">
 			<h2>推荐商品</h2>
 			<ul class="goods_list" v-if='goods_list.length > 0'>
-				<router-link v-for='(item, index) in goods_list' :to="{ path: '/goods_details', query: { goods_id: item.goods_id } }" tag='li' class="flex_center">
+				<router-link v-for='(item, index) in goods_list' :to="{ path: '/goods_details', query: { goods_id: item.goods_id } }" tag='li' class="flex_center" :key='item.goods_id'>
 					<div class="flex_center goods_img">
 						<img v-if='item.original_img' :src="'https://shop.technologyle.com' + item.original_img" alt="goods">
 						<img v-if='!item.original_img' src="../../assets/imgs/default_goods_img.png" alt="goods">
@@ -48,11 +48,13 @@
 			</div>
 		</div>
 		<!-- 我的 -->
-		<router-link to='/my' tag='div' class="flex_center my">
+		<!-- <router-link to='/my' tag='div' class="flex_center my"> -->
+		<div class="flex_center my" @click='to_my' v-if='false'>
 			<svg class="icon" aria-hidden="true">
 				<use xlink:href="#icon-denglu"></use>
 			</svg>
-		</router-link>
+		</div>
+		<!-- </router-link> -->
 		<!-- 文字提示 -->
 		<transition name='fade'>
 			<div class="text_tip" v-if='text_tip.is_open'>{{ text_tip.msg }}</div>
@@ -91,13 +93,21 @@ export default class home extends Vue{
 		msg: '',
 		can_click: true
 	};
+	private token: any = null;
 
 	created () {
 
 	};
 	mounted () {
-		var that = this;
-		sessionStorage.setItem('token', '681b05855cb2');
+		var url = window.location.href;
+		var index = url.indexOf('?token=');
+		var token = url.substring(index + 7);
+		this.token = token;
+		console.log('token', token);
+		// sessionStorage.setItem('token', '681b05855cb2');
+		if (token) {
+			sessionStorage.setItem('token', token);
+		};
 		this.$store.dispatch('get_home_data').then((res) => {
 			console.log('首页数据', res);
 			if (res.status == 1) {
@@ -110,9 +120,8 @@ export default class home extends Vue{
 			};
 		});
 	};
-
 	//打开轻提示
-	open_text_tip (text) {
+	open_text_tip (text: any) {
 		if (this.text_tip.can_click) {
 			this.text_tip.can_click = false;
 			this.text_tip.is_open = true;
@@ -128,13 +137,18 @@ export default class home extends Vue{
 	};
 
 	//跳转商品区域
-	goods_area (type) {
+	goods_area (type: any) {
 		if (type != 1) {
 			this.open_text_tip('敬请期待!');
 		}else {
 			this.$router.push({ path: '/goods_area', query: { type: type } });
 		};
-	}
+	};
+
+	//跳转我的
+	to_my () {
+		this.open_text_tip('敬请期待!');
+	};
 
 }
 </script>
@@ -176,11 +190,12 @@ export default class home extends Vue{
 
 		ul {
 			padding: 20px 0;
-			justify-content: space-evenly;
+			justify-content: center;
 		}
 
 		li {
 			flex-direction: column;
+			width: 33.3%;
 
 			img {
 				width: 55px;
