@@ -10,7 +10,7 @@
 		</div>
 		<ul class="address_list" v-if='address_list.length > 0'>
 			<li class="flex_between" v-for='(item, index) in address_list' :key='item.address_id'>
-				<div class="content">
+				<div class="content" @click='set_default(item.address_id)'>
 					<div class="name">
 						<p>{{ item.consignee }}</p>
 						<i class='tag' v-if='item.is_default == 1'>默认</i>
@@ -29,6 +29,11 @@
 		<div class="bottom_btn" @click='add_address'>
 			<button>+ 新建收货地址</button>
 		</div>
+
+		<!-- 文字提示 -->
+		<transition name='fade'>
+			<div class="text_tip" v-if='text_tip.is_open'>{{ text_tip.msg }}</div>
+		</transition>
 	</div>
 </template>
 
@@ -43,11 +48,36 @@ import { Vue, Component } from 'vue-property-decorator';
 
 export default class all_address extends Vue{
 	private address_list: any = [];
+	private text_tip: any = {
+		is_open: false,
+		msg: '',
+		can_click: true
+	};
+
+	//打开轻提示
+	open_text_tip (text: any) {
+		if (this.text_tip.can_click) {
+			this.text_tip.can_click = false;
+			this.text_tip.is_open = true;
+			this.text_tip.msg = text;
+			setTimeout(() => {
+				this.text_tip.can_click = true;
+				this.text_tip.is_open = false;
+				this.text_tip.msg = '';
+			}, 1500);
+		}else {
+			return false;
+		};
+	};
 	
 	created () {
 
 	};
 	mounted () {
+		this.get_all_address();
+	};
+
+	get_all_address () {
 		var that = this;
 		//获取所有地址
 		this.$store.dispatch('get_all_address').then((res) => {
@@ -56,7 +86,7 @@ export default class all_address extends Vue{
 				that.address_list = res.result;
 			};
 		});
-	};
+	}
 
 	back () {
 		this.$router.push({ path: '/order_sure' });
@@ -77,6 +107,23 @@ export default class all_address extends Vue{
 			};
 		};
 	};
+	//设为默认地址
+	set_default (id) {
+		var that = this;
+		for (var i = 0; i < this.address_list.length; i++) {
+			if (this.address_list[i].address_id == id) {
+				console.log(this.address_list[i]);
+				this.address_list[i].is_default = 1;
+				this.$store.dispatch('edit_address', this.address_list[i]).then((res) => {
+					console.log('编辑地址', res);
+					if (res.status == 1) {
+						that.open_text_tip('切换成功!');
+						this.get_all_address();
+					};
+				});
+			};
+		};
+	}
 	
 }
 </script>

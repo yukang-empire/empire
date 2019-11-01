@@ -78,6 +78,7 @@
 				<span class="actual_pay">￥<i>{{ goods_info.total_account }}</i></span>
 			</li>
 		</ul>
+		<div style="width: 100%;height: 80px;background-color: transparent;"></div>
 		<div class="fixed_bottom flex_center footer_btn">
 			<div class="final_price">
 				<span>应付金额：</span>
@@ -127,12 +128,12 @@ export default class order_sure extends Vue{
 			if (res.status == 1) {
 				this.address_info = res.result.address;
 				this.goods_info = res.result.goods;
-				this.goods_info.shop_price = parseInt(this.goods_info.shop_price);
+				this.goods_info.shop_price = parseFloat(this.goods_info.shop_price);
 				this.goods_info.deduction_account = res.result.deduction_account;
 				this.goods_info.total_account = res.result.total_account;
 				if (sessionStorage.getItem('goods_parameter')) {
 					var goods_parameter: any = sessionStorage.getItem('goods_parameter');
-					var goods_num: any = parseInt(JSON.parse(goods_parameter).goods_num);
+					var goods_num: any = parseFloat(JSON.parse(goods_parameter).goods_num);
 					this.goods_info.goods_num = goods_num;
 				}else {
 					this.goods_info.goods_num = 1;
@@ -311,7 +312,7 @@ export default class order_sure extends Vue{
 		padding: 0 15px 10px 15px;
 		margin-top: 15px;
 		background-color: #fff;
-		margin-bottom: 60px;
+		/* margin-bottom: 60px; */
 
 		li {
 			padding: 10px 0;

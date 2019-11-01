@@ -7,6 +7,7 @@ import home from './modules/home';
 import goods from './modules/goods';
 import order from './modules/order';
 import address from './modules/address';
+import my from './modules/my';
 
 const store = new Vuex.Store({
 	state: {
@@ -22,7 +23,8 @@ const store = new Vuex.Store({
 		home,
 		goods,
 		order,
-		address
+		address,
+		my
 	}
 });
 

@@ -48,13 +48,14 @@
 			</div>
 		</div>
 		<!-- 我的 -->
-		<!-- <router-link to='/my' tag='div' class="flex_center my"> -->
-		<div class="flex_center my" @click='to_my' v-if='false'>
-			<svg class="icon" aria-hidden="true">
+		<router-link to='/my' tag='div' class="flex_center my">
+		<!-- <div class="flex_center my" @click='to_my' v-if='false'> -->
+			<!-- <svg class="icon" aria-hidden="true">
 				<use xlink:href="#icon-denglu"></use>
-			</svg>
-		</div>
-		<!-- </router-link> -->
+			</svg> -->
+			<img src="../../assets/imgs/my_icon.png" alt="my">
+		<!-- </div> -->
+		</router-link>
 		<!-- 文字提示 -->
 		<transition name='fade'>
 			<div class="text_tip" v-if='text_tip.is_open'>{{ text_tip.msg }}</div>
@@ -99,15 +100,17 @@ export default class home extends Vue{
 
 	};
 	mounted () {
-		var url = window.location.href;
-		var index = url.indexOf('?token=');
-		var token = url.substring(index + 7);
-		this.token = token;
-		console.log('token', token);
-		// sessionStorage.setItem('token', '681b05855cb2');
-		if (token) {
+		var token = sessionStorage.getItem('token');
+		if (!token) {
+			var url = window.location.href;
+			var index = url.indexOf('?token=');
+			token = url.substring(index + 7);
 			sessionStorage.setItem('token', token);
 		};
+		// this.token = token;
+		console.log('token', token);
+		// sessionStorage.setItem('token', '681b05855cb2');
+
 		this.$store.dispatch('get_home_data').then((res) => {
 			console.log('首页数据', res);
 			if (res.status == 1) {
@@ -139,7 +142,9 @@ export default class home extends Vue{
 	//跳转商品区域
 	goods_area (type: any) {
 		if (type != 1) {
-			this.open_text_tip('敬请期待!');
+			// this.open_text_tip('敬请期待!');
+			
+			this.$router.push({ path: '/goods_area', query: { type: type } });
 		}else {
 			this.$router.push({ path: '/goods_area', query: { type: type } });
 		};

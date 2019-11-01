@@ -10,10 +10,10 @@
 		</div>
 		<div class="my_info">
 			<div class="left">
-				<div class="head_pic"><img src="../../assets/imgs/default_goods_img.png" alt="head_pic"></div>
+				<div class="head_pic"><img src="../../assets/imgs/my_icon.png" alt="head_pic"></div>
 				<div class="info">
-					<h3>文一</h3>
-					<p>18617109552</p>
+					<h3>{{ my_data.nickname ? my_data.nickname : '轻酷用户' }}</h3>
+					<p>{{ my_data.mobile ? my_data.mobile : '' }}</p>
 				</div>
 			</div>
 		</div>
@@ -23,10 +23,10 @@
 				<span>我的订单</span>
 			</h3>
 			<ul class="nav">
-				<li>
+				<router-link tag='li' to='/order_list'>
 					<img src="../../assets/imgs/my_nav_01.png" alt="nav">
 					<p>全部</p>
-				</li>
+				</router-link>
 				<li>
 					<img src="../../assets/imgs/my_nav_02.png" alt="nav">
 					<p>待支付</p>
@@ -42,7 +42,7 @@
 			</ul>
 		</div>
 		<ul class="other">
-			<li class="flex_between">
+			<router-link tag='li' to='/all_address' class="flex_between">
 				<div>
 					<img src="../../assets/imgs/my_address_icon.png" alt="address">
 					<span>我的地址</span>
@@ -50,7 +50,7 @@
 				<svg class="icon" aria-hidden="true">
 					<use xlink:href="#icon-you"></use>
 				</svg>
-			</li>
+			</router-link>
 			<li class="flex_between">
 				<div @click='vip_center'>
 					<img src="../../assets/imgs/my_vip_icon.png" alt="vip">
@@ -74,7 +74,7 @@ import { Vue, Component } from 'vue-property-decorator';
 })
 
 export default class my extends Vue{
-	private data: any = {
+	private my_data: any = {
 
 	};
 
@@ -82,7 +82,12 @@ export default class my extends Vue{
 
 	};
 	mounted () {
-
+		var that = this;
+		this.$store.dispatch('my_data').then((res) => {
+			console.log('my', res);
+			that.my_data = res.result;
+			sessionStorage.setItem('my_data', JSON.stringify(that.my_data));
+		})
 	};
 
 	back () {
@@ -90,7 +95,7 @@ export default class my extends Vue{
 	};
 
 	vip_center () {
-		this.$router.push({ path: '/vip_center' });
+		// this.$router.push({ path: '/vip_center' });
 	}
 	
 }
@@ -120,7 +125,7 @@ export default class my extends Vue{
 		.nav {
 			display: flex;
 			align-items: center;
-			justify-content: space-evenly;
+			justify-content: center;
 			padding-bottom: 15px;
 
 			li {
@@ -129,6 +134,7 @@ export default class my extends Vue{
 				align-items: center;
 				flex-direction: column;
 				font-size: 0.9rem;
+				width: 25%;
 
 				img {
 					width: 50px;

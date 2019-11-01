@@ -34,7 +34,16 @@ const router = new VueRouter({
 		edit_address,
 		my,
 		vip_center,
-		member_grade
+		member_grade,
+		{
+			path: '/order_list',
+			name: '订单列表',
+			component: () => import('../views/order/order_list.vue'),
+			meta: {
+				title: '订单列表',
+				grade: 10
+			}
+		}
 	],
 	scrollBehavior (to: any, from: any, savedPosition: any) {
 		return { x: 0, y: 0}

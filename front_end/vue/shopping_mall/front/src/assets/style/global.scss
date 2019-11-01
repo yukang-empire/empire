@@ -55,6 +55,7 @@
 
 		img {
 			width: 50px;
+			height: 50px;
 			border-radius: 50%;
 		}
 	}
@@ -63,7 +64,7 @@
 
 		h3 {
 			font-weight: 400;
-			margin-bottom: 3px;
+			margin-top: -10px;
 		}
 	}
 }
@@ -223,8 +224,78 @@
 	top: 50%;
 	transform: translate(-50%, -50%);
 	z-index: 99;
-	background-color: $btn_color;
+	background-color: #ccc;
 	color: #fff;
 	padding: 8px 12px;
 	border-radius: 8px;
+}
+
+
+.order_dialog {
+	height: auto;
+	width: 80%;
+	border-radius: 5px;
+	background-color: #FAFAFA;
+	padding: 22px 0 0 0;
+	text-align: center;
+
+	.btn {
+		border-top: 1px solid #E0E0E0;
+
+		.line {
+			width: 1px;
+			height: 30px;
+			background-color: #E0E0E0;
+		}
+	
+
+		button {
+			width: 49.5%;
+			background-color: #fff;
+			color: #CCCCCC;
+			height: 50px;
+			line-height: 50px;
+			font-size: 0.95rem;
+			border-radius: 0;
+
+		}
+	}
+
+	.logistics {
+		flex-direction: column;
+		color: #333;
+		font-size: 0.9rem;
+
+		h3 {
+			
+			font-weight: 400;
+			font-size: 0.95rem;
+		}
+
+		p {
+			width: 80%;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			margin: 10px 0 15px 0;
+
+			i {
+				color: #666666;
+			}
+		}
+	}
+	.cancel_order {
+		margin: 10px 0 32px 0;
+		font-size: 1.1rem;;
+		color: #666666;
+	}
+	.customer {
+		h3 {
+			font-size: 1.1rem;
+		}
+		p {
+			color: #666666;
+			font-size: 1rem;
+		}
+	}
 }

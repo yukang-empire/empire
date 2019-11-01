@@ -42,6 +42,21 @@ const order = {
                 });
             });
 		},
+		//获取所有订单
+		get_all_orders (state: any, data: any) {
+			var http_data: any = new FormData();
+            http_data.append("type", data.type);
+            http_data.append("token", sessionStorage.getItem('token'));
+            return new Promise((resolve, reject) => {
+                axios.post("/index.php?m=Api&c=Order&a=getOrderList", http_data).then((res: any) => {
+                    //返回数据给调起dispatch的那边
+                    resolve(res);
+                }).catch( error => {
+                    //返回error给调起dispatch的那边
+                    reject(error);
+                });
+            });
+		},
 	}
 }
 
