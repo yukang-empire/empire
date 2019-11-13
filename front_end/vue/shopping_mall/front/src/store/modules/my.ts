@@ -6,7 +6,7 @@ const my = {
 		
 	},
 	actions: {
-		//获取商品详情
+		//会员中心数据
 		my_data (state: any, data: any) {
 			var http_data: any = new FormData();
             http_data.append("token", sessionStorage.getItem('token'));

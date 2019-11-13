@@ -1,0 +1,41 @@
+{
+  "pages": [
+    "pages/home/index/main",
+    "pages/hotel/index/main",
+    "pages/my/index/main"
+  ],
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "非宿不可",
+    "navigationBarTextStyle": "black",
+	"enablePullDownRefresh": true
+  },
+  "tabBar": {
+    "color": "#5D5860",
+    "backgroundColor": "#fff",
+    "selectedColor": "#FFC215",
+    "borderStyle": "black",
+
+    "list": [
+		{
+			"text": "首页",
+			"pagePath": "pages/home/index/main",
+			"iconPath": "static/imgs/tabbar/no_nav_01.png",
+			"selectedIconPath": "static/imgs/tabbar/yes_nav_01.png"
+		},
+		{
+			"text": "住宿",
+			"pagePath": "pages/hotel/index/main",
+			"iconPath": "static/imgs/tabbar/no_nav_02.png",
+			"selectedIconPath": "static/imgs/tabbar/yes_nav_02.png"
+		},
+		{
+			"text": "个人中心",
+			"pagePath": "pages/my/index/main",
+			"iconPath": "static/imgs/tabbar/no_nav_03.png",
+			"selectedIconPath": "static/imgs/tabbar/yes_nav_03.png"
+		}
+	]
+  }
+}

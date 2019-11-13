@@ -1,0 +1,228 @@
+
+* {
+	margin: 0;
+	padding: 0;
+}
+html, body {
+	width: 100%;
+	height: 100%;
+}
+body {
+	color: #333;
+	text-align: justify;
+	background-color: #F0F0F0;
+    font: 14px/1.8 -apple-system-font,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Hiragino Sans GB,Microsoft YaHei UI,Microsoft YaHei,Arial,sans-serif;
+}
+h1 {
+	text-align: center;
+}
+h1, h2, h3 {
+	white-space: nowrap;
+}
+i {
+	font-style: normal;
+}
+ul {
+	list-style: none;
+	overflow: hidden;
+}
+ol {
+	overflow: hidden;
+}
+a {
+	color: #666;
+	text-decoration: none;
+}
+img {
+	width: 100%;
+}
+input {
+	border: none;
+	outline: none;
+	letter-spacing: 1px;
+	background-color: transparent;
+}
+input[type="button"], button {
+	border: none;
+	outline: none;
+	cursor: pointer;
+	letter-spacing: 2px;
+}
+input::-webkit-input-placeholder{
+    color: #999;
+    font-size: 0.95rem;
+}
+input::-moz-input-placeholder{
+    color: #999;
+    font-size: 0.95rem;
+}
+input::-ms-input-placeholder{
+    color: #999;
+    font-size: 0.95rem;
+}
+
+
+/* 阿里图标 */
+@font-face {
+	font-family: 'iconfont';
+    src: url('../../static/fonts/iconfont.eot');
+    src: url('../../static/fonts/iconfont.eot?#iefix') format('embedded-opentype'),
+    url('../../static/fonts/iconfont.woff') format('woff'),
+    url('../../static/fonts/iconfont.ttf') format('truetype'),
+    url('../../static/fonts/iconfont.svg#iconfont') format('svg');
+}
+.iconfont{
+    font-family:"iconfont" !important;
+	font-size: 32rpx;
+	font-weight: 400;
+	font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+
+/* vue相关 */
+[v-cloak] {
+	display: none !important;
+}
+/* fade */
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .28s;
+}
+.fade-enter, .fade-leave-to {
+    opacity: 0;
+}
+/* fade-transform */
+.fade-transform-leave-active,
+.fade-transform-enter-active {
+  transition: all .5s;
+}
+.fade-transform-enter {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+.fade-transform-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+/* breadcrumb transition */
+.breadcrumb-enter-active,
+.breadcrumb-leave-active {
+  transition: all .5s;
+}
+.breadcrumb-enter,
+.breadcrumb-leave-active {
+  opacity: 0;
+  transform: translateX(20px);
+}
+.breadcrumb-move {
+  transition: all .5s;
+}
+.breadcrumb-leave-active {
+  position: absolute;
+}
+
+/* 自定义类 */
+.block {
+	display: block;
+}
+.full {
+	width: 100%;
+	height: 100%;
+}
+.full_width {
+	width: 100%;
+}
+.flex {
+	display: flex;
+	align-items: center;
+}
+.flex_center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.flex_between {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.fixed_top {
+	position: fixed;
+	left: 0;
+	top: 0;
+}
+.fixed_bottom {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+}
+.ab_center {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+/* 底部全宽按钮 */
+.bottom_btn {
+	width: 100%;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	border-radius: 0;
+	color: #fff;
+	height: 55px;
+	line-height: 55px;
+	text-align: center;
+	background-color: #FCC53A;
+}
+/* 轻标签 */
+.lightly_label {
+	font-style: 0.7rem;
+	min-width: 35px;
+	height: 20px;
+	line-height: 20px;
+	text-align: center;
+	border-radius: 3px;
+	color: #fff;
+	display: inline-block;
+	white-space: nowrap;
+	background-color: #FCC53A;
+}
+/* 轻提示 */
+.lightly_tip {
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 99;
+	color: #fff;
+	border-radius: 8px;
+	padding: 0 12px;
+	height: 22px;
+	line-height: 22px;
+	background-color: #ccc;
+}
+/* 单行省略 */
+.text_ellipsis {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+/* 自定义dialog */
+.dialog_container {
+	position: fixed;
+	left: 0;
+	top: 0;
+	height: 100%;
+	width: 100%;
+	z-index: 99;
+	background-color: rgba(0, 0, 0, 0.6);
+}
+.dialog_main {
+	background-color: #fff;
+	border-radius: 10px;
+	flex-direction: column;
+	width: 70%;
+}

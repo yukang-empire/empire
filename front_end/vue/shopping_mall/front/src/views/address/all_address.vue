@@ -89,7 +89,8 @@ export default class all_address extends Vue{
 	}
 
 	back () {
-		this.$router.push({ path: '/order_sure' });
+		// this.$router.push({ path: '/order_sure' });
+		this.$router.back();
 	};
 
 	add_address () {

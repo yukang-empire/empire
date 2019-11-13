@@ -43,6 +43,15 @@ const router = new VueRouter({
 				title: '订单列表',
 				grade: 10
 			}
+		},
+		{
+			path: '/order_details',
+			name: '订单详情',
+			component: () => import('../views/order/order_details.vue'),
+			meta: {
+				title: '订单详情',
+				grade: 11
+			}
 		}
 	],
 	scrollBehavior (to: any, from: any, savedPosition: any) {

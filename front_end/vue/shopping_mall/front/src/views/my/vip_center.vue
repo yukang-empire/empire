@@ -10,13 +10,20 @@
 		</div>
 		<div class="flex_between my_info" @click='member_grade'>
 			<div class="left">
-				<div class="head_pic"><img src="../../assets/imgs/default_goods_img.png" alt="head_pic"></div>
+				<div class="head_pic">
+					<img v-if='my_data.img' :src="my_data.img" alt="head_pic">
+					<img v-if='!my_data.img' src="../../assets/imgs/my_icon.png" alt="head_pic">
+				</div>
 				<div class="info">
 					<h3>
-						<span>文一</span>
-						<img src="../../assets/imgs/ordinary_vip_title.png" alt="logo">
+						<span>{{ my_data.nickname }}</span>
+						<img v-if='my_data.shop_level == 0' src="../../assets/imgs/ordinary_vip_title.png" alt="logo">
+						<img v-if='my_data.shop_level == 1' src="../../assets/imgs/golden_vip_title.png" alt="logo">
+						<img v-if='my_data.shop_level == 2' src="../../assets/imgs/platinum_vip_title.png" alt="logo">
+						<img v-if='my_data.shop_level == 3' src="../../assets/imgs/diamond_vip_title.png" alt="logo">
+						<img v-if='my_data.shop_level == 4' src="../../assets/imgs/shop_owner_title.png" alt="logo">
 					</h3>
-					<p>18617109552</p>
+					<p>{{ my_data.mobile ? my_data.mobile : '0.00' }}</p>
 				</div>
 			</div>
 			<svg class="icon" aria-hidden="true">
@@ -25,21 +32,21 @@
 		</div>
 		<div class="assessment">
 			<div class="title">
-				<span>本月考核：</span>
-				<i>2019.11.01</i>
+				<span>本月考核</span>
+				<!-- <i>2019.11.01</i>
 				<i> ~ </i>
-				<i>2019.11.31</i>
+				<i>2019.11.31</i> -->
 			</div>
 			<div class="flex_between reusable_div">
 				<div class="flex_center sales">
-					<span>0.00</span>
+					<span>{{ my_data.month_amount ? my_data.month_amount : '0.00' }}</span>
 					<p>
 						<img src="../../assets/imgs/vip_center_sales.png" alt="profit">
 						<span>本月销售额(元)</span>
 					</p>
 				</div>
 				<div class="flex_center reach">
-					<span>0.00</span>
+					<span>{{ my_data.give_bonus ? my_data.give_bonus : '0.00' }}</span>
 					<p>
 						<img src="../../assets/imgs/vip_center_reach.png" alt="profit">
 						<span>达标收益(元)</span>
@@ -53,23 +60,23 @@
 			</div>
 			<div class="flex_center items">
 				<div>
-					<span>0.00</span>
+					<span>{{ my_data.last_month_amount ? my_data.last_month_amount : '0.00' }}</span>
 					<p>上月销售额(元)</p>
 				</div>
 				<h4 class="line"></h4>
 				<div>
-					<span>0.00</span>
+					<span>{{ my_data.month_amount ? my_data.month_amount : '0.00' }}</span>
 					<p>本月销售额(元)</p>
 				</div>
 			</div>
 			<div class="flex_center items">
 				<div>
-					<span>0.00</span>
+					<span>{{ my_data.shop_amount ? my_data.shop_amount : '0.00' }}</span>
 					<p>累计销售额(元)</p>
 				</div>
 				<h4 class="line"></h4>
 				<div>
-					<span>0.00</span>
+					<span>{{ my_data.total_bonus ? my_data.total_bonus : '0.00' }}</span>
 					<p>收益合计(元)</p>
 				</div>
 			</div>
@@ -77,14 +84,14 @@
 		<div class="assessment">
 			<div class="flex_between reusable_div">
 				<div class="flex_center total">
-					<span>0.00</span>
+					<span>{{ my_data.total_bonus ? my_data.total_bonus : '0.00' }}</span>
 					<p>
 						<img src="../../assets/imgs/vip_center_total_profit.png" alt="profit">
 						<span>累计收益(元)</span>
 					</p>
 				</div>
 				<div class="flex_center extract">
-					<span>0.00</span>
+					<span>{{ my_data.bonus ? my_data.bonus : '0.00' }}</span>
 					<p>
 						<img src="../../assets/imgs/vip_center_extract_profit.png" alt="profit">
 						<span>可提收益(元)</span>
@@ -106,12 +113,20 @@ import { Vue, Component } from 'vue-property-decorator';
 })
 
 export default class vip_center extends Vue{
+	private my_data: any = {};
 	
 	created () {
 
 	};
 	mounted () {
-
+		var that = this;
+		this.$store.dispatch('my_data').then((res) => {
+			console.log('会员中心', res);
+			if (res.status == 1) {
+				that.my_data = res.result;
+				sessionStorage.setItem('grade', that.my_data.shop_level);
+			}
+		})
 	};
 
 	back () {

@@ -9,12 +9,23 @@
 			<h3 class="flex_center">会员等级</h3>
 		</div>
 		<div class="flex_center logo">
-			<img src="../../assets/imgs/ordinary_vip_grade.png" alt="logo">
-			<p><span>当前等级：</span><i>普通会员</i></p>
+			<img v-if='shop_level == 0' src="../../assets/imgs/ordinary_vip_grade.png" alt="logo">
+			<img v-if='shop_level == 1' src="../../assets/imgs/golden_vip_grade.png" alt="logo">
+			<img v-if='shop_level == 2' src="../../assets/imgs/platinum_vip_grade.png" alt="logo">
+			<img v-if='shop_level == 3' src="../../assets/imgs/diamond_vip_grade.png" alt="logo">
+			<img v-if='shop_level == 4' src="../../assets/imgs/shop_owner_grade.png" alt="logo">
+			<p v-if='shop_level == 0'><span>当前等级：</span><i>普通会员</i></p>
+			<p v-if='shop_level == 1'><span>当前等级：</span><i>黄金会员</i></p>
+			<p v-if='shop_level == 2'><span>当前等级：</span><i>珀金会员</i></p>
+			<p v-if='shop_level == 3'><span>当前等级：</span><i>钻石会员</i></p>
+			<p v-if='shop_level == 4'><span>当前等级：</span><i>店主</i></p>
 		</div>
-		<h3 class="title">
+		<h3 class="title" v-if='shop_level != 4'>
 			<span>距升级还差：￥</span>
-			<i>200000</i>
+			<i>{{ up_level }}</i>
+		</h3>
+		<h3 class="title" v-if='shop_level == 4'>
+			<span>尊贵的店主您好！您已经是最高级别！</span>
 		</h3>
 		<div class="rule">
 			<img src="../../assets/imgs/vip_grade_title.png" alt="title">
@@ -48,12 +59,15 @@ import { Vue, Component } from 'vue-property-decorator';
 })
 
 export default class member_grade extends Vue{
+	private shop_level: any = null;
+	private up_level: any = null;
 	
 	created () {
 
 	};
 	mounted () {
-
+		this.shop_level = sessionStorage.getItem('grade') || 0;
+		this.up_level = sessionStorage.getItem('up_level') || 0;
 	};
 
 	back () {

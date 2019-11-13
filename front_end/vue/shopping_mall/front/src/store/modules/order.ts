@@ -57,6 +57,36 @@ const order = {
                 });
             });
 		},
+		//确认收货
+		sure_receive (state: any, data: any) {
+			var http_data: any = new FormData();
+            http_data.append("order_id", data.order_id);
+            http_data.append("token", sessionStorage.getItem('token'));
+            return new Promise((resolve, reject) => {
+                axios.post("/index.php?m=Api&c=Shop&a=order_confirm", http_data).then((res: any) => {
+                    //返回数据给调起dispatch的那边
+                    resolve(res);
+                }).catch( error => {
+                    //返回error给调起dispatch的那边
+                    reject(error);
+                });
+            });
+		},
+		//确认收货
+		cancel_order (state: any, data: any) {
+			var http_data: any = new FormData();
+            http_data.append("order_id", data.order_id);
+            http_data.append("token", sessionStorage.getItem('token'));
+            return new Promise((resolve, reject) => {
+                axios.post("/index.php?m=Api&c=Shop&a=order_del", http_data).then((res: any) => {
+                    //返回数据给调起dispatch的那边
+                    resolve(res);
+                }).catch( error => {
+                    //返回error给调起dispatch的那边
+                    reject(error);
+                });
+            });
+		},
 	}
 }
 

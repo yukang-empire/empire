@@ -100,13 +100,11 @@ export default class home extends Vue{
 
 	};
 	mounted () {
-		var token = sessionStorage.getItem('token');
-		if (!token) {
-			var url = window.location.href;
-			var index = url.indexOf('?token=');
-			token = url.substring(index + 7);
-			sessionStorage.setItem('token', token);
-		};
+		
+		var url = window.location.href;
+		var index = url.indexOf('?token=');
+		var token = url.substring(index + 7);
+		sessionStorage.setItem('token', token); 
 		// this.token = token;
 		console.log('token', token);
 		// sessionStorage.setItem('token', '681b05855cb2');

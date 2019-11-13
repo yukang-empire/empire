@@ -1,0 +1,26 @@
+
+// 颜色
+$main_color: #FCC53A;
+
+
+// nav导航
+.nav {
+	background-color: #fff;
+	margin: 10px 15px;
+	padding: 15px 0;
+	justify-content: space-around;
+	border-radius: 10px;
+
+	.item {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+
+		.img {
+			width: 55px;
+			height: 55px;
+			margin-bottom: 5px;
+		}
+	}
+}

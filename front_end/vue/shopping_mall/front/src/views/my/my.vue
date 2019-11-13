@@ -23,21 +23,21 @@
 				<span>我的订单</span>
 			</h3>
 			<ul class="nav">
-				<router-link tag='li' to='/order_list'>
+				<li @click='jump_order(0)'>
 					<img src="../../assets/imgs/my_nav_01.png" alt="nav">
 					<p>全部</p>
-				</router-link>
-				<li>
+				</li>
+				<li @click='jump_order(1)'>
 					<img src="../../assets/imgs/my_nav_02.png" alt="nav">
 					<p>待支付</p>
 				</li>
-				<li>
+				<li @click='jump_order(2)'>
 					<img src="../../assets/imgs/my_nav_03.png" alt="nav">
-					<p>待签收</p>
+					<p>待发货</p>
 				</li>
-				<li>
+				<li @click='jump_order(3)'>
 					<img src="../../assets/imgs/my_nav_04.png" alt="nav">
-					<p>售后</p>
+					<p>待收货</p>
 				</li>
 			</ul>
 		</div>
@@ -51,8 +51,8 @@
 					<use xlink:href="#icon-you"></use>
 				</svg>
 			</router-link>
-			<li class="flex_between">
-				<div @click='vip_center'>
+			<li class="flex_between" @click='vip_center'>
+				<div>
 					<img src="../../assets/imgs/my_vip_icon.png" alt="vip">
 					<span>会员中心</span>
 				</div>
@@ -87,6 +87,7 @@ export default class my extends Vue{
 			console.log('my', res);
 			that.my_data = res.result;
 			sessionStorage.setItem('my_data', JSON.stringify(that.my_data));
+			sessionStorage.setItem('up_level', that.my_data.up_level);
 		})
 	};
 
@@ -95,7 +96,11 @@ export default class my extends Vue{
 	};
 
 	vip_center () {
-		// this.$router.push({ path: '/vip_center' });
+		this.$router.push({ path: '/vip_center' });
+	};
+
+	jump_order (index) {
+		this.$router.push({ path: '/order_list', query: {index: index} });
 	}
 	
 }

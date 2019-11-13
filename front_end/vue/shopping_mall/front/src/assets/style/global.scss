@@ -299,3 +299,21 @@
 		}
 	}
 }
+
+.details_btn {
+	background-color: #fff;
+	padding: 5px 15px 15px 15px;
+	text-align: right;
+
+	button {
+		color: #31BFAD;
+		border: 1px solid #31BFAD;
+		background-color: transparent;
+		padding: 0 12px;
+		height: 30px;
+		line-height: 30px;
+		letter-spacing: 0;
+		font-size: 0.9rem;
+		border-radius: 20px;
+	}
+}

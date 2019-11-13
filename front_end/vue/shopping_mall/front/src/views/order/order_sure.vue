@@ -56,7 +56,7 @@
 					<i class="tag vip_span">会员</i>
 					<span>{{ goods_info.goods_name }}</span>
 				</p>
-				<p class="goods_price">￥{{ goods_info.shop_price + '.00' }}</p>
+				<p class="goods_price">￥{{ goods_info.shop_price }}</p>
 			</div>
 			<div class="goods_num">x<span>{{ goods_info.goods_num }}</span></div>
 		</div>
@@ -309,7 +309,7 @@ export default class order_sure extends Vue{
 	}
 
 	.other_info {
-		padding: 0 15px 10px 15px;
+		padding: 0 15px 0 15px;
 		margin-top: 15px;
 		background-color: #fff;
 		/* margin-bottom: 60px; */
