@@ -11,16 +11,40 @@ $main_color: #FCC53A;
 	justify-content: space-around;
 	border-radius: 10px;
 
-	.item {
+	.nav_item {
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		flex-direction: column;
 
-		.img {
+		.nav_img {
 			width: 55px;
 			height: 55px;
 			margin-bottom: 5px;
+		}
+	}
+}
+
+// 左边带有粗边框的标题
+.b_title {
+	margin: 10px 15px;
+	border-radius: 10px;
+	background-color: #fff;
+	padding: 8px 15px;
+
+	.border {
+		width: 8px;
+		height: 18px;
+		background-color: $main_color;
+		margin-right: 8px;
+	}
+
+	.b_title_right {
+		color: #666;
+		font-size: 0.9em;
+
+		.iconfont {
+			margin-left: 3px;
 		}
 	}
 }
