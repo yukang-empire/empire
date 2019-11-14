@@ -101,10 +101,14 @@ export default class home extends Vue{
 	};
 	mounted () {
 		
-		var url = window.location.href;
-		var index = url.indexOf('?token=');
-		var token = url.substring(index + 7);
-		sessionStorage.setItem('token', token); 
+		if (this.$route.query.token) {
+			sessionStorage.setItem('token', this.$route.query.token); 
+		}else {
+			var url = window.location.href;
+			var index = url.indexOf('?token=');
+			var token = url.substring(index + 7);
+			sessionStorage.setItem('token', token); 
+		};
 		// this.token = token;
 		console.log('token', token);
 		// sessionStorage.setItem('token', '681b05855cb2');

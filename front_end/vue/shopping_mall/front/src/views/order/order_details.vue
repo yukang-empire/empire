@@ -1,18 +1,32 @@
 <template>
 	<div class="order_details">
-		<div class="flex_between header" v-if='details_data.order_goods[0].is_send == 0'>
+		<div class="header_public">
+			<div class="flex_center back">
+				<svg class="icon" aria-hidden="true" @click='back'>
+					<use xlink:href="#icon-arrow-right"></use>
+				</svg>
+			</div>
+			<h3 class="flex_center">订单详情</h3>
+		</div>
+		<div class="flex_between header" v-if='details_data.order_status_detail == "待发货"'>
 			<div class="left">等待发货</div>
 			<div>
 				<img src="../../assets/imgs/details_no_send.png" alt="">
 			</div>
 		</div>
-		<div class="flex_between header" v-if='details_data.order_goods[0].is_send == 1'>
+		<div class="flex_between header" v-else-if='details_data.order_status_detail == "待收货"'>
 			<div class="left">卖家已发货</div>
 			<div>
 				<img src="../../assets/imgs/details_no_sign.png" alt="">
 			</div>
 		</div>
-		<div class="flex_between header" v-if='details_data.order_goods[0].is_send != 0 && details_data.order_goods[0].is_send != 1'>
+		<div class="flex_between header" v-else-if='details_data.order_status_detail == "待支付" || details_data.order_status_detail == "已取消"'>
+			<div class="left">交易失败</div>
+			<div>
+				<img src="../../assets/imgs/details_fail.png" alt="">
+			</div>
+		</div>
+		<div class="flex_between header" v-else>
 			<div class="left">交易完成</div>
 			<div>
 				<img src="../../assets/imgs/details_success.png" alt="">
@@ -26,8 +40,8 @@
 				<span>{{ details_data.order_goods[0].shipping_name || '暂无快递公司' }}</span>
 				<i>{{ details_data.order_goods[0].delivery_code }}</i>
 			</div>
-			<div class="right">
-				<span>复制</span>
+			<div class="right" @click='copy'>
+				<span class="order_sn" :data-clipboard-text="details_data.order_goods[0].delivery_code">复制</span>
 			</div>
 		</div>
 		<div class="address">
@@ -63,9 +77,9 @@
 			</div>
 			<div class="goods_num">x<span>{{ details_data.order_goods[0].goods_num }}</span></div>
 		</div>
-		<div class="details_btn">
+		<!-- <div class="details_btn">
 			<button>联系客服</button>
-		</div>
+		</div> -->
 		<ul class="other_info">
 			<li>
 				<span>商品金额</span>
@@ -77,7 +91,7 @@
 			</li>
 			<li>
 				<span>会员自购</span>
-				<span class="discount">{{ '-' + ((details_data.order_goods[0].goods_price - details_data.order_goods[0].final_price)  * details_data.order_goods[0].goods_num) }}</span>
+				<span class="discount">{{ '-' + ((details_data.order_goods[0].goods_price - details_data.order_goods[0].final_price)  * details_data.order_goods[0].goods_num).toFixed(2) }}</span>
 			</li>
 			<li>
 				<span>实付</span>
@@ -90,7 +104,7 @@
 			</svg>
 			<span>订单信息</span>
 		</h3>
-		<ul class="other_info" style="margin-top: 1px;margin-bottom: 120px;">
+		<ul class="other_info" style="margin-top: 1px;margin-bottom: 60px;">
 			<li>
 				<span>订单编号</span>
 				<span class="total_price"><i>{{ details_data.order_sn }}</i></span>
@@ -108,14 +122,19 @@
 				<span class="discount"><i>{{ details_data.pay_time }}</i></span>
 			</li>
 		</ul>
-		<div class="bottom_btn" v-if='details_data.order_goods[0].is_send == 1'>
-			<button>确定收货</button>
+		<div class="bottom_btn" v-if='details_data.order_status_detail == "待收货"'>
+			<button @click="sure_receive">确定收货</button>
 		</div>
+		<!-- 文字提示 -->
+		<transition name='fade'>
+			<div class="text_tip" v-if='text_tip.is_open'>{{ text_tip.msg }}</div>
+		</transition>
 	</div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import Clipboard from 'clipboard';
 
 @Component({
 	components: {
@@ -125,7 +144,63 @@ import { Vue, Component } from 'vue-property-decorator';
 
 export default class order_details extends Vue{
 	private details_data: any = {};
-	
+
+	private text_tip: any = {
+		is_open: false,
+		msg: '',
+		can_click: true
+	};
+
+	//打开轻提示
+	open_text_tip (text: any) {
+		if (this.text_tip.can_click) {
+			this.text_tip.can_click = false;
+			this.text_tip.is_open = true;
+			this.text_tip.msg = text;
+			setTimeout(() => {
+				this.text_tip.can_click = true;
+				this.text_tip.is_open = false;
+				this.text_tip.msg = '';
+			}, 1500);
+		}else {
+			return false;
+		};
+	};
+
+	sure_receive () {
+		var that = this;
+		var http_data = {
+			order_id: this.details_data.order_id || ''
+		};
+		this.$store.dispatch('sure_receive', http_data).then((res) => {
+			console.log('确认收货', res);
+			if (res.status == 1) {
+				that.open_text_tip('操作成功!');
+				that.$router.push({ path: '/order_list', query: { index: 3 } });
+			}
+		})
+	};
+
+	back () {
+		this.$router.back()
+	};
+	copy () {
+		var that = this;
+		var clipboard = new Clipboard('.order_sn');
+		clipboard.on('success', e => {
+			console.log('复制成功')
+			that.open_text_tip('复制成功!');
+			// 释放内存  
+			clipboard.destroy()  
+		});
+		clipboard.on('error', e => {  
+			// 不支持复制  
+			that.open_text_tip('该浏览器不支持自动复制!');
+			console.log('该浏览器不支持自动复制')  
+			// 释放内存  
+			clipboard.destroy()  
+		})
+	}
 	created () {
 
 	};

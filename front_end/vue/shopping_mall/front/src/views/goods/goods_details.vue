@@ -201,7 +201,8 @@ export default class home extends Vue{
 	back () {
 		if (sessionStorage.getItem('token')) {
 			var token = sessionStorage.getItem('token');
-			window.location.href = 'https://shop.technologyle.com/shoppingMall/index.html#/index?token=' + token;
+			// window.location.href = 'https://shop.technologyle.com/shoppingMall/index.html#/index?token=' + token;
+			this.$router.push({ path: '/index', query: { token: token } });
 		};
 	};
 

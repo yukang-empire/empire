@@ -1,8 +1,8 @@
 {
   "pages": [
     "pages/home/index/main",
-    "pages/hotel/index/main",
-    "pages/my/index/main"
+    "pages/my/index/main",
+    "pages/hotel/index/main"
   ],
   "window": {
     "backgroundTextStyle": "dark",

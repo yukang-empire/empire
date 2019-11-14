@@ -29,8 +29,8 @@
 					<div class="flex_between middle">
 						<div class="left">
 							<div>
-								<img v-if='item.order_goods[0].goods_img' :src="item.order_goods[0].goods_img" alt="">
-								<img v-if='!item.order_goods[0].goods_img' src="../../assets/imgs/default_goods_img.png" alt="">
+								<img v-if='item.order_goods[0].img' :src="item.order_goods[0].img" alt="">
+								<img v-if='!item.order_goods[0].img' src="../../assets/imgs/default_goods_img.png" alt="">
 							</div>
 							<p>
 								<i class="tag vip_span" v-if='item.shop_type == 1'>会员</i>
@@ -64,7 +64,7 @@
 					</div>
 				</li>
 			</ul>
-			<div class="flex_center no_order" v-if='order_list.all.length && order_list.all.length <= 0'>
+			<div class="flex_center no_order" v-else>
 				<img src="../../assets/imgs/search_no_result.png" alt="">
 				<p>暂无购物订单~快去买买买~</p>
 				<div @click='to_index'>前往商城</div>
@@ -85,8 +85,8 @@
 					<div class="flex_between middle">
 						<div class="left">
 							<div>
-								<img v-if='item.order_goods[0].goods_img' :src="item.order_goods[0].goods_img" alt="">
-								<img v-if='!item.order_goods[0].goods_img' src="../../assets/imgs/default_goods_img.png" alt="">
+								<img v-if='item.order_goods[0].img' :src="item.order_goods[0].img" alt="">
+								<img v-if='!item.order_goods[0].img' src="../../assets/imgs/default_goods_img.png" alt="">
 							</div>
 							<p>
 								<i class="tag vip_span" v-if='item.shop_type == 1'>会员</i>
@@ -131,8 +131,8 @@
 					<div class="flex_between middle">
 						<div class="left">
 							<div>
-								<img v-if='item.order_goods[0].goods_img' :src="item.order_goods[0].goods_img" alt="">
-								<img v-if='!item.order_goods[0].goods_img' src="../../assets/imgs/default_goods_img.png" alt="">
+								<img v-if='item.order_goods[0].img' :src="item.order_goods[0].img" alt="">
+								<img v-if='!item.order_goods[0].img' src="../../assets/imgs/default_goods_img.png" alt="">
 							</div>
 							<p>
 								<i class="tag vip_span" v-if='item.shop_type == 1'>会员</i>
@@ -176,8 +176,8 @@
 					<div class="flex_between middle">
 						<div class="left">
 							<div>
-								<img v-if='item.order_goods[0].goods_img' :src="item.order_goods[0].goods_img" alt="">
-								<img v-if='!item.order_goods[0].goods_img' src="../../assets/imgs/default_goods_img.png" alt="">
+								<img v-if='item.order_goods[0].img' :src="item.order_goods[0].img" alt="">
+								<img v-if='!item.order_goods[0].img' src="../../assets/imgs/default_goods_img.png" alt="">
 							</div>
 							<p>
 								<i class="tag vip_span" v-if='item.shop_type == 1'>会员</i>
@@ -231,7 +231,7 @@
 					<div class="flex_center btn">
 						<button class="left" @click='is_dialog=false'>取消</button>
 						<div class="line"></div>
-						<button class="right" v-if='dialog_type == 1'>复制</button>
+						<button class="right" v-if='dialog_type == 1' @click='copy' :data-clipboard-text="delivery_code">复制</button>
 						<button class="right" v-else @click='dialog_sure'>确定</button>
 					</div>
 				</div>
@@ -248,6 +248,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import Clipboard from 'clipboard';
 
 @Component({
 	components: {
@@ -282,6 +283,24 @@ export default class order_list extends Vue{
 	jump_details (item) {
 		sessionStorage.setItem('order_details_data', JSON.stringify(item));
 		this.$router.push({ path: '/order_details' });
+	}
+
+	copy () {
+		var that = this;
+		var clipboard = new Clipboard('.order_sn');
+		clipboard.on('success', e => {
+			console.log('复制成功')
+			that.open_text_tip('复制成功!');
+			// 释放内存  
+			clipboard.destroy()  
+		});
+		clipboard.on('error', e => {  
+			// 不支持复制  
+			that.open_text_tip('该浏览器不支持自动复制!');
+			console.log('该浏览器不支持自动复制')  
+			// 释放内存  
+			clipboard.destroy()  
+		})
 	}
 
 	click_btn (index, msg, order_id, text) {
@@ -380,7 +399,11 @@ export default class order_list extends Vue{
     };
 
 	to_index () {
-		this.$router.push({ path: '/index' });
+		if (sessionStorage.getItem('token')) {
+			var token = sessionStorage.getItem('token');
+			// window.location.href = 'https://shop.technologyle.com/shoppingMall/index.html#/index?token=' + token;
+			this.$router.push({ path: '/index', query: { token: token } });
+		};
 	};
 
 	back () {

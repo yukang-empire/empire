@@ -2,7 +2,7 @@
 	<div class="swiper_imgs">
 		<swiper v-if="swiper_data.imgs.length > 0" :options="swiper_data.options">
 			<swiper-slide v-for="(item, index) in swiper_data.imgs" :key="index">
-				<img :src="'https://shop.technologyle.com' + item.ad_code" alt="goods" @click='jump(item.ad_link)'>
+				<img :src="'https://shop.technologyle.com' + item.ad_code" alt="goods">
 			</swiper-slide>
 			<div class="swiper-pagination" slot="pagination"></div>
 		</swiper>

@@ -2,26 +2,26 @@
 	<div class="home">
 		<div class="swiper">
 			<swiper :autoplay="swiper_option.autoplay" :interval="swiper_option.interval" :duration="swiper_option.duration" :circular='swiper_option.circular'>
-				<swiper-item v-for="(item, index) in swiper_option.imgs" :key='item.ad_id'>
-					<img :src="'https://shop.technologyle.com' + item.ad_code" alt="swiper" style="height: 100%;">
+				<swiper-item v-for="(item, index) in swiper_option.imgs" :key='item.id'>
+					<img :src="'https://shop.technologyle.com/userReg/imgs/tem' + item.src" alt="swiper" style="height: 100%;">
 				</swiper-item>
 			</swiper>
 		</div>
 		<ul class="flex_between nav">
-			<li class="nav_item">
+			<li class="nav_item" @click='expect'>
 				<img class="nav_img" src="../../../../static/imgs/home/index_nav_01.png" alt="nav">
 				<p>房券预售</p>
 			</li>
-			<li class="nav_item">
+			<li class="nav_item" @click='expect'>
 				<img class="nav_img" src="../../../../static/imgs/home/index_nav_02.png" alt="nav">
 				<p>交易市场</p>
 			</li>
-			<li class="nav_item">
+			<li class="nav_item" @click='expect'>
 				<img class="nav_img" src="../../../../static/imgs/home/index_nav_03.png" alt="nav">
 				<p>我的房券</p>
 			</li>
 		</ul>
-		<div class="flex_between b_title">
+		<div class="flex_between b_title" @click='expect'>
 			<div class="flex b_title_left">
 				<div class="border"></div>
 				<span>预售</span>
@@ -56,7 +56,10 @@ export default {
 				interval: 4000,
 				duration: 1000,
 				circular: true,
-				imgs: []
+				imgs: [
+					{ id: 1, src: '/index_banner.png' },
+					{ id: 2, src: '/index_banner.png' },
+				]
 			}
 		}
 	},
@@ -66,7 +69,7 @@ export default {
 	//下拉刷新
 	onPullDownRefresh () {
 		wx.showToast({
-			title: '正在更新数据...',
+			title: '正在刷新...',
 			icon: 'loading',
 			duration: 1500
 		});
@@ -78,15 +81,21 @@ export default {
 	},
 	mounted () {
 		var that = this;
-		this.$store.dispatch('home_swipers').then((res) => {
-			console.log('首页swipers', res);
-			if (res.data.status == 1) {
-				that.swiper_option.imgs = res.data.result || [];
-			};
-		});
+		// this.$store.dispatch('home_swipers').then((res) => {
+		// 	console.log('首页swipers', res);
+		// 	if (res.data.status == 1) {
+		// 		that.swiper_option.imgs = res.data.result || [];
+		// 	};
+		// });
 	},
 	methods: {
-
+		expect () {
+			wx.showToast({
+				title: '敬请期待!',
+				icon: 'none',
+				duration: 1500
+			});
+		}
 	}
 }
 </script>

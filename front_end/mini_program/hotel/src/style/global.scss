@@ -28,13 +28,13 @@ $main_color: #FCC53A;
 // 左边带有粗边框的标题
 .b_title {
 	margin: 10px 15px;
-	border-radius: 10px;
+	border-radius: 8px;
 	background-color: #fff;
 	padding: 8px 15px;
 
 	.border {
 		width: 8px;
-		height: 18px;
+		height: 17px;
 		background-color: $main_color;
 		margin-right: 8px;
 	}
@@ -46,5 +46,32 @@ $main_color: #FCC53A;
 		.iconfont {
 			margin-left: 3px;
 		}
+	}
+}
+
+// 一栏栏的菜单li
+.menu_list {
+	margin: 10px 0;
+	padding: 0 20px;
+	background-color: #fff;
+
+	.item_li {
+		padding: 12px 0;
+		border-bottom: 1px solid #CCCCCC;
+		background-color: #fff;
+
+		.item_img {
+			width: 17px;
+			height: 17px;
+			margin-right: 10px;
+		}
+
+		.iconfont {
+			color: #E0E0E0;
+		}
+	}
+
+	.item_li:last-of-type {
+		border: none;
 	}
 }
