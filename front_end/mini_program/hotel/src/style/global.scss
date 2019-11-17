@@ -75,3 +75,101 @@ $main_color: #FCC53A;
 		border: none;
 	}
 }
+
+.details_info {
+	background-color: #fff;
+	color: #999;
+	margin: 0 15px;
+	text-align: center;
+	position: relative;
+	
+	.info_share {
+		position: absolute;
+		top: 15px;
+		right: 15px;
+		width: 20px;
+		height: 20px;
+	}
+
+	.info_h2 {
+		padding: 15px 0 5px 0;
+		font-size: 1.3em;
+		font-weight: 900;
+		color: #333;
+	}
+	.info_ul {
+		margin: 5px 0;
+		padding: 0 15px;
+
+		.info_tag {
+			height: 20px;
+			line-height: 20px;
+			padding: 0 5px;
+			border: 1px solid #ccc;
+			margin: 0 5px;
+			border-radius: 5px;
+			font-size: 0.8em;
+		}
+	}
+	.info_btn {
+		margin: 15px 0 25px 0;
+		font-size: 1em;
+		
+		&>div {
+			border: 1px solid #FCC53A;
+			border-radius: 5px;
+			padding: 0 20px;
+			height: 32px;
+			line-height: 32px;
+			color: #FCC53A;
+		}
+		.navigate {
+			margin-right: 25px;
+		}
+		.navigate_ico, .call_ico {
+			margin-right: 10px;
+			width: 18px;
+			height: 18px;
+		}
+	}
+
+	.info_time {
+		position: relative;
+		padding: 20px 0;
+		overflow: hidden;
+		color: #999999;
+
+		.hemisphere_left, .hemisphere_right {
+			width: 30px;
+			height: 30px;
+			background-color: #F0F0F0;
+			position: absolute;
+			top: -15px;
+			border-radius: 50%;
+		}
+		.hemisphere_left {
+			left: -15px;
+		}
+		.hemisphere_right {
+			right: -15px;
+		}
+
+		.left, .middle, .right {
+			flex-direction: column;
+		}
+
+		.middle {
+			margin: 0 20px;
+		}
+
+		.start_time, .end_time {
+			color: #FCAC3A;
+			font-size: 1.3em;
+		}
+
+		.to_right_icon {
+			width: 100px;
+			height: 10px;
+		}
+	}
+}

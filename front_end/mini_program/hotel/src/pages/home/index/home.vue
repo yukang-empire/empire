@@ -1,7 +1,7 @@
 <template>
 	<div class="home">
 		<div class="swiper">
-			<swiper :autoplay="swiper_option.autoplay" :interval="swiper_option.interval" :duration="swiper_option.duration" :circular='swiper_option.circular'>
+			<swiper :indicator-dots='swiper_option.dots' :indicator-active-color="swiper_option.active_color" :indicator-color="swiper_option.color" :autoplay="swiper_option.autoplay" :interval="swiper_option.interval" :duration="swiper_option.duration" :circular='swiper_option.circular'>
 				<swiper-item v-for="(item, index) in swiper_option.imgs" :key='item.id'>
 					<img :src="'https://shop.technologyle.com/userReg/imgs/tem' + item.src" alt="swiper" style="height: 100%;">
 				</swiper-item>
@@ -56,6 +56,9 @@ export default {
 				interval: 4000,
 				duration: 1000,
 				circular: true,
+				dots: true,
+				color: '#fff',
+				active_color: '#FCC53A',
 				imgs: [
 					{ id: 1, src: '/index_banner.png' },
 					{ id: 2, src: '/index_banner.png' },

@@ -7,29 +7,43 @@
 				</swiper-item>
 			</swiper>
 		</div>
-		<div class="flex_between hotel_nav">
-			<div class="nav_left" @click='expect'>
-				<p class="nav_title">我的订单</p>
-				<img class="nav_img" src="../../../../static/imgs/hotel/hotel_nav_01.png" alt="nav">
+		<div class="details_info">
+			<img class="info_share" src="../../../../static/imgs/hotel/details_share.png" alt="share">
+			<h2 class="info_h2">水木潇湘民宿</h2>
+			<ul class="flex_center info_ul">
+				<li class="info_tag">舒适</li>
+				<li class="info_tag">森林院子</li>
+				<li class="info_tag">独栋</li>
+				<li class="info_tag">私密</li>
+				<li class="info_tag">山水之间</li>
+			</ul>
+			<div class="flex_center info_btn">
+				<div class="flex_center navigate">
+					<img class="navigate_ico" src="../../../../static/imgs/hotel/details_navigate.png" alt="navigate">
+					<span>一键导航</span>
+				</div>
+				<div class="flex_center call">
+					<img class="call_ico" src="../../../../static/imgs/hotel/details_call.png" alt="call">
+					<span>联系电话</span>
+				</div>
 			</div>
-			<div class="nav_right" @click='expect'>
-				<p class="nav_title">房券交易</p>
-				<img class="nav_img" src="../../../../static/imgs/hotel/hotel_nav_02.png" alt="nav">
+			<div class="flex_center info_time">
+				<div class="hemisphere_left"></div>
+				<div class="hemisphere_right"></div>
+				<div class="flex_center left">
+					<p>入住时间</p>
+					<span class="start_time">10月28日</span>
+				</div>
+				<div class="flex_center middle">
+					<span class="flex_center"><i>1</i>晚</span>
+					<img class="to_right_icon" src="../../../../static/imgs/hotel/details_to_right.png" alt="to_right">
+				</div>
+				<div class="flex_center right">
+					<p>离店时间</p>
+					<span class="end_time">10月29日</span>
+				</div>
 			</div>
 		</div>
-		<div class="flex_between b_title" style="margin-bottom: 5px;">
-			<div class="flex b_title_left">
-				<div class="border"></div>
-				<span>酒店列表</span>
-			</div>
-		</div>
-		<ul class="hotel_list">
-			<li class="list_item" v-for='(item, index) in hotel_list' :key='item.id' @click='hotel_details(item.id)'>
-				<img class="item_img" :src="'https://shop.technologyle.com/userReg/imgs/tem' + item.src" alt="hotel">
-				<h2 class="item_h2">{{ item.h2 }}</h2>
-				<p class="mul_text_ellipsis item_p">{{ item.p }}</p>
-			</li>
-		</ul>
 	</div>
 </template>
 
@@ -47,13 +61,11 @@ export default {
 				color: '#fff',
 				active_color: '#FCC53A',
 				imgs: [
-					{ id: 1, src: '/hotel_banner.png' },
-					{ id: 2, src: '/hotel_banner.png' },
+					{ id: 1, src: '/hotel_details.png' },
+					{ id: 2, src: '/hotel_details.png' },
 				]
 			},
-			hotel_list: [
-				{ id: 1, src: '/hotel_lists.png', h2: '张家界水木潇湘度假民宿', p: '坐落于武陵源核心景区国家森林公园，地势高挑，视野开阔 位于张家界·武陵源区·协合乡插旗峪村胜天水库边' }
-			]
+			
 		}
 	},
 	components: {
@@ -82,9 +94,6 @@ export default {
 				icon: 'none',
 				duration: 1500
 			});
-		},
-		hotel_details (id) {
-			mpvue.navigateTo({ url: "../details/main?id=" + id });
 		}
 	}
 }
