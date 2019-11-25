@@ -68,7 +68,8 @@ import { Vue, Component } from 'vue-property-decorator';
 export default class order_pay extends Vue{
 	private order_info: any = {
 		num: '',
-		price: ''
+		price: '',
+		auto_goods: null
 	};
 	private device: any = {
 		is_android: null,
@@ -103,7 +104,8 @@ export default class order_pay extends Vue{
 		var pay_data: any = {
 			order: this.order_info.num,
 			price: this.order_info.price,
-			type: this.pay_type
+			type: this.pay_type,
+			auto_goods: this.order_info.auto_goods
 		};
 		console.log('pay_data', pay_data);
 		//ios终端

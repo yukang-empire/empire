@@ -7,81 +7,9 @@
 				</swiper-item>
 			</swiper>
 		</div>
-		<div class="details_info">
-			<img class="info_share" src="../../../../static/imgs/hotel/details_share.png" alt="share">
-			<h2 class="info_h2">水木潇湘民宿</h2>
-			<ul class="flex_center">
-				<li class="lightly_label">舒适</li>
-				<li class="lightly_label">森林院子</li>
-				<li class="lightly_label">独栋</li>
-				<li class="lightly_label">私密</li>
-				<li class="lightly_label">山水之间</li>
-			</ul>
-			<div class="flex_center info_btn">
-				<div class="flex_center navigate">
-					<img class="navigate_ico" src="../../../../static/imgs/hotel/details_navigate.png" alt="navigate">
-					<span>一键导航</span>
-				</div>
-				<div class="flex_center call">
-					<img class="call_ico" src="../../../../static/imgs/hotel/details_call.png" alt="call">
-					<span>联系电话</span>
-				</div>
-			</div>
-			<div class="flex_center dotted_line">
-				<div class="hemisphere_left"></div>
-				<img class="dotted_line_img" src="../../../../static/imgs/hotel/dotted_line.png" alt="dotted_line">
-				<div class="hemisphere_right"></div>
-			</div>
-			<div class="flex_center info_time">
-				<div class="flex_center left">
-					<p>入住时间</p>
-					<span class="start_time">10月28日</span>
-				</div>
-				<div class="flex_center middle">
-					<span class="flex_center"><i>1</i>晚</span>
-					<img class="to_right_icon" src="../../../../static/imgs/hotel/details_to_right.png" alt="to_right">
-				</div>
-				<div class="flex_center right">
-					<p>离店时间</p>
-					<span class="end_time">10月29日</span>
-				</div>
-			</div>
+		<div class="main_info">
+			
 		</div>
-		<div class="flex_between b_title" style="margin-bottom: 5px;">
-			<div class="flex b_title_left">
-				<div class="border"></div>
-				<span>房间列表</span>
-			</div>
-		</div>
-		<ul class="room_list">
-			<li class="flex_between room_item" v-for='item in room_list' :key='item.id'>
-				<div class="flex_center" @click='jump_room(item.id)'>
-					<div><img class="room_img" src="https://shop.technologyle.com/userReg/imgs/tem/room_item.png" alt="room_item"></div>
-					<div class="middle">
-						<h3 class="middle_h3">{{ item.name }}</h3>
-						<ul class="flex_center">
-							<li class="lightly_label" v-for='(item_01, index_01) in item.tags' :key='index_01'>{{ item_01 }}</li>
-						</ul>
-						<p class="flex_between item_price">
-							<span class="price">￥{{ item.price }}</span>
-							<i class="num"><span>{{ item.num }}</span>张房券</i>
-						</p>
-						<div class="flex_center item_stars">
-							<ul class="flex stars_ul">
-								<li class="stars_li" v-for='(n, index_02) in item.stars_yes' :key='index_02'>
-									<img class="stars_yes" src="../../../../static/imgs/hotel/stars_yes.png" alt="stars">
-								</li>
-								<li class="stars_li" v-for='(n, index_03) in item.stars_no' :key='index_03'>
-									<img class="stars_no" src="../../../../static/imgs/hotel/stars_no.png" alt="stars">
-								</li>
-							</ul>
-							<span class="item_reco" v-if='item.is_reco'>推荐</span>
-						</div>
-					</div>
-				</div>
-				<div class="right">预定</div>
-			</li>
-		</ul>
 	</div>
 </template>
 
@@ -99,15 +27,10 @@ export default {
 				color: '#fff',
 				active_color: '#FCC53A',
 				imgs: [
-					{ id: 1, src: '/hotel_details.png' },
-					{ id: 2, src: '/hotel_details.png' },
+					{ id: 1, src: '/room_swiper.png' },
+					{ id: 2, src: '/room_swiper.png' },
 				]
 			},
-			//房间列表
-			room_list: [
-				{ id: 1, name: '树屋观景大床房', tags: ['舒适', '温泉', '地暖' ], price: '926', num: 1, stars_yes: 4, stars_no: 1, is_reco: true },
-				{ id: 2, name: '树屋观景大床房', tags: ['舒适', '温泉', '地暖' ], price: '926', num: 1, stars_yes: 4, stars_no: 1, is_reco: true }
-			]
 		}
 	},
 	components: {
@@ -127,7 +50,7 @@ export default {
 
 	},
 	mounted () {
-		
+
 	},
 	methods: {
 		expect () {
@@ -136,9 +59,6 @@ export default {
 				icon: 'none',
 				duration: 1500
 			});
-		},
-		jump_room (id) {
-			mpvue.navigateTo({ url: '../room/main?room_id=' + id })
 		}
 	}
 }

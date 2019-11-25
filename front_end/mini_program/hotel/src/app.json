@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/hotel/room/main",
     "pages/hotel/details/main",
     "pages/hotel/index/main",
     "pages/home/index/main",

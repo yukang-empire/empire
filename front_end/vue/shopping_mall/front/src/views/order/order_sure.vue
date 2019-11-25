@@ -67,7 +67,12 @@
 			</li>
 			<li>
 				<span>运费</span>
-				<span class="freight">￥<i>0.00</i></span>
+				<span class="freight">￥<i>{{ shipping_price || '0.00' }}</i></span>
+			</li>
+			<li @click='choose_zi_ti'>
+				<span>是否自提</span>
+				<img src="../../assets/imgs/pay_yes_choose.png" alt="choose" style="width: 25px;" v-if='zi_ti'>
+				<img src="../../assets/imgs/pay_no_choose.png" alt="choose" style="width: 25px;" v-if='!zi_ti'>
 			</li>
 			<li>
 				<span>会员自购</span>
@@ -75,14 +80,14 @@
 			</li>
 			<li>
 				<span>实付</span>
-				<span class="actual_pay">￥<i>{{ goods_info.total_account }}</i></span>
+				<span class="actual_pay">￥<i>{{ total_account || '0.00' }}</i></span>
 			</li>
 		</ul>
 		<div style="width: 100%;height: 80px;background-color: transparent;"></div>
 		<div class="fixed_bottom flex_center footer_btn">
 			<div class="final_price">
 				<span>应付金额：</span>
-				<i>￥{{ goods_info.total_account }}</i>
+				<i>￥{{ total_account }}</i>
 			</div>
 			<div class="pay_btn">
 				<button @click='to_pay'>去支付</button>
@@ -107,6 +112,11 @@ import { Vue, Component } from 'vue-property-decorator';
 export default class order_sure extends Vue{
 	private address_info: any = {};
 	private goods_info: any = {};
+	private shipping_price: any = {};
+	private shipping_price_02: any = {};
+	private total_account: any = {};
+	private total_account_02: any = {};
+	private zi_ti: any = false;
 	private text_tip: any = {
 		is_open: false,
 		msg: '',
@@ -128,7 +138,6 @@ export default class order_sure extends Vue{
 			if (res.status == 1) {
 				this.address_info = res.result.address;
 				this.goods_info = res.result.goods;
-				this.goods_info.shop_price = parseFloat(this.goods_info.shop_price);
 				this.goods_info.deduction_account = res.result.deduction_account;
 				this.goods_info.total_account = res.result.total_account;
 				if (sessionStorage.getItem('goods_parameter')) {
@@ -138,8 +147,42 @@ export default class order_sure extends Vue{
 				}else {
 					this.goods_info.goods_num = 1;
 				};
+				
+				this.shipping_price_02 = res.result.shipping_price;
+				if (parseFloat(this.goods_info.goods_num) >= 3) {
+					this.shipping_price = '0.00';
+				}else {
+					this.shipping_price = res.result.shipping_price;
+				};
+				this.total_account_02 = res.result.total_account;
+				
+				if (this.shipping_price) {
+
+					this.total_account = parseFloat(this.total_account_02) + parseFloat(this.shipping_price);
+				}else {
+					this.total_account = parseFloat(this.total_account_02);
+				};
+				this.goods_info.shop_price = parseFloat(this.goods_info.shop_price);
 			};
 		});
+	};
+
+	choose_zi_ti () {
+		this.zi_ti = !this.zi_ti;
+		if (this.zi_ti) {
+			this.shipping_price = '0.00';
+		}else {
+			
+			if (this.goods_info.goods_num >= 3) {
+				this.shipping_price = 0;
+			}else {
+				this.shipping_price = this.shipping_price_02;
+			}
+		};
+		if (this.shipping_price) {
+
+			this.total_account = parseFloat(this.total_account_02) + parseFloat(this.shipping_price);
+		}
 	};
 
 	//打开轻提示
@@ -183,7 +226,8 @@ export default class order_sure extends Vue{
 			if (res.status == 1) {
 				var order_info = {
 					num: res.result,
-					price: that.goods_info.total_account
+					price: that.total_account,
+					auto_goods: that.zi_ti ? 1 : 0
 				};
 				var order_info_ = JSON.stringify(order_info);
 				sessionStorage.setItem('order_info', order_info_);

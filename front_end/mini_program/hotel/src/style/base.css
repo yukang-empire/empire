@@ -179,16 +179,13 @@ input::-ms-input-placeholder{
 }
 /* 轻标签 */
 .lightly_label {
-	font-style: 0.7rem;
-	min-width: 35px;
 	height: 20px;
 	line-height: 20px;
-	text-align: center;
-	border-radius: 3px;
-	color: #fff;
-	display: inline-block;
-	white-space: nowrap;
-	background-color: #FCC53A;
+	padding: 0 5px;
+	border: 1px solid #ccc;
+	margin: 0 5px;
+	border-radius: 5px;
+	font-size: 0.8em;
 }
 /* 轻提示 */
 .lightly_tip {

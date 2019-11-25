@@ -31,7 +31,13 @@ export default {
 
 	},
 	methods: {
-
+		expect () {
+			wx.showToast({
+				title: '敬请期待!',
+				icon: 'none',
+				duration: 1500
+			});
+		}
 	}
 }
 </script>
