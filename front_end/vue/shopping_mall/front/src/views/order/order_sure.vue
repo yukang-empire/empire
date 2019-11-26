@@ -220,6 +220,7 @@ export default class order_sure extends Vue{
 		if (sessionStorage.getItem('goods_parameter')) {
 			var goods_parameter: any = sessionStorage.getItem('goods_parameter');
 			var http_data: any = JSON.parse(goods_parameter);
+			http_data.auto_goods = that.zi_ti ? 1 : 0;
 		};
 		this.$store.dispatch('get_order_num', http_data).then((res) => {
 			console.log('订单号', res);

@@ -31,6 +31,7 @@ const order = {
             http_data.append("goods_num", data.goods_num);
             http_data.append("item_id", data.item_id);
             http_data.append("address_id", data.address_id);
+            http_data.append("auto_goods", data.auto_goods);
             http_data.append("token", sessionStorage.getItem('token'));
             return new Promise((resolve, reject) => {
                 axios.post("/index.php?m=Api&c=Shop&a=add_order", http_data).then((res: any) => {

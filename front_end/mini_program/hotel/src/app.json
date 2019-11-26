@@ -1,9 +1,9 @@
 {
   "pages": [
+    "pages/home/index/main",
     "pages/hotel/room/main",
     "pages/hotel/details/main",
     "pages/hotel/index/main",
-    "pages/home/index/main",
     "pages/my/index/main"
   ],
   "window": {
